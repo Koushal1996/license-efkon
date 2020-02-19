@@ -1,0 +1,82 @@
+<div class="container mt-5">
+    <div class="row ">
+        <div class="col-8 offset-2 mt-3 padd">
+            <h5 class="text-center text-info">Update Old Licence Key</h5>
+            <form class="mt-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2 offset-1">
+                            <label for=""><strong>User</strong></label>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <select id="my-select" class="form-control" name="">
+                          <option *ngFor="let item of customerName">{{item.customerName}}</option>
+                        </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">
+                            <label for=""><strong>Product Code</strong></label>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <select id="my-select" class="form-control" name="">
+                          <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
+                        </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center ">
+                            <button class="btn btn-outline-success">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 padd">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="bg-warning">
+                                    <th>Sr.</th>
+                                    <th>Old Licence Key</th>
+                                    <th>New Unique ID</th>
+                                    <th>New Licence Key </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>1B2CFF9E2566EFF</td>
+                                    <td>
+                                        <form #f='ngForm' (change)="formSubmit()">
+                                            <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID">
+                                        </form>
+                                    </td>
+                                    <!-- <p>{{name}}</p> -->
+                                    <td><button class="btn ui-button-icon-only" [disabled]='btnDisable' (click)="generateRandomKey()"><i class="text-primary"><strong>{{value ?'Generate': myval}}</strong></i></button></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div class="text-center">
+                            <button class="btn btn-outline-primary ml-3">Export as PDF</button>
+                            <button class="btn btn-outline-warning ml-3">Export as DOCS</button>
+                            <button class="btn btn-outline-success ml-3">Export as XLS</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

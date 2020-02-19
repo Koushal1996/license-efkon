@@ -1,0 +1,88 @@
+<div class="container mt-5">
+    <div class="row ">
+        <div class="col-9 offset-1 mt-3 padd">
+            <h5 class="text-center text-info">Renew Old Licence Key</h5>
+            <form class="mt-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2 offset-2">
+                            <label for=""><strong>User</strong></label>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <select id="my-select" class="form-control" name="">
+                          <option *ngFor="let item of customerName">{{item.customerName}}</option>
+                        </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-2 offset-2">
+                            <label for=""><strong>Product Code</strong></label>
+                        </div>
+                        <div class="col-5">
+                            <div class="form-group">
+                                <div class="form-group">
+                                    <select id="my-select" class="form-control" name="">
+                          <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
+                        </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center ">
+                            <button class="btn btn-outline-success">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-12 padd">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr class="bg-warning">
+                                    <th>Sr.</th>
+                                    <th>Licence Key</th>
+                                    <th>Old Expiration Period</th>
+                                    <th>New Expiration Period </th>
+                                    <th>New Licence Key </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <select id="my-select" class="form-control" name="">
+                                        <option>RLVD-GHR4-3490</option>
+                                        <option>RLVD-GHR4-3490</option>
+                                        <option>RLVD-GHR4-3490</option>
+                                        <option>RLVD-GHR4-3490</option>
+                                        <option>RLVD-GHR4-3490</option>
+
+                                      </select>
+                                    </td>
+                                    <td><input type="text" class="form-control" disabled placeholder="Old Expiration Period"></td>
+                                    <td><input type="text" class="form-control" placeholder="New Expiration Period"></td>
+                                    <td><button class="btn ui-button-icon-only"><u class="text-primary">Generate</u></button></td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div class="text-center">
+                            <button class="btn btn-outline-primary ml-3">Import as PDF</button>
+                            <button class="btn btn-outline-warning ml-3">Import as DOCS</button>
+                            <button class="btn btn-outline-success ml-3">Import as XLS</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

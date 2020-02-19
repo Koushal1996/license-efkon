@@ -1,0 +1,31 @@
+<table class="table table-hover table-stripped table-sm  ">
+    <thead class="bg-warning">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">UserID</th>
+            <th scope="col">Mail Status</th>
+            <th scope="col">Licence Status</th>
+            <th scope="col">Email Id</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of myAllUser index as i">
+            <th scope="row">{{i+1}}</th>
+            <td>{{item.username}}</td>
+            <td>{{item.userId}}</td>
+
+            <td [style.color]="item.MailStatus=='Sent Successfully'?'green':'red'">{{item.MailStatus}}</td>
+            <td>{{item.Licencetype}}</td>
+            <td>{{item.EmailID}}</td>
+            <td> <i class="fa fa-trash text-danger ml-3"></i></td>
+            <td> <i class="fa fa-edit text-success ml-3"></i></td>
+        </tr>
+
+
+    </tbody>
+</table>
+
+<button class="btn btn-info myButton" routerLink="/main/createUser"><i class="fa fa-user-plus"></i> Add User</button>
