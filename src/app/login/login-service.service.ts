@@ -13,7 +13,25 @@ export class LoginServiceService {
         {
           window.localStorage.setItem('UserId',userId);
           window.localStorage.setItem('password',password);
-          return true
+          return 'admin'
+        }
+       else if(userId=='user' && password=='12345')
+        {
+          window.localStorage.setItem('UserId',userId);
+          window.localStorage.setItem('password',password);
+          return 'user'
+        }
+       else if(userId=='reviewer' && password=='12345')
+        {
+          window.localStorage.setItem('UserId',userId);
+          window.localStorage.setItem('password',password);
+          return 'reviewer'
+        }
+       else if(userId=='approval' && password=='12345')
+        {
+          window.localStorage.setItem('UserId',userId);
+          window.localStorage.setItem('password',password);
+          return 'approval'
         }
         else
         {

@@ -28,7 +28,7 @@ import { GenerateLicenceComponent } from './generate-licence/generate-licence.co
     ViewLogsComponent,
     ChangePasswordComponent,
     NotFoundPageComponent,
-   CreateUserComponent,
+     CreateUserComponent,
     CreateProjectComponent,
     UpdateLicenceComponent,
     RenewLicenceComponent,

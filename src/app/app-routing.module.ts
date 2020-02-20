@@ -10,6 +10,8 @@ const routes: Routes = [
   {path : 'login', component: LoginComponent},
   {path : 'forget', component: ForgetPsswordComponent},
   {path : 'main',  canActivate:[AuthguardGuard],  loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
+  {path : 'user',    loadChildren: () => import('./user/user.module').then(m => m.UserModule)},
+  {path : 'reviewer',    loadChildren: () => import('./reviewer/reviewer.module').then(m => m.ReviewerModule)}
 
 ];
 

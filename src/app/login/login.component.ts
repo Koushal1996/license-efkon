@@ -18,10 +18,19 @@ msg:string;
   {
       var output=this._loginService.Login(this.loginModel.userid,this.loginModel.password);
 
-     if(output===true)
+     if(output==='admin')
      {
         this.router.navigate(['/main'])
      }
+     else if(output==='user')
+     {
+        this.router.navigate(['/user'])
+     }
+     else if(output==='reviewer')
+     {
+        this.router.navigate(['/reviewer'])
+     }
+
      else{
                 this.msg="Invalid credentials !"
      }

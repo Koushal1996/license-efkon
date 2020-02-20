@@ -16,7 +16,7 @@ import { ForgetPsswordComponent } from './forget-pssword/forget-pssword.componen
     AppComponent,
     LoginComponent,
     MainComponent,
-    ForgetPsswordComponent
+    ForgetPsswordComponent,
 
   ],
   imports: [

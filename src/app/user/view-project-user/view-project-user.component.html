@@ -1,0 +1,38 @@
+<table class="table table-hover table-stripped table-sm  ">
+    <thead class="bg-warning">
+        <tr>
+            <th scope="col">#</th>
+
+            <th scope="col">Product Family</th>
+            <th scope="col">Product Code</th>
+            <th scope="col">Version</th>
+            <th scope="col">Users</th>
+            <th scope="col">Licence Type</th>
+            <!-- <th scope="col">Project Status</th> -->
+            <th scope="col">Expiration Period</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <!-- <th scope="col">Edit</th>
+            <th scope="col">Delete</th> -->
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let item of myProjectDetail index as i">
+            <th scope="row" class="pl-2">{{i+1}}</th>
+
+            <td class="text-center">{{item.ProductFamily}}</td>
+            <td class="text-center">{{i+4}}</td>
+            <td class="text-dark text-center">{{item.Version}}</td>
+            <td class="text-center">{{item.Users}}</td>
+            <td>{{item.LicenceType}}</td>
+            <!-- <td [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td> -->
+            <td>{{item.ExpirationPeriod}}</td>
+            <td>{{item.StartDate}}</td>
+            <td>{{item.EndDate}}</td>
+            <!-- <td> <i class="fa fa-pencil text-success ml-3"></i> </td>
+            <td> <i class="fa fa-trash text-danger ml-3" (click)="DeleteProject(i)"></i> </td> -->
+        </tr>
+    </tbody>
+</table>
+<button class="btn btn-info myButton" routerLink="/user/generateLicence"><i class="fa fa-file-text-o"></i> Generate New Licence Key</button>
