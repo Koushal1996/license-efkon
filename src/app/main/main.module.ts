@@ -17,6 +17,10 @@ import { RouterModule } from '@angular/router';
 import { UpdateLicenceComponent } from './update-licence/update-licence.component';
 import { RenewLicenceComponent } from './renew-licence/renew-licence.component';
 import { GenerateLicenceComponent } from './generate-licence/generate-licence.component';
+import { RequestComponent } from './request/request.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
+import { UserRequestsComponent } from './user-requests/user-requests.component';
+import { UpdateProjectComponent } from './update-project/update-project.component';
 
 
 @NgModule({
@@ -32,7 +36,11 @@ import { GenerateLicenceComponent } from './generate-licence/generate-licence.co
     CreateProjectComponent,
     UpdateLicenceComponent,
     RenewLicenceComponent,
-    GenerateLicenceComponent
+    GenerateLicenceComponent,
+    RequestComponent,
+    UpdateUserComponent,
+    UserRequestsComponent,
+    UpdateProjectComponent
   ],
   imports: [
     CommonModule,

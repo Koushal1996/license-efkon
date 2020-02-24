@@ -9,9 +9,10 @@ const routes: Routes = [
   {path:'', redirectTo:'login',  pathMatch:'full'},
   {path : 'login', component: LoginComponent},
   {path : 'forget', component: ForgetPsswordComponent},
-  {path : 'main',  canActivate:[AuthguardGuard],  loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
+  {path : 'main',   loadChildren: () => import('./main/main.module').then(m => m.MainModule)},
   {path : 'user',    loadChildren: () => import('./user/user.module').then(m => m.UserModule)},
-  {path : 'reviewer',    loadChildren: () => import('./reviewer/reviewer.module').then(m => m.ReviewerModule)}
+  {path : 'reviewer',    loadChildren: () => import('./reviewer/reviewer.module').then(m => m.ReviewerModule)},
+  {path : 'approver',    loadChildren: () => import('./approver/approver.module').then(m => m.ApproverModule)}
 
 ];
 

@@ -1,37 +1,40 @@
-<table class="table table-hover table-stripped table-sm  ">
+<table class="table table-hover table-bordered table-stripped table-sm  ">
     <thead class="bg-warning">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Customer </th>
-            <th scope="col">Product Family</th>
-            <th scope="col">Product Code</th>
-            <th scope="col">Version</th>
-            <th scope="col">Users</th>
-            <th scope="col">Licence Type</th>
-            <th scope="col">Project Status</th>
-            <th scope="col">Expiration Period</th>
-            <th scope="col">Start Date</th>
-            <th scope="col">End Date</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
+            <th scope="col" class="text-center">#</th>
+            <th scope="col" class="text-center">Customer </th>
+            <th scope="col" class="text-center">Product Family</th>
+            <th scope="col" class="text-center">Product Code</th>
+            <th scope="col" class="text-center">Version</th>
+            <th scope="col" class="text-center">Licence Count</th>
+            <th scope="col" class="text-center">Licence Type</th>
+            <th scope="col" class="text-center">Project Status</th>
+            <th scope="col" class="text-center">Expiration Period</th>
+            <th scope="col" class="text-center">Start Date</th>
+            <!-- <th scope="col" class="text-center ">End Date</th> -->
+            <th scope="col" class="text-center ">Action</th>
+            <th scope="col" class="text-center ">Update</th>
+            <th scope="col" class="text-center">Delete</th>
         </tr>
     </thead>
     <tbody>
 
         <tr *ngFor="let item of myProjectDetail index as i">
-            <th scope="row" class="pl-2">{{i+1}}</th>
-            <td>{{item.customerName}}</td>
-            <td class="text-center">{{item.ProductFamily}}</td>
-            <td class="text-center">{{i+4}}</td>
-            <td class="text-dark text-center">{{item.Version}}</td>
-            <td class="text-center">{{item.Users}}</td>
-            <td>{{item.LicenceType}}</td>
-            <td [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td>
-            <td>{{item.ExpirationPeriod}}</td>
-            <td>{{item.StartDate}}</td>
-            <td>{{item.EndDate}}</td>
-            <td> <i class="fa fa-pencil text-success ml-3"></i> </td>
-            <td> <i class="fa fa-trash text-danger ml-3" (click)="DeleteProject(i)"></i> </td>
+            <th *ngIf="i<4" scope="row" class="pl-2">{{i+1}}</th>
+            <td *ngIf="i<4">{{item.customerName}}</td>
+            <td *ngIf="i<4" class="text-center">{{item.ProductFamily}}</td>
+            <td *ngIf="i<4" class="text-center">{{item.productCode}}</td>
+            <td *ngIf="i<4" class="text-dark text-center">{{item.Version}}</td>
+            <td *ngIf="i<4" class="text-center">{{item.Users}}</td>
+            <td *ngIf="i<4">{{item.LicenceType}}</td>
+            <td *ngIf="i<4" [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{projectStatus? 'Pending': item.ProjectStatus}}</td>
+            <td *ngIf="i<4">{{item.ExpirationPeriod}}</td>
+            <td *ngIf="i<4">{{item.StartDate}}</td>
+            <!-- <td *ngIf="i<4">{{item.EndDate}}</td> -->
+            <td *ngIf="i<4"> <button class="btn btn-outline-success" (click)="OnProjectSubmit(i)">Submit</button> </td>
+            <td class="text-center" *ngIf="i<4"> <button class="btn btn-outline-success" routerLink="/main/updateProject"><i class="fa fa-pencil  "></i></button> </td>
+            <td class="text-center" *ngIf="i<4"> <button class="btn btn-outline-danger" (click)="DeleteProject(i)"><i class="fa fa-trash "></i></button> </td>
+            <!-- <td> <i class="fa fa-trash text-danger ml-3" (click)="DeleteProject(i)"></i> </td> -->
         </tr>
     </tbody>
 </table>

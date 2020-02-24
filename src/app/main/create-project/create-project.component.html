@@ -10,8 +10,7 @@
                         <div class="form-group row">
                             <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Customer</strong></label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="customername" [(ngModel)]="model.customername">
-                        <option value="0">Choose Customer</option>
+                                <select class="form-control" name="customername">
                         <option value="Noida_Htms">Noida_Htms</option>
                         <option value="VSCL">VSCL</option>
                         <option value="TSCL">TSCL</option>
@@ -24,13 +23,17 @@
                         <div class="form-group row">
                             <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Product Family</strong></label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="productFamily" [(ngModel)]="model.productFamily">
-                        <option value="0">Choose Product Family</option>
+                                <select class="form-control" name="productFamily">
+
                         <option value="EES">EES</option>
                         <option value="ITMS">ITMS</option>
                         <option value="HTMS">HTMS</option>
                         <option value="TMS">TMS</option>
-                      </select>
+                        <option value="VTS">VTS</option>
+                        <option value="ICCC">ICCC</option>
+                        <option value="VA">VA</option>
+                        <option value="ATCS">ATCS</option>
+                                 </select>
                             </div>
 
                         </div>
@@ -41,11 +44,21 @@
                         <div class="form-group row">
                             <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Product Code</strong></label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="productCode" [(ngModel)]="model.productCode">
-                          <option value="0">Choose Product Code</option>
+                                <select class="form-control" name="productCode">
+                          <!-- <option value="0">Choose Product Code</option> -->
                           <option value="RLVD">RLVD</option>
                           <option value="SVD">SVD</option>
                           <option value="ANPR">ANPR</option>
+                          <option value="ANPR">Spot-SVD</option>
+                          <option value="ANPR">Section-SVD</option>
+                          <option value="ANPR">ITMS</option>
+                          <option value="ANPR">HTMS</option>
+                          <option value="ANPR">AVC</option>
+                          <option value="ANPR">ICCC</option>
+                          <option value="ANPR">VTS</option>
+                          <option value="ANPR">VATCC</option>
+                          <option value="ANPR">VIDS</option>
+                          <option value="ANPR">ATCS</option>
                      </select>
                             </div>
 
@@ -67,11 +80,11 @@
                         <div class="form-group row">
                             <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Licence Type</strong></label>
                             <div class="col-sm-8">
-                                <select class="form-control" name="LicenceType" [(ngModel)]="model.LicenceType">
-                        <option value="0">Choose Licence Type</option>
-                        <option value="1">RLVD</option>
-                        <option value="2">SVD</option>
-                        <option value="3">ANPR</option>
+                                <select class="form-control" name="LicenceType">
+                        <!-- <option value="0">Choose Licence Type</option> -->
+                        <option value="1">Demo</option>
+                        <option value="2">Commercial</option>
+
                                 </select>
                             </div>
 
@@ -79,9 +92,9 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group row">
-                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Users</strong></label>
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Licence Count</strong></label>
                             <div class="col-sm-8">
-                                <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3" placeholder="Users">
+                                <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3" placeholder="No. of users">
                             </div>
                         </div>
                     </div>
@@ -92,7 +105,7 @@
                         <div class="form-group row">
                             <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">Exp. Period</strong></label>
                             <div class="col-sm-8">
-                                <select class="form-control" [(ngModel)]="model.expPeriod" name="expPeriod" (change)="onChangeExp($event)">
+                                <select class="form-control" name="expPeriod" (change)="onChangeExp($event)">
                                   <option value="1" >LifeTime</option>
                                 <option value="2">Limited</option>
                               </select>
@@ -120,7 +133,7 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-group row">
+                        <div class="form-group row" *ngIf="ShowPeriod">
                             <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">End Date</strong></label>
                             <div class="col-sm-8">
                                 <input type="date" disabled [(ngModel)]="model.endDate" class="form-control" name="endDate">
@@ -133,8 +146,8 @@
 
                 <div class="form-group row mt-4">
                     <div class="col-sm-12  text-center">
-                        <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-plus"></i> Add</button>
-                        <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-check"></i> Save Detail</button>
+                        <!-- <button type="button" class="btn btn-outline-success " (click)="addProduct()" *ngIf="ConfirmVal"><i class="fa fa-plus"></i> Add</button> -->
+                        <button class="btn btn-outline-info ml-3" (click)="OnSvaeDetail()" type="submit"><i class="fa fa-check"></i> Save Detail</button>
                         <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i class="fa fa-times"></i> Cancel</button>
                     </div>
                 </div>

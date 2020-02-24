@@ -11,8 +11,8 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <div class="form-group">
-                                    <select id="my-select" class="form-control" name="">
-                        <option *ngFor="let item of customerName">{{item.customerName}}</option>
+                                    <select id="my-select" disabled class="form-control" name="">
+                        <option *ngFor="let item of customerName"  >{{item.customerName}}</option>
                       </select>
                                 </div>
                             </div>
@@ -53,8 +53,15 @@
                             </thead>
                             <tbody>
                                 <tr>
+
                                     <td>1</td>
-                                    <td>1B2CFF9E2566EFF</td>
+                                    <td> <select name="" class="form-control" id="">
+                                        <option value="">1B2CFF9E2566EGG</option>
+                                        <option value="">1B2CFF9E2566EHH</option>
+                                        <option value="">1B2CFF9E2566EII</option>
+                                        <option value="">1B2CFF9E2566EJJ</option>
+                                      </select></td>
+
                                     <td>
                                         <form #f='ngForm' (change)="formSubmit()">
                                             <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID">

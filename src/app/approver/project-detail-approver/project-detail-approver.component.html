@@ -1,0 +1,81 @@
+<table class="table table-hover table-bordered table-sm  ">
+    <thead class="bg-warning">
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Customer </th>
+            <th scope="col">Product Family</th>
+            <th scope="col">Product Code</th>
+            <th scope="col">Version</th>
+            <th scope="col">Licence Count</th>
+            <th scope="col">Licence Type</th>
+            <!-- <th scope="col">Project Status</th> -->
+            <th scope="col">Expiration Period</th>
+            <th scope="col">Start Date</th>
+            <!-- <th scope="col">End Date</th> -->
+            <th scope="col">Approve</th>
+            <th scope="col">Reject</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let item of myProjectDetail index as i">
+            <th scope="row" class="pl-2">{{i+1}}</th>
+            <td>{{item.customerName}}</td>
+            <td class="text-center">{{item.ProductFamily}}</td>
+            <td class="text-center">{{item.productCode}}</td>
+            <td class="text-dark text-center">{{item.Version}}</td>
+            <td class="text-center">{{item.Users}}</td>
+            <td>{{item.LicenceType}}</td>
+            <!-- <td [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td> -->
+            <td>{{item.ExpirationPeriod}}</td>
+            <td>{{item.StartDate}}</td>
+            <!-- <td>{{item.EndDate}}</td> -->
+            <td> <button class="btn btn-outline-success ml-3"><i class="fa fa-check text-dark " style="cursor: pointer;"></i> </button></td>
+            <td> <button data-toggle="modal" data-target="#myModal" class="btn btn-outline-danger  ml-2"><i class="fa fa-times text-dark" ></i></button> </td>
+        </tr>
+    </tbody>
+</table>
+<div class="container">
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger">Reason of Rejection</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form action="">
+                                    <div class="form-group">
+                                        <label for=""><strong>Write the proper reason of rejection !</strong></label>
+
+                                        <textarea name="" placeholder="Write somethin here !" class="form-control" id="" cols="20" rows="3"></textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-danger  pull-right" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-outline-success pull-right mr-3">Submit</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+
+</div>

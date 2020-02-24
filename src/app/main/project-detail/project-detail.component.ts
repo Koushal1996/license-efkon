@@ -8,6 +8,7 @@ import { ProjectDetailServiceService } from './project-detail-service.service';
 })
 export class ProjectDetailComponent implements OnInit {
 myProjectDetail:any=[];
+projectStatus:boolean
 
   constructor(private _myServices:ProjectDetailServiceService) { }
   alerts:boolean=false
@@ -34,5 +35,9 @@ if(val)
 
 
 }
+  }
+  OnProjectSubmit(i)
+  {
+this.projectStatus=!this.projectStatus;
   }
 }

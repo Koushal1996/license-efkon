@@ -14,6 +14,8 @@ import { RenewLicenceKeyUserComponent } from './renew-licence-key-user/renew-lic
 import { ViewLicenceKeylogsUserComponent } from './view-licence-keylogs-user/view-licence-keylogs-user.component';
 import { ChnagePasswordUserComponent } from './chnage-password-user/chnage-password-user.component';
 import { ViewLicenceUserComponent } from './view-licence-user/view-licence-user.component';
+import { RequestStatusComponent } from './request-status/request-status.component';
+import { UpdateRequestComponent } from './update-request/update-request.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { ViewLicenceUserComponent } from './view-licence-user/view-licence-user.
     ViewLicenceKeylogsUserComponent,
     ChnagePasswordUserComponent,
     ViewLicenceUserComponent,
+    RequestStatusComponent,
+    UpdateRequestComponent,
 
 ],
   imports: [

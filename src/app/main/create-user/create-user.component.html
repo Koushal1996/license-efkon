@@ -2,11 +2,11 @@
 
     <div class="row ">
         <div class="col-lg-6 offset-2 ">
-            <h3 class="text-center text-info"><u>Create User</u></h3>
-            <h6 class="text-muted mt-4">Please fill all the fields</h6>
+            <h3 class="text-center text-danger"><u>Create new user</u></h3>
+            <h6 class="text-success mt-4">Please fill all the fields..</h6>
             <form class="mt-4" #f='ngForm' (ngSubmit)='onSubmit()'>
                 <div class="form-group row">
-                    <label for="customername" class="col-sm-4 col-form-label"><strong class="text-muted">Name</strong></label>
+                    <label class="col-sm-4 col-form-label" for="name"><strong class="text-muted">Name</strong><span class="required">*</span></label>
                     <div class="col-sm-8">
                         <input type="text" name="CustomerName" [(ngModel)]="model.CustomerName" class="form-control" id="inputEmail3" placeholder="Name" #cusName='ngModel' ngModel required>
                         <small class="text-danger" *ngIf="!cusName.valid && cusName.touched"><strong>Name required</strong></small>
@@ -15,12 +15,12 @@
                 <div class="form-group row">
                     <label for="customername" class="col-sm-4 col-form-label"><strong class="text-muted">Contact Number</strong></label>
                     <div class="col-sm-8">
-                        <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control" id="contactnumber" placeholder="Contact Number" #Connumber='ngModel' ngModel required>
-                        <small class="text-danger" *ngIf="!Connumber.valid && Connumber.touched"><strong>Contact Number required</strong></small>
+                        <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control" id="contactnumber" placeholder="Contact Number" #Connumber='ngModel'>
+                        <!-- <small class="text-danger" *ngIf="!Connumber.valid && Connumber.touched"><strong>Contact Number required</strong></small> -->
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">User Id</strong></label>
+                    <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">User Id</strong><span class="required">*</span></label>
                     <div class="col-sm-8">
                         <input type="text" name="UserId" [(ngModel)]="model.UserId" class="form-control" id="inputEmail3" placeholder="User Id" #cusId='ngModel' ngModel required>
                         <small class="text-danger" *ngIf="!cusId.valid && cusId.touched"><strong>User Id required</strong></small>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Email Id</strong></label>
+                    <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Email Id</strong><span class="required" *ngIf="checked">*</span></label>
                     <div class="col-sm-8">
                         <input type="text" name="EmailId" [(ngModel)]="model.EmailId" class="form-control" id="inputEmail3" placeholder="Mail Id" email #mailId='ngModel' ngModel [required]='checked'>
                         <small class="text-danger" *ngIf="!mailId.valid && mailId.touched"><strong>Valid mail Id required</strong></small>
@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">Password</strong></label>
+                    <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">Password</strong><span class="required">*</span></label>
                     <div class="col-sm-8">
                         <input name="password" [(ngModel)]="model.password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password" #cusPass='ngModel' ngModel required>
                         <div (click)="onEyeClick()">
@@ -48,10 +48,10 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Role</strong></label>
+                    <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Role</strong><span class="required">*</span></label>
                     <div class="col-sm-8">
                         <select class="form-control" name="role" [(ngModel)]="model.role" id="">
-                          <option  selected  *ngFor="let item of role index as i" [ngValue]="item.id">{{i+1}}) {{item.name}}</option>
+                          <option  selected  *ngFor="let item of role index as i" [ngValue]="item.id"> {{item.name}}</option>
 
                       </select>
                     </div>

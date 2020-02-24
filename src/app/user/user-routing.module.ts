@@ -11,6 +11,8 @@ import { ViewProjectUserComponent } from './view-project-user/view-project-user.
 import { ViewLicenceKeylogsUserComponent } from './view-licence-keylogs-user/view-licence-keylogs-user.component';
 import { ChnagePasswordUserComponent } from './chnage-password-user/chnage-password-user.component';
 import { ViewLicenceUserComponent } from './view-licence-user/view-licence-user.component';
+import { RequestStatusComponent } from './request-status/request-status.component';
+import { UpdateRequestComponent } from './update-request/update-request.component';
 
 const routes:Routes = [
   {
@@ -19,7 +21,7 @@ const routes:Routes = [
     children:[
       {
         path:'',
-        redirectTo:'generateLicence',
+        redirectTo:'viewProjectUser',
         pathMatch:'full'
       },
       {
@@ -53,6 +55,14 @@ const routes:Routes = [
       {
         path:'viewUserLicence',
         component:ViewLicenceUserComponent
+      },
+      {
+        path:'requestStatus',
+        component:RequestStatusComponent
+      },
+      {
+        path:'updateRequest',
+        component:UpdateRequestComponent
       },
     ]
   }

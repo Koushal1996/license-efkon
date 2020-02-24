@@ -5,18 +5,19 @@
         <div class="sidebar-heading"><img src="assets/img/images.png" class="img-fluid" style="width: 200px;" alt=""> </div>
         <hr>
         <div class="list-group list-group-flush mt-3">
-            <h6 routerLink="/user/viewProjectUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action bg-light">Projects Detail</h6>
+            <h6 routerLink="/reviewer/reviewrusers" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action bg-light">Users</h6>
+            <h6 routerLink="/reviewer/reviewrProjectDeatil" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Requested Projects</h6>
             <h6 routerLinkActive="active" class="list-group-item list-group-item-action bg-light" (click)="subMenu1()">Licence <i class="fa fa-chevron-down ml-6"></i></h6>
 
             <div *ngIf="submenu">
                 <!-- <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/main/generateLicence"><strong><i class="fa fa-check"></i> Generate Licence Key</strong></p> -->
-                <p class="ml-3 submenu" routerLinkActive="active1" [routerLinkActiveOptions]="{ exact: true }" routerLink="/user/viewUserLicence"><strong><i class="fa fa-check"></i> View</strong></p>
-                <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/updateUser"><strong><i class="fa fa-check"></i> Update Licence Key</strong></p>
+                <p class="ml-3 submenu" routerLinkActive="active1" [routerLinkActiveOptions]="{ exact: true }" routerLink="/reviewer/LicenceView"><strong><i class="fa fa-check"></i> View</strong></p>
+                <!-- <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/updateUser"><strong><i class="fa fa-check"></i> Update Licence Key</strong></p>
                 <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/renewUser"><strong><i class="fa fa-check"></i> Renew Licence Key</strong></p>
-                <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/requestUser"><strong><i class="fa fa-check"></i> Request Licence Key</strong></p>
+                <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/requestUser"><strong><i class="fa fa-check"></i> Request Licence Key</strong></p> -->
             </div>
-            <h6 routerLink="/user/viewLicenceskeyLogsUser" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">View Licence Key Log</h6>
-            <h6 routerLink="/user/changeUserpsw" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Change Password</h6>
+            <h6 routerLink="/reviewer/reviewrProjectLog" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">View Project Log</h6>
+            <h6 routerLink="/reviewer/reviewrChangePassword" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Change Password</h6>
 
         </div>
     </div>
@@ -34,7 +35,7 @@
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                     <li> <img src="assets/img/avatar.jpeg" class="img-fluid userImage" alt="" style="width: 50px;height: 50px;"> </li>
                     <li class="nav-item d-flex align-items-center">
-                        <a class="nav-link text-dark"> Jamshed </a>
+                        <a class="nav-link text-dark"> <strong> Reviwer</strong> </a>
                     </li>
                     <li class="nav-item d-flex align-items-center">
                         <a class="nav-link text-dark" (click)="logout()" style="cursor: pointer;">Logout <i class="fa fa-arrow-right text-info"></i></a>

@@ -3,15 +3,16 @@
         <tr>
             <th scope="col">#</th>
 
-            <th scope="col">Product Family</th>
-            <th scope="col">Product Code</th>
-            <th scope="col">Version</th>
-            <th scope="col">Users</th>
-            <th scope="col">Licence Type</th>
+            <th scope="col" class="text-center">Product Family</th>
+            <th scope="col" class="text-center">Product Code</th>
+            <th scope="col" class="text-center">Licence Count</th>
+            <th scope="col" class="text-center">Version</th>
+            <!-- <th scope="col" class="text-center">Users</th> -->
+            <th scope="col" class="text-center">Licence Type</th>
             <!-- <th scope="col">Project Status</th> -->
-            <th scope="col">Expiration Period</th>
-            <th scope="col">Start Date</th>
-            <th scope="col">End Date</th>
+            <th scope="col" class="text-center">Expiration Period</th>
+            <th scope="col" class="text-center">Start Date</th>
+            <!-- <th scope="col" class="text-center">End Date</th> -->
             <!-- <th scope="col">Edit</th>
             <th scope="col">Delete</th> -->
         </tr>
@@ -22,14 +23,15 @@
             <th scope="row" class="pl-2">{{i+1}}</th>
 
             <td class="text-center">{{item.ProductFamily}}</td>
-            <td class="text-center">{{i+4}}</td>
+            <td class="text-center">{{item.productCode}}</td>
+            <td class="text-center">{{item.LicenceDistributed}}</td>
             <td class="text-dark text-center">{{item.Version}}</td>
-            <td class="text-center">{{item.Users}}</td>
-            <td>{{item.LicenceType}}</td>
+            <!-- <td class="text-center">{{item.Users}}</td> -->
+            <td class="text-center">{{item.LicenceType}}</td>
             <!-- <td [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td> -->
-            <td>{{item.ExpirationPeriod}}</td>
-            <td>{{item.StartDate}}</td>
-            <td>{{item.EndDate}}</td>
+            <td class="text-center">{{item.ExpirationPeriod}}</td>
+            <td class="text-center">{{item.StartDate}}</td>
+            <!-- <td class="text-center">{{item.EndDate}}</td> -->
             <!-- <td> <i class="fa fa-pencil text-success ml-3"></i> </td>
             <td> <i class="fa fa-trash text-danger ml-3" (click)="DeleteProject(i)"></i> </td> -->
         </tr>

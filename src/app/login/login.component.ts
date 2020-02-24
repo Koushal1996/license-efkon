@@ -30,6 +30,10 @@ msg:string;
      {
         this.router.navigate(['/reviewer'])
      }
+     else if(output==='approver')
+     {
+        this.router.navigate(['/approver'])
+     }
 
      else{
                 this.msg="Invalid credentials !"
