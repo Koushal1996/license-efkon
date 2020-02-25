@@ -8,11 +8,11 @@ import { ProjectDetailServiceService } from '../project-detail/project-detail-se
 })
 export class GenerateLicenceComponent implements OnInit {
 
-    customerName:any;
-    constructor(private myServices: ProjectDetailServiceService) { }
+  customerName:any;
+  constructor(private myServices: ProjectDetailServiceService) { }
 
-    ngOnInit(): void {
-  this.customerName=this.myServices.ViewLog;
-    }
-
+  ngOnInit(): void {
+this.customerName=this.myServices.ViewLog;
+  }
+n
 }

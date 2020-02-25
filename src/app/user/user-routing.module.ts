@@ -5,7 +5,7 @@ import { UserComponent } from './user.component';
 import { GenerateLicenceUserComponent } from './generate-licence-user/generate-licence-user.component';
 import { UserModule } from './user.module';
 import { RenewLicenceKeyUserComponent } from './renew-licence-key-user/renew-licence-key-user.component';
-import { RequestLicenceKeyUserComponent } from './request-licence-key-user/request-licence-key-user.component';
+// import { RequestLicenceKeyUserComponent } from './request-licence-key-user/request-licence-key-user.component';
 import { UpdateLicenceKeyUserComponent } from './update-licence-key-user/update-licence-key-user.component';
 import { ViewProjectUserComponent } from './view-project-user/view-project-user.component';
 import { ViewLicenceKeylogsUserComponent } from './view-licence-keylogs-user/view-licence-keylogs-user.component';
@@ -13,6 +13,7 @@ import { ChnagePasswordUserComponent } from './chnage-password-user/chnage-passw
 import { ViewLicenceUserComponent } from './view-licence-user/view-licence-user.component';
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { UpdateRequestComponent } from './update-request/update-request.component';
+import { RequestLicenceKeyUserComponent } from './create-licence-request-key-user/request-licence-key-user.component';
 
 const routes:Routes = [
   {

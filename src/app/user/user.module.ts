@@ -7,7 +7,7 @@ import { UserRoutingModule } from './user-routing.module';
 import { GenerateLicenceUserComponent } from './generate-licence-user/generate-licence-user.component';
 import { FormsModule } from '@angular/forms';
 import { UserComponent } from './user.component';
-import { RequestLicenceKeyUserComponent } from './request-licence-key-user/request-licence-key-user.component';
+// import { RequestLicenceKeyUserComponent } from './request-licence-key-user/request-licence-key-user.component';
 import { ViewProjectUserComponent } from './view-project-user/view-project-user.component';
 import { UpdateLicenceKeyUserComponent } from './update-licence-key-user/update-licence-key-user.component';
 import { RenewLicenceKeyUserComponent } from './renew-licence-key-user/renew-licence-key-user.component';
@@ -16,6 +16,7 @@ import { ChnagePasswordUserComponent } from './chnage-password-user/chnage-passw
 import { ViewLicenceUserComponent } from './view-licence-user/view-licence-user.component';
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { UpdateRequestComponent } from './update-request/update-request.component';
+import { RequestLicenceKeyUserComponent } from './create-licence-request-key-user/request-licence-key-user.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { UpdateRequestComponent } from './update-request/update-request.componen
     ViewLicenceUserComponent,
     RequestStatusComponent,
     UpdateRequestComponent,
+    RequestLicenceKeyUserComponent
 
 ],
   imports: [
