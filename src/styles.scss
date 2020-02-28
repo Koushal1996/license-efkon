@@ -1,2 +1,409 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
+$color:#333;
+
+
+.form_main {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    .main_form {
+        display: inline-block;
+        width: 100%;
+        max-width: 550px;
+        margin-top: 15px;
+    }
+}
+// /.....scss manoj..../
+// /....user../
+
+.table .users_table_hader th {
+    background: #ffffff;
+    color: $color;
+    font-size: 12px;
+    padding: 15px 10px;
+    border-bottom: solid 2px #ddd;
+}
+.table th {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+.table td {
+    padding: 10px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    color: $color;
+}
+.button_btn.text-center {
+    display: inline-block;
+    width: 100%;
+    margin: 15px 0;
+}
+.text-success {
+    cursor: pointer;
+}
+.table tr:nth-child(odd) {
+    background: rgba(0, 0, 0, 0.02);
+}
+.table-hover {
+    tbody {
+        tr{
+            &:hover{
+                background: rgba(0, 0, 0, 0.02);
+            }
+        }
+    }
+}
+
+.form-control{
+    font-size: 14px;
+}
+
+i.fa.fa-wrench {
+    font-size: 15px;
+    margin-left: 5px;
+    padding: 5px;
+    color: blue;
+    outline: none;
+}
+//..........Create User.........//
+
+.text-info {
+    color: #196dea !important;
+    padding: 10px 0;
+    margin-bottom: 0;
+    position: relative;
+    &:after{
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 140px;
+        width: 250px;
+        height: 2px;
+        background: #196dea;
+    }
+}
+form {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    max-width: 700px;
+    p {
+        padding: 15px 0;
+        font-size: 18px;
+        color: #8b8b8b;
+        margin-bottom: 0;
+    }
+    .form-group {
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        label {
+            padding: 7px 0;
+            display: inline-block;
+            width: 250px;
+            height: 40px;
+            text-align: left;
+            margin-bottom: 0;
+            border-bottom: 1px solid #e8e1e8aa;
+        }
+        .click_password {
+            width: auto;
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .custom-check {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            .custom-control.custom-checkbox {
+                display: inline-block;
+                width: 250px;
+                padding-left: 0;
+                position: relative;
+                .custom-control-input {
+                    position: absolute;
+                    left: 0;
+                    z-index: 333;
+                    width: 25px;
+                    height: 25px;
+                    opacity: 0;
+                    top: 6px;
+                    &:checked + label:before {
+                    content: "\f00c";
+                        font-family: fontawesome;
+                        color: #fafafa;
+                        font-size: 18px;
+                        position: absolute;
+                        top: 6px;
+                        left: 0;
+                        width: 25px;
+                        height: 25px;
+                        background:$color;
+                        background: #46afc7;
+                        z-index: 222;
+                        text-align: center;
+                        border-radius: 5px;
+                        }
+                }
+                label {
+                    padding: 7px 0 7px 35px;
+                    display: inline-block;
+                    width: 250px;
+                    height: 40px;
+                    margin-bottom: 0;
+                    &:after {
+                        position: absolute;
+                        top: 6px;
+                        left: 0;
+                        display: inline-block;
+                        width: 25px;
+                        height: 25px;
+                        content: "";
+                        background: #8ed9ea;
+                        border-radius: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//........viwe......//
+.text-icon {
+    color: blue;
+    box-shadow: 0px 0px 5px;
+    padding: 5px;
+    border-radius: 5px;
+}
+//........sidebar.....//
+
+div#sidebar-wrapper {
+    display: inline-block;
+    width: auto;
+    background: #fff !important;
+    box-shadow: 0 0 5px #999;
+    .sidebar-logo {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        .logo {
+            width: 100%;
+            max-width: 125px;
+        }
+    }
+    .list-group {
+        width: 15rem;
+        ul {
+            padding: 0;
+            margin-bottom: 0;
+            li {
+                display: inline-block;
+                list-style: none;
+                outline: none;
+                border-bottom: 1px solid #e6e6e6;
+                cursor: pointer;
+                color: #333;
+                i{
+                    float: right;
+                    color: $color;
+                    font-size: 15px;
+                    margin-top: 3px;
+                }
+            }
+            .active {
+                color: white;
+                background: #333 !important;
+            }
+
+            .dropdown_sidebar{
+                display: inline-block;
+                width: 100%;
+                background: #faf6f6;
+                ul{
+                    padding: 0;
+                    width: 100%;
+                    display: inline-block;
+                    li {
+                        display: inline-block;
+                        width: 100%;
+                        padding: 10px 20px;
+                        font-size: 15px;
+                        color: $color;
+                        border-bottom: 1px solid #e6e6e6;
+                        padding-left: 40px;
+                        i{
+                            color: #333;
+                            float: left;
+                            font-size: 16px;
+                            margin-right: 10px;
+                        }
+                    }
+                }
+            } 
+            .active1[_ngcontent-noe-c50] {
+                background: #dedede;
+                box-shadow: none;
+            }
+            .check_menu {
+                background: #555;
+                color: #fff !important;
+                i{
+                    color: #fff !important;
+                }
+            }
+        }
+    }
+}
+
+
+//.......header..............//
+
+.header_main {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0;
+    background: #fff;
+    box-shadow: 4px 0 6px #999;
+    top: 0;
+    left: 0;
+    position: sticky;
+    z-index: 9999;
+
+    .Toggle_button{
+        display: inline-block;
+        width: auto;
+        button#menu-toggle {
+            width: 40px;
+            height: 40px;
+            background: none;
+            border: none;
+            outline: none;
+            padding: 0;
+            margin-top: 5px;
+            margin-left: 10px;
+            i {
+                font-size: 30px;
+                color: #555;
+            }
+        }
+    }
+    .manu{
+        display: inline-block;
+        width: auto;
+        float: right;
+        ul{
+            display: inline-block;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            li{
+                list-style: none;
+                display:inline-block;
+                padding-left: 35px;
+                a{
+                    font-size: 15px;
+                    color: $color;
+                    text-decoration: none;
+                    padding: 0 10px;
+                    display: inline-block;
+                    i{
+                        font-size: 18px;
+                        color: #007bff;
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+//..........project_detail..........//
+
+select.form-control.ng-untouched.ng-pristine.ng-valid {
+    display: inline-block;
+    width: 250px;
+    float: right;
+    box-shadow: none;
+}
+.form-control:focus{
+    box-shadow: none;
+}
+input#inputEmail3, input.form-control.ng-untouched.ng-pristine.ng-valid, input.form-control.ng-untouched.ng-pristine {
+    display: inline-block;
+    width: 250px;
+    float: right;
+}
+.form-group, .form-control {
+    width: 250px;
+    float: right;
+}
+
+button.btn.btn-info.myButton, .myButton[_ngcontent-xlt-c52] {
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 10px;
+    right: 0;
+    background-color: #0e6cbd;
+    border-color: #0e6cbd;
+}
+//.........change-password..........//
+
+.change_password_images {
+    display: inline-block;
+    width: 100%;
+    img{
+        display: inline-block;
+        width: 100%;
+    }
+}
+select#my-select {
+    box-shadow: none;
+}
+.change_password {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    background: #555555c7;
+    text-align: center;
+    img {
+        display: inline-block;
+        width: 100%;
+        opacity: 0.4;
+    }
+    .change_password_form {
+        display: inline-block;
+        width: 100%;
+        position: absolute;
+        top: 135px;
+        background: #ffffff69;
+        left: 275px;
+        padding: 15px;
+        max-width: 540px;
+        transition: 0.5s;
+    }
+    .text-left {
+        font-size: 25px;
+        padding: 10px 0;
+        margin-bottom: 50px;
+        position: relative;
+        &::after{
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 240px;
+            height: 2px;
+            background: #91dada;
+        }
+    }
+
+}
+
+//........logout&singup...........//
+

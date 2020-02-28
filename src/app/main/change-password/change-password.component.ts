@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-change-password',
@@ -11,6 +11,9 @@ export class ChangePasswordComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    $(document).ready(function(){
+      $(this).scrollTop(0);
+    });
   }
   onSubmit()
   {

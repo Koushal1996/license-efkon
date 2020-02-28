@@ -20,10 +20,6 @@ body {
     opacity: .8;
 }
 
-.container-fluid {
-    padding-right: 0;
-    padding-left: 0;
-}
 
 h6:focus {
     outline: none;
@@ -60,9 +56,7 @@ h6:focus {
     font-size: 1.2rem;
 }
 
-#sidebar-wrapper .list-group {
-    width: 15rem;
-}
+
 
 #page-content-wrapper {
     min-width: 100vw;
@@ -97,4 +91,15 @@ h6:focus {
 
 .ml-6 {
     margin-left: 7rem!important;
+}
+
+.list-group .list-group-item {
+    background-color: transparent;
+    color: #ddd;
+}
+
+.middle-content {
+    margin-top: 15px;
+    box-shadow: 0 0 5px #ddd;
+    padding: 20px;
 }

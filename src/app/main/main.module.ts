@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
+// import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { UsersComponent } from './users/users.component';
 import { LicenceComponent } from './licence/licence.component';
@@ -21,7 +21,6 @@ import { GenerateLicenceComponent } from './generate-licence/generate-licence.co
 
 @NgModule({
   declarations: [
-    DashboardComponent,
     ProjectDetailComponent,
     UsersComponent,
     LicenceComponent,

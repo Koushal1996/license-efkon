@@ -1,5 +1,5 @@
 <table class="table table-hover table-stripped table-sm  ">
-    <thead class="bg-warning">
+    <thead class="users_table_hader">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Customer </th>
@@ -19,7 +19,7 @@
     <tbody>
 
         <tr *ngFor="let item of myProjectDetail index as i">
-            <th scope="row" class="pl-2">{{i+1}}</th>
+            <td scope="row" class="pl-2">{{i+1}}</td>
             <td>{{item.customerName}}</td>
             <td class="text-center">{{item.ProductFamily}}</td>
             <td class="text-center">{{i+4}}</td>

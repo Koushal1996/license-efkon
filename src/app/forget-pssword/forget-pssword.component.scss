@@ -17,34 +17,13 @@ body {
 .btn {
     border-radius: 3px;
 }
-
-.form-header {
-    margin: -30px -30px 20px;
-    padding: 30px 30px 10px;
-    text-align: center;
-    background: #f13c54!important;
-    border-bottom: 1px solid #eee;
-    color: #fff;
-}
-
-.form-header h2 {
-    font-size: 34px;
-    font-weight: bold;
-    margin: 0 0 10px;
-    font-family: 'Pacifico', sans-serif;
-}
+ 
 
 .form-header p {
     margin: 20px 0 15px;
     font-size: 17px;
     line-height: normal;
     font-family: 'Courgette', sans-serif;
-}
-
-.signup-form {
-    width: 390px;
-    margin: 0 auto;
-    padding: 30px 0;
 }
 
 .signup-form form {
@@ -56,27 +35,14 @@ body {
     padding: 30px;
 }
 
-.signup-form .form-group {
-    margin-bottom: 20px;
-}
-
-.signup-form label {
-    font-weight: normal;
-    font-size: 13px;
-}
-
 .signup-form input[type="checkbox"] {
     margin-top: 2px;
 }
-
-.btttn {
-    font-size: 16px;
-    font-weight: bold;
-    background: #f13c54!important;
-    border: none;
-    min-width: 200px;
+.btn-outline-danger:hover {
+    color: #ffeded;
+    background-color: #39adc7;
+    border: 1px solid;
 }
-
 .signup-form a {
     color: #00cb82;
 }
@@ -98,4 +64,57 @@ input.ng-invalid.ng-touched {
 
 input.ng-valid {
     border: 1px solid green;
+}
+.password_change_forget {
+    display: inline-block;
+    width: 100%;
+    background-color: #fafafa;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url(/assets/img/password_background.jpg);
+    .signup-form {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      margin: 0 auto;
+      padding: 30px 0;
+      text-align: center;
+        form {
+            max-width: 350px;
+            margin-top: 30px;
+            color: #999;
+            background: #fff;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            .form-header {
+                margin: -30px -30px 20px;
+                padding: 30px 30px 10px;
+                text-align: center;
+                background: #639bcb !important;
+                color: #fff;
+                h2 {
+                    font-size: 34px;
+                    font-weight: bold;
+                    margin: 0 0 10px;
+                    font-family: 'Pacifico', sans-serif;
+                }
+            }
+            .form-group {
+                margin-bottom: 20px;
+                label {
+                    color: #333;
+                    font-size: 15px;
+                }
+                .btttn {
+                    font-size: 16px;
+                    font-weight: bold;
+                    background: #0e6cbd !important;
+                    border: none;
+                    &:hover{
+                        background: #0e6cbd !important;
+                    }
+                }
+                
+            }
+        }
+    }
 }

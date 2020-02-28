@@ -2,15 +2,30 @@
     padding-left: 0px;
     padding-right: 0px;
 }
-
-.ui-button-icon-only {
-    box-shadow: none;
-}
-
-.myButton {
-    color: white;
-    text-align: center;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    td {
+        padding: 10px;
+        font-size: 12px;
+        border: 1px solid #ddd;
+        color: #333;
+        input.form-control {
+            width: 100%;
+            display: inline-block;
+            padding: 0;
+            float: none;
+            text-align: center;
+            background: none;
+            border: none;
+        }
+        button.btn.ui-button-icon-only {
+            color: #0a0ad8;
+            font-size: 14px;
+            font-weight: 600;
+            opacity: inherit;
+            box-shadow: none;
+        }
+    }
 }

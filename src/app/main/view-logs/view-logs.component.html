@@ -1,5 +1,5 @@
 <table class="table table-hover table-stripped table-sm  ">
-    <thead class="bg-warning">
+    <thead class="users_table_hader">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Customer </th>
@@ -7,7 +7,6 @@
             <th scope="col">Product Family</th>
             <th scope="col">Product Code</th>
             <th scope="col">Version</th>
-            <!-- <th scope="col">Users</th> -->
             <th scope="col">Licence Type</th>
             <th scope="col">Expiration Period</th>
             <th scope="col">Start Date</th>
@@ -17,13 +16,12 @@
     </thead>
     <tbody>
         <tr *ngFor="let item of logs index as i">
-            <th scope="row" class="pl-2">{{i+1}}</th>
+            <td scope="row" class="pl-2">{{i+1}}</td>
             <td>{{item.customerName}}</td>
             <td class="text-center">{{item.LicenceDistributed}}</td>
             <td>{{item.ProductFamily}}</td>
             <td>{{i+4}}</td>
             <td class="text-dark">{{item.Version}}</td>
-            <!-- <td>{{item.Users}}</td> -->
             <td>{{item.LicenceType}}</td>
             <td>{{item.ExpirationPeriod}}</td>
             <td>{{item.StartDate}}</td>

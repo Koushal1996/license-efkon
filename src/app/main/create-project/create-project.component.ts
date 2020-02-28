@@ -23,13 +23,11 @@ export class CreateProjectComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // for password show and hide
   onEyeClick()
   {
     this.eyeStatus=!this.eyeStatus;
     this.password=!this.password;
   }
-//  for limited date show textfield
   onChangeExp(events:any)
   {
 this.eventVal=events.target.value;

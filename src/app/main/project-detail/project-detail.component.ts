@@ -17,7 +17,6 @@ myProjectDetail:any=[];
   DeleteProject(i)
   {
    var date1 = new Date();
-  //  var date1 = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
    var date2=this.myProjectDetail[i].EndDate
    var date3=new Date(date2)
 if(+date1 <= +date3)

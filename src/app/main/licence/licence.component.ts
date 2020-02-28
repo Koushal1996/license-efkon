@@ -7,12 +7,7 @@ import { ProjectDetailServiceService } from '../project-detail/project-detail-se
   styleUrls: ['./licence.component.scss']
 })
 export class LicenceComponent implements OnInit {
-//  customerName:any;
-//   constructor(private myServices: ProjectDetailServiceService) { }
 
-//   ngOnInit(): void {
-// this.customerName=this.myServices.ViewLog;
-//   }
 logs:any;
   constructor(private _viewLog:ProjectDetailServiceService) { }
 
