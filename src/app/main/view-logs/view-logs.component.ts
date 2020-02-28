@@ -7,7 +7,7 @@ import { ProjectDetailServiceService } from '../project-detail/project-detail-se
   styleUrls: ['./view-logs.component.scss']
 })
 export class ViewLogsComponent implements OnInit {
-logs:any;
+  logs:any;
   constructor(private _viewLog:ProjectDetailServiceService) { }
 
   ngOnInit(): void {

@@ -14,5 +14,5 @@ export class GenerateLicenceComponent implements OnInit {
   ngOnInit(): void {
 this.customerName=this.myServices.ViewLog;
   }
-
+n
 }

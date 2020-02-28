@@ -12,6 +12,9 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { UpdateLicenceComponent } from './update-licence/update-licence.component';
 import { RenewLicenceComponent } from './renew-licence/renew-licence.component';
 import { GenerateLicenceComponent } from './generate-licence/generate-licence.component';
+import { UpdateUserComponent } from './update-user/update-user.component';
+import { UserRequestsComponent } from './user-requests/user-requests.component';
+import { UpdateProjectComponent } from './update-project/update-project.component';
 
 const routes:Routes = [
   {
@@ -62,6 +65,18 @@ const routes:Routes = [
       {
         path:'generateLicence',
         component:GenerateLicenceComponent
+      },
+      {
+        path:'updateUser',
+        component:UpdateUserComponent
+      },
+      {
+        path:'userrequest',
+        component:UserRequestsComponent
+      },
+      {
+        path:'updateProject',
+        component:UpdateProjectComponent
       },
     ]
 

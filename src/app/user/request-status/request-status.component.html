@@ -1,0 +1,84 @@
+<table class="table table-hover table-stripped table-sm  ">
+    <thead class="bg-warning">
+        <tr>
+            <th scope="col">#</th>
+            <!-- <th scope="col">Customer </th> -->
+            <!-- <th scope="col" class="text-center">Id</th> -->
+            <th scope="col">Product Family</th>
+            <th scope="col">Product Code</th>
+            <th scope="col">Version</th>
+            <!-- <th scope="col">Users</th> -->
+            <th scope="col">Licence Type</th>
+            <th scope="col">Expiration Period</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Request Status</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of logs index as i">
+            <th scope="row" class="pl-2">{{i+1}}</th>
+            <!-- <td>{{item.customerName}}</td> -->
+            <!-- <td class="text-center">{{item.id}}</td> -->
+            <td>{{item.ProductFamily}}</td>
+            <td>{{item.productCode}}</td>
+            <td class="text-dark">{{item.Version}}</td>
+            <!-- <td>{{item.Users}}</td> -->
+            <td>{{item.LicenceType}}</td>
+            <td>{{item.ExpirationPeriod}}</td>
+            <td>{{item.StartDate}}</td>
+            <td>{{item.EndDate}}</td>
+
+            <td [style.color]="item.RequestStatus=='Viewed'? 'blue': 'red' && item.RequestStatus=='Pending'? 'red': 'green'">{{item.RequestStatus}}
+                <span *ngIf="item.RequestStatus=='Rejected'" data-toggle="modal" data-target="#myModal">(Know Reason)</span></td>
+            <td class="text-center "><button class="btn btn-outline-success " routerLink="/user/updateRequest "><i class=" fa fa-edit "></i></button></td>
+            <td class="text-center "><button class="btn btn-outline-danger "><i class=" fa fa-trash "></i></button></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<div class="container">
+
+
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title text-danger">Reason of Rejection</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form action="">
+                                    <h6>This project has rejected this project because the given detail is not proper. There is mistakes in many fields. Please reform it.</h6>
+                                    <button type="button" class="btn btn-outline-danger  pull-right" data-dismiss="modal">Cancel</button>
+                                    <!-- <button class="btn btn-outline-success pull-right mr-3">Submit</button> -->
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div> -->
+
+            </div>
+        </div>
+    </div>
+
+</div>

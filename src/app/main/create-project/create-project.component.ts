@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery'
 import { ProjectDetailServiceService } from '../project-detail/project-detail-service.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
@@ -17,8 +18,9 @@ export class CreateProjectComponent implements OnInit {
   ShowPeriod:boolean=false;
   myEvent:string;
   ProjectData=[];
+  ConfirmVal:boolean=false;
 
-   constructor(private projectCreateServices: ProjectDetailServiceService) { }
+   constructor(private projectCreateServices: ProjectDetailServiceService, private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -90,5 +92,16 @@ this.eventVal=events.target.value;
         console.log("Date after " + y + " months:",month+"/"+day+"/"+year  );
 
   }
-
-}
+  OnSvaeDetail()
+  {
+      var ConfirmValue= confirm("Press ok to Add more Project ?");
+      if(ConfirmValue)
+      {
+           this.ConfirmVal=!this.ConfirmVal;
+      }
+      if(!ConfirmValue)
+      {
+        alert("Save Successfully")
+        this.router.navigate(['/main/projectDetail'])
+      }
+    }}

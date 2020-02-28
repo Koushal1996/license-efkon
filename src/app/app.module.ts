@@ -11,18 +11,21 @@ import { AuthguardGuard } from './authguard.guard';
 import { CreateProjectServiceService } from './main/create-project/create-project-service.service';
 import { ForgetPsswordComponent } from './forget-pssword/forget-pssword.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MainComponent,
-    ForgetPsswordComponent
+    ForgetPsswordComponent,
+
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+
   ],
   providers: [AuthguardGuard,CreateProjectServiceService],
   bootstrap: [AppComponent]

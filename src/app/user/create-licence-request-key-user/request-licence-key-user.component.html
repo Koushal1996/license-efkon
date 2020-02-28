@@ -1,0 +1,138 @@
+<div class="container mt-2 ">
+
+    <div class="row ">
+        <div class="col-lg-10 offset-1 ">
+            <h3 class="text-center text-danger"><u>Create Request</u></h3>
+            <h6 class="text-muted mt-4">Please fill all the fields</h6>
+            <form #f='ngForm' (ngSubmit)="formSubmit()" class="mt-4">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Customer</strong></label>
+                            <div class="col-sm-8">
+                                <input type="text" disabled value="Noida_Htms" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Product Family</strong></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="productFamily" [(ngModel)]="model.productFamily">
+                      <option value="0">Choose Product Family</option>
+                      <option value="EES">EES</option>
+                      <option value="ITMS">ITMS</option>
+                      <option value="HTMS">HTMS</option>
+                      <option value="TMS">TMS</option>
+                    </select>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Product Code</strong></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="productCode" [(ngModel)]="model.productCode">
+                        <option value="0">Choose Product Code</option>
+                        <option value="RLVD">RLVD</option>
+                        <option value="SVD">SVD</option>
+                        <option value="ANPR">ANPR</option>
+                   </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Version</strong></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="version" [(ngModel)]="model.version" class="form-control" id="inputEmail3" placeholder="Version">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Licence Type</strong></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="LicenceType" [(ngModel)]="model.LicenceType">
+                      <option value="0">Choose Licence Type</option>
+                      <option value="1">RLVD</option>
+                      <option value="2">SVD</option>
+                      <option value="3">ANPR</option>
+                              </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="userId" class="col-sm-4 col-form-label"><strong class="text-muted">Users</strong></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3" placeholder="Users">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">Exp. Period</strong></label>
+                            <div class="col-sm-8">
+                                <select class="form-control" [(ngModel)]="model.expPeriod" name="expPeriod" (change)="onChangeExp($event)">
+                                <option value="1" >LifeTime</option>
+                              <option value="2">Limited</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">Start Date</strong></label>
+                            <div class="col-sm-8">
+                                <input type="date" name="date1" [(ngModel)]="model.date1" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group row" *ngIf="ShowPeriod">
+                            <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">Enter Period</strong></label>
+                            <div class="col-sm-8">
+                                <input type="text" name="period" id="abc" (change)="getChangeEventdate($event)" [(ngModel)]="model.period" class="form-control">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row" *ngIf="ShowPeriod">
+                            <label for="password" class="col-sm-4 col-form-label"><strong class="text-muted">End Date</strong></label>
+                            <div class="col-sm-8">
+                                <input type="date" disabled [(ngModel)]="model.endDate" class="form-control" name="endDate">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group row mt-4">
+                    <div class="col-sm-12  text-center">
+                        <!-- <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-plus"></i> Add</button> -->
+                        <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-check"></i>  Request for Licence</button>
+                        <button type="button" routerLink="/user/viewProjectUser" class="btn btn-outline-danger ml-3"><i class="fa fa-times"></i> Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
