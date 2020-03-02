@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginServiceService } from './login-service.service';
-import { Routes } from '@angular/router';
+import { Routes, ActivatedRoute } from '@angular/router';
 import {Router} from "@angular/router";
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,29 +11,53 @@ import {Router} from "@angular/router";
 export class LoginComponent implements OnInit {
 loginModel:any={};
 msg:string;
-  constructor(private _loginService:LoginServiceService,private router:Router) { }
+returnUrl: string;
+   AdminreturnUrl: any;
+   UserreturnUrl: any;
+   ResolverreturnUrl: any;
+   ReviewerUserreturnUrl: any;
+   ApproverReturnUsrl: any;
+   myLoginForm:FormGroup;
+   credentials:any;
+  userid: any;
+  password: any;
+  constructor(private _loginService:LoginServiceService,private router:Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+     this.AdminreturnUrl=this.route.snapshot.queryParams['AdminreturnUrl'] || '/main'
+     this.UserreturnUrl=this.route.snapshot.queryParams['UserreturnUrl'] || '/user'
+     this.ResolverreturnUrl=this.route.snapshot.queryParams['ResolverreturnUrl'] || '/reviewer'
+     this.ApproverReturnUsrl=this.route.snapshot.queryParams['ReviewerUserreturnUrl'] || '/approver'
+    //  Reactive Form-
+    this.myLoginForm=new FormGroup(
+      {
+        'userName' :new FormControl(null,Validators.required),
+        'password': new FormControl(null,Validators.required)
+      }
+    )
   }
   onSubmit()
   {
-      var output=this._loginService.Login(this.loginModel.userid,this.loginModel.password);
+    this.credentials=this.myLoginForm.value  // Credential where we store the formarray value
+      this.userid=this.credentials.userName // get UserId from form
+      this.password=this.credentials.password // get Password from form
+      var output=this._loginService.Login(this.userid, this.password);
 
      if(output==='admin')
      {
-        this.router.navigate(['/main'])
+        this.router.navigate([this.AdminreturnUrl])
      }
      else if(output==='user')
      {
-        this.router.navigate(['/user'])
+        this.router.navigate([this.UserreturnUrl])
      }
      else if(output==='reviewer')
      {
-        this.router.navigate(['/reviewer'])
+        this.router.navigate([this.ResolverreturnUrl])
      }
      else if(output==='approver')
      {
-        this.router.navigate(['/approver'])
+        this.router.navigate([this.ApproverReturnUsrl])
      }
 
      else{
