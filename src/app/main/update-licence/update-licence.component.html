@@ -3,21 +3,19 @@
         <h5 class="text-center text-info">Update Old Licence Key</h5>
         <form class="mt-4 ng-invalid ng-dirty ng-touched">
             <div class="form-group">
-                <label for=""><strong>User</strong></label>
+                <label for="">User</label>
                 <select id="my-select" class="form-control" name="">
                     <option *ngFor="let item of customerName">{{item.customerName}}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for=""><strong>Product Code</strong></label>
+                <label for="">Product Code</label>
                 <select id="my-select" class="form-control" name="">
                     <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
                 </select>
             </div>
-            <div class="form-group">
-                <div class="button_btn text-center ">
-                    <button class="btn btn-outline-success">Submit</button>
-                </div>
+            <div class="button_btn text-center ">
+                <button class="btn btn-outline-success">Submit</button>
             </div>
         </form>
     </div>

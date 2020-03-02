@@ -40,10 +40,13 @@ body {
             }
             .form-group{
                 margin-bottom: 15px;
+                display: inline-block;
+                width: 100%;
                 label {
                     color: #333;
                     font-size: 15px;
                     width: 100%;
+                    border: none;
                 }
                 .form-control {
                     padding: 15px 10px;
@@ -62,6 +65,7 @@ body {
                     border-radius: 3px;
                     &:hover{
                         background: #0e6cbd !important;
+                        box-shadow: none;
                     }
                 }
                 small {
@@ -69,16 +73,16 @@ body {
                     font-size: 13px;
                     cursor: pointer;
                     font-weight: bold;
+                    outline: none;
+                }
+                input.ng-invalid.ng-touched {
+                    border: 1px solid red;
+                }
+                
+                input.ng-valid {
+                    border: 1px solid green;
                 }
             }
         }
     }
-}
-
-h6 {
-    color: red;
-}
-
-span {
-    color: green;
 }

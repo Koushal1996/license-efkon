@@ -2,9 +2,9 @@
     <div class="main_form">
         <h3 class="text-center text-info">Create New Project</h3>
             <form class= "mt-4 ng-untouched ng-pristine ng-invalid">
-            <p>Please fill all the fields</p>
+            <!-- <p>Please fill all the fields</p> -->
             <div class="form-group">
-                <label for="userId"><strong class="text-muted">Customer</strong></label>
+                <label for="userId">Customer</label>
                 <select class="form-control" name="customername" [(ngModel)]="model.customername">
                     <option value="0">Choose Customer</option>
                     <option value="Noida_Htms">Noida_Htms</option>
@@ -14,7 +14,7 @@
                 </select>
             </div>
             <div class="form-group ">
-                <label for="userId"><strong class="text-muted">Product Family</strong></label>
+                <label for="userId">Product Family</label>
                 <select class="form-control" name="productFamily" [(ngModel)]="model.productFamily">
                     <option value="0">Choose Product Family</option>
                     <option value="EES">EES</option>
@@ -24,7 +24,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="userId"><strong class="text-muted">Product Code</strong></label>
+                <label for="userId">Product Code</label>
                 <select class="form-control" name="productCode" [(ngModel)]="model.productCode">
                     <option value="0">Choose Product Code</option>
                     <option value="RLVD">RLVD</option>
@@ -33,11 +33,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="userId"><strong class="text-muted">Version</strong></label>
+                <label for="userId">Version</label>
                 <input type="text" name="version" [(ngModel)]="model.version" class="form-control" id="inputEmail3" placeholder="Version">
             </div>
             <div class="form-group ">
-                <label for="userId" ><strong class="text-muted">Licence Type</strong></label>
+                <label for="userId" >Licence Type</label>
                 <select class="form-control" name="LicenceType" [(ngModel)]="model.LicenceType">
                     <option value="0">Choose Licence Type</option>
                     <option value="1">RLVD</option>
@@ -46,34 +46,32 @@
                 </select>
             </div>
             <div class="form-group ">
-                <label for="userId" ><strong class="text-muted">Users</strong></label>
+                <label for="userId" >Users</label>
                 <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3" placeholder="Users">
             </div>
             <div class="form-group">
-                <label for="password"><strong class="text-muted">Exp. Period</strong></label>
+                <label for="password">Exp. Period</label>
                 <select class="form-control" [(ngModel)]="model.expPeriod" name="expPeriod" (change)="onChangeExp($event)">
                     <option value="1" >LifeTime</option>
                     <option value="2">Limited</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="password"><strong class="text-muted">Start Date</strong></label>
+                <label for="password">Start Date</label>
                 <input type="date" name="date1" [(ngModel)]="model.date1" class="form-control">
             </div>
             <div class="form-group" *ngIf="ShowPeriod">
-                <label for="password"><strong class="text-muted">Enter Period</strong></label>
+                <label for="password">Enter Period</label>
                 <input type="text" name="period" id="abc" (change)="getChangeEventdate($event)" [(ngModel)]="model.period" class="form-control">
             </div>
             <div class="form-group">
-                <label for="password"><strong class="text-muted">End Date</strong></label>
+                <label for="password">End Date</label>
                 <input type="date" disabled [(ngModel)]="model.endDate" class="form-control" name="endDate">
             </div>
-            <div class="form-group mt-4">
-                <div class="button_btn text-center">
-                    <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-plus"></i> Add</button>
-                    <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-check"></i> Save Detail</button>
-                    <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i class="fa fa-times"></i> Cancel</button>
-                </div>
+            <div class="button_btn text-center">
+                <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-plus"></i> Add</button>
+                <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-check"></i> Save Detail</button>
+                <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i class="fa fa-times"></i> Cancel</button>
             </div>
         </form>
     </div>

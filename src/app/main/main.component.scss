@@ -43,7 +43,7 @@ h6:focus {
 }
 
 #sidebar-wrapper {
-    min-height: 100vh;
+    width: 100%;
     margin-left: -15rem;
     -webkit-transition: margin .25s ease-out;
     -moz-transition: margin .25s ease-out;
@@ -59,7 +59,7 @@ h6:focus {
 
 
 #page-content-wrapper {
-    min-width: 100vw;
+   max-width: 100%;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -69,10 +69,16 @@ h6:focus {
 @media (min-width: 768px) {
     #sidebar-wrapper {
         margin-left: 0;
+        position: fixed;
+        z-index: 33;
+        margin-top: 0;
+        width: 250px;
     }
     #page-content-wrapper {
-        min-width: 0;
-        width: 100%;
+        width: calc(100% - 250px);
+        position: relative;
+        float: right;
+        display: inline-block;
     }
     #wrapper.toggled #sidebar-wrapper {
         margin-left: -15rem;
@@ -93,13 +99,31 @@ h6:focus {
     margin-left: 7rem!important;
 }
 
-.list-group .list-group-item {
-    background-color: transparent;
-    color: #ddd;
+div#sidebar-wrapper {
+   .list-group {
+    width: 100%;
+        display: inline-block;
+        padding-bottom: 20px;
+    .list-group-item {
+        background-color: transparent;
+        color: #333;
+    }
+    .active {
+        color: white !important;
+        background: #333 !important;
+    }
+    
+}
 }
 
 .middle-content {
-    margin-top: 15px;
+    margin-top: 90px;
     box-shadow: 0 0 5px #ddd;
     padding: 20px;
+}
+.toggled {
+    #page-content-wrapper {
+        width: 100%;
+        display: inline-block;
+    }
 }

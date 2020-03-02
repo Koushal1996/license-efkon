@@ -2,69 +2,6 @@ body {
     color: #999;
     font-family: 'Roboto', sans-serif;
 }
-
-.form-control {
-    min-height: 41px;
-    box-shadow: none;
-    border-color: #e1e1e1;
-}
-
-.form-control:focus {
-    border-color: #00cb82;
-}
-
-.form-control,
-.btn {
-    border-radius: 3px;
-}
- 
-
-.form-header p {
-    margin: 20px 0 15px;
-    font-size: 17px;
-    line-height: normal;
-    font-family: 'Courgette', sans-serif;
-}
-
-.signup-form form {
-    color: #999;
-    border-radius: 3px;
-    margin-bottom: 15px;
-    background: #f0f0f0;
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-    padding: 30px;
-}
-
-.signup-form input[type="checkbox"] {
-    margin-top: 2px;
-}
-.btn-outline-danger:hover {
-    color: #ffeded;
-    background-color: #39adc7;
-    border: 1px solid;
-}
-.signup-form a {
-    color: #00cb82;
-}
-
-.signup-form a:hover {
-    text-decoration: underline;
-}
-
-small {
-    color: green;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-input.ng-invalid.ng-touched {
-    border: 1px solid red;
-}
-
-input.ng-valid {
-    border: 1px solid green;
-}
 .password_change_forget {
     display: inline-block;
     width: 100%;
@@ -100,20 +37,39 @@ input.ng-valid {
             }
             .form-group {
                 margin-bottom: 20px;
+                display: inline-block;
+                width: 100%;
                 label {
                     color: #333;
                     font-size: 15px;
+                    border: none;
                 }
                 .btttn {
                     font-size: 16px;
                     font-weight: bold;
-                    background: #0e6cbd !important;
+                    background: #3491e2 !important;
+                    opacity: inherit;
                     border: none;
                     &:hover{
                         background: #0e6cbd !important;
                     }
                 }
+                input.ng-invalid.ng-touched {
+                    border: 1px solid red;
+                }
                 
+                input.ng-valid {
+                    border: 1px solid green;
+                }
+                .btn-outline-danger {
+                    color: #dc3545;
+                    border-color: #dc3545;
+                    &:hover {
+                        color: #fff;
+                        background-color: #1b6dd3;
+                        border-color: #2873cf;
+                    }
+                }
             }
         }
     }

@@ -7,11 +7,13 @@ $color:#333;
     display: inline-block;
     width: 100%;
     text-align: center;
+    padding: 15px;
     .main_form {
         display: inline-block;
         width: 100%;
-        max-width: 550px;
-        margin-top: 15px;
+        max-width: 600px;
+        box-shadow: 0 0 5px #ddd;
+        padding: 15px;
     }
 }
 // /.....scss manoj..../
@@ -68,21 +70,21 @@ i.fa.fa-wrench {
 }
 //..........Create User.........//
 
-.text-info {
-    color: #196dea !important;
-    padding: 10px 0;
-    margin-bottom: 0;
-    position: relative;
-    &:after{
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 140px;
-        width: 250px;
-        height: 2px;
-        background: #196dea;
-    }
-}
+// .text-info {
+//     color: #196dea !important;
+//     padding: 10px 0;
+//     margin-bottom: 0;
+//     position: relative;
+//     &:after{
+//         content: "";
+//         position: absolute;
+//         bottom: 0;
+//         left: 160px;
+//         width: 250px;
+//         height: 2px;
+//         background: #196dea;
+//     }
+// }
 form {
     display: inline-block;
     width: 100%;
@@ -96,16 +98,16 @@ form {
     }
     .form-group {
         display: inline-block;
-        width: 100%;
+        width: 50%;
+        padding: 0 20px;
         position: relative;
         label {
             padding: 7px 0;
             display: inline-block;
-            width: 250px;
-            height: 40px;
-            text-align: left;
+            font-size: 15px;
+            color: #333;
+            width:100%;
             margin-bottom: 0;
-            border-bottom: 1px solid #e8e1e8aa;
         }
         .click_password {
             width: auto;
@@ -142,10 +144,9 @@ form {
                         width: 23px;
                         height: 23px;
                         background:$color;
-                        background: #46afc7;
+                        background: #555;
                         z-index: 222;
                         text-align: center;
-                        border-radius: 5px;
                         }
                 }
                 label {
@@ -162,8 +163,7 @@ form {
                         width: 23px;
                         height: 23px;
                         content: "";
-                        background: #8ed9ea;
-                        border-radius: 5px;
+                        background:#ddd;
                     }
                 }
             }
@@ -215,7 +215,7 @@ div#sidebar-wrapper {
                 }
             }
             .active {
-                color: white;
+                color: white ;
                 background: #333 !important;
             }
 
@@ -238,8 +238,8 @@ div#sidebar-wrapper {
                         i{
                             color: #333;
                             float: left;
-                            font-size: 16px;
-                            margin-right: 10px;
+                            font-size: 12px;
+                            margin: 6px 10px 0 0;
                         }
                     }
                 }
@@ -269,9 +269,10 @@ div#sidebar-wrapper {
     background: #fff;
     box-shadow: 4px 0 6px #999;
     top: 0;
-    left: 0;
     position: sticky;
     z-index: 9999;
+    right: 0;
+    float: right;
 
     .Toggle_button{
         display: inline-block;
@@ -327,7 +328,7 @@ div#sidebar-wrapper {
 select.form-control.ng-untouched.ng-pristine.ng-valid {
     display: inline-block;
     width: 250px;
-    float: right;
+    float: left;
     box-shadow: none;
 }
 .form-control:focus{
@@ -335,12 +336,12 @@ select.form-control.ng-untouched.ng-pristine.ng-valid {
 }
 input#inputEmail3, input.form-control.ng-untouched.ng-pristine.ng-valid, input.form-control.ng-untouched.ng-pristine {
     display: inline-block;
-    width: 250px;
-    float: right;
+    width: 100%;
+    float: inherit;
 }
 .form-group, .form-control {
     width: 250px;
-    float: right;
+    float: left;
 }
 
 button.btn.btn-info.myButton, .myButton[_ngcontent-xlt-c52] {
