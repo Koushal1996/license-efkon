@@ -16,10 +16,10 @@ export class CreateUserComponent implements OnInit {
   myAllUser:any;
   model:any={};
   role = [
-    {id: 1, name: "Admin"},
-    {id: 2, name: "User"},
-    {id: 3, name: "Reviewer"},
     {id: 4, name: "Approver"},
+    {id: 1, name: "Admin"},
+    {id: 3, name: "Reviewer"},
+    {id: 2, name: "User"},
   ];
   constructor(private userServices:UsersServicesService) { }
 
