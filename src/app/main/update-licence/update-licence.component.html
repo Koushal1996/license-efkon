@@ -1,7 +1,7 @@
 <div class="form_main ">
     <div class="main_form">
         <h5 class="text-center text-info">Update Old Licence Key</h5>
-        <form class="mt-4 ng-invalid ng-dirty ng-touched">
+        <form class="mt-2 ng-invalid ng-dirty ng-touched">
             <div class="form-group">
                 <label for="">User</label>
                 <select id="my-select" class="form-control" name="">
@@ -14,12 +14,12 @@
                     <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
                 </select>
             </div>
-            <div class="button_btn text-center ">
-                <button class="btn btn-outline-success">Submit</button>
+            <div class="button_btn text-left ">
+                <button class="btn btn-outline-success mr-3">Submit</button>
             </div>
         </form>
     </div>
-    <div class="container mt-5">
+    <div class="container mt-3">
         <div class="row">
             <div class="col-12 padd">
                 <table class="table table-bordered">
@@ -29,6 +29,8 @@
                             <th>Old Licence Key</th>
                             <th>New Unique ID</th>
                             <th>New Licence Key </th>
+                            <th>Generate</th>
+                            <th>Export XLD</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -38,15 +40,57 @@
                             <td>
                                 <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID" >
                             </td>
+                            <td>1B2CFF9E2566Ekk</td>
                             <td><button class="btn ui-button-icon-only" [disabled]='btnDisable' (click)="generateRandomKey()">{{value ?'Generate': myval}}</button></td>
+                            <td><button class="btn btn-outline-success">Export as XLS</button></td>
                         </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>1B2CFF9E2566MFF</td>
+                            <td>
+                                <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID" >
+                            </td>
+                            <td>1B2CFF9E2566ELL</td>
+                            <td><button class="btn ui-button-icon-only" [disabled]='btnDisable' (click)="generateRandomKey()">{{value ?'Generate': myval}}</button></td>
+                            <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>1B2CFF9E2566EFF</td>
+                            <td>
+                                <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID" >
+                            </td>
+                            <td>1B2CFF9E2566Ekk</td>
+                            <td><button class="btn ui-button-icon-only" [disabled]='btnDisable' (click)="generateRandomKey()">{{value ?'Generate': myval}}</button></td>
+                            <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                        </tr>
+
+                        <tr>
+                            <td>4</td>
+                            <td>1B2CFF9E2566BBF</td>
+                            <td>
+                                <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID" >
+                            </td>
+                            <td>1B2CFF9E2566Ek</td>
+                            <td><button class="btn ui-button-icon-only" [disabled]='btnDisable' (click)="generateRandomKey()">{{value ?'Generate': myval}}</button></td>
+                            <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                        </tr>
+
+                        <tr>
+                            <td>5</td>
+                            <td>1B2CFF9E2566KMN</td>
+                            <td>
+                                <input type="text" class="form-control" name="model.UniqueAccess" required [(ngModel)]="model.UniqueAccess" placeholder="Unique Access ID" >
+                            </td>
+                            <td>1B2CFF9E2566Ekk</td>
+                            <td><button class="btn ui-button-icon-only" [disabled]='btnDisable' (click)="generateRandomKey()">{{value ?'Generate': myval}}</button></td>
+                            <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                        </tr>
+
                     </tbody>
                 </table>
-                <div class="button_btn text-center">
-                    <button class="btn btn-outline-primary ml-3">Export as PDF</button>
-                    <button class="btn btn-outline-warning ml-3">Export as DOCS</button>
-                    <button class="btn btn-outline-success ml-3">Export as XLS</button>
-                </div>
             </div>
         </div>
     </div>

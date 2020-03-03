@@ -1,21 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 $color:#333;
-
-
-.form_main {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    padding: 15px;
-    .main_form {
-        display: inline-block;
-        width: 100%;
-        max-width: 600px;
-        box-shadow: 0 0 5px #ddd;
-        padding: 15px;
-    }
+.form-group small.text-danger {
+    position: absolute;
+    bottom: -20px;
+    left: 20px;
 }
+
 // /.....scss manoj..../
 // /....user../
 
@@ -70,21 +61,7 @@ i.fa.fa-wrench {
 }
 //..........Create User.........//
 
-// .text-info {
-//     color: #196dea !important;
-//     padding: 10px 0;
-//     margin-bottom: 0;
-//     position: relative;
-//     &:after{
-//         content: "";
-//         position: absolute;
-//         bottom: 0;
-//         left: 160px;
-//         width: 250px;
-//         height: 2px;
-//         background: #196dea;
-//     }
-// }
+
 form {
     display: inline-block;
     width: 100%;
