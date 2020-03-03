@@ -1,8 +1,64 @@
 <div class="form_main ">
+    <div id="myDIV" class="main_form mt-4" style="border-bottom:2px solid #ddd; display: none;">
+        <h3 class="text-center text-info">Create Customer</h3>
+        <form class="mt-4" >
+            <div class="form-group">
+                <label for="customername">Name<span>*</span></label>
+                <input type="text" name="CustomerName" [(ngModel)]="model.CustomerName" class="form-control"
+                    id="inputEmail3" placeholder="Name" #cusName='ngModel' ngModel required>
+                <small class="text-danger" *ngIf="!cusName.valid && cusName.touched"><strong></strong>Name
+                    required</small>
+            </div>
+            <div class="form-group">
+                <label for="customername">Contact Number</label>
+                <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control"
+                    id="contactnumber" placeholder="Contact Number" #Connumber='ngModel' ngModel required>
+                <small class="text-danger" *ngIf="!Connumber.valid && Connumber.touched"><strong></strong>Contact Number
+                    required</small>
+            </div>
+            <div class="form-group">
+                <label for="userId">User Id <span>*</span></label>
+                <input type="text" name="UserId" [(ngModel)]="model.UserId" class="form-control" id="inputEmail3"
+                    placeholder="User Id" #cusId='ngModel' ngModel required>
+                <small class="text-danger" *ngIf="!cusId.valid && cusId.touched"><strong></strong>User Id
+                    required</small>
+            </div>
+            <div class="form-group">
+                <label for="userId">Email Id <span>*</span></label>
+                <input type="text" name="EmailId" [(ngModel)]="model.EmailId" class="form-control" id="inputEmail3"
+                    placeholder="Mail Id" email #mailId='ngModel' ngModel [required]='checked'>
+                <small class="text-danger" *ngIf="!mailId.valid && mailId.touched"><strong></strong>Valid mail Id
+                    required</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password <span>*</span></label>
+                <input name="password" [(ngModel)]="model.password" [type]="password ? 'password' :'text'" minlength='5'
+                    class="form-control" id="inputEmail3" placeholder="Password" #cusPass='ngModel' ngModel required>
+                <div class="click_password" (click)="onEyeClick()">
+                    <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
+                    <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
+                </div>
+                <small class="text-danger" *ngIf="!cusPass.valid && cusPass.touched"><strong></strong>Password must be 6
+                    character</small>
+            </div>
+         
+            <div class="custom-check">
+                <div class="custom-checkbox ">
+                    <input type="checkbox" [checked]="checked" class="custom-control-input"
+                        id="customCheck" name="example1">
+                    <label for="customCheck">Do you want to send mail ?</label>
+                </div>
+            </div>
+            <div class="button_btn text-center">
+                <button class="btn btn-outline-info "><i class="fa fa-check"></i> Submit</button>
+                <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i
+                    class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
+            </div>
+        </form>
+    </div>
     <div class="main_form">
         <h3 class="text-center text-info">Create New Project</h3>
-            <form class= "mt-4 ng-untouched ng-pristine ng-invalid">
-            <!-- <p>Please fill all the fields</p> -->
+        <form class="mt-4 ng-untouched ng-pristine ng-invalid">
             <div class="form-group">
                 <label for="userId">Customer</label>
                 <select class="form-control" name="customername" [(ngModel)]="model.customername">
@@ -34,10 +90,11 @@
             </div>
             <div class="form-group">
                 <label for="userId">Version</label>
-                <input type="text" name="version" [(ngModel)]="model.version" class="form-control" id="inputEmail3" placeholder="Version">
+                <input type="text" name="version" [(ngModel)]="model.version" class="form-control" id="inputEmail3"
+                    placeholder="Version">
             </div>
             <div class="form-group ">
-                <label for="userId" >Licence Type</label>
+                <label for="userId">Licence Type</label>
                 <select class="form-control" name="LicenceType" [(ngModel)]="model.LicenceType">
                     <option value="0">Choose Licence Type</option>
                     <option value="1">RLVD</option>
@@ -46,13 +103,15 @@
                 </select>
             </div>
             <div class="form-group ">
-                <label for="userId" >Users</label>
-                <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3" placeholder="Users">
+                <label for="userId">Users</label>
+                <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3"
+                    placeholder="Users">
             </div>
             <div class="form-group">
                 <label for="password">Exp. Period</label>
-                <select class="form-control" [(ngModel)]="model.expPeriod" name="expPeriod" (change)="onChangeExp($event)">
-                    <option value="1" >LifeTime</option>
+                <select class="form-control" [(ngModel)]="model.expPeriod" name="expPeriod"
+                    (change)="onChangeExp($event)">
+                    <option value="1">LifeTime</option>
                     <option value="2">Limited</option>
                 </select>
             </div>
@@ -62,20 +121,22 @@
             </div>
             <div class="form-group" *ngIf="ShowPeriod">
                 <label for="password">Enter Period</label>
-                <input type="text" name="period" id="abc" (change)="getChangeEventdate($event)" [(ngModel)]="model.period" class="form-control">
+                <input type="text" name="period" id="abc" (change)="getChangeEventdate($event)"
+                    [(ngModel)]="model.period" class="form-control">
             </div>
             <div class="form-group">
                 <label for="password">End Date</label>
                 <input type="date" disabled [(ngModel)]="model.endDate" class="form-control" name="endDate">
             </div>
             <div class="button_btn text-center">
-                <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-plus"></i> Add</button>
-                <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-check"></i> Save Detail</button>
-                <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i class="fa fa-times"></i> Cancel</button>
+                <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-times"
+                        aria-hidden="true"></i> Remove </button>
+                <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-floppy-o"
+                        aria-hidden="true"></i> Save Detail</button>
+                <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i
+                        class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
             </div>
         </form>
     </div>
+    <button onclick="myFunction()"  _ngcontent-hle-c54="" routerlink="/main/createUser" class="btn btn-info myButton" tabindex="0" ng-reflect-router-link="/main/createUser"><i _ngcontent-hle-c54="" class="fa fa-user-plus"></i> Create Customer</button>
 </div>
-
-
-

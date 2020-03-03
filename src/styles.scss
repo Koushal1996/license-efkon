@@ -67,12 +67,6 @@ form {
     width: 100%;
     text-align: left;
     max-width: 700px;
-    p {
-        padding: 15px 0;
-        font-size: 18px;
-        color: #8b8b8b;
-        margin-bottom: 0;
-    }
     .form-group {
         display: inline-block;
         width: 50%;
@@ -93,58 +87,7 @@ form {
             top: 0;
             right: 0;
         }
-        .custom-check {
-            display: inline-block;
-            width: 100%;
-            text-align: center;
-            .custom-control.custom-checkbox {
-                display: inline-block;
-                width: 250px;
-                padding-left: 0;
-                position: relative;
-                .custom-control-input {
-                    position: absolute;
-                    left: 0;
-                    z-index: 333;
-                    width: 23px;
-                    height: 23px;
-                    opacity: 0;
-                    top: 6px;
-                    &:checked + label:before {
-                    content: "\f00c";
-                        font-family: fontawesome;
-                        color: #fafafa;
-                        font-size: 18px;
-                        position: absolute;
-                        top: 6px;
-                        left: 0;
-                        width: 23px;
-                        height: 23px;
-                        background:$color;
-                        background: #555;
-                        z-index: 222;
-                        text-align: center;
-                        }
-                }
-                label {
-                    padding: 7px 0 7px 35px;
-                    display: inline-block;
-                    width: 250px;
-                    height: 40px;
-                    margin-bottom: 0;
-                    &:after {
-                        position: absolute;
-                        top: 6px;
-                        left: 0;
-                        display: inline-block;
-                        width: 23px;
-                        height: 23px;
-                        content: "";
-                        background:#ddd;
-                    }
-                }
-            }
-        }
+        
     }
 }
 
@@ -326,9 +269,10 @@ button.btn.btn-info.myButton, .myButton[_ngcontent-xlt-c52] {
     text-align: center;
     position: fixed;
     bottom: 10px;
-    right: 0;
+    right: 18px;
     background-color: #0e6cbd;
     border-color: #0e6cbd;
+    box-shadow: none;
 }
 //.........change-password..........//
 

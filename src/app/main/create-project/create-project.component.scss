@@ -1,19 +1,12 @@
-.fa-eye {
-    position: absolute;
-    right: 20px;
-    top: 12px;
-}
-
-.fa-eye-slash {
-    position: absolute;
-    right: 20px;
-    top: 12px;
-}
-
-
 ::placeholder {
     color: rgb(122, 114, 114);
     opacity: 1;
+}
+.fa-eye {
+    position: absolute;
+    right: 30px;
+    top: 48px;
+    cursor: pointer;
 }
 
 .form-control {
@@ -25,6 +18,16 @@
     width: 100%;
     text-align: center;
     padding: 15px;
+    div#myDIV {
+        position: absolute;
+        top: 67px;
+        left: 16px;
+        background: #fafafa;
+        width: 97%;
+        box-shadow: 0 0 2px #ddd;
+        height: 87%;
+        z-index: 999;
+    }
     .main_form {
         display: inline-block;
         width: 100%;
@@ -46,6 +49,7 @@
                 width: 33%;
                 padding: 0 20px;
                 position: relative;
+                margin-bottom: 40px;
                 label {
                     padding: 7px 0;
                     display: inline-block;
@@ -86,7 +90,7 @@
                 .fa-eye-slash {
                     position: absolute;
                     right: 30px;
-                    top: 47px;
+                    top: 47px ;
                     cursor: pointer;
                 }
             }
@@ -95,7 +99,79 @@
                 display: inline-block;
                 width: 100%;
                 margin: 15px 0;
+                .btn.btn-outline-success {
+                    border: 1px solid #28a745;
+                    color: #28a745;
+                    box-shadow: none;
+                    &:hover{
+                        background: #0e6cbd;
+                        color: #fff;
+                        border: 1px solid #0e6cbd;
+                    }
+                }
+            }
+            .btn.btn-outline-info{
+                box-shadow: none;
+            }
+            .btn.btn-outline-danger{
+                box-shadow: none; 
+            }
+            .custom-check {
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                .custom-checkbox {
+                    display: inline-block;
+                    width: 250px;
+                    position: relative;
+                    .custom-control-input {
+                        position: absolute;
+                        left: 0;
+                        z-index: 333;
+                        width: 23px;
+                        height: 23px;
+                        opacity: 0;
+                        top: 6px;
+                        &:checked + label:before {
+                            content: "\f00c";
+                                font-family: fontawesome;
+                                color: #fafafa;
+                                font-size: 18px;
+                                position: absolute;
+                                top: 6px;
+                                left: 0;
+                                width: 23px;
+                                height: 23px;
+                                background:#333;
+                                background: #555;
+                                z-index: 222;
+                                text-align: center;
+                                }
+                    }
+                    label {
+                        padding: 7px 0 7px 35px;
+                        display: inline-block;
+                        width: 250px;
+                        margin-bottom: 0;
+                        &:after {
+                            position: absolute;
+                            top: 6px;
+                            left: 0;
+                            display: inline-block;
+                            width: 23px;
+                            height: 23px;
+                            content: "";
+                            background:#ddd;
+                        }
+                    }
+                }
             }
         }
     }
 }
+span{
+    color: red
+}
+
+
+
