@@ -19,16 +19,130 @@
             float: none;
             text-align: center;
             background: none;
-            border: none;
+            border: 1px solid #ddd;
         }
         button.btn.ui-button-icon-only {
             color: #0a0ad8;
             font-size: 14px;
+            border: 1px solid;
+            background: rgba(0,0,0,0.04);
             font-weight: 600;
             box-shadow: none;
+            &:hover{
+                color: #fff;
+                background: #0e6cbd;
+                border: 1px solid #0e6cbd;
+            }
+        }
+        .btn-outline-success {
+            color: #28a745;
+            border-color: inherit;
+            border: 1px solid;
+            box-shadow: none;
+            outline: none;
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.04);
+            &:hover{
+                background: #0e6cbd;
+                color: #fff;
+                border: 1px solid #0e6cbd
+            }
         }
     }
     tr:hover {
         background: rgba(0, 0, 0, 0.02);
+    }
+}
+
+.form_main {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: inherit;
+    .main_form {
+        display: inline-block;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        padding: 15px;
+        .text-info {
+            color: #333 !important;
+            padding: 10px 0;
+            margin-bottom: 0;
+        }
+        form {
+            display: inline-block;
+            width: 100%;
+            text-align: left;
+            max-width: inherit;
+            .form-group {
+                display: inline-block;
+                width: 40%;
+                padding: 0 20px;
+                position: relative;
+                label {
+                    padding: 7px 0;
+                    display: inline-block;
+                    font-size: 15px;
+                    color: #333;
+                    width: 100%;
+                    margin-bottom: 0;
+                }
+                input.form-control.ng-untouched.ng-pristine {
+                    display: inline-block;
+                    width: 100%;
+                    float: inherit;
+                }
+                select.form-control.ng-untouched.ng-pristine.ng-valid {
+                    display: inline-block;
+                    width: 100%;
+                    float: left;
+                    box-shadow: none;
+                }
+                
+                input.ng-valid {
+                    border: 1.4px solid green;
+                }
+                .form-control {
+                    border: 1.4px solid green;
+                    box-shadow: none;
+                    width: 100%;
+                    float: inherit;
+                    height: 40px;
+                    padding: 5px;
+                }
+                .fa-eye-slash {
+                    position: absolute;
+                    right: 30px;
+                    top: 47px;
+                    cursor: pointer;
+                }
+            }
+
+            .button_btn.text-center {
+                display: inline-block;
+                width: 100%;
+                margin: 15px 0;
+            }
+            .text-left {
+                text-align: left!important;
+                width: 20%;
+                margin-top: 36px;
+                display: inline-block;
+                .btn-outline-success{
+                    border: 1px solid #0e6cbd;
+                    background: no-repeat;
+                    color: #0e6cbd;
+                    box-shadow: none;
+                    &:hover {
+                        color: #fff;
+                        background-color: #0e6cbd;
+                        border-color: #0e6cbd;
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 <div class="form_main ">
     <div class="main_form">
             <h5 class="text-center text-info">Generate Licence Key</h5>
-            <form class="mt-4 ng-invalid ng-dirty ng-touched">
+            <form class="mt-2 ng-invalid ng-dirty ng-touched">
                 <div class="form-group">
                     <label for="">User</label>
                     <select id="my-select" class="form-control" name="">
@@ -14,12 +14,12 @@
                         <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
                     </select>
                 </div>
-                <div class="button_btn text-center ">
+                <div class="button_btn text-left ">
                     <button class="btn btn-outline-success">Submit</button>
                 </div>
             </form>
         </div>
-        <div class="container mt-5">
+        <div class="container mt-3">
             <div class="row">
                 <div class="col-12 padd">
                     <table class="table table-bordered">
@@ -29,23 +29,58 @@
                                 <th>ID</th>
                                 <th>Unique Access ID</th>
                                 <th>Licence Key </th>
+                                <th>Generate</th>
+                                <th>Export XLD</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>1</td>
                                 <td>1B2CFF9E2566EFF</td>
-                                <td><input type="text" class="form-control" placeholder="Unique Access ID"  style="border:none; box-shadow:none; width: 100%;"></td>
+                                <td><input type="text" class="form-control" placeholder="Unique Access ID" ></td>
+                                <td>1B2CFF9E25</td>
                                 <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>2</td>
+                                <td>1B2CFF9E2566MMF</td>
+                                <td><input type="text" class="form-control" placeholder="Unique Access ID" ></td>
+                                <td>1B2CFF9E26</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>3</td>
+                                <td>1B2CFF9E2566ENF</td>
+                                <td><input type="text" class="form-control" placeholder="Unique Access ID" ></td>
+                                <td>1B2CFF9E27</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>4</td>
+                                <td>1B2CFF9E2566KKFF</td>
+                                <td><input type="text" class="form-control" placeholder="Unique Access ID" ></td>
+                                <td>1B2CFF9E28</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+
+                            <tr>
+                                <td>5</td>
+                                <td>1B2CFF9E2566EKK</td>
+                                <td><input type="text" class="form-control" placeholder="Unique Access ID" ></td>
+                                <td>1B2CFF9E29</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
                             </tr>
                         </tbody>
 
                     </table>
-                    <div class="text-center">
-                        <button class="btn btn-outline-primary ml-3">Export as PDF</button>
-                        <button class="btn btn-outline-warning ml-3">Export as DOCS</button>
-                        <button class="btn btn-outline-success ml-3">Export as XLS</button>
-                    </div>
                 </div>
             </div>
         </div>
