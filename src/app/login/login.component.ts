@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 loginModel:any={};
 msg:string;
+loader:boolean=false
 returnUrl: string;
    AdminreturnUrl: any;
    UserreturnUrl: any;
@@ -36,15 +37,23 @@ returnUrl: string;
       }
     )
   }
+
   onSubmit()
   {
+
+
     this.credentials=this.myLoginForm.value  // Credential where we store the formarray value
       this.userid=this.credentials.userName // get UserId from form
       this.password=this.credentials.password // get Password from form
       var output=this._loginService.Login(this.userid, this.password);
 
+      this.loader = true; // this - is in component object context
+      setTimeout(()=>{    //<<<---    using ()=> syntax
+        this.loader = false;
+   }, 300);
      if(output==='admin')
      {
+
         this.router.navigate([this.AdminreturnUrl])
      }
      else if(output==='user')
