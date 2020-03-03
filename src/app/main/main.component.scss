@@ -20,7 +20,6 @@ body {
     opacity: .8;
 }
 
-
 h6:focus {
     outline: none;
 }
@@ -56,10 +55,8 @@ h6:focus {
     font-size: 1.2rem;
 }
 
-
-
 #page-content-wrapper {
-   max-width: 100%;
+    max-width: 100%;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -73,6 +70,7 @@ h6:focus {
         z-index: 33;
         margin-top: 0;
         width: 250px;
+        height: 100%;
     }
     #page-content-wrapper {
         width: calc(100% - 250px);
@@ -100,20 +98,19 @@ h6:focus {
 }
 
 div#sidebar-wrapper {
-   .list-group {
-    width: 100%;
+    .list-group {
+        width: 100%;
         display: inline-block;
         padding-bottom: 20px;
-    .list-group-item {
-        background-color: transparent;
-        color: #333;
+        .list-group-item {
+            background-color: transparent;
+            color: #333;
+        }
+        .active {
+            color: white !important;
+            background: #333 !important;
+        }
     }
-    .active {
-        color: white !important;
-        background: #333 !important;
-    }
-    
-}
 }
 
 .middle-content {
@@ -121,6 +118,7 @@ div#sidebar-wrapper {
     box-shadow: 0 0 5px #ddd;
     padding: 20px;
 }
+
 .toggled {
     #page-content-wrapper {
         width: 100%;

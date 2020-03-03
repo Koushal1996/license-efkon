@@ -1,4 +1,50 @@
-<table class="table table-hover table-stripped table-sm  ">
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <form action="" class="form-inline">
+
+                <div class="col-4">
+                    <div class="form-group ">
+                        <input type="text" placeholder="Search here..." id="myInput" (keyup)=onKeydownEvent() class="form-control ">
+                    </div>
+                </div>
+                <div class="col-4">
+
+                    <div class="form-group d-flex " (change)="OnselectSearch($event.target.value)">
+                        <select name="" id="" class="form-control">
+                   <option value="1">Search By Customer</option>
+                   <option value="2">Search By Product Family</option>
+                   <option value="3">Search By Product Code</option>
+                   <option value="5">Search By Licence Count</option>
+                   <option value="6">Search By Licence Type</option>
+                   <option value="8">Search By Expiration Period</option>
+                  </select>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group" (change)="OnselectSortItem($event.target.value)">
+                        <select name="" id="" class="form-control">
+                          <!-- <option >Sort By..</option> -->
+                          <option value="1">Search By Customer</option>
+                   <option value="2">Search By Product Family</option>
+                   <option value="3">Search By Product Code</option>
+                   <option value="5">Search By Licence Count</option>
+                   <option value="6">Search By Licence Type</option>
+                   <option value="8">Search By Expiration Period</option>
+                 </select>
+                    </div>
+                </div>
+
+
+
+
+            </form>
+        </div>
+
+
+    </div>
+</div>
+<table class="table table-hover table-stripped table-sm  mt-3" id="myTable">
     <thead class="users_table_hader">
         <tr>
             <th scope="col" class="text-center">#</th>
@@ -22,19 +68,22 @@
             <td scope="row" class="pl-2">{{i+1}}</td>
             <td>{{item.customerName}}</td>
             <td class="text-center">{{item.ProductFamily}}</td>
-            <td class="text-center">{{i+4}}</td>
+            <td class="text-center">{{item.productCode}}</td>
             <td class="text-dark text-center">{{item.Version}}</td>
             <td class="text-center">{{item.Users}}</td>
             <td>{{item.LicenceType}}</td>
-            <td [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td>
+            <td [style.color]="item.ProjectStatus=='REJECTED' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td>
             <td>{{item.ExpirationPeriod}}</td>
             <td>{{item.StartDate}}</td>
             <td>{{item.EndDate}}</td>
             <td> <i class="fa fa-pencil text-success ml-3"></i> </td>
             <td> <i class="fa fa-trash text-danger ml-3" (click)="DeleteProject(i)"></i> </td>
         </tr>
+
     </tbody>
+
 </table>
+<h6 class="text-center text-danger" *ngIf="msg">Data is not Available</h6>
 <button class="btn btn-outline-success mr-2 pull-right">Submit</button>
 <button class="btn btn-info myButton" routerLink="/main/createProject"><i class="fa fa-file-text-o"></i> Create New Project</button>
 

@@ -58,11 +58,9 @@
                 input.ng-invalid.ng-touched {
                     border: 1.4px solid red;
                 }
-                
                 input.ng-valid {
                     border: 1.4px solid green;
                 }
-                
                 .form-control {
                     border: 1.4px solid green;
                     box-shadow: none;
@@ -78,7 +76,6 @@
                     cursor: pointer;
                 }
             }
-
             .button_btn.text-center {
                 display: inline-block;
                 width: 100%;
@@ -92,4 +89,8 @@
     display: inline-block;
     width: 100%;
     position: relative;
+}
+
+span {
+    color: red;
 }
