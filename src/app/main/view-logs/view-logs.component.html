@@ -3,14 +3,16 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Customer </th>
+            <th scope="col">ID </th>
+            <th scope="col">Unique Access ID </th>
             <th scope="col">Total Licence Distributed </th>
-            <th scope="col">Product Family</th>
             <th scope="col">Product Code</th>
-            <th scope="col">Version</th>
             <th scope="col">Licence Type</th>
             <th scope="col">Expiration Period</th>
             <th scope="col">Start Date</th>
             <th scope="col">End Date</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Modified At</th>
 
         </tr>
     </thead>
@@ -18,14 +20,16 @@
         <tr *ngFor="let item of logs index as i">
             <td scope="row" class="pl-2">{{i+1}}</td>
             <td>{{item.customerName}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.uniqueAccessId}}</td>
             <td class="text-center">{{item.LicenceDistributed}}</td>
-            <td>{{item.ProductFamily}}</td>
-            <td>{{i+4}}</td>
-            <td class="text-dark">{{item.Version}}</td>
+            <td class="text-center">{{item.productCode}}</td>
             <td>{{item.LicenceType}}</td>
             <td>{{item.ExpirationPeriod}}</td>
             <td>{{item.StartDate}}</td>
             <td>{{item.EndDate}}</td>
+            <td>{{item.Createdat}}</td>
+            <td>{{item.LastModified}}</td>
         </tr>
     </tbody>
 </table>
