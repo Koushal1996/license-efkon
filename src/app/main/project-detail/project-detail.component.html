@@ -1,40 +1,3 @@
-<<<<<<< HEAD
-<div class="container">
-    <form action="" class="form-inline">
-        <div class="form-group ">
-            <input type="text" placeholder="Search here..." id="myInput" (keyup)=onKeydownEvent() class="form-control ">
-        </div>
-        <div class="form-group" (change)="OnselectSearch($event.target.value)">
-            <select name="" id="" class="form-control">
-                <option value="1">Search By Customer</option>
-                <option value="2">Search By Product Family</option>
-                <option value="3">Search By Product Code</option>
-                <option value="5">Search By Licence Count</option>
-                <option value="6">Search By Licence Type</option>
-                <option value="8">Search By Expiration Period</option>
-            </select>
-        </div>
-        <div class="form-group" (change)="OnselectSortItem($event.target.value)">
-        <select name="" id="" class="form-control">
-            <option >Sort By..</option>
-            <option value="1">Search By Customer</option>
-            <option value="2">Search By Product Family</option>
-            <option value="3">Search By Product Code</option>
-            <option value="5">Search By Licence Count</option>
-            <option value="6">Search By Licence Type</option>
-            <option value="8">Search By Expiration Period</option>
-            </select>
-        </div>
-        <div class="form-group" (change)="OnPagination($event.target.value)">
-        <select name="" id="" class="form-control">
-            <option value="5" >5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-            <option value="300">Show All</option>
-            </select>
-        </div>
-    </form>
-=======
 <div class="container-container">
     <div class="row">
         <div class="col-3">
@@ -80,7 +43,6 @@
         </div>
 
     </div>
->>>>>>> 707cd557889ddb9362593309600ff582c0a5186f
 </div>
 <table class="table table-hover table-stripped table-sm  mt-3" id="myTable">
     <thead class="users_table_hader">
@@ -119,10 +81,7 @@
         <h6 class="text-center text-danger" *ngIf="msg">{{msg1}}</h6>
     </tbody>
 </table>
-<<<<<<< HEAD
-=======
-<button class="btn btn-outline-success mr-2 pull-right">Submit</button>
->>>>>>> 707cd557889ddb9362593309600ff582c0a5186f
+
 <button class="btn btn-info myButton" routerLink="/main/createProject"><i class="fa fa-file-text-o"></i> Create New Project</button>
 <div class="container">
     <div class="modal fade" id="myModal">

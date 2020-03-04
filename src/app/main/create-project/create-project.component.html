@@ -1,39 +1,35 @@
 <div class="form_main ">
+    <!-- Craete new Customer -->
     <div id="myDIV" class="main_form mt-4" style="border-bottom:2px solid #ddd; display: none;">
         <h3 class="text-center text-info">Create Customer</h3>
-        <form class="mt-4" >
+        <form class="mt-4">
             <div class="form-group">
                 <label for="customername">Name<span>*</span></label>
-                <input type="text" name="CustomerName" [(ngModel)]="model.CustomerName" class="form-control"
-                    id="inputEmail3" placeholder="Name" #cusName='ngModel' ngModel required>
+                <input type="text" name="CustomerName" [(ngModel)]="model.CustomerName" class="form-control" id="inputEmail3" placeholder="Name" #cusName='ngModel' ngModel required>
                 <small class="text-danger" *ngIf="!cusName.valid && cusName.touched"><strong></strong>Name
                     required</small>
             </div>
             <div class="form-group">
                 <label for="customername">Contact Number</label>
-                <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control"
-                    id="contactnumber" placeholder="Contact Number" #Connumber='ngModel' ngModel required>
+                <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control" id="contactnumber" placeholder="Contact Number" #Connumber='ngModel' ngModel required>
                 <small class="text-danger" *ngIf="!Connumber.valid && Connumber.touched"><strong></strong>Contact Number
                     required</small>
             </div>
             <div class="form-group">
                 <label for="userId">User Id <span>*</span></label>
-                <input type="text" name="UserId" [(ngModel)]="model.UserId" class="form-control" id="inputEmail3"
-                    placeholder="User Id" #cusId='ngModel' ngModel required>
+                <input type="text" name="UserId" [(ngModel)]="model.UserId" class="form-control" id="inputEmail3" placeholder="User Id" #cusId='ngModel' ngModel required>
                 <small class="text-danger" *ngIf="!cusId.valid && cusId.touched"><strong></strong>User Id
                     required</small>
             </div>
             <div class="form-group">
                 <label for="userId">Email Id <span>*</span></label>
-                <input type="text" name="EmailId" [(ngModel)]="model.EmailId" class="form-control" id="inputEmail3"
-                    placeholder="Mail Id" email #mailId='ngModel' ngModel [required]='checked'>
+                <input type="text" name="EmailId" [(ngModel)]="model.EmailId" class="form-control" id="inputEmail3" placeholder="Mail Id" email #mailId='ngModel' ngModel [required]='checked'>
                 <small class="text-danger" *ngIf="!mailId.valid && mailId.touched"><strong></strong>Valid mail Id
                     required</small>
             </div>
             <div class="form-group">
                 <label for="password">Password <span>*</span></label>
-                <input name="password" [(ngModel)]="model.password" [type]="password ? 'password' :'text'" minlength='5'
-                    class="form-control" id="inputEmail3" placeholder="Password" #cusPass='ngModel' ngModel required>
+                <input name="password" [(ngModel)]="model.password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password" #cusPass='ngModel' ngModel required>
                 <div class="click_password" (click)="onEyeClick()">
                     <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
                     <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
@@ -41,11 +37,10 @@
                 <small class="text-danger" *ngIf="!cusPass.valid && cusPass.touched"><strong></strong>Password must be 6
                     character</small>
             </div>
-         
+
             <div class="custom-check">
                 <div class="custom-checkbox ">
-                    <input type="checkbox" [checked]="checked" class="custom-control-input"
-                        id="customCheck" name="example1">
+                    <input type="checkbox" [checked]="checked" class="custom-control-input" id="customCheck" name="example1">
                     <label for="customCheck">Do you want to send mail ?</label>
                 </div>
             </div>
@@ -56,87 +51,88 @@
             </div>
         </form>
     </div>
+
+
+
+
+    <!-- Craete New Project -->
     <div class="main_form">
         <h3 class="text-center text-info">Create New Project</h3>
-        <form class="mt-4 ng-untouched ng-pristine ng-invalid">
+        <form class="mt-4 ng-untouched ng-pristine ng-invalid" [formGroup]="myCreateProjectForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <label for="userId">Customer</label>
-                <select class="form-control" name="customername" [(ngModel)]="model.customername">
-                    <option value="0">Choose Customer</option>
-                    <option value="Noida_Htms">Noida_Htms</option>
-                    <option value="VSCL">VSCL</option>
-                    <option value="TSCL">TSCL</option>
-                    <option value="ASCL">ASCL</option>
+                <select class="form-control" formControlName="customer">
+                    <option [ngValue]="null">Choose Customer</option>
+                    <option *ngFor="let item of customerName" value={{item.id}} >{{item.name}}</option>
+
                 </select>
+                <small class="text-danger" *ngIf="!myCreateProjectForm.get('customer').valid && myCreateProjectForm.get('customer').touched">Choose Customer</small>
             </div>
             <div class="form-group ">
                 <label for="userId">Product Family</label>
-                <select class="form-control" name="productFamily" [(ngModel)]="model.productFamily">
-                    <option value="0">Choose Product Family</option>
-                    <option value="EES">EES</option>
-                    <option value="ITMS">ITMS</option>
-                    <option value="HTMS">HTMS</option>
-                    <option value="TMS">TMS</option>
+                <select class="form-control" formControlName="ProductFamily" [(ngModel)]="selectedCountry.id" (change)="onSelect($event.target.value)">
+                  <option [ngValue]="null">Choose Product Family</option>
+                  <option *ngFor="let country of countries" value= {{country.id}}>{{country.name}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="userId">Product Code</label>
-                <select class="form-control" name="productCode" [(ngModel)]="model.productCode">
-                    <option value="0">Choose Product Code</option>
-                    <option value="RLVD">RLVD</option>
-                    <option value="SVD">SVD</option>
-                    <option value="ANPR">ANPR</option>
+                <select class="form-control" formControlName="ProductCode">
+                  <option [ngValue]="null">Choose Product Code</option>
+                  <option *ngFor="let state of productcode " value= {{state.id}}>{{state.name}}</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="userId">Version</label>
-                <input type="text" name="version" [(ngModel)]="model.version" class="form-control" id="inputEmail3"
-                    placeholder="Version">
+                <select class="form-control" formControlName="Version">
+                  <option [ngValue]="null">Choose Version</option>
+                  <option value="1">1.1</option>
+                  <option value="2">1.3</option>
+                  <option value="3">1.4</option>
+              </select>
             </div>
             <div class="form-group ">
                 <label for="userId">Licence Type</label>
-                <select class="form-control" name="LicenceType" [(ngModel)]="model.LicenceType">
-                    <option value="0">Choose Licence Type</option>
-                    <option value="1">RLVD</option>
-                    <option value="2">SVD</option>
-                    <option value="3">ANPR</option>
+                <select class="form-control" formControlName="LicenceType">
+                  <option [ngValue]="null">Choose Licence Type</option>
+                    <option value="1">Commercial</option>
+                    <option value="2">Demo</option>
+
                 </select>
             </div>
             <div class="form-group ">
-                <label for="userId">Users</label>
-                <input type="text" name="users" [(ngModel)]="model.users" class="form-control" id="inputEmail3"
-                    placeholder="Users">
+                <label for="userId">Licence Count</label>
+                <input type="text" formControlName="LicenceCount" class="form-control" placeholder="Licence Count">
             </div>
             <div class="form-group">
                 <label for="password">Exp. Period</label>
-                <select class="form-control" [(ngModel)]="model.expPeriod" name="expPeriod"
-                    (change)="onChangeExp($event)">
+                <select class="form-control" formControlName="ExpPeriod" (change)="onChangeExp($event)">
+                  <option [ngValue]="null">Choose Exp. Period</option>
                     <option value="1">LifeTime</option>
                     <option value="2">Limited</option>
                 </select>
             </div>
             <div class="form-group">
                 <label for="password">Start Date</label>
-                <input type="date" name="date1" [(ngModel)]="model.date1" class="form-control">
+                <input type="date" name="date1" formControlName="Startdate" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="password">End Date</label>
+                <input type="date" disabled class="form-control" formControlName="endDate">
             </div>
             <div class="form-group" *ngIf="ShowPeriod">
                 <label for="password">Enter Period</label>
-                <input type="text" name="period" id="abc" (change)="getChangeEventdate($event)"
-                    [(ngModel)]="model.period" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="password">End Date</label>
-                <input type="date" disabled [(ngModel)]="model.endDate" class="form-control" name="endDate">
+                <input type="text" id="abc" (change)="getChangeEventdate($event)" formControlName="period" class="form-control">
             </div>
             <div class="button_btn text-center">
-                <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-times"
-                        aria-hidden="true"></i> Remove </button>
+                <!-- <button type="button" class="btn btn-outline-success " (click)="addProduct()"><i class="fa fa-times"
+                        aria-hidden="true"></i> Remove </button> -->
                 <button class="btn btn-outline-info ml-3" type="submit"><i class="fa fa-floppy-o"
                         aria-hidden="true"></i> Save Detail</button>
-                <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i
-                        class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
+                <button type="button" (click)="onClear()" class="btn btn-outline-danger ml-3"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
             </div>
         </form>
     </div>
-    <button onclick="myFunction()"  _ngcontent-hle-c54="" routerlink="/main/createUser" class="btn btn-info myButton" tabindex="0" ng-reflect-router-link="/main/createUser"><i _ngcontent-hle-c54="" class="fa fa-user-plus"></i> Create Customer</button>
+    <button onclick="myFunction()" _ngcontent-hle-c54="" routerlink="/main/createUser" class="btn btn-info myButton" tabindex="0" ng-reflect-router-link="/main/createUser"><i _ngcontent-hle-c54="" class="fa fa-user-plus"></i> Create Customer</button>
 </div>
