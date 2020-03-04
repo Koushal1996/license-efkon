@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule, NgForm, FormGroup } from '@angular/forms';
 import { UsersServicesService } from '../users/users-services.service';
 
 @Component({
@@ -14,7 +14,9 @@ export class CreateUserComponent implements OnInit {
   select:boolean=true;
   selectedValue:string="Select Role"
   myAllUser:any;
+  myReactiveForm:FormGroup;
   model:any={};
+  userData:any;
   role = [
     {id: 4, name: "Approver"},
     {id: 1, name: "Admin"},
@@ -24,6 +26,7 @@ export class CreateUserComponent implements OnInit {
   constructor(private userServices:UsersServicesService) { }
 
   ngOnInit(): void {
+    this.userData=this.userServices.users;
 
   }
   checkBoxClick()
@@ -39,7 +42,8 @@ export class CreateUserComponent implements OnInit {
 
   onSubmit()
   {
-console.log(this.model)
+
+console.log((this.model.value))
   }
 
 }

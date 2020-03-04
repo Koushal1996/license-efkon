@@ -1,4 +1,18 @@
-<table class="table table-hover table-stripped table-sm  ">
+ <form action="" class="form-inline">
+    <div class="form-group d-flex ">
+        <input type="text" placeholder="Search here..." id="myInput" (keydown)=onKeydownEvent($event) class="form-control">
+    </div>
+    <div class="form-group " (change)="Onselect($event.target.value)">
+        <select name="" id="" class="form-control">
+            <option value="1">Sort By Name</option>
+            <option value="2">Sort By User ID</option>
+            <option value="3">Sort By Role</option>
+            <option value="4">Sort By Status</option>
+            <option value="5">Sort By Email ID</option>
+        </select>
+    </div>
+</form>
+<table class="table table-hover table-stripped table-sm mt-2" id="myTable">
     <thead class="users_table_hader">
         <tr>
             <th scope="col">#</th>

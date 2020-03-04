@@ -78,7 +78,6 @@ body {
                 input.ng-invalid.ng-touched {
                     border: 1px solid red;
                 }
-                
                 input.ng-valid {
                     border: 1px solid green;
                 }
@@ -86,3 +85,9 @@ body {
         }
     }
 }
+
+// Loader
+
+/*
+The loaders use CSS custom properties (variables) to control the attributes of the loaders
+*/

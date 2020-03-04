@@ -1,4 +1,40 @@
-<table class="table table-hover table-stripped table-sm  ">
+<div class="container">
+    <form action="" class="form-inline">
+        <div class="form-group ">
+            <input type="text" placeholder="Search here..." id="myInput" (keyup)=onKeydownEvent() class="form-control ">
+        </div>
+        <div class="form-group" (change)="OnselectSearch($event.target.value)">
+            <select name="" id="" class="form-control">
+                <option value="1">Search By Customer</option>
+                <option value="2">Search By Product Family</option>
+                <option value="3">Search By Product Code</option>
+                <option value="5">Search By Licence Count</option>
+                <option value="6">Search By Licence Type</option>
+                <option value="8">Search By Expiration Period</option>
+            </select>
+        </div>
+        <div class="form-group" (change)="OnselectSortItem($event.target.value)">
+        <select name="" id="" class="form-control">
+            <option >Sort By..</option>
+            <option value="1">Search By Customer</option>
+            <option value="2">Search By Product Family</option>
+            <option value="3">Search By Product Code</option>
+            <option value="5">Search By Licence Count</option>
+            <option value="6">Search By Licence Type</option>
+            <option value="8">Search By Expiration Period</option>
+            </select>
+        </div>
+        <div class="form-group" (change)="OnPagination($event.target.value)">
+        <select name="" id="" class="form-control">
+            <option value="5" >5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="300">Show All</option>
+            </select>
+        </div>
+    </form>
+</div>
+<table class="table table-hover table-stripped table-sm  mt-3" id="myTable">
     <thead class="users_table_hader">
         <tr>
             <th scope="col" class="text-center">#</th>
@@ -17,16 +53,15 @@
         </tr>
     </thead>
     <tbody>
-
-        <tr *ngFor="let item of myProjectDetail index as i">
+        <tr *ngFor="let item of myProjectDetail| slice:0:item; index as i">
             <td scope="row" class="pl-2">{{i+1}}</td>
             <td>{{item.customerName}}</td>
             <td class="text-center">{{item.ProductFamily}}</td>
-            <td class="text-center">{{i+4}}</td>
+            <td class="text-center">{{item.productCode}}</td>
             <td class="text-dark text-center">{{item.Version}}</td>
             <td class="text-center">{{item.Users}}</td>
             <td>{{item.LicenceType}}</td>
-            <td [style.color]="item.ProjectStatus=='Reject' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td>
+            <td [style.color]="item.ProjectStatus=='REJECTED' ? 'red':'green' && item.ProjectStatus=='Pending' ? 'blue':'green' ">{{item.ProjectStatus}}</td>
             <td>{{item.ExpirationPeriod}}</td>
             <td>{{item.StartDate}}</td>
             <td>{{item.EndDate}}</td>
@@ -36,10 +71,7 @@
     </tbody>
 </table>
 <button class="btn btn-info myButton" routerLink="/main/createProject"><i class="fa fa-file-text-o"></i> Create New Project</button>
-
-
 <div class="container">
-
     <div class="modal fade" id="myModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -47,7 +79,6 @@
                     <h4 class="modal-title text-danger">Reason of Rejection</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-
                 <div class="modal-body">
                     <div class="container">
                         <div class="row">
@@ -63,5 +94,4 @@
             </div>
         </div>
     </div>
-
 </div>

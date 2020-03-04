@@ -21,6 +21,7 @@
                 <button type="submit" [disabled]="!f.valid" class="btn btn-primary btn-block btn-lg">Sign In ? </button>
             </div>
         </form> -->
+
         <form [formGroup]="myLoginForm" (ngSubmit)="onSubmit()">
             <div class="form-header">
                 <h2>Sign In</h2>
@@ -39,8 +40,13 @@
             <div class="form-group">
                 <small routerLink="/forget">Forget password ?</small>
             </div>
-            <div class="form-group">
-                <button type="submit" [disabled]="!myLoginForm.valid" class="btn btn-primary btn-block btn-sm">Sign In ? </button>
+            <div class="form-group text-center">
+                <button type="submit" [disabled]="!myLoginForm.valid" class="btn btn-primary btn-block btn-sm">Sign In  <span class="spinner-border spinner-border-sm ml-2" *ngIf="loader" role="status" aria-hidden="true"></span>
+                  </button>
+
+
+
+                <!-- <div class="loader " ></div> -->
             </div>
         </form>
     </div>
