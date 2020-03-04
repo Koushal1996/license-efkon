@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthguardGuard } from './authguard.guard';
 import { ForgetPsswordComponent } from './forget-pssword/forget-pssword.component';
-import { NotFoundPageComponent } from './main/not-found-page/not-found-page.component';
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 
 
 const routes: Routes = [

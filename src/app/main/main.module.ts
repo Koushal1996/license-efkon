@@ -7,7 +7,6 @@ import { UsersComponent } from './users/users.component';
 import { LicenceComponent } from './licence/licence.component';
 import { ViewLogsComponent } from './view-logs/view-logs.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { FormsModule } from '@angular/forms';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
@@ -30,7 +29,6 @@ import { UpdateProjectComponent } from './update-project/update-project.componen
     LicenceComponent,
     ViewLogsComponent,
     ChangePasswordComponent,
-    NotFoundPageComponent,
      CreateUserComponent,
     CreateProjectComponent,
     UpdateLicenceComponent,

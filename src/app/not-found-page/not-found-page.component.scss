@@ -1,0 +1,23 @@
+.clear_image {
+    display: inline-block;
+    width: 100%;
+    background: #ddd;
+    position: relative;
+    img {
+        display: inline-block;
+        width: 100%;
+    }
+    .btn.btn-outline-info {
+        float: right;
+        border: 1px solid #333;
+        color: #333;
+        position: absolute;
+        bottom: 10px;
+        right: 20px;
+        &:hover{
+            background: #0e6cbd;
+            color: #fff;
+            border: 1px solid #0e6cbd;
+        }
+    }
+}

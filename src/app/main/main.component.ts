@@ -30,3 +30,4 @@ export class MainComponent{
     this.submenu=!this.submenu;
   }
 }
+
