@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MyProjectDetailService } from 'src/app/Services/my-project-detail.service';
 import { ProjectDetailServiceService } from '../project-detail/project-detail-service.service';
 
 @Component({
@@ -9,10 +10,14 @@ import { ProjectDetailServiceService } from '../project-detail/project-detail-se
 export class GenerateLicenceComponent implements OnInit {
 
   customerName:any;
-  constructor(private myServices: ProjectDetailServiceService) { }
+  projectCode: { id: number; productFamily_id: number; name: string; }[];
+  constructor(private myServices: MyProjectDetailService,private customerNAme:ProjectDetailServiceService) { }
 
   ngOnInit(): void {
-this.customerName=this.myServices.ViewLog;
+this.projectCode=this.myServices.productCode;
+this.customerName=this.customerNAme.ViewLog;
+
+
   }
-n
+
 }

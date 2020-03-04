@@ -11,8 +11,9 @@ myProjectDetail:any=[];
 projectStatus:boolean
 Searchvalue:number=1;
 SortValue:number=1;
-msg:string
+msg:boolean=false;
 item=5;
+  msg1: string;
   constructor(private _myServices:ProjectDetailServiceService) { }
   alerts:boolean=false
   // ngOnInit() function
@@ -65,12 +66,17 @@ this.projectStatus=!this.projectStatus;
       if (td) {
         txtValue = td.textContent || td.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          this.msg1="Sorry, Data not available !!"
           tr[i].style.display = "";
 
         } else {
           tr[i].style.display = "none";
-
+         this.msg=true
         }
+      }
+      else
+      {
+
       }
     }
   }

@@ -20,6 +20,7 @@ import { RequestComponent } from './request/request.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
+import { MyProjectDetailService } from '../Services/my-project-detail.service';
 
 
 @NgModule({
@@ -45,6 +46,6 @@ import { UpdateProjectComponent } from './update-project/update-project.componen
     MainRoutingModule,
     RouterModule
   ],
-  providers :[UsersServicesService]
+  providers :[UsersServicesService,MyProjectDetailService]
 })
 export class MainModule { }
