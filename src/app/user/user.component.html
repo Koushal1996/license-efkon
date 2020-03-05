@@ -1,54 +1,46 @@
 <div class="d-flex" id="wrapper">
-
-    <!-- Sidebar -->
     <div class="bg-light border-right " id="sidebar-wrapper">
-        <div class="sidebar-heading"><img src="assets/img/images.png" class="img-fluid" style="width: 200px;" alt=""> </div>
-        <hr>
-        <div class="list-group list-group-flush mt-3">
-            <h6 routerLink="/user/viewProjectUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action bg-light">Projects Detail</h6>
-            <h6 routerLinkActive="active" class="list-group-item list-group-item-action bg-light" (click)="subMenu1()">Licence <i class="fa fa-chevron-down ml-6"></i></h6>
+        <div class="sidebar-logo">
+            <!-- <img src="assets/img/images.png" class="img-fluid" style="width: 200px;" alt=""> -->
+            <a href="#"><img src="assets/img/logo.png" alt="" class="logo"></a>
+         </div>
+        <div class="list-group list-group-flush">
+            <ul>
+                <li routerLink="/user/viewProjectUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="list-group-item list-group-item-action bg-light">Projects Detail</li>
+                <li routerLinkActive="active" class="list-group-item list-group-item-action bg-light" (click)="subMenu1()">Licence <i class="fa fa-chevron-down ml-6"></i></li>
 
-            <div *ngIf="submenu">
-                <!-- <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/main/generateLicence"><strong><i class="fa fa-check"></i> Generate Licence Key</strong></p> -->
-                <p class="ml-3 submenu" routerLinkActive="active1" [routerLinkActiveOptions]="{ exact: true }" routerLink="/user/viewUserLicence"><strong><i class="fa fa-check"></i> View</strong></p>
-                <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/updateUser"><strong><i class="fa fa-check"></i> Update Licence Key</strong></p>
-                <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/renewUser"><strong><i class="fa fa-check"></i> Renew Licence Key</strong></p>
-                <p class="ml-3 submenu" routerLinkActive="active1" routerLink="/user/requestUser"><strong><i class="fa fa-check"></i> Request Licence Key</strong></p>
-            </div>
-            <h6 routerLink="/user/viewLicenceskeyLogsUser" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">View Licence Key Log</h6>
-            <h6 routerLink="/user/requestStatus" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Request Status</h6>
-            <h6 routerLink="/user/changeUserpsw" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Change Password</h6>
-
+                <div *ngIf="submenu">
+                    <div class="dropdown_sidebar">
+                        <ul>
+                            <li routerLinkActive="check_menu" [routerLinkActiveOptions]="{ exact: true }" routerLink="/user/viewUserLicence"><i class="fa fa-check"></i> View</li>
+                            <li routerLinkActive="check_menu" routerLink="/user/updateUser"><i class="fa fa-check"></i> Update Licence Key</li>
+                            <li routerLinkActive="check_menu" routerLink="/user/renewUser"><i class="fa fa-check"></i> Renew Licence Key</li>
+                            <li routerLinkActive="check_menu" routerLink="/user/requestUser"><i class="fa fa-check"></i> Request Licence Key</li>
+                        </ul>
+                    </div>
+                </div>
+                <li routerLink="/user/viewLicenceskeyLogsUser" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">View Licence Key Log</li>
+                <li routerLink="/user/requestStatus" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Request Status</li>
+                <li routerLink="/user/changeUserpsw" routerLinkActive="active" class="list-group-item list-group-item-action bg-light">Change Password</li>
+            </ul>
         </div>
     </div>
     <div id="page-content-wrapper">
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <button class="btn btn-outline" id="menu-toggle"><i class="fa fa-th-list text-info"></i></button>
-
-            <button class=" btn navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-            <a class="nav-link home" routerLink="/main/users"><span class="text-success">Home</span> <span class="sr-only">(current)</span></a>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                    <li> <img src="assets/img/avatar.jpeg" class="img-fluid userImage" alt="" style="width: 50px;height: 50px;"> </li>
-                    <li class="nav-item d-flex align-items-center">
-                        <a class="nav-link text-dark"> <strong>User</strong> </a>
+        <div class="header_main"> 
+            <div class="Toggle_button">
+                <button _ngcontent-dek-c51="" id="menu-toggle"><i _ngcontent-dek-c51="" aria-hidden="true" class="fa fa-bars"></i></button>
+            </div>
+            <div class="manu">
+                <ul >
+                    <li> <a href="#"> User</a>
+                        <img src="assets/img/avatar.jpeg" class="img-fluid userImage" alt="" style="width: 50px;height: 50px;">
                     </li>
-                    <li class="nav-item d-flex align-items-center">
-                        <a class="nav-link text-dark" (click)="logout()" style="cursor: pointer;">Logout <i class="fa fa-arrow-right text-info"></i></a>
-                    </li>
+                    <li> <a href="#" (click)="logout()" style="cursor: pointer;">Logout <i _ngcontent-tuf-c51="" aria-hidden="true" class="fa fa-sign-out"></i></a></li>
                 </ul>
             </div>
-        </nav>
+        </div>
         <div class="container-fluid">
-
             <router-outlet></router-outlet>
-            <!-- <app-generate-licence-user></app-generate-licence-user> -->
         </div>
     </div>
-
-
 </div>

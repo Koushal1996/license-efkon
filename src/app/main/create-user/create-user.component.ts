@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm, FormGroup } from '@angular/forms';
+import { FormsModule, NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { UsersServicesService } from '../users/users-services.service';
+import { MyProjectDetailService } from 'src/app/Services/my-project-detail.service';
 
 @Component({
   selector: 'app-create-user',
@@ -8,26 +9,32 @@ import { UsersServicesService } from '../users/users-services.service';
   styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent implements OnInit {
-  checked: boolean = false;
-  password: boolean = true;
+  // All vriable user
+  checked: boolean = false; // For Checkbox
+  password: boolean = true; // For Password
   eyeStatus: boolean = false;
   select:boolean=true;
   selectedValue:string="Select Role"
   myAllUser:any;
-  myReactiveForm:FormGroup;
   model:any={};
   userData:any;
-  role = [
-    {id: 4, name: "Approver"},
-    {id: 1, name: "Admin"},
-    {id: 3, name: "Reviewer"},
-    {id: 2, name: "User"},
-  ];
-  constructor(private userServices:UsersServicesService) { }
+  role:any;
+  myForm:FormGroup
+  constructor(private userServices:UsersServicesService, private myRole:MyProjectDetailService) { }
 
   ngOnInit(): void {
     this.userData=this.userServices.users;
-
+    this.role=this.myRole.Role
+    this.myForm=new FormGroup(
+      {
+    'CustomerName':new FormControl(null,Validators.required),
+    'ContactNumber':new FormControl(null,),
+    'UserId':new FormControl(null,Validators.required),
+    'EmailId':new FormControl(null,[Validators.required,Validators.required]),
+    'Password':new FormControl(null,Validators.required),
+    'role':new FormControl(null,Validators.required),
+      }
+    )
   }
   checkBoxClick()
   {
@@ -43,7 +50,11 @@ export class CreateUserComponent implements OnInit {
   onSubmit()
   {
 
-console.log((this.model.value))
+console.log((this.myForm.value))
   }
-
+// Reset form
+onResetForm()
+{
+  this.myForm.reset();
+}
 }

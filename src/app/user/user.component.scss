@@ -14,11 +14,11 @@ body {
 .navbar-toggler {
     outline: none;
 }
-
-.home {
-    color: black;
-    opacity: .8;
+.toggled #page-content-wrapper{
+    width: 100%;
+    // display: inline-block;
 }
+
 
 .container-fluid {
     padding-right: 0;
@@ -28,14 +28,6 @@ body {
 h6:focus {
     outline: none;
 }
-
-.active {
-    color: white;
-    border: none;
-    background: #17a2b8 !important;
-    ;
-}
-
 .list-group-item {
     cursor: pointer;
 }
@@ -65,7 +57,7 @@ h6:focus {
 }
 
 #page-content-wrapper {
-    min-width: 100vw;
+    min-width: 100%;
 }
 
 #wrapper.toggled #sidebar-wrapper {
@@ -77,8 +69,10 @@ h6:focus {
         margin-left: 0;
     }
     #page-content-wrapper {
-        min-width: 0;
-        width: 100%;
+        width: calc(100% - 250px);
+        position: relative;
+        float: right;
+        display: inline-block;
     }
     #wrapper.toggled #sidebar-wrapper {
         margin-left: -15rem;
@@ -89,12 +83,6 @@ h6:focus {
     cursor: pointer;
     box-shadow: none;
 }
-
-.active1 {
-    background: rgb(173, 168, 168);
-    box-shadow: none;
-}
-
 .ml-6 {
     margin-left: 7rem!important;
 }

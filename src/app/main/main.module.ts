@@ -7,7 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { LicenceComponent } from './licence/licence.component';
 import { ViewLogsComponent } from './view-logs/view-logs.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { UsersServicesService } from './users/users-services.service';
@@ -44,7 +44,8 @@ import { MyProjectDetailService } from '../Services/my-project-detail.service';
     CommonModule,
     FormsModule,
     MainRoutingModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   providers :[UsersServicesService,MyProjectDetailService]
 })
