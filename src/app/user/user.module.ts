@@ -17,6 +17,8 @@ import { ViewLicenceUserComponent } from './view-licence-user/view-licence-user.
 import { RequestStatusComponent } from './request-status/request-status.component';
 import { UpdateRequestComponent } from './update-request/update-request.component';
 import { RequestLicenceKeyUserComponent } from './create-licence-request-key-user/request-licence-key-user.component';
+import { UpdateUserSingleLicenseComponent } from './update-user-single-license/update-user-single-license.component';
+import { RenewUserSingleLicenseComponent } from './renew-user-single-license/renew-user-single-license.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { RequestLicenceKeyUserComponent } from './create-licence-request-key-use
     ViewLicenceUserComponent,
     RequestStatusComponent,
     UpdateRequestComponent,
-    RequestLicenceKeyUserComponent
+    RequestLicenceKeyUserComponent,
+    UpdateUserSingleLicenseComponent,
+    RenewUserSingleLicenseComponent
 
 ],
   imports: [

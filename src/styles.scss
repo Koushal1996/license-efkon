@@ -4,8 +4,9 @@ $color:#333;
 .form-group small.text-danger {
     position: absolute;
     bottom: -20px;
-    left: 20px;
+    left: 0px;
 }
+$color-text:#ddd;
 
 // /.....scss manoj..../
 // /....user../
@@ -19,10 +20,12 @@ $color:#333;
 }
 .table th {
     padding: 10px;
+    text-align: center;
     border: 1px solid #ddd;
 }
 .table td {
     padding: 10px;
+    text-align: center;
     font-size: 12px;
     border: 1px solid #ddd;
     color: $color;
@@ -66,12 +69,9 @@ form {
     display: inline-block;
     width: 100%;
     text-align: left;
-    max-width: 700px;
+    // max-width: 700px;
     .form-group {
-        display: inline-block;
-        width: 50%;
-        padding: 0 20px;
-        position: relative;
+   
         label {
             padding: 7px 0;
             display: inline-block;
@@ -251,34 +251,33 @@ div#sidebar-wrapper {
 
 //..........project_detail..........//
 
-select.form-control.ng-untouched.ng-pristine.ng-valid {
-    display: inline-block;
-    width: 250px;
-    float: left;
-    box-shadow: none;
-}
+
 .form-control:focus{
     box-shadow: none;
 }
-input#inputEmail3, input.form-control.ng-untouched.ng-pristine.ng-valid, input.form-control.ng-untouched.ng-pristine {
-    display: inline-block;
-    width: 100%;
-    float: inherit;
-}
-.form-group, .form-control {
-    width: 250px;
-    float: left;
+input#inputEmail3{
+    input.form-control.ng-untouched.ng-pristine.ng-valid {
+        input.form-control.ng-untouched.ng-pristine {
+            display: inline-block;
+            width: 100%;
+            float: inherit;
+        }
+    }
 }
 
-button.btn.btn-info.myButton, .myButton[_ngcontent-xlt-c52] {
-    color: white;
-    text-align: center;
-    position: fixed;
-    bottom: 10px;
-    right: 18px;
-    background-color: #0e6cbd;
-    border-color: #0e6cbd;
-    box-shadow: none;
+
+
+button.btn.btn-info.myButton{
+    .myButton[_ngcontent-xlt-c52] {
+        color: white;
+        text-align: center;
+        position: fixed;
+        bottom: 10px;
+        right: 18px;
+        background-color: #0e6cbd;
+        border-color: #0e6cbd;
+        box-shadow: none;
+    }
 }
 //.........change-password..........//
 
@@ -333,5 +332,43 @@ select#my-select {
 
 }
 
-//........logout&singup...........//
+//........table css...........//
 
+.middle-content {
+    margin-top: 90px;
+    box-shadow: 0 0 5px #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+.bg-light {
+    background-color: #fff !important;
+}
+.table {
+    width: 100%;
+    margin-bottom: 0;
+    color: #212529;
+    position: relative;
+}
+.myButton{
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 10px;
+    background: #0e6cbd;
+    box-shadow: none;
+    right: 10px;
+}
+.btn-info {
+    color: #fff;
+    background-color: #0e6cbd !important;
+    border-color: #0e6cbd !important;
+    box-shadow: none;
+    &:hover{
+      background-color: #1c5f98 !important;
+      border-color: #1c5f98 !important;
+    }
+}
+
+.btn-info:not(:disabled):not(.disabled):active:focus{
+    box-shadow: none;
+}

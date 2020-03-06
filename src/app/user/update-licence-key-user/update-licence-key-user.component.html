@@ -1,96 +1,81 @@
 <div class="container ">
-    <div class="row ">
-        <div class="col-8 offset-2 mt-3 padd">
-            <h5 class="text-center text-info">Update Old Licence Key</h5>
-            <form class="mt-3">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-2 offset-1">
-                            <label for=""><strong>User</strong></label>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
+        <div class="row ">
+            <div class="col-lg-12 p-0">
+            <div class="form_main">
+                <h5 class="text-center text-info">Update Old Licence Key</h5>
+                <div class="main_form mb-3">
+                    <form class="ng-invalid ng-dirty ng-touched">
+                        <div class="row">
+                            <div class="col-lg-5">
                                 <div class="form-group">
-                                    <select id="my-select" class="form-control" name="">
-                        <option *ngFor="let item of customerName">{{item.customerName}}</option>
-                      </select>
+                                    <label for="">User</label>
+                                    <div class="inpul-field">
+                                        <select id="my-select" class="form-control" name="">
+                                            <option *ngFor="let item of customerName">{{item.customerName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <label for="">Product Code</label>
+                                    <div class="inpul-field">
+                                        <select id="my-select" class="form-control" name="">
+                                            <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="button_btn text-left">
+                                    <button class="btn btn-outline-success">Submit</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <label for=""><strong>Product Code</strong></label>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <div class="form-group">
-                                    <select id="my-select" class="form-control" name="">
-                        <option *ngFor="let item of customerName">{{item.ProductFamily}}</option>
-                      </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 text-center ">
-                            <button class="btn btn-outline-success">Submit</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
-            <div class="container mt-5">
-                <div class="row">
-                    <div class="col-12 padd">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr class="bg-warning">
-                                    <th>Sr.</th>
-                                    <th>Old Licence Key</th>
-                                    <th>New Unique ID</th>
-                                    <th>New Licence Key </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>
-                                        <h6>1B2CFF9E2566EGG</h6>
-                                    </td>
-                                    <td><input type="text" class="form-control" placeholder="Unique Access ID"></td>
-                                    <td><button class="btn ui-button-icon-only"><u class="text-primary">Generate</u></button></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>
-                                        <h6>1B2CFF9E2566EHH</h6>
-                                    </td>
-                                    <td><input type="text" class="form-control" placeholder="Unique Access ID"></td>
-                                    <td><button class="btn ui-button-icon-only"><u class="text-primary">Generate</u></button></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>
-                                        <h6>1B2CFF9E2566EII</h6>
-                                    </td>
-                                    <td><input type="text" class="form-control" placeholder="Unique Access ID"></td>
-                                    <td><button class="btn ui-button-icon-only"><u class="text-primary">Generate</u></button></td>
-                                </tr>
-
-                            </tbody>
-
-                        </table>
-                        <div class="text-center">
-                            <button class="btn btn-outline-primary ml-3">Export as PDF</button>
-                            <button class="btn btn-outline-warning ml-3">Export as DOCS</button>
-                            <button class="btn btn-outline-success ml-3">Export as XLS</button>
-                        </div>
-                    </div>
-                </div>
+                <div class="col-li-12">
+                    <table class="table table-bordered">
+                        <thead class="users_table_hader">
+                            <tr>
+                                <th>Sr.</th>
+                                <th>Old Licence Key</th>
+                                <th>New Unique ID</th>
+                                <th>New Licence Key </th>
+                                <th>Generate </th>
+                                <th>Export XLD</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>1B2CFF9E2566EFF</td>
+                                <td ><input type="text" class="form-control" placeholder="Unique Access ID"></td>
+                                <td >1B2CFF9E2566Ekk</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>1B2CFF9E2566EGG</td>
+                                <td ><input type="text" class="form-control" placeholder="Unique Access ID"></td>
+                                <td >1B2CFF9E2566Ekk</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>1B2CFF9E2566EHH</td>
+                                <td ><input type="text" class="form-control" placeholder="Unique Access ID"></td>
+                                <td >1B2CFF9E2566Ekk</td>
+                                <td><button class="btn ui-button-icon-only">Generate</button></td>
+                                <td><button class="btn btn-outline-success">Export as XLS</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> 
             </div>
-
-
         </div>
-
     </div>
 </div>
+

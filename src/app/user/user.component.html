@@ -1,7 +1,6 @@
-<div class="d-flex" id="wrapper">
+<div id="wrapper">
     <div class="bg-light border-right " id="sidebar-wrapper">
         <div class="sidebar-logo">
-            <!-- <img src="assets/img/images.png" class="img-fluid" style="width: 200px;" alt=""> -->
             <a href="#"><img src="assets/img/logo.png" alt="" class="logo"></a>
          </div>
         <div class="list-group list-group-flush">
@@ -39,9 +38,11 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="container-fluid">
-            <router-outlet></router-outlet>
+            <div class="middle-content">
+                <router-outlet></router-outlet>
+            </div>
         </div>
     </div>
 </div>

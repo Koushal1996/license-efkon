@@ -8,6 +8,7 @@ import { ProjectDetailServiceService } from 'src/app/main/project-detail/project
 })
 export class RequestLicenceKeyUserComponent implements OnInit {
 
+ 
   checked: boolean = false;
   password: boolean = true;
   eyeStatus: boolean = false;
