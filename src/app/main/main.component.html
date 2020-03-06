@@ -12,12 +12,13 @@
                 <div *ngIf="submenu">
                     <div class="dropdown_sidebar">
                         <ul>
-                            <li routerLinkActive="check_menu" [routerLinkActiveOptions]="{ exact: true }" routerLink="/main/licence"> <i class="fa fa-check" aria-hidden="true"></i> View</li>
+                            <li routerLinkActive="check_menu" routerLink="/main/licence"> <i class="fa fa-check" aria-hidden="true"></i> View</li>
                             <li routerLinkActive="check_menu" routerLink="/main/updateLicence"> <i class="fa fa-check" aria-hidden="true"></i> Update Licence Key</li>
                             <li routerLinkActive="check_menu" routerLink="/main/renewLicence"> <i class="fa fa-check" aria-hidden="true"></i> Renew Licence Key</li>
                         </ul>
                     </div>
                 </div>
+                <li routerLink="/main/userrequest" routerLinkActive="active" class="list-group-item list-group-item-action">Requests</li>
                 <li routerLink="/main/logs" routerLinkActive="active" class="list-group-item list-group-item-action">View Licence Key Logs</li>
                 <li routerLink="/main/changePsw" routerLinkActive="active" class="list-group-item list-group-item-action">Change Password</li>
             </ul>

@@ -21,6 +21,9 @@ import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
 import { MyProjectDetailService } from '../Services/my-project-detail.service';
+import { HttpClientModule } from '@angular/common/http';
+import { UpdateSingleLicenceComponent } from './update-single-licence/update-single-licence.component';
+import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single-licence.component';
 
 
 @NgModule({
@@ -38,14 +41,17 @@ import { MyProjectDetailService } from '../Services/my-project-detail.service';
     RequestComponent,
     UpdateUserComponent,
     UserRequestsComponent,
-    UpdateProjectComponent
+    UpdateProjectComponent,
+    UpdateSingleLicenceComponent,
+    RenewSingleLicenceComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     MainRoutingModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers :[UsersServicesService,MyProjectDetailService]
 })

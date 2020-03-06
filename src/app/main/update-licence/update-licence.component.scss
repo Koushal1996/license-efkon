@@ -2,6 +2,11 @@
     padding-left: 0px;
     padding-right: 0px;
 }
+
+.notallowed {
+    cursor: not-allowed;
+}
+
 .table {
     width: 100%;
     margin-bottom: 1rem;
@@ -24,11 +29,11 @@
             color: #0a0ad8;
             font-size: 14px;
             border: 1px solid;
-            background: rgba(0,0,0,0.04);
+            background: rgba(0, 0, 0, 0.04);
             font-weight: 600;
             box-shadow: none;
             opacity: inherit;
-            &:hover{
+            &:hover {
                 color: #fff;
                 background: #0e6cbd;
                 border: 1px solid #0e6cbd;
@@ -43,7 +48,7 @@
             font-size: 14px;
             font-weight: 600;
             background: rgba(0, 0, 0, 0.04);
-            &:hover{
+            &:hover {
                 background: #0e6cbd;
                 color: #fff;
                 border: 1px solid #0e6cbd
@@ -55,13 +60,11 @@
     }
 }
 
-
-
 .form_main {
     display: inline-block;
     width: 100%;
     text-align: center;
-    padding:inherit;
+    padding: inherit;
     .main_form {
         display: inline-block;
         width: 100%;
@@ -103,7 +106,6 @@
                     float: left;
                     box-shadow: none;
                 }
-                
                 input.ng-valid {
                     border: 1.4px solid green;
                 }
@@ -122,7 +124,6 @@
                     cursor: pointer;
                 }
             }
-
             .button_btn.text-center {
                 display: inline-block;
                 width: 100%;
@@ -133,7 +134,7 @@
                 width: 20%;
                 margin-top: 36px;
                 display: inline-block;
-                .btn-outline-success{
+                .btn-outline-success {
                     border: 1px solid #0e6cbd;
                     background: no-repeat;
                     color: #0e6cbd;
