@@ -14,18 +14,18 @@
             </select>
         </div>
         <div class="form-group" (change)="OnselectSortItem($event.target.value)">
-        <select name="" id="" class="form-control">
-            <option >Sort By..</option>
-            <option value="1">Search By Customer</option>
-            <option value="2">Search By Product Family</option>
-            <option value="3">Search By Product Code</option>
-            <option value="5">Search By Licence Count</option>
-            <option value="6">Search By Licence Type</option>
-            <option value="8">Search By Expiration Period</option>
+            <select name="" id="" class="form-control">
+
+            <option value="1">Sort By Customer</option>
+            <option value="2">Sort By Product Family</option>
+            <option value="3">Sort By Product Code</option>
+            <option value="5">Sort By Licence Count</option>
+            <option value="6">Sort By Licence Type</option>
+            <option value="8">Sort By Expiration Period</option>
             </select>
         </div>
         <div class="form-group" (change)="OnPagination($event.target.value)">
-        <select name="" id="" class="form-control">
+            <select name="" id="" class="form-control">
             <option value="5" >5</option>
             <option value="10">10</option>
             <option value="15">15</option>
@@ -68,7 +68,7 @@
             <td> <i class="fa fa-pencil text-success ml-3"></i> </td>
             <td> <i class="fa fa-trash text-danger ml-3" (click)="DeleteProject(i)"></i> </td>
         </tr>
-        <h6 class="text-center text-danger" *ngIf="msg">{{msg1}}</h6>
+
     </tbody>
 </table>
 <button class="btn btn-info myButton" routerLink="/main/createProject"><i class="fa fa-file-text-o"></i> Create New Project</button>

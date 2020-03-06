@@ -15,68 +15,78 @@ import { GenerateLicenceComponent } from './generate-licence/generate-licence.co
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
+import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single-licence.component';
+import { UpdateSingleLicenceComponent } from './update-single-licence/update-single-licence.component';
 
-const routes:Routes = [
+const routes: Routes = [
   {
-    path:'',
-    component:MainComponent,
-    children:[
+    path: '',
+    component: MainComponent,
+    children: [
       {
-        path:'',
-        redirectTo:'users',
-        pathMatch:'full'
+        path: '',
+        redirectTo: 'users',
+        pathMatch: 'full'
       },
       {
-        path:'users',
-        component:UsersComponent
+        path: 'users',
+        component: UsersComponent
       },
       {
-        path:'licence',
-        component:LicenceComponent
+        path: 'licence',
+        component: LicenceComponent
       },
       {
-        path:'projectDetail',
-        component:ProjectDetailComponent
+        path: 'projectDetail',
+        component: ProjectDetailComponent
       },
       {
-        path:'logs',
-        component:ViewLogsComponent
+        path: 'logs',
+        component: ViewLogsComponent
       },
       {
-        path:'changePsw',
-        component:ChangePasswordComponent
+        path: 'changePsw',
+        component: ChangePasswordComponent
       },
       {
-        path:'createUser',
-        component:CreateUserComponent
+        path: 'createUser',
+        component: CreateUserComponent
       },
       {
-        path:'createProject',
-        component:CreateProjectComponent
+        path: 'createProject',
+        component: CreateProjectComponent
       },
       {
-        path:'updateLicence',
-        component:UpdateLicenceComponent
+        path: 'updateLicence',
+        component: UpdateLicenceComponent
       },
       {
-        path:'renewLicence',
-        component:RenewLicenceComponent
+        path: 'renewLicence',
+        component: RenewLicenceComponent
       },
       {
-        path:'generateLicence',
-        component:GenerateLicenceComponent
+        path: 'generateLicence',
+        component: GenerateLicenceComponent
       },
       {
-        path:'updateUser',
-        component:UpdateUserComponent
+        path: 'updateUser',
+        component: UpdateUserComponent
       },
       {
-        path:'userrequest',
-        component:UserRequestsComponent
+        path: 'userrequest',
+        component: UserRequestsComponent
       },
       {
-        path:'updateProject',
-        component:UpdateProjectComponent
+        path: 'updateProject',
+        component: UpdateProjectComponent
+      },
+      {
+        path: 'renewSinglelIcence',
+        component: RenewSingleLicenceComponent
+      },
+      {
+        path: 'updateSingleLicence',
+        component: UpdateSingleLicenceComponent
       },
     ]
 
@@ -94,4 +104,4 @@ const routes:Routes = [
 })
 export class MainRoutingModule {
 
- }
+}

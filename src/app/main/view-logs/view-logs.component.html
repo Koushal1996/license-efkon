@@ -1,12 +1,58 @@
-<table class="table table-hover table-stripped table-sm  ">
+<div class="container-container">
+    <div class="row">
+        <div class="col-3">
+
+            <select name="" id="" class="form-control" (change)="OnPagination($event.target.value)">
+           <option value="5" >5</option>
+           <option value="10">10</option>
+           <option value="15">15</option>
+           <option value="300">Show All</option>
+         </select>
+
+        </div>
+        <div class="col-3 ">
+
+
+            <input type="text" placeholder="Search here..." id="myInput" (keyup)=onKeydownEvent() class="form-control ">
+
+        </div>
+        <div class="col-3">
+            <select name="" id="" class="form-control" (change)="OnselectSearch($event.target.value)">
+          <option >Search By..</option>
+          <option value="1">Search By Customer</option>
+          <option value="2">Search By ID</option>
+          <option value="4">Search By Product Code</option>
+          <option value="5">Search By Licence Count</option>
+          <option value="6">Search By Licence Type</option>
+          <option value="7">Search By Expiration Period</option>
+              </select>
+        </div>
+        <div class="col-3 ">
+
+            <select name="" id="" class="form-control" (change)="OnselectSortItem($event.target.value)">
+               <option >Sort By..</option>
+               <option value="1">Sort By Customer</option>
+               <option value="2">Sort By ID</option>
+               <option value="4">Sort By Product Code</option>
+               <option value="5">Sort By Licence Count</option>
+               <option value="6">Sort By Licence Type</option>
+               <option value="7">Sort By Expiration Period</option>
+             </select>
+
+        </div>
+
+    </div>
+</div>
+
+<table class="table table-hover table-stripped table-sm mt-4  " id="myTable">
     <thead class="users_table_hader">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Customer </th>
             <th scope="col">ID </th>
             <th scope="col">Unique Access ID </th>
-            <th scope="col">Total Licence Distributed </th>
             <th scope="col">Product Code</th>
+            <th scope="col">Total Licence Distributed </th>
             <th scope="col">Licence Type</th>
             <th scope="col">Expiration Period</th>
             <th scope="col">Start Date</th>
@@ -17,13 +63,13 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of logs index as i">
+        <tr *ngFor="let item of logs | slice:0:item; index as i">
             <td scope="row" class="pl-2">{{i+1}}</td>
             <td>{{item.customerName}}</td>
             <td>{{item.id}}</td>
             <td>{{item.uniqueAccessId}}</td>
-            <td class="text-center">{{item.LicenceDistributed}}</td>
             <td class="text-center">{{item.productCode}}</td>
+            <td class="text-center">{{item.LicenceDistributed}}</td>
             <td>{{item.LicenceType}}</td>
             <td>{{item.ExpirationPeriod}}</td>
             <td>{{item.StartDate}}</td>

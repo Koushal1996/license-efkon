@@ -12,6 +12,7 @@ projectStatus:boolean
 Searchvalue:number=1;
 SortValue:number=1;
 msg:boolean=false;
+event:number=1;
 item=5;
   msg1: string;
   constructor(private _myServices:ProjectDetailServiceService) { }
