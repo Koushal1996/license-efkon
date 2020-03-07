@@ -1,54 +1,76 @@
-<div class="form_main ">
-    <div class="main_form">
-        <h3 class="text-center text-info">Create User</h3>
-        <form class="mt-4" [formGroup]="myForm" (ngSubmit)='onSubmit()'>
-            <div class="form-group">
-                <label for="customername">Name<span>*</span></label>
-                <input type="text" formControlName="CustomerName" class="form-control" placeholder="Name">
-                <small class="text-danger" *ngIf="!myForm.get('CustomerName').valid && myForm.get('CustomerName').touched">Customer name required</small>
-            </div>
-            <div class="form-group">
-                <label for="customername">Contact Number</label>
-                <input type="text" formControlName="ContactNumber" class="form-control" placeholder="Contact Number">
-            </div>
-            <div class="form-group">
-                <label for="userId">User Id<span>*</span></label>
-                <input type="text" formControlName="UserId" class="form-control" placeholder="User Id">
-                <small class="text-danger" *ngIf="!myForm.get('UserId').valid && myForm.get('UserId').touched">User Id required</small>
-
-            </div>
-            <div class="form-group">
-                <label for="userId">Email Id<span *ngIf="checked">*</span></label>
-                <input type="text" formControlName="EmailId" class="form-control" placeholder="Mail Id" [required]='checked'>
-                <small class="text-danger" *ngIf="!myForm.get('EmailId').valid && myForm.get('EmailId').touched">Valid Email required</small>
-            </div>
-            <div class="form-group">
-                <label for="password">Password<span>*</span></label>
-                <input name="password" formControlName="Password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password">
-                <small class="text-danger" *ngIf="!myForm.get('Password').valid && myForm.get('Password').touched">Password required</small>
-                <div class="click_password" (click)="onEyeClick()">
-                    <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
-                    <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
+<div class="container-container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form_main ">
+                <div class="main_form">
+                    <h3 class="text-center text-info">Create User</h3>
+                    <form class="mt-4" [formGroup]="myForm" (ngSubmit)='onSubmit()'>
+                        <div class="row">
+                        <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="customername">Name<span>*</span></label>
+                                    <input type="text" formControlName="CustomerName" class="form-control" placeholder="Name">
+                                    <small class="text-danger" *ngIf="!myForm.get('CustomerName').valid && myForm.get('CustomerName').touched">Customer name required</small>
+                                </div>
+                        </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="customername">Contact Number</label>
+                                    <input type="text" formControlName="ContactNumber" class="form-control" placeholder="Contact Number">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="userId">User Id<span>*</span></label>
+                                    <input type="text" formControlName="UserId" class="form-control" placeholder="User Id">
+                                    <small class="text-danger" *ngIf="!myForm.get('UserId').valid && myForm.get('UserId').touched">User Id required</small>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="userId">Email Id<span *ngIf="checked">*</span></label>
+                                    <input type="text" formControlName="EmailId" class="form-control" placeholder="Mail Id" [required]='checked'>
+                                    <small class="text-danger" *ngIf="!myForm.get('EmailId').valid && myForm.get('EmailId').touched">Valid Email required</small>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="password">Password<span>*</span></label>
+                                    <input name="password" formControlName="Password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password">
+                                    <small class="text-danger" *ngIf="!myForm.get('Password').valid && myForm.get('Password').touched">Password required</small>
+                                    <div class="click_password" (click)="onEyeClick()">
+                                        <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
+                                        <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="userId"> Role<span>*</span></label>
+                                    <select class="form-control" formControlName="role">
+                                        <option *ngFor="let item of role" [ngValue]="item.role">{{item.role}}</option>
+                                    </select>
+                                    <small class="text-danger" *ngIf="!myForm.get('role').valid && myForm.get('role').touched">Role required</small>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="custom-check">
+                                    <div class="custom-checkbox ">
+                                        <input type="checkbox" [checked]="checked" (click)="checkBoxClick()" class="custom-control-input" id="customCheck" name="example1">
+                                        <label for="customCheck">Do you want to send mail ?</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="button_btn text-center">
+                                    <button class="btn btn-outline-info "><i class="fa fa-check"></i> Submit</button>
+                                    <button type="button" (click)="onResetForm()" class="btn btn-outline-danger ml-3"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="userId"> Role<span>*</span></label>
-                <select class="form-control" formControlName="role">
-                    <option *ngFor="let item of role" [ngValue]="item.role">{{item.role}}</option>
-                </select>
-                <small class="text-danger" *ngIf="!myForm.get('role').valid && myForm.get('role').touched">Role required</small>
-
-            </div>
-            <div class="custom-check">
-                <div class="custom-checkbox ">
-                    <input type="checkbox" [checked]="checked" (click)="checkBoxClick()" class="custom-control-input" id="customCheck" name="example1">
-                    <label for="customCheck">Do you want to send mail ?</label>
-                </div>
-            </div>
-            <div class="button_btn text-center">
-                <button class="btn btn-outline-info "><i class="fa fa-check"></i> Submit</button>
-                <button type="button" (click)="onResetForm()" class="btn btn-outline-danger ml-3"><i class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>

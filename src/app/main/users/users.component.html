@@ -1,42 +1,54 @@
- <form action="" class="form-inline">
-    <div class="form-group d-flex ">
-        <input type="text" placeholder="Search here..." id="myInput" (keydown)=onKeydownEvent($event) class="form-control">
-    </div>
-    <div class="form-group " (change)="Onselect($event.target.value)">
-        <select name="" id="" class="form-control">
-            <option value="1">Sort By Name</option>
-            <option value="2">Sort By User ID</option>
-            <option value="3">Sort By Role</option>
-            <option value="4">Sort By Status</option>
-            <option value="5">Sort By Email ID</option>
-        </select>
-    </div>
-</form>
-<table class="table table-hover table-stripped table-sm mt-2" id="myTable">
-    <thead class="users_table_hader">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Username</th>
-            <th scope="col">UserID</th>
-            <th scope="col">Role</th>
-            <th scope="col">Mail Status</th>
-            <th scope="col">Email Id</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Edit</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let item of myAllUser index as i">
-            <td scope="row">{{i+1}}</td>
-            <td>{{item.username}}</td>
-            <td>{{item.userId}}</td>
-            <td>{{item.role}}</td>
-            <td [style.color]="item.MailStatus=='Sent Successfully'?'green':'red'">{{item.MailStatus}}</td>
-            <td>{{item.EmailID}}</td>
-            <td> <i class="fa fa-trash text-danger ml-3"></i></td>
-            <td> <i routerLink="/main/updateUser" class="fa fa-edit text-success ml-3" style="cursor: pointer;"></i></td>
-        </tr>
-    </tbody>
-</table>
+<div class="container-container">
+    <div class="row">
+        <div class="col-lg-12">
+            <form action="" class="form-inline">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="form-group " (change)="Onselect($event.target.value)">
+                            <select name="" id="" class="form-control">
+                                <option value="1">Sort By Name</option>
+                                <option value="2">Sort By User ID</option>
+                                <option value="3">Sort By Role</option>
+                                <option value="4">Sort By Status</option>
+                                <option value="5">Sort By Email ID</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 ">
+                        <div class="form-group ">
+                            <input type="text" placeholder="Search here..." id="myInput" (keydown)=onKeydownEvent($event) class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </form>
 
-<button class="btn btn-info myButton" routerLink="/main/createUser"><i class="fa fa-user-plus"></i> Add User</button>
+            <table class="table table-hover table-stripped table-sm mt-2" id="myTable">
+                <thead class="users_table_hader">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">UserID</th>
+                        <th scope="col">Role</th>
+                        <th scope="col">Mail Status</th>
+                        <th scope="col">Email Id</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of myAllUser index as i">
+                        <td scope="row">{{i+1}}</td>
+                        <td>{{item.username}}</td>
+                        <td>{{item.userId}}</td>
+                        <td>{{item.role}}</td>
+                        <td [style.color]="item.MailStatus=='Sent Successfully'?'green':'red'">{{item.MailStatus}}</td>
+                        <td>{{item.EmailID}}</td>
+                        <td> <i class="fa fa-trash text-danger ml-3"></i></td>
+                        <td> <i routerLink="/main/updateUser" class="fa fa-edit text-success ml-3" style="cursor: pointer;"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-info myButton" routerLink="/main/createUser"><i class="fa fa-user-plus"></i> Add User</button>
+        </div>
+    </div>
+</div>

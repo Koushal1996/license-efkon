@@ -1,0 +1,86 @@
+button {
+    border: none;
+    background: no-repeat;
+    font-size: 15px;
+    outline: none;
+}
+
+.modal {
+    position: fixed;
+    top: 100px;
+    right: 0;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    outline: 0;
+    .modal-dialog {
+        width: 100%;
+        max-width: 450px;
+        position: absolute;
+        text-align: center;
+        display: inline-block;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        .modal-header {
+            display: inline-block;
+            width: 100%;
+            .text-info {
+                color: #333 !important;
+                margin-bottom: 0;
+            }
+            .close {
+                padding: 0;
+                margin: 0;
+                position: absolute;
+                top: 10px;
+                right: 12px;
+                font-size: 29px;
+            }
+        }
+
+        .modal-body {
+            display: inline-block;
+            padding: 5px;
+            width: 100%;
+            textarea.form-control {
+                width: 100%;
+                display: inline-block;
+                height: 70px;
+                border: 1px solid #ddd;
+                color: #333;
+            }
+            .button_btn.text-right {
+                display: inline-block;
+                width: 100%;
+                .btn-outline-danger {
+                    color: #dc3545;
+                    border: 1px solid #dc3545;
+                    font-weight: 600;
+                    font-size: 12px;
+                    &:hover{
+                        color: #fff;
+                        background: #dc3545;
+                    }
+                    &:focus{
+                        box-shadow: none;
+                    }
+                }
+                .btn-outline-success {
+                    color: #28a745;
+                    border: 1px solid #28a745;
+                    font-weight: 600;
+                    font-size: 12px;
+                    margin-left: 10px;
+                    &:hover{
+                        color: #fff;
+                        background: #28a745;
+                    }
+                    &:focus{
+                        box-shadow: none;
+                    }
+                }
+            }
+        }
+    }
+}
