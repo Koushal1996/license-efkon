@@ -17,7 +17,7 @@ msg:boolean=false;
 
   ngOnInit(): void {
   this.logs=this._viewLog.ViewLog;
-  swal("Hello world!");
+
   }
   // Get value for Search element
 OnselectSearch(event)

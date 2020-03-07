@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
 loginModel:any={};
 msg:string;
 loader:boolean=false
+SignIn=true;
 returnUrl: string;
    AdminreturnUrl: any;
    UserreturnUrl: any;
@@ -22,6 +23,7 @@ returnUrl: string;
    credentials:any;
   userid: any;
   password: any;
+
   constructor(private _loginService:LoginServiceService,private router:Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -45,12 +47,17 @@ returnUrl: string;
     this.credentials=this.myLoginForm.value  // Credential where we store the formarray value
       this.userid=this.credentials.userName // get UserId from form
       this.password=this.credentials.password // get Password from form
-      var output=this._loginService.Login(this.userid, this.password);
 
-      this.loader = true; // this - is in component object context
-      setTimeout(()=>{    //<<<---    using ()=> syntax
+
+      this.loader = true;
+      this.SignIn=false;
+      setTimeout(()=>{
+
+        var output=this._loginService.Login(this.userid, this.password);
         this.loader = false;
-   }, 300);
+      this.SignIn=true;
+
+
      if(output==='admin')
      {
 
@@ -72,6 +79,7 @@ returnUrl: string;
      else{
                 this.msg="Invalid credentials !"
      }
+    }, 2000);
   }
 
 }

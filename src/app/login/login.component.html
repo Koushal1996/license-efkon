@@ -41,7 +41,7 @@
                 <small routerLink="/forget">Forget password ?</small>
             </div>
             <div class="form-group text-center">
-                <button type="submit" [disabled]="!myLoginForm.valid" class="btn btn-primary btn-block btn-sm">Sign In  <span class="spinner-border spinner-border-sm ml-2" *ngIf="loader" role="status" aria-hidden="true"></span>
+                <button type="submit" [disabled]="!myLoginForm.valid" class="btn btn-primary btn-block btn-sm">{{SignIn? 'Sign In' :'Please Wait !!!'}}  <span class="spinner-border spinner-border-sm ml-2" *ngIf="loader" role="status" aria-hidden="true"></span>
                   </button>
 
 

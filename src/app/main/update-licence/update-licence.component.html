@@ -38,46 +38,17 @@
                             <td>{{i+1}}</td>
                             <td>{{item.id}}</td>
                             <td>
-                                <form>
-                                    <input type="text" class="form-control" #newUniqueAccessKey (mouseout)="inputChange($event.target.value)" required placeholder="Unique Access ID">
-                                </form>
+                                <input type="text" class="form-control" required placeholder="Unique Access ID" [(ngModel)]="item.newAccessId">
                             </td>
                             <td>
-                                <div *ngIf="myIndex !=i ; else elseBlock">{{"XXXXXXXXXX"}}</div>
-                                <ng-template #elseBlock>
-                                    {{myval}}
-                                </ng-template>
+                                {{item.licenseKey?item.licenseKey:'XXXXXXXXXX'}}
                             </td>
-
-                            <td><button class="btn ui-button-icon-only " [disabled]="disable" (click)="generateRandomKey(i);  getItemOnGenerate(i,item.id,newUniqueAccessKey.value,myval)">Generate</button></td>
-                            <td><button class="btn btn-outline-success" (click)="exportAsXLSX(i)">Export as XLS</button></td>
+                            <td><button class="btn ui-button-icon-only " [disabled]="!item.newAccessId" (click)="generateRandomKey(item);">Generate</button></td>
+                            <td><button class="btn btn-outline-success" [disabled]="!item.newAccessId" (click)="exportAsXLSX(i, item)">Export as XLS</button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div>
-
-
-
-<h3>Generate and Download Excel File in Angular 7</h3>
-<div class="container">
-
-    <table class="table table-striped table-bordered table-hover">
-        <tr>
-            <th>Name</th>
-            <th>Month</th>
-            <th>Sales</th>
-            <th>Percentage</th>
-            <th>Print</th>
-        </tr>
-        <tr *ngFor="let item of excel2 ; index as i">
-            <td>{{item.Name}}</td>
-            <td>{{item.Month}}</td>
-            <td>{{item.Sales_Figure}}</td>
-            <td>{{item.Perc}}</td>
-            <td> <button (click)="exportAsXLSX(i)" class="btn btn-info mb-4 mt-2">Print Excel</button></td>
-        </tr>
-    </table>
 </div>

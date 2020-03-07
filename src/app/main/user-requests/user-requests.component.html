@@ -30,8 +30,8 @@
             <td>{{item.ExpirationPeriod}}</td>
             <td>{{item.StartDate}}</td>
             <td>{{item.EndDate}}</td>
-            <td><button class="btn btn-outline-success"><i class="fa fa-check"></i></button></td>
-            <td><button class="btn btn-outline-danger" data-toggle="modal" data-target="#myModal"><i class="fa fa-times"></i></button></td>
+            <td><button class="btn btn-outline-success" (click)="onAccepRequest()"><i class="fa fa-check"></i></button></td>
+            <td><button class="btn btn-outline-danger" (click)="OnRejectRequest()"><i class="fa fa-times"></i></button></td>
         </tr>
     </tbody>
 </table>

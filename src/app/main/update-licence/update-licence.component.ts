@@ -21,7 +21,6 @@ export class UpdateLicenceComponent implements OnInit {
   emptyArr = [];
   TableData: any;
   excel2: any;
-  items: string = "ABVCVCVCVCVCVCVCVVCV"
   notallowed = true;
   productCode: any;
   SrNO: any;
@@ -29,12 +28,7 @@ export class UpdateLicenceComponent implements OnInit {
   myLicenceKey:boolean=true;
   constructor(private excelService: ExcelService,
     private http: HttpClient,
-    private myServices: MyProjectDetailService
-  ) {
-    this.getJSON().subscribe(data => {
-      this.excel2 = data
-    });
-  }
+    private myServices: MyProjectDetailService) { }
   ngOnInit(): void {
     // Get ID/Sr on Submit-
     this.TableData = this.myServices.LicenceViewLog;
@@ -43,18 +37,22 @@ export class UpdateLicenceComponent implements OnInit {
     this.customerName = this.myServices.Customer; //For customers
     this.oldLicenceKey = this.myServices.oldLicencekey //for old licence key
     this.productCode = this.myServices.productCode
-    throw new Error("Method not implemented.");
-
-  }
-
-  exportAsXLSX(index: number): void {
-
-    this.excelService.exportAsExcelFile([this.excel[index]], 'Efkon         LicenseKey');
 
 
   }
-  getJSON(): Observable<any> {
-    return this.http.get('https://api.myjson.com/bins/zg8of');
+
+  exportAsXLSX(index: number, item): void {
+    const exportData = {
+      Srno: index + 1,
+      LicenceID: item.id,
+      NewAccessId: item.newAccessId,
+      NewLicenceKey: item.licenseKey
+
+    }
+
+    this.excelService.exportAsExcelFile([exportData], 'Efkon         LicenseKey');
+
+
   }
 
   formSubmit() {
@@ -64,17 +62,12 @@ export class UpdateLicenceComponent implements OnInit {
     }
   }
 
-  generateRandomKey(index) {
-    this.myIndex=index;
-    console.log(this.myIndex);
+generateRandomKey(item) {
+  var randomNum = Math.random() * 100
+  var newRandom = "RLVD-06FG-ASDF" + Math.trunc(randomNum);
+  item.licenseKey = newRandom;
 
-    var randomNum = Math.random() * 100
-    var newRandom = "RLVD-06FG-ASDF" + Math.trunc(randomNum);
-    this.value = !this.value;
-    this.myval = newRandom;
- console.log(newRandom);
-
-  }
+}
 
   // Input for unique access key
   index1: number;
@@ -91,19 +84,4 @@ export class UpdateLicenceComponent implements OnInit {
     }
   }
 
-  // generate Excele file Data
-  getItemOnGenerate(SrNO, licenceID, newAccessId, newLicenseKey) {
-
-    this.excel.push(
-      {
-        Srno: SrNO + 1,
-        LicenceID: licenceID,
-        NewAccessId: newAccessId,
-        NewLicenceKey: newLicenseKey
-
-      });
-    console.log("Array value is" + JSON.stringify(this.excel));
-    console.log("Value of table is :" + SrNO + " " + licenceID + " " + " " + newAccessId + " " + newLicenseKey)
-
-  }
 }

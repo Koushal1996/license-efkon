@@ -3,7 +3,7 @@ import * as $ from 'jquery'
 import { ProjectDetailServiceService } from '../project-detail/project-detail-service.service';
 import { Router } from '@angular/router';
 import { MyProjectDetailService } from 'src/app/Services/my-project-detail.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, NgForm } from '@angular/forms';
 import { ProductFamily } from './productFamily';
 import { ProductCode } from './ProductCode';
 import { NgIf } from '@angular/common';
@@ -77,6 +77,12 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
+  // Submit Customer Form
+  onSubmitCustomerForm(form:NgForm)
+  {
+   console.log(this.model);
+   form.reset();
+  }
   // addProduct()
   // {
   //     this.ProjectData.push({
@@ -158,11 +164,28 @@ export class CreateProjectComponent implements OnInit {
       // }
     });
   }
+  // On Check CheckBox
+  checkBoxClick()
+  {
+   this.checked=!this.checked;
+
+  }
 
   // Clear Crate Project Form
   onClear() {
     this.myCreateProjectForm.reset();
   }
+  // Clear Crate Customer Form
 
+  OnClearCustomerForm(myForm:NgForm)
+  {
+    //  this.model.CustomerName=" ",
+    //  this.model.Contactnumber=" ",
+    //  this.model.UserId=" ",
+    //  this.model.EmailId=" ",
+    //  this.model.password=" ",
+    //  this.model.CustomerName=null
+     myForm.reset();
+  }
 
 }
