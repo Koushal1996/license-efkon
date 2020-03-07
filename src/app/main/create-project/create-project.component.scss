@@ -12,172 +12,26 @@ input[type=number] {
     color: rgb(122, 114, 114);
     opacity: 1;
 }
-
-.fa-eye {
-    position: absolute;
-    right: 30px;
-    top: 48px;
-    cursor: pointer;
-}
-
-.form-control {
-    box-shadow: none;
-}
-
-.form_main {
-    display: inline-block;
+.create_customer_popup{
+    position: fixed;
+    top: 0px;
+    color: #fff;
+    left: 0;
+    background: rgba(0, 0, 0, 0.8);
     width: 100%;
-    text-align: center;
-    padding: 15px;
-    div#myDIV {
-        position: absolute;
-        top: 67px;
-        left: 16px;
-        background: #fafafa;
-        width: 97%;
-        box-shadow: 0 0 2px #ddd;
-        height: 87%;
-        z-index: 999;
-    }
-    .main_form {
+    z-index: 222;
+    height: 100%;
+     .main_form {
         display: inline-block;
         width: 100%;
-        max-width: 100%;
+        max-width: 650px;
+        background: #fff;
         box-shadow: none;
+        position: relative;
         padding: 15px;
-        .text-info {
-            color: #333 !important;
-            padding: 10px 0;
-            margin-bottom: 0;
-        }
-        form {
-            display: inline-block;
-            width: 100%;
-            text-align: left;
-            max-width: inherit;
-            .form-group {
-                display: inline-block;
-                width: 33%;
-                padding: 0 20px;
-                position: relative;
-                margin-bottom: 40px;
-                label {
-                    padding: 7px 0;
-                    display: inline-block;
-                    font-size: 15px;
-                    color: #333;
-                    width: 100%;
-                    margin-bottom: 0;
-                }
-                input.form-control.ng-untouched.ng-pristine {
-                    display: inline-block;
-                    width: 100%;
-                    float: inherit;
-                }
-                select.form-control.ng-untouched.ng-pristine.ng-valid {
-                    display: inline-block;
-                    width: 100%;
-                    float: left;
-                    box-shadow: none;
-                }
-                input.ng-invalid {
-                    .ng-touched {
-                        border: 1.4px solid red;
-                    }
-                }
-                input.ng-valid {
-                    border: 1.4px solid green;
-                }
-                .form-control {
-                    border: 1.4px solid green;
-                    box-shadow: none;
-                    width: 100%;
-                    float: inherit;
-                    height: 40px;
-                    padding: 5px;
-                }
-                .fa-eye-slash {
-                    position: absolute;
-                    right: 30px;
-                    top: 47px;
-                    cursor: pointer;
-                }
-            }
-            .button_btn.text-center {
-                display: inline-block;
-                width: 100%;
-                margin: 15px 0;
-                .btn.btn-outline-success {
-                    border: 1px solid #28a745;
-                    color: #28a745;
-                    box-shadow: none;
-                    &:hover {
-                        background: #0e6cbd;
-                        color: #fff;
-                        border: 1px solid #0e6cbd;
-                    }
-                }
-            }
-            .btn.btn-outline-info {
-                box-shadow: none;
-            }
-            .btn.btn-outline-danger {
-                box-shadow: none;
-            }
-            .custom-check {
-                display: inline-block;
-                width: 100%;
-                text-align: center;
-                .custom-checkbox {
-                    display: inline-block;
-                    width: 250px;
-                    position: relative;
-                    .custom-control-input {
-                        position: absolute;
-                        left: 0;
-                        z-index: 333;
-                        width: 23px;
-                        height: 23px;
-                        opacity: 0;
-                        top: 6px;
-                        &:checked+label:before {
-                            content: "\f00c";
-                            font-family: fontawesome;
-                            color: #fafafa;
-                            font-size: 18px;
-                            position: absolute;
-                            top: 6px;
-                            left: 0;
-                            width: 23px;
-                            height: 23px;
-                            background: #333;
-                            background: #555;
-                            z-index: 222;
-                            text-align: center;
-                        }
-                    }
-                    label {
-                        padding: 7px 0 7px 35px;
-                        display: inline-block;
-                        width: 250px;
-                        margin-bottom: 0;
-                        &:after {
-                            position: absolute;
-                            top: 6px;
-                            left: 0;
-                            display: inline-block;
-                            width: 23px;
-                            height: 23px;
-                            content: "";
-                            background: #ddd;
-                        }
-                    }
-                }
-            }
-        }
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
     }
-}
-
-span {
-    color: red
 }

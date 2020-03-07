@@ -8,6 +8,8 @@ $color:#333;
 }
 $color-text:#ddd;
 
+
+
 // /.....scss manoj..../
 // /....user../
 
@@ -99,6 +101,9 @@ form {
     border-radius: 5px;
 }
 //........sidebar.....//
+#sidebar-wrapper{
+    margin-left: -16rem;
+}
 
 div#sidebar-wrapper {
      display: inline-block;
@@ -185,7 +190,9 @@ div#sidebar-wrapper {
     }
 }
 
-
+button.close:focus {
+    outline: none;
+}
 //.......header..............//
 
 .header_main {
@@ -196,7 +203,7 @@ div#sidebar-wrapper {
     box-shadow: 4px 0 6px #999;
     top: 0;
     position: sticky;
-    z-index: 9999;
+    z-index: 222;
     right: 0;
     float: right;
 
@@ -349,13 +356,11 @@ select#my-select {
     color: #212529;
     position: relative;
 }
-.myButton{
+.myButton {
     color: white;
     text-align: center;
     position: fixed;
     bottom: 10px;
-    background: #0e6cbd;
-    box-shadow: none;
     right: 10px;
 }
 .btn-info {
@@ -367,8 +372,188 @@ select#my-select {
       background-color: #1c5f98 !important;
       border-color: #1c5f98 !important;
     }
+    &:focus{
+        box-shadow: none;
+    } 
 }
 
 .btn-info:not(:disabled):not(.disabled):active:focus{
     box-shadow: none;
+}
+
+.fa-eye {
+    position: absolute;
+    right: 30px;
+    top: 48px;
+    color: #333;
+    cursor: pointer;
+}
+
+::placeholder {
+    color: rgb(122, 114, 114);
+    opacity: 1;
+}
+
+.form_main {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    .main_form {
+        display: inline-block;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        padding: 15px;
+        .text-info {
+            color: #333 !important;
+            padding: 10px 0;
+            margin-bottom: 0;
+        }
+        form {
+            display: inline-block;
+            width: 100%;
+            text-align: left;
+            max-width: inherit;
+            .form-group {
+                display: inline-block;
+                width: 100%;
+                position: relative;
+                margin-bottom: 35px;
+                label {
+                    padding: 7px 0;
+                    display: inline-block;
+                    font-size: 15px;
+                    color: #333;
+                    width: 100%;
+                    margin-bottom: 0;
+                }
+                input.form-control.ng-untouched.ng-pristine {
+                    display: inline-block;
+                    width: 100%;
+                    float: inherit;
+                }
+                select.form-control.ng-untouched.ng-pristine.ng-valid {
+                    display: inline-block;
+                    width: 100%;
+                    float: left;
+                    box-shadow: none;
+                }
+                input.ng-invalid.ng-touched {
+                    border: 1.4px solid red;
+                }
+                input.ng-valid {
+                    border: 1.4px solid #ddd;
+                }
+                .form-control {
+                    border: 1.4px solid #ddd;
+                    box-shadow: none;
+                    width: 100%;
+                    float: inherit;
+                    height: 40px;
+                    padding: 5px;
+                }
+                .fa-eye-slash {
+                    position: absolute;
+                    right: 30px;
+                    top: 47px;
+                    cursor: pointer;
+                }
+            }
+            .button_btn.text-center {
+                display: inline-block;
+                width: 100%;
+                margin: 15px 0;
+                .btn.btn-outline-info{
+                    box-shadow: none;
+                    border: 1px solid #0e6cbd;
+                    color: #0e6cbd;
+                    &:hover{
+                        background: #0e6cbd;
+                        color: #fff;
+                        border: 1px solid #0e6cbd;
+                    }
+                }
+                .btn.btn-outline-danger{
+                    box-shadow: none; 
+                }
+            }
+
+            .custom-check {
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                .custom-checkbox {
+                    display: inline-block;
+                    width: 250px;
+                    position: relative;
+                    .custom-control-input {
+                        position: absolute;
+                        left: 0;
+                        z-index: 333;
+                        width: 23px;
+                        height: 23px;
+                        opacity: 0;
+                        top: 6px;
+                        &:checked + label:before {
+                            content: "\f00c";
+                                font-family: fontawesome;
+                                color: #fafafa;
+                                font-size: 18px;
+                                position: absolute;
+                                top: 6px;
+                                left: 0;
+                                width: 23px;
+                                height: 23px;
+                                background:#333;
+                                background: #555;
+                                z-index: 222;
+                                text-align: center;
+                                }
+                    }
+                    label {
+                        padding: 7px 0 7px 35px;
+                        display: inline-block;
+                        width: 250px;
+                        margin-bottom: 0;
+                        &:after {
+                            position: absolute;
+                            top: 6px;
+                            left: 0;
+                            display: inline-block;
+                            width: 23px;
+                            height: 23px;
+                            content: "";
+                            background:#ddd;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+span{
+    color: red
+}
+
+
+
+form.form-inline.ng-untouched.ng-pristine.ng-valid {
+    display: inline-block;
+    width: 100%;
+    max-width: 100%;
+    .form-group {
+        width: 100%;
+        display: inline-block;
+        max-width: 25%;
+        .form-control {
+            display: inline-block;
+            width: 235px;
+            max-width: 250px;
+            border: 1px solid #ddd;
+            &:focus {
+                border: 1px solid #ddd;
+            }
+        }
+    }
 }
