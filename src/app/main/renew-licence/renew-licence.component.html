@@ -1,12 +1,13 @@
 <div class="form_main ">
     <div class="main_form">
         <h5 class="text-center text-info">Renew Old Licence Key</h5>
+
         <form class="mt-2 ng-invalid ng-dirty ng-touched">
             <div class="form-group">
                 <label for="">User</label>
                 <select id="my-select" class="form-control" name="">
                         <option *ngFor="let item of customerName">{{item.customerName}}</option>
-                    </select>
+               </select>
             </div>
             <div class="form-group">
                 <label for="">Product Code</label>
@@ -37,7 +38,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let item of TableData | slice:0:5; index as i">
+                        <tr *ngFor="let item of tableData | slice:0:5; index as i">
                             <td>{{i+1}}</td>
                             <td>{{item.id}}</td>
                             <td>{{item.xpPeriod}}</td>
@@ -45,18 +46,17 @@
                                 <input type="text" name="input" class="form-control" placeholder="YYYY-MM-DD" [(ngModel)]="item.newExpPeriod" />
                             </td>
                             <td>
-                                <input type="text" class="form-control" required placeholder="Unique Access ID" [(ngModel)]="item.newAccessId">
+                                <input type="text" class="form-control" required placeholder="Unique Access ID" [(ngModel)]="item.AccessId">
                             </td>
                             <td>
                                 {{item.licenseKey?item.licenseKey:'XXXXXXXXXX'}}
                             </td>
-                            <td><button class="btn ui-button-icon-only " [disabled]="!item.newAccessId" (click)="generateRandomKey(item); ">{{item.loader ? '' :'Generate'}} <span *ngIf="item.loader" class="spinner-grow spinner-grow-sm"></span></button></td>
-                            <td><button class="btn btn-outline-success" [disabled]="!item.newAccessId" (click)="exportAsXLSX(i, item)">{{item.excelLoader?'' : 'Export excel'}} <span class="spinner-border  spinner-sm text-dark" *ngIf="item.excelLoader"></span></button></td>
+                            <td><button class="btn ui-button-icon-only " [disabled]="!item.AccessId" (click)="generateRandomKey(item); ">{{item.loader ? '' :'Generate'}} <span *ngIf="item.loader" class="spinner-grow spinner-grow-sm"></span></button></td>
+                            <td><button class="btn btn-outline-success" [disabled]="!item.AccessId" (click)="exportAsXLSX(i, item)">{{item.excelLoader?'' : 'Export excel'}} <span class="spinner-border  spinner-sm text-dark" *ngIf="item.excelLoader"></span></button></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </div>
 </div>

@@ -3,6 +3,12 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+p {
+    color: red !important;
+    font-weight: bold;
+    margin-left: 80px;
+}
+
 .password_change_forget {
     display: inline-block;
     width: 100%;

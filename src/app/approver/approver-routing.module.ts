@@ -9,38 +9,36 @@ import { ViewLicenceKeyLogsApproverComponent } from './view-licence-key-logs-app
 import { ChangePasswordApproverComponent } from './change-password-approver/change-password-approver.component';
 
 
-const routes:Routes = [
+const routes: Routes = [
   {
-    path:'',
-    component:ApproverComponent,
-    children:[
+    path: '',
+    component: ApproverComponent,
+    children: [
       {
-        path:'',
-        redirectTo:'approverUser',
-        pathMatch:'full'
+        path: '',
+        redirectTo: 'approverUser',
+        pathMatch: 'full'
       },
       {
-        path:'approverUser',
-        component:ApproverUsersComponent
+        path: 'approverUser',
+        component: ApproverUsersComponent
       },
       {
-        path:'approverProjectDetail',
-        component:ProjectDetailApproverComponent
+        path: 'approverProjectDetail',
+        component: ProjectDetailApproverComponent
       },
       {
-        path:'approverViewLicence',
-        component:ViewLicenceApproverComponent
+        path: 'approverViewLicence',
+        component: ViewLicenceApproverComponent
       },
       {
-        path:'approverLicenceLogs',
-        component:ViewLicenceKeyLogsApproverComponent
+        path: 'approverLicenceLogs',
+        component: ViewLicenceKeyLogsApproverComponent
       },
       {
-        path:'approverchangePassword',
-        component:ChangePasswordApproverComponent
+        path: 'approverchangePassword',
+        component: ChangePasswordApproverComponent
       },
-
-
     ]
   }
 ]
@@ -52,6 +50,4 @@ const routes:Routes = [
   ],
   exports: [RouterModule]
 })
-export class ApproverRoutingModule {
-
- }
+export class ApproverRoutingModule { }

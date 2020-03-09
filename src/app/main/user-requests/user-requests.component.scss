@@ -38,7 +38,6 @@ button {
                 font-size: 29px;
             }
         }
-
         .modal-body {
             display: inline-block;
             padding: 5px;
@@ -58,11 +57,11 @@ button {
                     border: 1px solid #dc3545;
                     font-weight: 600;
                     font-size: 12px;
-                    &:hover{
+                    &:hover {
                         color: #fff;
                         background: #dc3545;
                     }
-                    &:focus{
+                    &:focus {
                         box-shadow: none;
                     }
                 }
@@ -72,11 +71,11 @@ button {
                     font-weight: 600;
                     font-size: 12px;
                     margin-left: 10px;
-                    &:hover{
+                    &:hover {
                         color: #fff;
                         background: #28a745;
                     }
-                    &:focus{
+                    &:focus {
                         box-shadow: none;
                     }
                 }

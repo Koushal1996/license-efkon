@@ -10,51 +10,43 @@ import { MyProjectDetailService } from 'src/app/Services/my-project-detail.servi
 })
 export class CreateUserComponent implements OnInit {
   // All vriable user
+
   checked: boolean = false; // For Checkbox
   password: boolean = true; // For Password
   eyeStatus: boolean = false;
-  select:boolean=true;
-  selectedValue:string="Select Role"
-  myAllUser:any;
-  model:any={};
-  userData:any;
-  role:any;
-  myForm:FormGroup
-  constructor(private userServices:UsersServicesService, private myRole:MyProjectDetailService) { }
+  userData: any;
+  role: any;
+  myForm: FormGroup
+  constructor(private userServices: UsersServicesService, private myRole: MyProjectDetailService) { }
 
   ngOnInit(): void {
-    this.userData=this.userServices.users;
-    this.role=this.myRole.Role
-    this.myForm=new FormGroup(
+    this.userData = this.userServices.users;
+    this.role = this.myRole.Role
+    this.myForm = new FormGroup(
       {
-    'CustomerName':new FormControl(null,Validators.required),
-    'ContactNumber':new FormControl(null,),
-    'UserId':new FormControl(null,Validators.required),
-    'EmailId':new FormControl(null,[Validators.required,Validators.required]),
-    'Password':new FormControl(null,Validators.required),
-    'role':new FormControl(null,Validators.required),
+        'CustomerName': new FormControl(null, Validators.required),
+        'ContactNumber': new FormControl(null,),
+        'UserId': new FormControl(null, Validators.required),
+        'EmailId': new FormControl(null, [Validators.required, Validators.required]),
+        'Password': new FormControl(null, Validators.required),
+        'role': new FormControl(null, Validators.required),
       }
     )
   }
-  checkBoxClick()
-  {
-   this.checked=!this.checked;
-
+  checkBoxClick() {
+    this.checked = !this.checked;
   }
-  onEyeClick()
-  {
-    this.eyeStatus=!this.eyeStatus;
-    this.password=!this.password;
+  onEyeClick() {
+    this.eyeStatus = !this.eyeStatus;
+    this.password = !this.password;
   }
 
-  onSubmit()
-  {
-
-console.log((this.myForm.value))
+  onSubmit() {
+    console.log((this.myForm.value))
   }
-// Reset form
-onResetForm()
-{
-  this.myForm.reset();
-}
+
+  // Reset form
+  onResetForm() {
+    this.myForm.reset();
+  }
 }

@@ -15,35 +15,35 @@ export class UserRequestsComponent implements OnInit {
   this.logs=this._viewLog.ViewLog;
   }
   // Reject Request
-OnRejectRequest()
-{
-  Swal("Write Your Reason here:", {
-    content: {
-      element: "input",
-      attributes: {
-          placeholder: "Type your Reason",
-          type: "text",
-          minlength :'30',
-          required :true
-           },
-   }
-  })
-  .then((value) => {
+// OnRejectRequest()
+// {
+//   Swal("Write Your Reason here:", {
+//     content: {
+//       element: "input",
+//       attributes: {
+//           placeholder: "Type your Reason",
+//           type: "text",
+//           minlength :'30',
+//           required :true
+//            },
+//    }
+//   })
+//   .then((value) => {
 
-    if(value=="")
-    {
-      Swal(`You need to write something!`);
+//     if(value=="")
+//     {
+//       Swal(`You need to write something!`);
 
-    }
-    else
-    Swal(`Your Reason is : ${value}`);
-       console.log(value);
+//     }
+//     else
+//     Swal(`Your Reason is : ${value}`);
+//        console.log(value);
 
-  });
-}
-// Accept Request
-onAccepRequest()
-{
-  swal("Good job!", "Request has been Accepted!", "success");
-}
+//   });
+// }
+// // Accept Request
+// onAccepRequest()
+// {
+//   swal("Good job!", "Request has been Accepted!", "success");
+// }
 }

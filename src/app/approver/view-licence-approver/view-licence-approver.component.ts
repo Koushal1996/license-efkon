@@ -7,10 +7,8 @@ import { ProjectDetailServiceService } from 'src/app/main/project-detail/project
   styleUrls: ['./view-licence-approver.component.scss']
 })
 export class ViewLicenceApproverComponent implements OnInit {
-
   logs:any;
   constructor(private _viewLog:ProjectDetailServiceService) { }
-
   ngOnInit(): void {
   this.logs=this._viewLog.ViewLog;
   }

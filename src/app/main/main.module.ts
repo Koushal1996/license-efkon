@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { UsersComponent } from './users/users.component';
 import { LicenceComponent } from './licence/licence.component';
@@ -16,7 +14,6 @@ import { RouterModule } from '@angular/router';
 import { UpdateLicenceComponent } from './update-licence/update-licence.component';
 import { RenewLicenceComponent } from './renew-licence/renew-licence.component';
 import { GenerateLicenceComponent } from './generate-licence/generate-licence.component';
-import { RequestComponent } from './request/request.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
@@ -38,7 +35,6 @@ import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single
     UpdateLicenceComponent,
     RenewLicenceComponent,
     GenerateLicenceComponent,
-    RequestComponent,
     UpdateUserComponent,
     UserRequestsComponent,
     UpdateProjectComponent,

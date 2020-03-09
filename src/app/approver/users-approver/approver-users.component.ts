@@ -14,6 +14,5 @@ export class ApproverUsersComponent implements OnInit {
   ngOnInit(): void {
     this.myAllUser=this.userServices.users;
     console.log(this.myAllUser);
-
   }
 }

@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UsersServicesService {
-
   public users =[
     {username:'Jamshed Ahmad', userId:"User1",MailStatus:'Sent Successfully',Licencetype:'Lifetime',EmailID:'jmd.amd786@gmail.com',},
     {username:'Rajiv Kumar', userId:"User2",MailStatus:'Not Sent',Licencetype:'Limited',EmailID:'abd786@gmail.com',},
@@ -15,5 +14,5 @@ export class UsersServicesService {
     {username:'Raj Kumar', userId:"User7",MailStatus:'Not Sent',Licencetype:'Limited',EmailID:'Amd786@gmail.com',},
     {username:'Anjali Verma', userId:"User8",MailStatus:'Sent Successfully',Licencetype:'Lifetime',EmailID:'jmd.amd786@gmail.com',},
   ];
-  constructor() { }
+
 }

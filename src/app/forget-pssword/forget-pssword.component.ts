@@ -6,13 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./forget-pssword.component.scss']
 })
 export class ForgetPsswordComponent implements OnInit {
-  loginModel:any={};
+  loginModel: any = {};
   constructor() { }
 
   ngOnInit(): void {
   }
-  onSubmit()
-  {
+  onSubmit() {
 
   }
 }

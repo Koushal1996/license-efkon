@@ -7,52 +7,46 @@ import * as $ from 'jquery'
   styleUrls: ['./project-detail.component.scss']
 })
 export class ProjectDetailComponent implements OnInit {
-myProjectDetail:any=[];
-projectStatus:boolean
-Searchvalue:number=1;
-SortValue:number=1;
-msg:boolean=false;
-event:number=1;
-item=5;
+  myProjectDetail: any = [];
+  projectStatus: boolean
+  Searchvalue: number = 1;
+  SortValue: number = 1;
+  msg: boolean = false;
+  item = 5;
   msg1: string;
-  constructor(private _myServices:ProjectDetailServiceService) { }
-  alerts:boolean=false
-  // ngOnInit() function
+  constructor(private _myServices: ProjectDetailServiceService) { }
+  alerts: boolean = false
+
+
   ngOnInit(): void {
-    this.myProjectDetail=this._myServices.projectDetail;
+    this.myProjectDetail = this._myServices.projectDetail;
 
   }
-  // Delete Project Condition
-  DeleteProject(i)
-  {
-   var date1 = new Date();
-   var date2=this.myProjectDetail[i].EndDate
-   var date3=new Date(date2)
-if(+date1 <= +date3)
-{
-  alert('Can not delete')
-}
-else
-{
-  let val=confirm("Are you sure ?")
-if(val)
-{
-  this.myProjectDetail.splice(i,1);
-}
 
+  // Delete Project
+  DeleteProject(i) {
+    var date1 = new Date();
+    var date2 = this.myProjectDetail[i].EndDate
+    var date3 = new Date(date2)
+    if (+date1 <= +date3) {
+      alert('Can not delete')
+    }
+    else {
+      let val = confirm("Are you sure ?")
+      if (val) {
+        this.myProjectDetail.splice(i, 1);
+      }
 
-}
-}
+    }
+  }
 
-  OnProjectSubmit(i)
-  {
-this.projectStatus=!this.projectStatus;
+  OnProjectSubmit(i) {
+    this.projectStatus = !this.projectStatus;
   }
   // Get value for Search element
-  OnselectSearch(event)
-  {
-    this.Searchvalue=event;
-    console.log("Event in search "+event)
+  OnselectSearch(event) {
+    this.Searchvalue = event;
+    console.log("Event in search " + event)
   }
 
   // Code For search
@@ -63,29 +57,27 @@ this.projectStatus=!this.projectStatus;
     table = document.getElementById("myTable");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
-      td =tr[i].getElementsByTagName("td")[this.Searchvalue]  ;
+      td = tr[i].getElementsByTagName("td")[this.Searchvalue];
       if (td) {
         txtValue = td.textContent || td.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-          this.msg1="Sorry, Data not available !!"
+          this.msg1 = "Sorry, Data not available !!"
           tr[i].style.display = "";
 
         } else {
           tr[i].style.display = "none";
-         this.msg=true
+          this.msg = true
         }
       }
-      else
-      {
+      else {
 
       }
     }
   }
   // Code For Sorting
   OnselectSortItem(event) {
-    console.log("In search item"+event);
-    if(event==5)
-    {
+    console.log("In search item" + event);
+    if (event == 5) {
       var table, rows, switching, i, x, y, shouldSwitch;
       table = document.getElementById("myTable");
       switching = true;
@@ -107,33 +99,32 @@ this.projectStatus=!this.projectStatus;
         }
       }
     }
-    else{
+    else {
       var table, rows, switching, i, x, y, shouldSwitch;
-    table = document.getElementById("myTable");
-    switching = true;
-    while (switching) {
-      switching = false;
-      rows = table.rows;
-      for (i = 1; i < (rows.length - 1); i++) {
-        shouldSwitch = false;
-        x = rows[i].getElementsByTagName("TD")[event];
-        y = rows[i + 1].getElementsByTagName("TD")[event];
-        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-          shouldSwitch = true;
-          break;
+      table = document.getElementById("myTable");
+      switching = true;
+      while (switching) {
+        switching = false;
+        rows = table.rows;
+        for (i = 1; i < (rows.length - 1); i++) {
+          shouldSwitch = false;
+          x = rows[i].getElementsByTagName("TD")[event];
+          y = rows[i + 1].getElementsByTagName("TD")[event];
+          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+            shouldSwitch = true;
+            break;
+          }
+        }
+        if (shouldSwitch) {
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
         }
       }
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-      }
-    }
     }
 
   }
   // Code for Pagination
-  OnPagination(event)
-  {
-  this.item=event
+  OnPagination(event) {
+    this.item = event
   }
 }

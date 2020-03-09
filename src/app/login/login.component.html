@@ -1,32 +1,10 @@
 <div class="password_change_forget">
     <div class="signup-form ">
-        <!-- <form #f='ngForm' (ngSubmit)="onSubmit()">
-            <div class="form-header">
-                <h2>Sign In</h2>
-            </div>
-            <div class="form-group">
-                <label>User Name</label>
-                <input type="text" #userId='ngModel' class="form-control" name="User Name" [(ngModel)]="loginModel.userid" ngModel required >
-                <small class="text-danger" *ngIf="!userId.valid && userId.touched">User Id required</small>
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" minlength="5" #psw="ngModel" class="form-control" name="password" [(ngModel)]="loginModel.password" ngModel required>
-                <small class="text-danger" *ngIf="!psw.valid && psw.touched">Password must be 5 characters</small>
-            </div>
-            <div class="form-group">
-                <small routerLink="/forget">Forget password ?</small>
-            </div>
-            <div class="form-group">
-                <button type="submit" [disabled]="!f.valid" class="btn btn-primary btn-block btn-lg">Sign In ? </button>
-            </div>
-        </form> -->
-
         <form [formGroup]="myLoginForm" (ngSubmit)="onSubmit()">
             <div class="form-header">
                 <h2>Sign In</h2>
             </div>
-            <h6>{{msg}}</h6>
+            <h6 class="text-danger">{{msg}}</h6>
             <div class="form-group">
                 <label>User Name</label>
                 <input type="text" class="form-control" formControlName="userName" name="User Name">
@@ -38,15 +16,18 @@
                 <small class="text-danger" *ngIf="!myLoginForm.get('password').valid && myLoginForm.get('password').touched ">Password required  </small>
             </div>
             <div class="form-group">
+                <img src="assets\img\captcha.JPG" width="200" height="50" alt="" style="position: relative;">
+                <p style="position: absolute;  top: 387px; left: 315;"><del>{{code}}</del></p>
+                <button class=" btn-sm btn-info" type="button" style="margin-left: 12px;" (click)="generateCaptcha()"><i class="fa fa-refresh"></i></button>
+                <input type="text" formControlName="myCaptchaValue" [(ngModel)]="myCaptchaValue" class="form-control mt-2 mr-5" placeholder="Input Captcha" (change)="onChangeCaptcha(myCaptchaValue)">
+                <span *ngIf="captchaVAlue"> {{captchaMsg}}</span>
+            </div>
+            <div class="form-group">
                 <small routerLink="/forget">Forget password ?</small>
             </div>
             <div class="form-group text-center">
-                <button type="submit" [disabled]="!myLoginForm.valid" class="btn btn-primary btn-block btn-sm">{{SignIn? 'Sign In' :'Please Wait !!!'}}  <span class="spinner-border spinner-border-sm ml-2" *ngIf="loader" role="status" aria-hidden="true"></span>
+                <button type="submit" [disabled]="myLoginForm.invalid " class="btn btn-primary btn-block btn-sm">{{SignIn? 'Sign In' :'Please Wait !!!'}}  <span class="spinner-border spinner-border-sm ml-2" *ngIf="loader" role="status" aria-hidden="true"></span>
                   </button>
-
-
-
-                <!-- <div class="loader " ></div> -->
             </div>
         </form>
     </div>

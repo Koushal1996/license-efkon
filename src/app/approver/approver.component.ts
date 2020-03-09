@@ -8,26 +8,24 @@ import { Router } from '@angular/router';
 })
 export class ApproverComponent implements OnInit {
 
-  constructor(private roter:Router){
-
-  }
+  constructor(private roter: Router) { }
 
   ngOnInit(): void {
-    $("#menu-toggle").click(function(e) {
+    $("#menu-toggle").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
   }
-  logout()
-  {
+  // Logout
+  logout() {
     window.localStorage.removeItem('UserId');
     window.localStorage.removeItem('password');
-     this.roter.navigate(['/login'])
+    this.roter.navigate(['/login'])
   }
-  submenu:boolean=false;
-  subMenu1()
-  {
-    this.submenu=!this.submenu;
+  // Submenu of License to hide/show
+  submenu: boolean = false;
+  subMenu1() {
+    this.submenu = !this.submenu;
   }
 
 }

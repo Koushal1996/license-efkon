@@ -9,9 +9,6 @@ import { LicenceViewReviwerComponent } from './licence-view-reviwer/licence-view
 import { ProjectLogsReviwerComponent } from './project-logs-reviwer/project-logs-reviwer.component';
 import { ChangePasswordReviwerComponent } from './change-password-reviwer/change-password-reviwer.component';
 
-
-
-
 @NgModule({
   declarations: [ReviewerComponent, ProjectDetailReviwerComponent, LicenceViewReviwerComponent, ProjectLogsReviwerComponent, ChangePasswordReviwerComponent],
   imports: [

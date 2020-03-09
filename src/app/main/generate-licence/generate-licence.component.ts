@@ -9,15 +9,12 @@ import { ProjectDetailServiceService } from '../project-detail/project-detail-se
 })
 export class GenerateLicenceComponent implements OnInit {
 
-  customerName:any;
+  customerName: any;
   projectCode: { id: number; productFamily_id: number; name: string; }[];
-  constructor(private myServices: MyProjectDetailService,private customerNAme:ProjectDetailServiceService) { }
+  constructor(private myServices: MyProjectDetailService, private customerNAme: ProjectDetailServiceService) { }
 
   ngOnInit(): void {
-this.projectCode=this.myServices.productCode;
-this.customerName=this.customerNAme.ViewLog;
-
-
-  }
-
+    this.projectCode = this.myServices.productCode;
+    this.customerName = this.customerNAme.ViewLog;
+ }
 }
