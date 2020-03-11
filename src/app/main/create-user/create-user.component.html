@@ -16,13 +16,14 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="customername">Contact Number</label>
-                                    <input type="text" formControlName="ContactNumber" class="form-control" placeholder="Contact Number">
+                                    <input type="text" formControlName="ContactNumber" pattern="[7-9]{1}[0-9]{9}" class="form-control" placeholder="Contact Number">
+                                    <small class="text-danger" *ngIf="!myForm.get('ContactNumber').valid && myForm.get('ContactNumber').touched">Invalid Mobile Number</small>
                                 </div>
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="userId">User Id<span>*</span></label>
-                                    <input type="text" formControlName="UserId" class="form-control" placeholder="User Id">
+                                    <input type="text" formControlName="UserId" class="form-control"  placeholder="User Id">
                                     <small class="text-danger" *ngIf="!myForm.get('UserId').valid && myForm.get('UserId').touched">User Id required</small>
                                 </div>
                             </div>
@@ -37,7 +38,7 @@
                                 <div class="form-group">
                                     <label for="password">Password<span>*</span></label>
                                     <input name="password" formControlName="Password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password">
-                                    <small class="text-danger" *ngIf="!myForm.get('Password').valid && myForm.get('Password').touched">Password required</small>
+                                    <small class="text-danger mt-5" *ngIf="!myForm.get('Password').valid && myForm.get('Password').touched">Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more character</small>
                                     <div class="click_password" (click)="onEyeClick()">
                                         <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
                                         <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
@@ -48,6 +49,7 @@
                                 <div class="form-group">
                                     <label for="userId"> Role<span>*</span></label>
                                     <select class="form-control" formControlName="role">
+                                        <option [ngValue]='null'>Select Role</option>
                                         <option *ngFor="let item of role" [ngValue]="item.role">{{item.role}}</option>
                                     </select>
                                     <small class="text-danger" *ngIf="!myForm.get('role').valid && myForm.get('role').touched">Role required</small>
@@ -74,3 +76,4 @@
         </div>
     </div>
 </div>
+<!-- Dropdown --> 

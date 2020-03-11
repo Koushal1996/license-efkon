@@ -3,6 +3,7 @@ import { LoginServiceService } from './login-service.service';
 import { Routes, ActivatedRoute } from '@angular/router';
 import { Router } from "@angular/router";
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -26,12 +27,19 @@ export class LoginComponent implements OnInit {
   firstVAlue: string;
   myCaptchaValue: string;
   captchaMsg: string = "Invalid Captcha";
-  constructor(private _loginService: LoginServiceService, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private _loginService: LoginServiceService, 
+    private router: Router,
+     private route: ActivatedRoute,
+     
+     private toastr: ToastrService
+     ) {
 
     const adminCredentials = window.localStorage.getItem('UserId')
     console.log(adminCredentials);
     if (adminCredentials === 'admin') {
       this.router.navigate(['/main'])
+      this.toastr.success('Welcome');
     }
     else if (adminCredentials === 'user') {
       this.router.navigate(['/user'])
@@ -53,16 +61,25 @@ export class LoginComponent implements OnInit {
     this.ResolverreturnUrl = this.route.snapshot.queryParams['ResolverreturnUrl'] || '/reviewer'
     this.ApproverReturnUsrl = this.route.snapshot.queryParams['ReviewerUserreturnUrl'] || '/approver'
 
-    //  Reactive Form-
+    //  User login Form credentials-
     this.myLoginForm = new FormGroup(
       {
-        'userName': new FormControl(null, Validators.required),
+        'userName': new FormControl(null, [Validators.required,Validators.pattern('[a-zA-Z]+')]),
         'password': new FormControl(null, Validators.required),
         'myCaptchaValue': new FormControl(null, Validators.required)
       }
     )
     this.generateCaptcha();
   }
+  // Show or hide password
+  showPassword:boolean=true
+  mypassword:boolean=false;
+  showHidePassword()
+  {
+    this.showPassword=!this.showPassword;
+    this.mypassword=!this.mypassword;
+  }
+  
   onSubmit() {
     this.credentials = this.myLoginForm.value  // Credential where we store the formarray value
     this.userid = this.credentials.userName // get UserId from form
@@ -107,6 +124,7 @@ export class LoginComponent implements OnInit {
       }
       else {
         this.msg = "Invalid credentials !"
+        // this.toastr.success("Invalid credentials....")
       }
     }, 2000);
   }

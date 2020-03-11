@@ -21,8 +21,7 @@ import { MyProjectDetailService } from '../Services/my-project-detail.service';
 import { HttpClientModule } from '@angular/common/http';
 import { UpdateSingleLicenceComponent } from './update-single-licence/update-single-licence.component';
 import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single-licence.component';
-
-
+import { NgSelect2Module } from 'ng-select2';
 @NgModule({
   declarations: [
     ProjectDetailComponent,
@@ -47,7 +46,9 @@ import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single
     MainRoutingModule,
     RouterModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgSelect2Module
+
   ],
   providers :[UsersServicesService,MyProjectDetailService]
 })
