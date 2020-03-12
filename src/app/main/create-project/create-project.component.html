@@ -84,6 +84,8 @@
                                     <label for="userId">Customer</label>
                                     <select class="form-control" formControlName="customer">
                                         <option [ngValue]="null">Choose Customer</option>
+                                        <option ><input type="text" class="form-control" placeholder="search"></option>
+
                                         <option *ngFor="let item of customerName" value={{item.id}} >{{item.name}}</option>
                                     </select>
                                     <small class="text-danger" *ngIf="!myCreateProjectForm.get('customer').valid && myCreateProjectForm.get('customer').touched">Customer required</small>

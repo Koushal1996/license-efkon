@@ -15,8 +15,7 @@ import { GenerateLicenceComponent } from './generate-licence/generate-licence.co
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
-import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single-licence.component';
-import { UpdateSingleLicenceComponent } from './update-single-licence/update-single-licence.component';
+
 
 const routes: Routes = [
   {
@@ -80,14 +79,7 @@ const routes: Routes = [
         path: 'updateProject',
         component: UpdateProjectComponent
       },
-      {
-        path: 'renewSinglelIcence',
-        component: RenewSingleLicenceComponent
-      },
-      {
-        path: 'updateSingleLicence',
-        component: UpdateSingleLicenceComponent
-      },
+    
     ]
 
   }

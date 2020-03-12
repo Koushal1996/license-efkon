@@ -19,8 +19,6 @@ import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
 import { MyProjectDetailService } from '../Services/my-project-detail.service';
 import { HttpClientModule } from '@angular/common/http';
-import { UpdateSingleLicenceComponent } from './update-single-licence/update-single-licence.component';
-import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single-licence.component';
 import { NgSelect2Module } from 'ng-select2';
 @NgModule({
   declarations: [
@@ -37,8 +35,7 @@ import { NgSelect2Module } from 'ng-select2';
     UpdateUserComponent,
     UserRequestsComponent,
     UpdateProjectComponent,
-    UpdateSingleLicenceComponent,
-    RenewSingleLicenceComponent
+
   ],
   imports: [
     CommonModule,
