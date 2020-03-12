@@ -7,11 +7,11 @@
                     <form class="mt-4" [formGroup]="myForm" (ngSubmit)='onSubmit()'>
                         <div class="row">
                         <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="customername">Name<span>*</span></label>
-                                    <input type="text" formControlName="CustomerName" class="form-control" placeholder="Name">
-                                    <small class="text-danger" *ngIf="!myForm.get('CustomerName').valid && myForm.get('CustomerName').touched">Customer name required</small>
-                                </div>
+                            <div class="form-group">
+                                <label for="customername">Name<span>*</span></label>
+                                <input type="text" formControlName="CustomerName" class="form-control" placeholder="Name">
+                                <small class="text-danger" *ngIf="!myForm.get('CustomerName').valid && myForm.get('CustomerName').touched">Customer name required</small>
+                            </div>
                         </div>
                             <div class="col-lg-4">
                                 <div class="form-group">
