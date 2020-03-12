@@ -41,7 +41,11 @@ export class UserRequestsComponent implements OnInit {
 
 //   });
 // }
+<<<<<<< HEAD
 // Accept Request
+=======
+// // Accept Request
+>>>>>>> decb598dc651d2bdd547455cc37aec40c6dd3fd0
 // onAccepRequest()
 // {
 //   swal("Good job!", "Request has been Accepted!", "success");

@@ -10,8 +10,6 @@ import { ChangePasswordApproverComponent } from './change-password-approver/chan
 import { UsersServicesService } from './users-approver/users-services.service';
 import { FormsModule } from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [
    ApproverComponent,
@@ -27,6 +25,5 @@ import { FormsModule } from '@angular/forms';
     ApproverRoutingModule
   ],
       providers:[UsersServicesService]
-
 })
 export class ApproverModule { }

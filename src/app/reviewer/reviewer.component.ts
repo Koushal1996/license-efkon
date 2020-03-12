@@ -8,26 +8,24 @@ import * as $ from 'jquery'
 })
 export class ReviewerComponent implements OnInit {
 
-  constructor(private roter:Router){
+  constructor(private roter: Router) {
 
   }
 
   ngOnInit(): void {
-    $("#menu-toggle").click(function(e) {
+    $("#menu-toggle").click(function (e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
     });
   }
-  logout()
-  {
+  logout() {
     window.localStorage.removeItem('UserId');
     window.localStorage.removeItem('password');
-     this.roter.navigate(['/login'])
+    this.roter.navigate(['/login'])
   }
-  submenu:boolean=false;
-  subMenu1()
-  {
-    this.submenu=!this.submenu;
+  submenu: boolean = false;
+  subMenu1() {
+    this.submenu = !this.submenu;
   }
 
 }

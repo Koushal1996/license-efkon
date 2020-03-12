@@ -7,16 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChangePasswordApproverComponent implements OnInit {
 
-  model:any={};
-  constructor() {}
-
+  model: any = {};
+  constructor() { }
   ngOnInit(): void {
   }
-  onSubmit()
-  {
-   if(this.model.newPsw !== this.model.cnfPsw){
-    alert("wrong pasword")
-   }
+  onSubmit() {
+    if (this.model.newPsw !== this.model.cnfPsw) {
+      alert("wrong pasword")
+    }
   }
-
 }

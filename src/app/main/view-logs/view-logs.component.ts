@@ -37,7 +37,6 @@ onKeydownEvent() {
     if (td) {
       txtValue = td.textContent || td.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        this.msg1="Sorry, Data not available !!"
         tr[i].style.display = "";
 
       } else {
@@ -45,12 +44,9 @@ onKeydownEvent() {
        this.msg=true
       }
     }
-    else
-    {
-
-    }
   }
 }
+
 // Code For Sorting
 OnselectSortItem(event) {
   console.log("In search item"+event);

@@ -2,6 +2,7 @@ body {
     color: #999;
     font-family: 'Roboto', sans-serif;
 }
+
 .password_change_forget {
     display: inline-block;
     width: 100%;
@@ -10,11 +11,11 @@ body {
     background-repeat: no-repeat;
     background-image: url(/assets/img/password_background.jpg);
     .signup-form {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      margin: 0 auto;
-      padding: 30px 0;
-      text-align: center;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        margin: 0 auto;
+        padding: 30px 0;
+        text-align: center;
         form {
             max-width: 350px;
             margin-top: 30px;
@@ -50,14 +51,13 @@ body {
                     background: #3491e2 !important;
                     opacity: inherit;
                     border: none;
-                    &:hover{
+                    &:hover {
                         background: #0e6cbd !important;
                     }
                 }
                 input.ng-invalid.ng-touched {
                     border: 1px solid red;
                 }
-                
                 input.ng-valid {
                     border: 1px solid green;
                 }

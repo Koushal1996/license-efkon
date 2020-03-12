@@ -9,22 +9,15 @@ import { Router } from '@angular/router';
 })
 export class UpdateProjectComponent implements OnInit {
 
-
-  checked: boolean = false;
   password: boolean = true;
   eyeStatus: boolean = false;
   model:any={};
   eventVal:string;
-  date1:string;
   ShowPeriod:boolean=false;
-  myEvent:string;
   ProjectData=[];
-  ConfirmVal:boolean=false;
-
    constructor(private projectCreateServices: ProjectDetailServiceService, private router:Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // for password show and hide
   onEyeClick()
@@ -32,7 +25,8 @@ export class UpdateProjectComponent implements OnInit {
     this.eyeStatus=!this.eyeStatus;
     this.password=!this.password;
   }
-//  for limited date show textfield
+
+//  for limited/lifetime period
   onChangeExp(events:any)
   {
 this.eventVal=events.target.value;
@@ -62,6 +56,7 @@ this.eventVal=events.target.value;
     })
     console.log(this.ProjectData)
   }
+
   formSubmit()
   {
    if (!this.ProjectData.length) {
@@ -80,6 +75,7 @@ this.eventVal=events.target.value;
   }
   console.log(this.ProjectData)
   }
+
   getChangeEventdate(event:any)
   {
         var x = event.target.value;
@@ -96,17 +92,6 @@ this.eventVal=events.target.value;
 
   }
   OnSvaeDetail()
-  {
-      // var ConfirmValue= confirm("Press ok to Add more Project ?");
-      // if(ConfirmValue)
-      // {
-      //      this.ConfirmVal=!this.ConfirmVal;
-      // }
-      // if(!ConfirmValue)
-      // {
-      //   alert("Save Successfully")
-      //   this.router.navigate(['/main/projectDetail'])
-      // }
-    }
+  { }
 
 }

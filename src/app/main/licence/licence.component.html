@@ -1,20 +1,15 @@
 <div class="container-container">
     <div class="row">
         <div class="col-3">
-
             <select name="" id="" class="form-control" (change)="OnPagination($event.target.value)">
              <option value="5" >5</option>
              <option value="10">10</option>
              <option value="15">15</option>
              <option value="300">Show All</option>
            </select>
-
         </div>
         <div class="col-3 ">
-
-
             <input type="text" placeholder="Search here..." id="myInput" (keyup)=onKeydownEvent() class="form-control ">
-
         </div>
         <div class="col-3">
             <select name="" id="" class="form-control" (change)="OnselectSearch($event.target.value)">
@@ -25,10 +20,9 @@
             <option value="5">Search By Licence Count</option>
             <option value="6">Search By Licence Type</option>
             <option value="7">Search By Expiration Period</option>
-                </select>
+            </select>
         </div>
         <div class="col-3 ">
-
             <select name="" id="" class="form-control" (change)="OnselectSortItem($event.target.value)">
                  <option >Sort By..</option>
                  <option value="1">Search By Customer</option>
@@ -38,13 +32,13 @@
                  <option value="6">Search By Licence Type</option>
                  <option value="7">Search By Expiration Period</option>
                </select>
-
         </div>
 
     </div>
 </div>
 <table class="table table-hover table-stripped table-sm mt-3 " id="myTable">
     <thead class="users_table_hader">
+
         <tr>
             <th scope="col" class="text-center">#</th>
             <th scope="col" class="text-center">Customer </th>
@@ -56,10 +50,9 @@
             <th scope="col" class="text-center">Expiration Period</th>
             <th scope="col" class="text-center">Start Date</th>
             <th scope="col" class="text-center">End Date</th>
-            <th scope="col" class="text-center">Update</th>
-            <th scope="col" class="text-center">Renew</th>
-
+          
         </tr>
+
     </thead>
     <tbody>
         <tr *ngFor="let item of logs | slice:0:item; index as i">
@@ -73,12 +66,9 @@
             <td class="text-center">{{item.ExpirationPeriod}}</td>
             <td class="text-center">{{item.StartDate}}</td>
             <td class="text-center">{{item.EndDate}}</td>
-            <td class="text-center"> <i class="fa fa-edit text-success ml-3" style="cursor: pointer;" routerLink="/main/updateSingleLicence"></i></td>
-            <td><i class="fa fa-wrench" aria-hidden="true" style="cursor: pointer;" routerLink="/main/renewSinglelIcence"></i>
-            </td>
+            
+            
         </tr>
     </tbody>
 </table>
-
-
 <button class="btn btn-info myButton" routerLink="/main/generateLicence"><i class="fa fa-plus"></i>  Generate New Licence Key</button>

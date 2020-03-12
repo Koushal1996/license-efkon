@@ -14,6 +14,7 @@ import  Swal from 'sweetalert';
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent implements OnInit {
+
   // Variables---
   checked: boolean = false;
   password: boolean = true;
@@ -22,11 +23,8 @@ export class CreateProjectComponent implements OnInit {
   eventVal: string;
   date1: string;
   ShowPeriod: boolean = false;
-  myEvent: string;
-  ProjectData = [];
   ConfirmVal: boolean = false;
   customerName: any;
-  namex = "jamshed"
   myCreateProjectForm: FormGroup;
   constructor(private myServices: MyProjectDetailService,
     private router: Router,) { }
@@ -66,6 +64,7 @@ export class CreateProjectComponent implements OnInit {
     this.eyeStatus = !this.eyeStatus;
     this.password = !this.password;
   }
+
   // Change expiration Period
   onChangeExp(events: any) {
     this.eventVal = events.target.value;
@@ -77,46 +76,14 @@ export class CreateProjectComponent implements OnInit {
     }
   }
 
+
   // Submit Customer Form
   onSubmitCustomerForm(form:NgForm)
   {
    console.log(this.model);
    form.reset();
   }
-  // addProduct()
-  // {
-  //     this.ProjectData.push({
-  //     customername:this.model.customername,
-  //     productFAmily: this.model.productFamily,
-  //     productCode :this.model.productCode,
-  //     Version :this.model.version,
-  //     LicenceType: this.model.LicenceType,
-  //     Users :this.model.users,
-  //     ExpPeriod: this.model.expPeriod,
-  //     StartDate: this.model.date1,
-  //     Period :this.model.period,
-  //     EndDate:this.model.endDate
-  //   })
-  //   console.log(this.ProjectData)
-  // }
-  // // formSubmit()
-  // // {
-  // //  if (!this.ProjectData.length) {
-  // //   this.ProjectData.push({
-  // //     customername:this.model.customername,
-  // //     productFAmily: this.model.productFamily,
-  // //     productCode :this.model.productCode,
-  // //     Version :this.model.version,
-  // //     LicenceType: this.model.LicenceType,
-  // //     Users :this.model.users,
-  // //     ExpPeriod: this.model.expPeriod,
-  // //     StartDate: this.model.date1,
-  // //     Period :this.model.period,
-  // //     EndDate:this.model.endDate
-  // //   })
-  // // }
-  // console.log(this.ProjectData)
-  // }
+  // Auto Fill Date After Input Period
   getChangeEventdate(event: any) {
     var x = event.target.value;
     var y = parseInt(x);
@@ -129,7 +96,6 @@ export class CreateProjectComponent implements OnInit {
     console.log(fullDate);
     this.model.endDate = fullDate;
     console.log("Date after " + y + " months:", month + "/" + day + "/" + year);
-
   }
   OnSvaeDetail() {
     var ConfirmValue = confirm("Press ok to Add more Project ?");
@@ -141,10 +107,10 @@ export class CreateProjectComponent implements OnInit {
       this.router.navigate(['/main/projectDetail'])
     }
   }
+
   // Create Project
   onSubmit() {
     console.log(this.myCreateProjectForm.value);
-
     Swal({
       title: "Are you sure?",
       text: "Do You want to add more projects ",
@@ -159,11 +125,10 @@ export class CreateProjectComponent implements OnInit {
         });
         this.router.navigate(['/main/projectDetail'])
       }
-      // else {
-      //   Swal("Your imaginary file is safe!");
-      // }
+
     });
   }
+
   // On Check CheckBox
   checkBoxClick()
   {
@@ -175,17 +140,13 @@ export class CreateProjectComponent implements OnInit {
   onClear() {
     this.myCreateProjectForm.reset();
   }
+
   // Clear Crate Customer Form
 
   OnClearCustomerForm(myForm:NgForm)
   {
-    //  this.model.CustomerName=" ",
-    //  this.model.Contactnumber=" ",
-    //  this.model.UserId=" ",
-    //  this.model.EmailId=" ",
-    //  this.model.password=" ",
-    //  this.model.CustomerName=null
-     myForm.reset();
+
+     myForm.form.reset();
   }
 
 }

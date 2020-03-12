@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// import { DashboardComponent } from './dashboard/dashboard.component';
 import { ProjectDetailComponent } from './project-detail/project-detail.component';
 import { UsersComponent } from './users/users.component';
 import { LicenceComponent } from './licence/licence.component';
@@ -16,16 +14,12 @@ import { RouterModule } from '@angular/router';
 import { UpdateLicenceComponent } from './update-licence/update-licence.component';
 import { RenewLicenceComponent } from './renew-licence/renew-licence.component';
 import { GenerateLicenceComponent } from './generate-licence/generate-licence.component';
-import { RequestComponent } from './request/request.component';
 import { UpdateUserComponent } from './update-user/update-user.component';
 import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
 import { MyProjectDetailService } from '../Services/my-project-detail.service';
 import { HttpClientModule } from '@angular/common/http';
-import { UpdateSingleLicenceComponent } from './update-single-licence/update-single-licence.component';
-import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single-licence.component';
-
-
+import { NgSelect2Module } from 'ng-select2';
 @NgModule({
   declarations: [
     ProjectDetailComponent,
@@ -38,12 +32,10 @@ import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single
     UpdateLicenceComponent,
     RenewLicenceComponent,
     GenerateLicenceComponent,
-    RequestComponent,
     UpdateUserComponent,
     UserRequestsComponent,
     UpdateProjectComponent,
-    UpdateSingleLicenceComponent,
-    RenewSingleLicenceComponent
+
   ],
   imports: [
     CommonModule,
@@ -51,7 +43,9 @@ import { RenewSingleLicenceComponent } from './renew-single-licence/renew-single
     MainRoutingModule,
     RouterModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgSelect2Module
+
   ],
   providers :[UsersServicesService,MyProjectDetailService]
 })

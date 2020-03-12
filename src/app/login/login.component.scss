@@ -2,6 +2,26 @@ body {
     color: #999;
     font-family: 'Roboto', sans-serif;
 }
+.fa-eye
+{
+    position: absolute;
+    top: 332px;
+    right: 665px;
+    color: black;
+}
+.fa-eye-slash
+{
+    position: absolute;
+    top: 332px;
+    right: 665px;
+    color: black;
+
+}
+p {
+    color: red !important;
+    font-weight: bold;
+    margin-left: 80px;
+}
 
 .password_change_forget {
     display: inline-block;
@@ -75,7 +95,7 @@ body {
                     font-weight: bold;
                     outline: none;
                 }
-                input.ng-invalid.ng-touched {
+                input.ng-invalid.ng-touched.ng-dirty {
                     border: 1px solid red;
                 }
                 input.ng-valid {
