@@ -15,11 +15,6 @@ body {
     outline: none;
 }
 
-.home {
-    color: black;
-    opacity: .8;
-}
-
 h6:focus {
     outline: none;
 }
@@ -33,12 +28,6 @@ h6:focus {
 
 .list-group-item {
     cursor: pointer;
-}
-
-.userImage {
-    border-radius: 50%;
-    border: 2px solid #17a2b8!important;
-    ;
 }
 
 #sidebar-wrapper {
@@ -105,6 +94,8 @@ div#sidebar-wrapper {
         .list-group-item {
             background-color: transparent;
             color: #333;
+            font-family: 'Martel', serif;
+
         }
         .active {
             color: white !important;
@@ -113,11 +104,7 @@ div#sidebar-wrapper {
     }
 }
 
-.middle-content {
-    margin-top: 90px;
-    box-shadow: 0 0 5px #ddd;
-    padding: 10px;
-}
+
 
 .toggled {
     #page-content-wrapper {

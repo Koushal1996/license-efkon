@@ -1,62 +1,80 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> decb598dc651d2bdd547455cc37aec40c6dd3fd0
-<div class="form_main ">
-    <div class="main_form ">
-        <h3 class="text-center text-info">Update existing user</h3>
-        <form class="mt-4" (ngSubmit)='onSubmit()'>
-            <div class="form-group">
-                <label for="customername">Name<span>*</span></label>
-                <input type="text" name="CustomerName" [(ngModel)]="model.CustomerName" class="form-control" id="inputEmail3" placeholder="Name" #cusName='ngModel' ngModel required>
-                <small class="text-danger" *ngIf="!cusName.valid && cusName.touched"><strong></strong>Name
-                        required</small>
-            </div>
-            <div class="form-group">
-                <label for="customername">Contact Number</label>
-                <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control" id="contactnumber" placeholder="Contact Number" #Connumber='ngModel' ngModel required>
-                <small class="text-danger" *ngIf="!Connumber.valid && Connumber.touched"><strong></strong>Contact Number
-                        required</small>
-            </div>
-            <div class="form-group">
-                <label for="userId">User Id <span>*</span></label>
-                <input type="text" name="UserId" [(ngModel)]="model.UserId" class="form-control" id="inputEmail3" placeholder="User Id" #cusId='ngModel' ngModel required>
-                <small class="text-danger" *ngIf="!cusId.valid && cusId.touched"><strong></strong>User Id
-                        required</small>
-            </div>
-            <div class="form-group">
-                <label for="userId">Email Id <span>*</span></label>
-                <input type="text" name="EmailId" [(ngModel)]="model.EmailId" class="form-control" id="inputEmail3" placeholder="Mail Id" email #mailId='ngModel' ngModel [required]='checked'>
-                <small class="text-danger" *ngIf="!mailId.valid && mailId.touched"><strong></strong>Valid mail Id
-                        required</small>
-            </div>
-            <div class="form-group">
-                <label for="password">Password <span>*</span></label>
-                <input name="password" [(ngModel)]="model.password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password" #cusPass='ngModel' ngModel required>
-                <div class="click_password" (click)="onEyeClick()">
-                    <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
-                    <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
+<div class="container-container">
+        <div class="row">
+            <div class="col-lg-12">
+            <div class="form_main ">
+                <div class="main_form ">
+                    <h3 class="text-center text-info">Update existing user</h3>
+                    <form class="mt-4" (ngSubmit)='onSubmit()'>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="customername">Name<span>*</span></label>
+                                    <input type="text" name="CustomerName" [(ngModel)]="model.CustomerName" class="form-control" id="inputEmail3" placeholder="Name" #cusName='ngModel' ngModel required>
+                                    <small class="text-danger" *ngIf="!cusName.valid && cusName.touched"><strong></strong>Name required</small>
+                                </div>
+                            </div>
+                           <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="customername">Contact Number</label>
+                                    <input type="text" name="Contactnumber" [(ngModel)]="model.Contactnumber" class="form-control" id="contactnumber" placeholder="Contact Number" #Connumber='ngModel' ngModel required>
+                                    <small class="text-danger" *ngIf="!Connumber.valid && Connumber.touched"><strong></strong>Contact Number required</small>
+                                </div>
+                           </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="userId">User Id <span>*</span></label>
+                                    <input type="text" name="UserId" [(ngModel)]="model.UserId" class="form-control" id="inputEmail3" placeholder="User Id" #cusId='ngModel' ngModel required>
+                                    <small class="text-danger" *ngIf="!cusId.valid && cusId.touched"><strong></strong>User Id
+                                     required</small>
+                                </div>
+                            </div>
+                           <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="userId">Email Id <span>*</span></label>
+                                    <input type="text" name="EmailId" [(ngModel)]="model.EmailId" class="form-control" id="inputEmail3" placeholder="Mail Id" email #mailId='ngModel' ngModel [required]='checked'>
+                                    <small class="text-danger" *ngIf="!mailId.valid && mailId.touched"><strong></strong>Valid mail Id
+                                    required</small>
+                                </div>
+                           </div>
+                           <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="password">Password <span>*</span></label>
+                                    <input name="password" [(ngModel)]="model.password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password" #cusPass='ngModel' ngModel required>
+                                    <div class="click_password" (click)="onEyeClick()">
+                                        <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
+                                        <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>
+                                    </div>
+                                    <small class="text-danger" *ngIf="!cusPass.valid && cusPass.touched"><strong></strong>Password must be 6
+                                    character</small>
+                                </div>
+                           </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="userId"> Role</label>
+                                    <select class="form-control" name="role" [(ngModel)]="model.role" id="">
+                                        <option *ngFor="let item of role index as i" [ngValue]="item.name">{{i+1}}) {{item.name}}</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="custom-check">
+                                    <div class="custom-checkbox ">
+                                        <input type="checkbox" [checked]="checked" (click)="checkBoxClick()" class="custom-control-input" id="customCheck" name="example1">
+                                        <label for="customCheck">Do you want to send mail ?</label>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="col-lg-12">
+                                <div class="button_btn text-center">
+                                    <button class="btn btn-outline-info "><i class="fa fa-check"></i> Submit</button>
+                                    <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i
+                                    class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
+                                </div>
+                           </div>
+                        </div>
+                    </form>
                 </div>
-                <small class="text-danger" *ngIf="!cusPass.valid && cusPass.touched"><strong></strong>Password must be 6
-                        character</small>
             </div>
-            <div class="form-group">
-                <label for="userId"> Role</label>
-                <select class="form-control" name="role" [(ngModel)]="model.role" id="">
-                                     <option *ngFor="let item of role index as i" [ngValue]="item.name">{{i+1}}) {{item.name}}</option>
-                    </select>
-            </div>
-            <div class="custom-check">
-                <div class="custom-checkbox ">
-                    <input type="checkbox" [checked]="checked" (click)="checkBoxClick()" class="custom-control-input" id="customCheck" name="example1">
-                    <label for="customCheck">Do you want to send mail ?</label>
-                </div>
-            </div>
-            <div class="button_btn text-center">
-                <button class="btn btn-outline-info "><i class="fa fa-check"></i> Submit</button>
-                <button type="button" routerLink="/users" class="btn btn-outline-danger ml-3"><i
-                        class="fa fa-graduation-cap" aria-hidden="true"></i> Clear</button>
-            </div>
-        </form>
+        </div>
     </div>
 </div>

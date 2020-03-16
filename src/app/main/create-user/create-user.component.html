@@ -6,7 +6,6 @@
                     <h3 class="text-center text-info">Create User</h3>
                     <form class="mt-4" [formGroup]="myForm" (ngSubmit)='onSubmit()'>
                         <div class="row">
-<<<<<<< HEAD
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="customername">Name<span>*</span></label>
@@ -14,15 +13,6 @@
                                 <small class="text-danger" *ngIf="!myForm.get('CustomerName').valid && myForm.get('CustomerName').touched">Customer name required</small>
                             </div>
                         </div>
-=======
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="customername">Name<span>*</span></label>
-                                    <input type="text" formControlName="CustomerName" class="form-control" placeholder="Name">
-                                    <small class="text-danger" *ngIf="!myForm.get('CustomerName').valid && myForm.get('CustomerName').touched">Customer name required</small>
-                                </div>
-                            </div>
->>>>>>> decb598dc651d2bdd547455cc37aec40c6dd3fd0
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     <label for="customername">Contact Number</label>
@@ -48,7 +38,7 @@
                                 <div class="form-group">
                                     <label for="password">Password<span>*</span></label>
                                     <input name="password" formControlName="Password" [type]="password ? 'password' :'text'" minlength='5' class="form-control" id="inputEmail3" placeholder="Password">
-                                    <small class="text-danger mt-5" *ngIf="!myForm.get('Password').valid && myForm.get('Password').touched">Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more character</small>
+                                    <small class="text-danger" *ngIf="!myForm.get('Password').valid && myForm.get('Password').touched">Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more character</small>
                                     <div class="click_password" (click)="onEyeClick()">
                                         <i class="fa fa-eye" *ngIf="!eyeStatus"></i>
                                         <i class="fa fa-eye-slash" *ngIf="eyeStatus"></i>

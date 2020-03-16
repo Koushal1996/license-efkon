@@ -20,7 +20,7 @@
                 <tbody>
 
                     <tr *ngFor="let item of logs index as i">
-                        <th scope="row" class="pl-2">{{i+1}}</th>
+                        <td scope="row" class="pl-2">{{i+1}}</td>
                         <td>{{item.ProductFamily}}</td>
                         <td>{{item.productCode}}</td>
                         <td class="text-dark">{{item.Version}}</td>
@@ -28,13 +28,8 @@
                         <td>{{item.ExpirationPeriod}}</td>
                         <td>{{item.StartDate}}</td>
                         <td>{{item.EndDate}}</td>
-<<<<<<< HEAD
                         <td><button class="btn btn-outline-success" ><i class="fa fa-check"></i></button></td>
-                        <td><button class="btn btn-outline-danger" ><i class="fa fa-times"></i></button></td>
-=======
-                        <td><button class="btn btn-outline-success"><i class="fa fa-check"></i></button></td>
-                        <td><button class="btn btn-outline-danger"><i class="fa fa-times"></i></button></td>
->>>>>>> decb598dc651d2bdd547455cc37aec40c6dd3fd0
+                        <td><button class="btn btn-outline-danger" ><div class="reject"></div></button></td>
                     </tr>
 
                 </tbody>
