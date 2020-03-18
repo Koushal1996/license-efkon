@@ -1,7 +1,22 @@
 body {
     overflow-x: hidden;
 }
-
+// @keyframes myfirst {
+//     from {top: 0px;}
+//     to {top: 200px;}
+//   }
+// @keyframes myfirst {
+//     0%   {background: red; left: 0px; top: 0px;}
+//     75%  {background: green; left: 0px; top: 200px;}
+//     100% {background: red; left: 0px; top: 0px;}
+//   }
+//   #wrapper{
+//     width: 100%;
+//     height: 100%;  
+//     position: relative;
+//     animation: myfirst 5s ;
+//     animation-direction: alternate;
+//   }
 .btn:focus {
     outline: none;
     border: 1px solid white;

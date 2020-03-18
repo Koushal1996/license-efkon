@@ -15,16 +15,16 @@ $color:#333;
     height: 50px;
     transition: 0.2s;
   }
-@mixin transform($property) {
-    -webkit-transform: $property;
-    -ms-transform: $property;
-    transform: $property;
-  }
+// @mixin transform($property) {
+//     -webkit-transform: $property;
+//     -ms-transform: $property;
+//     transform: $property;
+//   }
 .userImage {
     @extend %message-shared;
-    &:hover{
-        @include transform(rotate(360deg));
-    }
+    // &:hover{
+    //     @include transform(rotate(360deg));
+    // }
 }
 
 .form-control {
