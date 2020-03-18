@@ -19,7 +19,7 @@ import { UserRequestsComponent } from './user-requests/user-requests.component';
 import { UpdateProjectComponent } from './update-project/update-project.component';
 import { MyProjectDetailService } from '../Services/my-project-detail.service';
 import { HttpClientModule } from '@angular/common/http';
-import { NgSelect2Module } from 'ng-select2';
+// import { NgSelect2Module } from 'ng-select2';
 @NgModule({
   declarations: [
     ProjectDetailComponent,
@@ -44,7 +44,7 @@ import { NgSelect2Module } from 'ng-select2';
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgSelect2Module
+    // NgSelect2Module
 
   ],
   providers :[UsersServicesService,MyProjectDetailService]

@@ -25,7 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelect2Module,
+    // NgSelect2Module,
     ToastrModule.forRoot(),
     
 
