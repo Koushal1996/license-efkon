@@ -1,5 +1,6 @@
 package com.nxtlife.efkon.license.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
@@ -10,16 +11,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UpdateTimestamp;
 
-@Entity
-public class ProductDetail {
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "product_detail")
+@DynamicInsert(value = true)
+@DynamicUpdate(value = true)
+public class ProductDetail extends BaseEntity implements Serializable {
 
 	@ManyToOne(cascade = CascadeType.ALL)
 	private ProductCode productCode;
@@ -30,44 +36,20 @@ public class ProductDetail {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Version version;
 
-	@CreationTimestamp
-	private Date createdAt;
-
-	private String createdBy;
-
-	@UpdateTimestamp
-	private Date modifiedAt;
-
-	private String modifiedBy;
-	
 	@OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
 	private Set<ProjectProduct> projectProducts;
 
 	public ProductDetail() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ProductDetail(Long id, ProductCode productCode, ProductFamily productFamily, Version version, Date createdAt,
-			String createdBy, Date modifiedAt, String modifiedBy, Set<ProjectProduct> projectProducts) {
+	public ProductDetail(ProductCode productCode, ProductFamily productFamily, Version version,
+			Set<ProjectProduct> projectProducts) {
 		super();
-		this.id = id;
 		this.productCode = productCode;
 		this.productFamily = productFamily;
 		this.version = version;
-		this.createdAt = createdAt;
-		this.createdBy = createdBy;
-		this.modifiedAt = modifiedAt;
-		this.modifiedBy = modifiedBy;
 		this.projectProducts = projectProducts;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public ProductCode getProductCode() {
@@ -92,38 +74,6 @@ public class ProductDetail {
 
 	public void setVersion(Version version) {
 		this.version = version;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getModifiedAt() {
-		return modifiedAt;
-	}
-
-	public void setModifiedAt(Date modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 
 	public Set<ProjectProduct> getProjectProducts() {

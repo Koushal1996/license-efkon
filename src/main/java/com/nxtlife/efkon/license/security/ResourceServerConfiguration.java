@@ -24,7 +24,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) {
-		resources.resourceId("enforcement-configurator-api");
+		resources.resourceId("license-key-api");
 		resources.authenticationEntryPoint(customAuthenticationEntryPoint);
 	}
 

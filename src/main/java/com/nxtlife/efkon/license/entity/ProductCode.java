@@ -1,70 +1,45 @@
 package com.nxtlife.efkon.license.entity;
 
-import java.sql.Date;
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+
+@SuppressWarnings("serial")
 @Entity
-public class ProductCode {
-	
-	@Id
-	private Long id;
-	
+@Table(name = "product_code")
+@DynamicInsert(value = true)
+@DynamicUpdate(value = true)
+public class ProductCode extends BaseEntity implements Serializable {
+
 	@Column(unique = true, nullable = false)
 	private String name;
-	
-	private String active;
-	
-	@CreationTimestamp
-	private Date createdAt;
-	
-	private String createdBy;
-	
-	@UpdateTimestamp
-	private Date modifiedAt;
-	
-	private String modifiedBy;
-	
+
 	@ManyToOne
 	private ProductFamily productFamily;
-	
+
 	@OneToMany(mappedBy = "productCode", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails;
 
 	public ProductCode() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ProductCode(Long id, String name, String active, Date createdAt, String createdBy, Date modifiedAt,
-			String modifiedBy, ProductFamily productFamily, Set<ProductDetail> productDetails) {
+	public ProductCode(String name, ProductFamily productFamily, Set<ProductDetail> productDetails) {
 		super();
-		this.id = id;
 		this.name = name;
-		this.active = active;
-		this.createdAt = createdAt;
-		this.createdBy = createdBy;
-		this.modifiedAt = modifiedAt;
-		this.modifiedBy = modifiedBy;
 		this.productFamily = productFamily;
 		this.productDetails = productDetails;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -73,46 +48,6 @@ public class ProductCode {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getActive() {
-		return active;
-	}
-
-	public void setActive(String active) {
-		this.active = active;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getModifiedAt() {
-		return modifiedAt;
-	}
-
-	public void setModifiedAt(Date modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 
 	public ProductFamily getProductFamily() {

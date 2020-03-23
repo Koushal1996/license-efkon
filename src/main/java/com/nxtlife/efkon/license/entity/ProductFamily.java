@@ -1,72 +1,44 @@
 package com.nxtlife.efkon.license.entity;
 
-import java.sql.Date;
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+
+@SuppressWarnings("serial")
 @Entity
-public class ProductFamily {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+@Table(name = "product_family")
+@DynamicInsert(value = true)
+@DynamicUpdate(value = true)
+public class ProductFamily extends BaseEntity implements Serializable {
+
 	@Column(unique = true, nullable = false)
 	private String name;
-	
-	private String active;
-	
-	@CreationTimestamp
-	private Date createdAt;
-	
-	private String createdBy;
-	
-	@UpdateTimestamp
-	private Date modifiedAt;
-	
-	private String modifiedBy;
-	
+
 	@OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
 	private Set<ProductCode> productCodes;
-	
+
 	@OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails;
 
 	public ProductFamily() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ProductFamily(Long id, String name, String active, Date createdAt, String createdBy, Date modifiedAt,
-			String modifiedBy, Set<ProductCode> productCodes, Set<ProductDetail> productDetails) {
+	public ProductFamily(String name, Set<ProductCode> productCodes, Set<ProductDetail> productDetails) {
 		super();
-		this.id = id;
 		this.name = name;
-		this.active = active;
-		this.createdAt = createdAt;
-		this.createdBy = createdBy;
-		this.modifiedAt = modifiedAt;
-		this.modifiedBy = modifiedBy;
 		this.productCodes = productCodes;
 		this.productDetails = productDetails;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -75,46 +47,6 @@ public class ProductFamily {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getActive() {
-		return active;
-	}
-
-	public void setActive(String active) {
-		this.active = active;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getModifiedAt() {
-		return modifiedAt;
-	}
-
-	public void setModifiedAt(Date modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
 	}
 
 	public Set<ProductCode> getProductCodes() {
@@ -131,6 +63,43 @@ public class ProductFamily {
 
 	public void setProductDetails(Set<ProductDetail> productDetails) {
 		this.productDetails = productDetails;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((productCodes == null) ? 0 : productCodes.hashCode());
+		result = prime * result + ((productDetails == null) ? 0 : productDetails.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductFamily other = (ProductFamily) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (productCodes == null) {
+			if (other.productCodes != null)
+				return false;
+		} else if (!productCodes.equals(other.productCodes))
+			return false;
+		if (productDetails == null) {
+			if (other.productDetails != null)
+				return false;
+		} else if (!productDetails.equals(other.productDetails))
+			return false;
+		return true;
 	}
 
 }
