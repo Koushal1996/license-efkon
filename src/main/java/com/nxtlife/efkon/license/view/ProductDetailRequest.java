@@ -1,4 +1,4 @@
-package com.nextlife.license.view;
+package com.nxtlife.efkon.license.view;
 
 import com.nxtlife.efkon.license.entity.ProductCode;
 import com.nxtlife.efkon.license.entity.ProductFamily;

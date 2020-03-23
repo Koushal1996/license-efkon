@@ -21,9 +21,6 @@ public interface UserDao extends JpaRepository<User, Long> {
 	@Query(value = "select password from user where id = ?1", nativeQuery = true)
 	public String findPasswordById(Long id);
 
-	@Query(value = "select generated_password from user where username = ?1", nativeQuery = true)
-	public String findGeneratedPasswordByUsername(String username);
-
 	@Modifying
 	@Query(value = "update user set password=:password where username =:username", nativeQuery = true)
 	public int setPassword(@Param("username") String username, @Param("password") String password);

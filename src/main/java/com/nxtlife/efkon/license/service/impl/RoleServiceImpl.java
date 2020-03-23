@@ -61,7 +61,7 @@ public class RoleServiceImpl extends BaseService implements RoleService {
 	 */
 	private void validateRequest(RoleRequest request, Long organizationId) {
 		validateAuthorityIds(request.getAuthorityIds());
-		if (roleDao.existsRoleByNameAndOrganizationId(request.getName(), organizationId)) {
+		if (roleDao.existsRoleByName(request.getName())) {
 			throw new ValidationException(
 					String.format("This role (%s) is already exists for this organization", request.getName()));
 		}

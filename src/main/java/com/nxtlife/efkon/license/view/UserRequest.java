@@ -1,4 +1,4 @@
-package com.nextlife.license.view;
+package com.nxtlife.efkon.license.view;
 
 import java.sql.Date;
 

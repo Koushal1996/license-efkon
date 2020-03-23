@@ -45,18 +45,6 @@ import com.nxtlife.efkon.license.view.user.security.PasswordRequest;
 @Transactional
 public class UserServiceImpl extends BaseService implements UserDetailsService, UserService {
 
-	@Value("${efkon.organization.name}")
-	private String organizationName;
-
-	@Value("${efkon.organization.code}")
-	private String organizationCode;
-
-	@Value("${efkon.organization.latitude}")
-	private String organizationLatitude;
-
-	@Value("${efkon.organization.longitude}")
-	private String organizationLongitude;
-
 	@Autowired
 	private UserDao userDao;
 
@@ -81,11 +69,19 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 	public void init() {
 
 		Role role;
+		if ((role = roleDao.findByName("SuperAdmin")) == null) {
+			role = new Role("SuperAdmin");
+		}
 		if (userDao.findByUsername("ajay") == null) {
 			User user = new User("ajay", userPasswordEncoder.encode("12345"), null);
 			user.setName("Ajay");
+			user.setUserRoles(Arrays.asList(new UserRole(new UserRoleKey(role.getId(), user.getId()), role, user)));
 			userDao.saveAll(Arrays.asList(user));
 			List<Authority> authorities = authorityDao.findAll();
+			for (Authority authority : authorities) {
+				roleAuthorityDao.save(
+						new RoleAuthority(new RoleAuthorityKey(role.getId(), authority.getId()), role, authority));
+			}
 		}
 
 	}
@@ -139,32 +135,6 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 		userDao.setGeneratedPassword(username, userPasswordEncoder.encode(generatedPassword));
 		return new SuccessResponse(HttpStatus.OK.value(),
 				"New generated password has been sent to your email and contact number");
-	}
-
-	@Override
-	public SuccessResponse matchGeneratedPassword(String username, String generatedPassword) {
-		String encodedGeneratedPassword = userDao.findGeneratedPasswordByUsername(username);
-		if (encodedGeneratedPassword == null) {
-			throw new NotFoundException(String.format("User[username-%s] not found or password already set", username));
-		}
-		if (!userPasswordEncoder.matches(generatedPassword, encodedGeneratedPassword)) {
-			throw new ValidationException(String.format("Sent generated password[%s] incorrect", generatedPassword));
-		}
-		return new SuccessResponse(HttpStatus.OK.value(), "Generated password matched");
-	}
-
-	@Override
-	public SuccessResponse changePasswordByGeneratedPassword(PasswordRequest request) {
-		request.checkGeneratedPassword();
-		SuccessResponse response = matchGeneratedPassword(request.getUsername(), request.getGeneratedPassword());
-		if (response.getStatus() != HttpStatus.OK.value()) {
-			throw new ValidationException("Generated password didn't match");
-		}
-		int rows = userDao.setPassword(request.getUsername(), userPasswordEncoder.encode(request.getPassword()));
-		if (rows == 0) {
-			throw new ValidationException("No row updated");
-		}
-		return new SuccessResponse(HttpStatus.OK.value(), "Password changed successfully");
 	}
 
 	@Override

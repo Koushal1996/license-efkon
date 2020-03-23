@@ -12,11 +12,13 @@ import com.nxtlife.efkon.license.view.user.security.RoleResponse;
 public interface RoleDao extends JpaRepository<Role, Long> {
 
 	public Set<RoleResponse> findByRoleUsersUserId(Long userId);
-
-	public Boolean existsRoleByNameAndOrganizationId(String name, Long organizationId);
 	
-	@Query(value="select id from role where name=?1 and organization_id=?2", nativeQuery=true)
-	public Long findIdByNameAndOrganizationId(String name, Long organizationId);
+	public Role findByName(String name);
+
+	public Boolean existsRoleByName(String name);
+	
+	@Query(value="select id from role where name=?1", nativeQuery=true)
+	public Long findIdByName(String name);
 
 	@Query(value = "select id from role", nativeQuery = true)
 	public List<Long> getAllRoleIds();

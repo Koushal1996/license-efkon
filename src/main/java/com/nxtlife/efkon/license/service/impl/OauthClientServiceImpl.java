@@ -30,7 +30,7 @@ public class OauthClientServiceImpl implements OauthClientService {
 			oauthClientDetails.setAutoapprove("1");
 			oauthClientDetails.setClientSecret(passwordEncoder.encode("nxtlife"));
 			oauthClientDetails.setRefreshTokenValidity(-1);
-			oauthClientDetails.setResourceIds("enforcement-configurator-api");
+			oauthClientDetails.setResourceIds("license-key-api");
 			oauthClientDetailsDao.save(oauthClientDetails);
 		}
 	}
