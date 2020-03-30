@@ -1,4 +1,4 @@
-package com.nxtlife.efkon.license.entity;
+package com.nxtlife.efkon.license.entity.product;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
+import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
+import com.nxtlife.efkon.license.entity.version.Version;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -33,18 +36,6 @@ public class ProductDetail extends BaseEntity implements Serializable {
 	@OneToMany(mappedBy = "productDetail", cascade = CascadeType.ALL)
 	private Set<ProjectProduct> projectProducts;
 
-	public ProductDetail() {
-		super();
-	}
-
-	public ProductDetail(ProductCode productCode, ProductFamily productFamily, Version version,
-			Set<ProjectProduct> projectProducts) {
-		super();
-		this.productCode = productCode;
-		this.productFamily = productFamily;
-		this.version = version;
-		this.projectProducts = projectProducts;
-	}
 
 	public ProductCode getProductCode() {
 		return productCode;

@@ -1,9 +1,10 @@
-package com.nxtlife.efkon.license.view;
+package com.nxtlife.efkon.license.view.product;
 
-import com.nxtlife.efkon.license.entity.ProductCode;
-import com.nxtlife.efkon.license.entity.ProductDetail;
-import com.nxtlife.efkon.license.entity.ProductFamily;
-import com.nxtlife.efkon.license.entity.Version;
+
+import com.nxtlife.efkon.license.entity.product.ProductCode;
+import com.nxtlife.efkon.license.entity.product.ProductDetail;
+import com.nxtlife.efkon.license.entity.product.ProductFamily;
+import com.nxtlife.efkon.license.entity.version.Version;
 
 public class ProductDetailRequest {
 

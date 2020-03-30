@@ -1,6 +1,7 @@
-package com.nxtlife.efkon.license.view;
+package com.nxtlife.efkon.license.view.product;
 
-import com.nxtlife.efkon.license.entity.ProductCode;
+
+import com.nxtlife.efkon.license.entity.product.ProductCode;
 
 public class ProductCodeResponse {
 

@@ -1,17 +1,19 @@
-package com.nxtlife.efkon.license.entity;
+package com.nxtlife.efkon.license.entity.project.product;
+
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 
+@SuppressWarnings("serial")
 @Entity
-public class ProjectProductComment {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@DynamicUpdate(value = true)
+@DynamicInsert(value = true)
+public class ProjectProductComment extends BaseEntity implements Serializable {
 	
 	private String comment;
 	
@@ -27,22 +29,13 @@ public class ProjectProductComment {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProjectProductComment(Long id, String comment, String commentedBy, String remark,
+	public ProjectProductComment( String comment, String commentedBy, String remark,
 			ProjectProduct projectProduct) {
 		super();
-		this.id = id;
 		this.comment = comment;
 		this.commentedBy = commentedBy;
 		this.remark = remark;
 		this.projectProduct = projectProduct;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getComment() {

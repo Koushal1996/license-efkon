@@ -1,4 +1,4 @@
-package com.nxtlife.efkon.license.entity;
+package com.nxtlife.efkon.license.entity.version;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -8,7 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
+import com.nxtlife.efkon.license.entity.product.ProductDetail;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -21,7 +23,8 @@ import com.nxtlife.efkon.license.entity.common.BaseEntity;
 @DynamicUpdate(value = true)
 public class Version extends BaseEntity implements Serializable {
 
-	@Column(unique = true, nullable = false)
+	@NotEmpty(message = "version can't be null or empty")
+	@Column(unique = true)
 	private String version;
 
 	@OneToMany(mappedBy = "version", cascade = CascadeType.ALL)
@@ -31,10 +34,8 @@ public class Version extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public Version(String version, Set<ProductDetail> productDetails) {
-		super();
+	public Version(@NotEmpty(message = "version can't be null or empty") String version) {
 		this.version = version;
-		this.productDetails = productDetails;
 	}
 
 	public String getVersion() {

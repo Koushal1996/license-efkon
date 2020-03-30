@@ -1,9 +1,10 @@
-package com.nxtlife.efkon.license.view;
+package com.nxtlife.efkon.license.view.product;
+
+import com.nxtlife.efkon.license.entity.product.ProductCode;
+import com.nxtlife.efkon.license.entity.product.ProductFamily;
 
 import java.util.Set;
 
-import com.nxtlife.efkon.license.entity.ProductCode;
-import com.nxtlife.efkon.license.entity.ProductFamily;
 
 public class ProductFamilyRequest {
 	

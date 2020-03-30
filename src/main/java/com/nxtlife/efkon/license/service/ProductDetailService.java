@@ -1,27 +1,13 @@
 package com.nxtlife.efkon.license.service;
 
+import com.nxtlife.efkon.license.entity.product.ProductDetail;
+import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public interface ProductDetailService {
 
-import com.nxtlife.efkon.license.dao.ProductDetailDao;
-import com.nxtlife.efkon.license.entity.ProductDetail;
-import com.nxtlife.efkon.license.view.ProductDetailRequest;
+    public List<ProductDetail> getProductDetail();
 
-@Service
-public class ProductDetailService {
-
-	@Autowired
-	public ProductDetailDao productDetailDao;
-
-	public List<ProductDetail> getProductDetail() {
-		return productDetailDao.findAll();
-	}
-
-	public void saveProductDetail(ProductDetailRequest detailRequest) {
-		ProductDetail detail = detailRequest.toEntity();
-		productDetailDao.save(detail);
-	}
-
+    public void saveProductDetail(ProductDetailRequest detailRequest);
 }

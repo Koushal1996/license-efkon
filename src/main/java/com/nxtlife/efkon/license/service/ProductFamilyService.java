@@ -1,41 +1,15 @@
 package com.nxtlife.efkon.license.service;
 
-import java.util.ArrayList;
+
+import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
+import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
+
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+public interface ProductFamilyService {
 
-import com.nxtlife.efkon.license.dao.ProductFamilyDao;
-import com.nxtlife.efkon.license.entity.ProductCode;
-import com.nxtlife.efkon.license.entity.ProductFamily;
-import com.nxtlife.efkon.license.view.ProductFamilyRequest;
-import com.nxtlife.efkon.license.view.ProductFamilyResponse;
 
-@Service
-public class ProductFamilyService {
+    public ProductFamilyResponse save(ProductFamilyRequest productFamilyRequest);
 
-	@Autowired
-	public ProductFamilyDao productFamilyDao;
-
-	public ProductFamilyResponse saveProductFamily(ProductFamilyRequest productFamilyRequest) {
-		
-		ProductFamily productFamily = productFamilyRequest.toEntity();
-		
-		for(ProductCode pc: productFamilyRequest.getProductCodes()) {
-			pc.setProductFamily(productFamily);
-		}
-
-		return new ProductFamilyResponse(productFamilyDao.save(productFamily));
-
-	}
-
-	public List<ProductFamilyResponse> getAllProductFamily() {
-		
-		ArrayList<ProductFamilyResponse> familyResponseList=new ArrayList<ProductFamilyResponse>();
-		productFamilyDao.findAll().forEach(family -> familyResponseList.add(new ProductFamilyResponse(family)));
-		return familyResponseList;
-
-	}
-
+    public List<ProductFamilyResponse> findAll();
 }

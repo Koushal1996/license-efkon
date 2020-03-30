@@ -39,4 +39,26 @@ public final class AuthorityUtils {
 	 */
 	public static final String ROLE_DELETE = "ROLE_ROLE_DELETE";
 
+	/**
+	 * AUTHORITY TO FETCH USER
+	 */
+	public static final String USER_FETCH = "ROLE_USER_FETCH";
+
+	/**
+	 * AUTHORITY TO CREATE USER
+	 */
+	public static final String USER_CREATE = "ROLE_USER_CREATE";
+
+	/**
+	 * AUTHORITY TO UPDATE USER
+	 */
+	public static final String USER_UPDATE = "ROLE_USER_UPDATE";
+
+	/**
+	 * AUTHORITY TO DELETE USER
+	 */
+	public static final String USER_DELETE = "ROLE_USER_DELETE";
+
+
+
 }

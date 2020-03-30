@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.nxtlife.efkon.license.dao.jpa.AuthorityJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.RoleJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nxtlife.efkon.license.dao.AuthorityDao;
-import com.nxtlife.efkon.license.dao.RoleDao;
+
 import com.nxtlife.efkon.license.entity.user.Authority;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.service.AuthorityService;
@@ -31,10 +32,10 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	private static Logger logger = LoggerFactory.getLogger(AuthorityServiceImpl.class);
 
 	@Autowired
-	private AuthorityDao authorityDao;
+	private AuthorityJpaDao authorityJpaDao;
 
 	@Autowired
-	private RoleDao roleDao;
+	private RoleJpaDao roleJpaDao;
 
 	/**
 	 * 
@@ -49,10 +50,10 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 			if (Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers())) {
 				logger.info("Found authority {} ", f.getName());
 				Authority authority;
-				if (!authorityDao.existsByName(f.getName())) {
+				if (!authorityJpaDao.existsByName(f.getName())) {
 					authority = new Authority();
 					authority.setName(f.getName());
-					authorityDao.save(authority);
+					authorityJpaDao.save(authority);
 					logger.info("Not in db, saved {}", f.getName());
 				}
 			}
@@ -67,7 +68,7 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	 */
 	@Override
 	public void save(Authority authority) {
-		authorityDao.save(authority);
+		authorityJpaDao.save(authority);
 	}
 
 	/**
@@ -79,7 +80,7 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	 */
 	@Override
 	public Authority findById(long id) {
-		Optional<Authority> authority = authorityDao.findById(id);
+		Optional<Authority> authority = authorityJpaDao.findById(id);
 		if (authority.isPresent()) {
 			return authority.get();
 		} else {
@@ -98,7 +99,7 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	@Override
 	@Secured(AuthorityUtils.AUTHORITY_FETCH)
 	public List<AuthorityResponse> getAllAuthorities() {
-		return authorityDao.findAll().stream().map(AuthorityResponse::new).collect(Collectors.toList());
+		return authorityJpaDao.findAll().stream().map(AuthorityResponse::new).collect(Collectors.toList());
 	}
 
 	/**
@@ -114,12 +115,12 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	@Secured(AuthorityUtils.AUTHORITY_FETCH)
 	public List<AuthorityResponse> getAllAuthoritiesByRoleId(Long roleId) {
 		Long unmaskRoleId = unmask(roleId);
-		Boolean exist = roleDao.existsById(unmaskRoleId);
+		Boolean exist = roleJpaDao.existsById(unmaskRoleId);
 		if (!exist) {
 			logger.error("Role {} not found", unmaskRoleId);
 			throw new NotFoundException(String.format("Role (%s) not found", unmaskRoleId));
 		}
-		List<AuthorityResponse> authorities = authorityDao.findByAuthorityRolesRoleId(unmaskRoleId);
+		List<AuthorityResponse> authorities = authorityJpaDao.findByAuthorityRolesRoleId(unmaskRoleId);
 		return authorities;
 
 	}

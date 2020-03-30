@@ -1,219 +1,229 @@
 package com.nxtlife.efkon.license.entity.user;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) })
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class User extends BaseEntity implements UserDetails, Serializable {
 
-	@NotNull(message = "name can't be null")
-	private String name;
+    @NotNull(message = "name can't be null")
+    private String name;
 
-	@NotNull(message = "username can't be null")
-	@Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
-	private String username;
+    @NotNull(message = "username can't be null")
+    @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
+    private String username;
 
-	@NotNull(message = "password can't be null")
-	private String password;
+    @NotNull(message = "password can't be null")
+    private String password;
 
-	private Boolean active;
+    private Boolean active;
 
-	private String email;
-	
-	private String emailSendStatus;
+    private String generatedPassword;
 
-	@Size(min = 10, max = 10)
-	@Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit")
-	private String contactNo;
+    private String email;
 
-	@Column(columnDefinition = "boolean default false")
-	private boolean accountExpired = false;
+    private String emailSendStatus;
 
-	@Column(columnDefinition = "boolean default false")
-	private boolean accountLocked = false;
+    @Size(min = 10, max = 10)
+    @Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit")
+    private String contactNo;
 
-	@Column(columnDefinition = "boolean default false")
-	private boolean credentialsExpired = false;
+    @Column(columnDefinition = "boolean default false")
+    private boolean accountExpired = false;
 
-	@Column(columnDefinition = "boolean default false")
-	private boolean enabled = true;
+    @Column(columnDefinition = "boolean default false")
+    private boolean accountLocked = false;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-	private List<UserRole> userRoles;
+    @Column(columnDefinition = "boolean default false")
+    private boolean credentialsExpired = false;
 
-	@Transient
-	private Collection<Authority> authorities;
+    @Column(columnDefinition = "boolean default false")
+    private boolean enabled = true;
 
-	@Transient
-	private Collection<Role> roles;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UserRole> userRoles;
 
-	@Transient
-	private Long userId;
+    @Transient
+    private Collection<Authority> authorities;
 
-	public User() {
+    @Transient
+    private Collection<Role> roles;
 
-	}
+    @Transient
+    private Long userId;
 
-	public User(
-			@NotNull @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
-			@NotNull String password, Collection<Authority> authorities) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.authorities = authorities;
-	}
+    public User() {
 
-	@Override
-	public String getUsername() {
-		return username;
-	}
+    }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    public User(
+            @NotNull @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
+            @NotNull String password, Collection<Authority> authorities) {
+        super();
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return enabled;
-	}
+    @Override
+    public String getUsername() {
+        return username;
+    }
 
-	@Override
-	public Collection<Authority> getAuthorities() {
-		return authorities;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	public String getName() {
-		return name;
-	}
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public Collection<Authority> getAuthorities() {
+        return authorities;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getContactNo() {
-		return contactNo;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setContactNo(String contactNo) {
-		this.contactNo = contactNo;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public boolean isAccountExpired() {
-		return accountExpired;
-	}
+    public String getContactNo() {
+        return contactNo;
+    }
 
-	public void setAccountExpired(boolean accountExpired) {
-		this.accountExpired = accountExpired;
-	}
+    public void setContactNo(String contactNo) {
+        this.contactNo = contactNo;
+    }
 
-	public boolean isAccountLocked() {
-		return accountLocked;
-	}
+    public boolean isAccountExpired() {
+        return accountExpired;
+    }
 
-	public void setAccountLocked(boolean accountLocked) {
-		this.accountLocked = accountLocked;
-	}
+    public void setAccountExpired(boolean accountExpired) {
+        this.accountExpired = accountExpired;
+    }
 
-	public boolean isCredentialsExpired() {
-		return credentialsExpired;
-	}
+    public boolean isAccountLocked() {
+        return accountLocked;
+    }
 
-	public void setCredentialsExpired(boolean credentialsExpired) {
-		this.credentialsExpired = credentialsExpired;
-	}
+    public void setAccountLocked(boolean accountLocked) {
+        this.accountLocked = accountLocked;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public boolean isCredentialsExpired() {
+        return credentialsExpired;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setCredentialsExpired(boolean credentialsExpired) {
+        this.credentialsExpired = credentialsExpired;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setAuthorities(Collection<Authority> authorities) {
-		this.authorities = authorities;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return !isAccountExpired();
-	}
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return !isAccountLocked();
-	}
+    public String getGeneratedPassword() {
+        return generatedPassword;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return !isCredentialsExpired();
-	}
+    public void setGeneratedPassword(String generatedPassword) {
+        this.generatedPassword = generatedPassword;
+    }
 
-	public List<UserRole> getUserRoles() {
-		return userRoles;
-	}
+    public void setAuthorities(Collection<Authority> authorities) {
+        this.authorities = authorities;
+    }
 
-	public void setUserRoles(List<UserRole> userRoles) {
-		this.userRoles = userRoles;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return !isAccountExpired();
+    }
 
-	public Boolean getActive() {
-		return active;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isAccountLocked();
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !isCredentialsExpired();
+    }
 
-	public Long getUserId() {
-		return userId;
-	}
+    public List<UserRole> getUserRoles() {
+        return userRoles;
+    }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+    public void setUserRoles(List<UserRole> userRoles) {
+        this.userRoles = userRoles;
+    }
 
-	public Collection<Role> getRoles() {
-		return roles;
-	}
+    public Boolean getActive() {
+        return active;
+    }
 
-	public void setRoles(Collection<Role> roles) {
-		this.roles = roles;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getEmailSendStatus() {
+        return emailSendStatus;
+    }
+
+    public void setEmailSendStatus(String emailSendStatus) {
+        this.emailSendStatus = emailSendStatus;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
+    }
 
 }

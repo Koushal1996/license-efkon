@@ -1,4 +1,4 @@
-package com.nxtlife.efkon.license.entity;
+package com.nxtlife.efkon.license.entity.product;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -22,7 +23,7 @@ import com.nxtlife.efkon.license.entity.common.BaseEntity;
 @DynamicUpdate(value = true)
 public class ProductCode extends BaseEntity implements Serializable {
 
-	@Column(unique = true, nullable = false)
+	@NotNull(message = "name can't be null")
 	private String name;
 
 	@ManyToOne
@@ -35,11 +36,9 @@ public class ProductCode extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProductCode(String name, ProductFamily productFamily, Set<ProductDetail> productDetails) {
+	public ProductCode(@NotNull(message = "name can't be null") String name) {
 		super();
 		this.name = name;
-		this.productFamily = productFamily;
-		this.productDetails = productDetails;
 	}
 
 	public String getName() {

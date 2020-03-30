@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nxtlife.efkon.license.service.ProductFamilyService;
-import com.nxtlife.efkon.license.view.ProductFamilyRequest;
-import com.nxtlife.efkon.license.view.ProductFamilyResponse;
+import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
+import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
+
+import javax.validation.Valid;
 
 @RestController
 public class ProductFamilyController {
@@ -19,12 +21,12 @@ public class ProductFamilyController {
 	public ProductFamilyService productFamilyService;
 
 	@PostMapping("family")
-	public ProductFamilyResponse saveProductFamily(@RequestBody ProductFamilyRequest productFamilyRequest) {
-		return productFamilyService.saveProductFamily(productFamilyRequest);
+	public ProductFamilyResponse saveProductFamily(@Valid @RequestBody ProductFamilyRequest productFamilyRequest) {
+		return productFamilyService.save(productFamilyRequest);
 	}
 
 	@GetMapping("family")
 	public List<ProductFamilyResponse> getAllProductFamily() {
-		return productFamilyService.getAllProductFamily();
+		return productFamilyService.findAll();
 	}
 }

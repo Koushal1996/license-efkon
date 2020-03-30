@@ -2,11 +2,11 @@ package com.nxtlife.efkon.license.service.impl;
 
 import javax.annotation.PostConstruct;
 
+import com.nxtlife.efkon.license.dao.jpa.OauthClientDetailsJpaDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.nxtlife.efkon.license.dao.OauthClientDetailsDao;
 import com.nxtlife.efkon.license.entity.oauth.OauthClientDetails;
 import com.nxtlife.efkon.license.service.OauthClientService;
 
@@ -14,7 +14,7 @@ import com.nxtlife.efkon.license.service.OauthClientService;
 public class OauthClientServiceImpl implements OauthClientService {
 
 	@Autowired
-	private OauthClientDetailsDao oauthClientDetailsDao;
+	private OauthClientDetailsJpaDao oauthClientDetailsDao;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
