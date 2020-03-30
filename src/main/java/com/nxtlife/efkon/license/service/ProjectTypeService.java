@@ -2,28 +2,17 @@ package com.nxtlife.efkon.license.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.nxtlife.efkon.license.dao.ProjectTypeDao;
 import com.nxtlife.efkon.license.entity.ProjectType;
 
-@Service
-public class ProjectTypeService {
+public interface ProjectTypeService {
 
-	@Autowired
-	ProjectTypeDao typeDao;
+	public void saveProjectType(ProjectType projectType);
 
-	public void saveProjectType(ProjectType projectType) {
-
-		typeDao.save(projectType);
-
-	}
-
-	public List<ProjectType> getAllProjectType() {
-
-		return typeDao.findAll();
-
-	}
+	/**
+	 * this method used to fetch all projectTypes
+	 * 
+	 * @return list of <tt>ProjectType</tt>
+	 */
+	public List<ProjectType> getAllProjectType();
 
 }

@@ -80,7 +80,7 @@ public class RoleServiceImpl extends BaseService implements RoleService {
 	 *
 	 * throw a validation exception when size is less than 1.
 	 *
-	 * <tt>getUser()</tt>return the user that wil login at that instance
+	 * <tt>getUser()</tt>return the user that will login at that instance
 	 *
 	 * <findById>return an object by particular id</findById>
 	 *
