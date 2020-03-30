@@ -27,7 +27,7 @@ public class ProjectProductController {
 	@GetMapping("projectproduct")
 	public List<ProjectProduct> getAllProject() {
 
-		return productService.getAllProject();
+		return productService.getAllProjectProduct();
 
 	}
 }
