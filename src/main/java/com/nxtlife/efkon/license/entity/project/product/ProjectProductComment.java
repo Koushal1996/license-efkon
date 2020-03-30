@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class ProjectProductComment extends BaseEntity implements Serializable {
 	
 	private String comment;
-	
+	 
 	private String commentedBy;
 	
 	private String remark;
@@ -26,7 +26,6 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 
 	public ProjectProductComment() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ProjectProductComment( String comment, String commentedBy, String remark,
