@@ -1,22 +1,26 @@
 package com.nxtlife.efkon.license.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+
+@SuppressWarnings("serial")
 @Entity
-public class ProjectProduct {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+@Table(name = "project_product")
+@DynamicInsert(value = true)
+@DynamicUpdate(value = true)
+public class ProjectProduct extends BaseEntity implements Serializable {
 
 	private Long licenseCount;
 
@@ -27,9 +31,6 @@ public class ProjectProduct {
 	private String expirationPeriodType;
 
 	private long expirationMonthCount;
-
-	@Column(nullable = false)
-	private String active;
 
 	@Column(nullable = false)
 	private Date startDate;
@@ -54,20 +55,16 @@ public class ProjectProduct {
 
 	public ProjectProduct() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public ProjectProduct(Long id, Long licenseCount, String licenseType, String expirationPeriodType,
-			long expirationMonthCount, String active, Date startDate, Date endDate, String approvalStatus,
-			Project project, ProductDetail productDetail, Set<License> licenses,
-			Set<ProjectProductComment> projectProductComments) {
+	public ProjectProduct(Long licenseCount, String licenseType, String expirationPeriodType, long expirationMonthCount,
+			Date startDate, Date endDate, String approvalStatus, Project project, ProductDetail productDetail,
+			Set<License> licenses, Set<ProjectProductComment> projectProductComments) {
 		super();
-		this.id = id;
 		this.licenseCount = licenseCount;
 		this.licenseType = licenseType;
 		this.expirationPeriodType = expirationPeriodType;
 		this.expirationMonthCount = expirationMonthCount;
-		this.active = active;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.approvalStatus = approvalStatus;
@@ -75,14 +72,6 @@ public class ProjectProduct {
 		this.productDetail = productDetail;
 		this.licenses = licenses;
 		this.projectProductComments = projectProductComments;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Long getLicenseCount() {
@@ -115,14 +104,6 @@ public class ProjectProduct {
 
 	public void setExpirationMonthCount(long expirationMonthCount) {
 		this.expirationMonthCount = expirationMonthCount;
-	}
-
-	public String getActive() {
-		return active;
-	}
-
-	public void setActive(String active) {
-		this.active = active;
 	}
 
 	public Date getStartDate() {

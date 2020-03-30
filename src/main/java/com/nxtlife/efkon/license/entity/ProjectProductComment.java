@@ -14,7 +14,7 @@ public class ProjectProductComment {
 	private Long id;
 	
 	private String comment;
-	
+	 
 	private String commentedBy;
 	
 	private String remark;
@@ -24,7 +24,6 @@ public class ProjectProductComment {
 
 	public ProjectProductComment() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ProjectProductComment(Long id, String comment, String commentedBy, String remark,

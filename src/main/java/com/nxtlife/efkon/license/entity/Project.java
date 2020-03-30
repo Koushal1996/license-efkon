@@ -1,83 +1,59 @@
 package com.nxtlife.efkon.license.entity;
 
-import java.sql.Date;
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+
+@SuppressWarnings("serial")
 @Entity
-public class Project {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+@Table(name = "project")
+@DynamicInsert(value = true)
+@DynamicUpdate(value = true)
+public class Project extends BaseEntity implements Serializable {
+
 	@Column(unique = true, nullable = false)
 	private String customerName;
-	
+
 	@Column(unique = true)
 	private String customerEmail;
-	
+
 	@Column(unique = true)
 	private String customerPhoneNumber;
-	
+
 	@Column(nullable = false)
 	private String emailSendStatus;
-	
-	@CreationTimestamp
-	private Date createdAt;
 
-	private String createdBy;
-
-	@UpdateTimestamp
-	private Date modifiedAt;
-
-	private String modifiedBy;
-	
 	@ManyToOne
 	private ProjectType projectType;
-	
+
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	private Set<ProjectProduct> projectProducts;
 
 	public Project() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Project(Long id, String customerName, String customerEmail, String customerPhoneNumber,
-			String emailSendStatus, Date createdAt, String createdBy, Date modifiedAt, String modifiedBy,
+	public Project(String customerName, String customerEmail, String customerPhoneNumber, String emailSendStatus,
 			ProjectType projectType, Set<ProjectProduct> projectProducts) {
 		super();
-		this.id = id;
 		this.customerName = customerName;
 		this.customerEmail = customerEmail;
 		this.customerPhoneNumber = customerPhoneNumber;
 		this.emailSendStatus = emailSendStatus;
-		this.createdAt = createdAt;
-		this.createdBy = createdBy;
-		this.modifiedAt = modifiedAt;
-		this.modifiedBy = modifiedBy;
 		this.projectType = projectType;
 		this.projectProducts = projectProducts;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getCustomerName() {
@@ -112,38 +88,6 @@ public class Project {
 		this.emailSendStatus = emailSendStatus;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getModifiedAt() {
-		return modifiedAt;
-	}
-
-	public void setModifiedAt(Date modifiedAt) {
-		this.modifiedAt = modifiedAt;
-	}
-
-	public String getModifiedBy() {
-		return modifiedBy;
-	}
-
-	public void setModifiedBy(String modifiedBy) {
-		this.modifiedBy = modifiedBy;
-	}
-
 	public ProjectType getProjectType() {
 		return projectType;
 	}
@@ -159,5 +103,67 @@ public class Project {
 	public void setProjectProducts(Set<ProjectProduct> projectProducts) {
 		this.projectProducts = projectProducts;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Project [customerName=" + customerName + ", customerEmail=" + customerEmail + ", customerPhoneNumber="
+				+ customerPhoneNumber + ", emailSendStatus=" + emailSendStatus + ", projectType=" + projectType
+				+ ", projectProducts=" + projectProducts + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customerEmail == null) ? 0 : customerEmail.hashCode());
+		result = prime * result + ((customerName == null) ? 0 : customerName.hashCode());
+		result = prime * result + ((customerPhoneNumber == null) ? 0 : customerPhoneNumber.hashCode());
+		result = prime * result + ((emailSendStatus == null) ? 0 : emailSendStatus.hashCode());
+		result = prime * result + ((projectProducts == null) ? 0 : projectProducts.hashCode());
+		result = prime * result + ((projectType == null) ? 0 : projectType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Project other = (Project) obj;
+		if (customerEmail == null) {
+			if (other.customerEmail != null)
+				return false;
+		} else if (!customerEmail.equals(other.customerEmail))
+			return false;
+		if (customerName == null) {
+			if (other.customerName != null)
+				return false;
+		} else if (!customerName.equals(other.customerName))
+			return false;
+		if (customerPhoneNumber == null) {
+			if (other.customerPhoneNumber != null)
+				return false;
+		} else if (!customerPhoneNumber.equals(other.customerPhoneNumber))
+			return false;
+		if (emailSendStatus == null) {
+			if (other.emailSendStatus != null)
+				return false;
+		} else if (!emailSendStatus.equals(other.emailSendStatus))
+			return false;
+		if (projectProducts == null) {
+			if (other.projectProducts != null)
+				return false;
+		} else if (!projectProducts.equals(other.projectProducts))
+			return false;
+		if (projectType == null) {
+			if (other.projectType != null)
+				return false;
+		} else if (!projectType.equals(other.projectType))
+			return false;
+		return true;
+	}
+
 }
