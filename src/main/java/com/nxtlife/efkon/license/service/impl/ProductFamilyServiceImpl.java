@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("productFamilyServiceImpl")
 @Transactional
@@ -56,22 +56,13 @@ public class ProductFamilyServiceImpl implements ProductFamilyService {
             productCodes.add(new ProductCode(code, productFamily));
         }
         productFamily.setProductCodes(productCodes);
-        productFamilyDao.save(productFamily);
-        ProductFamilyResponse productFamilyResponse = productFamilyDao.findResponseById(productFamily.getId());
-        productFamilyResponse.setProductCodes(productCodeDao.findByProductFamilyId(productFamily.getId()));
-        return productFamilyResponse;
+        productFamily = productFamilyDao.save(productFamily);
+        return new ProductFamilyResponse(productFamily);
 
     }
 
     public List<ProductFamilyResponse> findAll() {
-
-        List<ProductFamilyResponse> productFamilies = new ArrayList<>();
-        productFamilyDao.findAll().stream().forEach(productFamily -> productFamilies.add(new ProductFamilyResponse(productFamily.getId(),
-                productFamily.getName())));
-        for (ProductFamilyResponse productFamily : productFamilies) {
-            productFamily.setProductCodes(productCodeDao.findByProductFamilyId(productFamily.getId()));
-        }
-        return productFamilies;
+        return productFamilyDao.findAll().stream().map(ProductFamilyResponse::new).collect(Collectors.toList());
 
     }
 
