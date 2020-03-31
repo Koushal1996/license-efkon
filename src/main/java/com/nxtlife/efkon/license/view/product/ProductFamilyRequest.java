@@ -2,47 +2,34 @@ package com.nxtlife.efkon.license.view.product;
 
 import com.nxtlife.efkon.license.entity.product.ProductCode;
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Set;
 
 
 public class ProductFamilyRequest {
-	
+
+	@Schema(description = "name of the product family")
+	@NotEmpty(message = "name can't be empty")
 	private String name;
-		
-	private Set<ProductCode> productCodes;
+
+	@Schema(description = "code names of product code")
+	@NotEmpty(message = "product codes can't be empty")
+	private Set<String> productCodes;
 	
 	public ProductFamily toEntity() {
 		ProductFamily productFamily = new ProductFamily();
 		productFamily.setName(this.getName());
-		productFamily.setProductCodes(this.getProductCodes());
 		return productFamily;
 	}
 
-	public ProductFamilyRequest() {
-		super();
-	}
-
-	public ProductFamilyRequest(String name, String active, Set<ProductCode> productCodes) {
-		super();
-		this.name = name;
-		this.productCodes = productCodes;
-	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<ProductCode> getProductCodes() {
+	public Set<String> getProductCodes() {
 		return productCodes;
 	}
-
-	public void setProductCodes(Set<ProductCode> productCodes) {
-		this.productCodes = productCodes;
-	}
-
 }

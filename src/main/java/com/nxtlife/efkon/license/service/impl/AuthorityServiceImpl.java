@@ -32,10 +32,10 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	private static Logger logger = LoggerFactory.getLogger(AuthorityServiceImpl.class);
 
 	@Autowired
-	private AuthorityJpaDao authorityJpaDao;
+	private AuthorityJpaDao authorityDao;
 
 	@Autowired
-	private RoleJpaDao roleJpaDao;
+	private RoleJpaDao roleDao;
 
 	/**
 	 * 
@@ -50,10 +50,10 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 			if (Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers())) {
 				logger.info("Found authority {} ", f.getName());
 				Authority authority;
-				if (!authorityJpaDao.existsByName(f.getName())) {
+				if (!authorityDao.existsByName(f.getName())) {
 					authority = new Authority();
 					authority.setName(f.getName());
-					authorityJpaDao.save(authority);
+					authorityDao.save(authority);
 					logger.info("Not in db, saved {}", f.getName());
 				}
 			}
@@ -68,7 +68,7 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	 */
 	@Override
 	public void save(Authority authority) {
-		authorityJpaDao.save(authority);
+		authorityDao.save(authority);
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	 */
 	@Override
 	public Authority findById(long id) {
-		Optional<Authority> authority = authorityJpaDao.findById(id);
+		Optional<Authority> authority = authorityDao.findById(id);
 		if (authority.isPresent()) {
 			return authority.get();
 		} else {
@@ -99,7 +99,7 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	@Override
 	@Secured(AuthorityUtils.AUTHORITY_FETCH)
 	public List<AuthorityResponse> getAllAuthorities() {
-		return authorityJpaDao.findAll().stream().map(AuthorityResponse::new).collect(Collectors.toList());
+		return authorityDao.findAll().stream().map(AuthorityResponse::new).collect(Collectors.toList());
 	}
 
 	/**
@@ -115,12 +115,12 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	@Secured(AuthorityUtils.AUTHORITY_FETCH)
 	public List<AuthorityResponse> getAllAuthoritiesByRoleId(Long roleId) {
 		Long unmaskRoleId = unmask(roleId);
-		Boolean exist = roleJpaDao.existsById(unmaskRoleId);
+		Boolean exist = roleDao.existsById(unmaskRoleId);
 		if (!exist) {
 			logger.error("Role {} not found", unmaskRoleId);
 			throw new NotFoundException(String.format("Role (%s) not found", unmaskRoleId));
 		}
-		List<AuthorityResponse> authorities = authorityJpaDao.findByAuthorityRolesRoleId(unmaskRoleId);
+		List<AuthorityResponse> authorities = authorityDao.findByAuthorityRolesRoleId(unmaskRoleId);
 		return authorities;
 
 	}

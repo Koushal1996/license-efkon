@@ -142,6 +142,9 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
     @Secured(AuthorityUtils.USER_CREATE)
     public UserResponse save(UserRequest request) {
         validate(request);
+        if (request.getEmailSend() && request.getEmail() == null) {
+            throw new ValidationException("Email can't be empty");
+        }
         User user = request.toEntity();
         user.setPassword(userPasswordEncoder.encode("12345"));
         user = userJpaDao.save(user);
@@ -155,8 +158,8 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
     @Secured(AuthorityUtils.USER_FETCH)
     public List<UserResponse> findAll() {
         List<UserResponse> userResponseList = new ArrayList<>();
-        userJpaDao.findAll().stream().forEach(user->userResponseList.add(new UserResponse(user.getId(),user.getName(),user.getActive(),user.getUsername(),
-                user.getEmail(),user.getContactNo())));
+        userJpaDao.findAll().stream().forEach(user -> userResponseList.add(new UserResponse(user.getId(), user.getName(), user.getActive(), user.getUsername(),
+                user.getEmail(), user.getContactNo())));
         List<Long> roleIds = roleDao.getAllIdsByActive(true);
         Map<Long, List<AuthorityResponse>> roleAuthoritiesMap = new HashMap<>();
         for (Long roleId : roleIds) {
@@ -168,6 +171,28 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
                 role.setAuthorities(roleAuthoritiesMap.get(unmask(role.getId())));
             }
         }
+        return userResponseList;
+    }
+
+
+    /**
+     * this method used to fetch user response using  roleId
+     *this method is used when we want to get al the names and email ids of the user using particular role
+     *
+     * @param roleId
+     * @return {@link <tt>UserResponse</tt>}
+     */
+
+    @Override
+    @Secured(AuthorityUtils.USER_FETCH)
+    public List<UserResponse> findAll(Long roleId)
+    {
+        Long unmaskRoleId=unmask(roleId);
+        if(!roleDao.existsById(unmaskRoleId))
+        {
+            throw new NotFoundException(String.format("Role (%s) not found",roleId));
+        }
+        List<UserResponse> userResponseList=userJpaDao.findByUserRolesRoleId(roleId);
         return userResponseList;
     }
 

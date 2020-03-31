@@ -15,15 +15,15 @@ import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
 public class ProductDetailServiceImpl implements ProductDetailService {
 
 	@Autowired
-	public ProductDetailJpaDao productDetailJpaDao;
+	public ProductDetailJpaDao productDetailDao;
 
 	public List<ProductDetail> getProductDetail() {
-		return productDetailJpaDao.findAll();
+		return productDetailDao.findAll();
 	}
 
 	public void saveProductDetail(ProductDetailRequest detailRequest) {
 		ProductDetail detail = detailRequest.toEntity();
-		productDetailJpaDao.save(detail);
+		productDetailDao.save(detail);
 	}
 
 }

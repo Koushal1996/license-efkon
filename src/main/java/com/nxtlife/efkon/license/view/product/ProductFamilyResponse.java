@@ -1,59 +1,56 @@
 package com.nxtlife.efkon.license.view.product;
 
-import com.nxtlife.efkon.license.entity.product.ProductCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
-
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProductFamilyResponse {
 
-	private Long id;
+    @Schema(description = "Id of the product family")
+    private Long id;
 
-	private String name;
+    @Schema(description = "Name of the product family")
+    private String name;
 
-	private Set<ProductCodeResponse> productCodes;
+    private List<ProductCodeResponse> productCodes;
 
-	public ProductFamilyResponse(Long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
+    public ProductFamilyResponse(Long id, String name) {
+        super();
+        this.id = id;
+        this.name = name;
+    }
 
-	public ProductFamilyResponse(ProductFamily productFamily) {
-		if (productFamily != null) {
-			this.id = productFamily.getId();
-			this.name = productFamily.getName();
-			this.productCodes =new HashSet<>();
-			for(ProductCode code : productFamily.getProductCodes()) {
-				this.productCodes.add(new ProductCodeResponse(code));
-			}
-		}
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Long getId() {
-		return id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public List<ProductCodeResponse> getProductCodes() {
+        return productCodes;
+    }
 
-	public Set<ProductCodeResponse> getProductCodes() {
-		return productCodes;
-	}
+    public void setProductCodes(List<ProductCodeResponse> productCodes) {
+        this.productCodes = productCodes;
+    }
 
-	public void setProductCodes(Set<ProductCodeResponse> productCodes) {
-		this.productCodes = productCodes;
-	}
-
+    public ProductFamilyResponse get(ProductFamily productFamily) {
+        if (productFamily != null) {
+            return new ProductFamilyResponse(productFamily.getId(), productFamily.getName());
+        }
+        return null;
+    }
 }

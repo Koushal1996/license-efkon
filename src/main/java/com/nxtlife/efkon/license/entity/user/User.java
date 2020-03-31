@@ -36,7 +36,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 
     private String email;
 
-    private String emailSendStatus;
+    private Boolean isEmailSend;
 
     @Size(min = 10, max = 10)
     @Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit")
@@ -210,12 +210,12 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.userId = userId;
     }
 
-    public String getEmailSendStatus() {
-        return emailSendStatus;
+    public Boolean getEmailSend() {
+        return isEmailSend;
     }
 
-    public void setEmailSendStatus(String emailSendStatus) {
-        this.emailSendStatus = emailSendStatus;
+    public void setEmailSend(Boolean emailSend) {
+        isEmailSend = emailSend;
     }
 
     public Collection<Role> getRoles() {

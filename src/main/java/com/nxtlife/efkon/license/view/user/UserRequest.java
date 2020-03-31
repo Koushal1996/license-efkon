@@ -18,10 +18,12 @@ public class UserRequest implements Request {
     @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
     private String username;
 
-    @Schema(description = "Email of the user which cannot be empty", example = "admin@gmail.com", required = true)
-    @NotEmpty(message = "User's email can't be empty")
+    @Schema(description = "Email of the user", example = "admin@gmail.com")
     @Email(message = "Email pattern isn't correct")
     private String email;
+
+    @Schema(description = "Is email be send or not")
+    private Boolean isEmailSend;
 
     @Schema(description = "Contact of the user", example = "1234567890")
     @Size(min = 10, max = 10)
@@ -48,6 +50,10 @@ public class UserRequest implements Request {
         return contactNo;
     }
 
+    public Boolean getEmailSend() {
+        return isEmailSend;
+    }
+
     public Set<Long> getRoleIds() {
         if(roleIds!=null){
             return roleIds.stream().map(id->unmask(id)).collect(Collectors.toSet());
@@ -61,6 +67,11 @@ public class UserRequest implements Request {
         user.setEmail(email);
         user.setContactNo(contactNo);
         user.setUsername(username);
+        if(isEmailSend!=null)
+        user.setEmailSend(isEmailSend);
+        else{
+            user.setEmailSend(false);
+        }
         return user;
     }
 }

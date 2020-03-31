@@ -70,6 +70,20 @@ public class UserController {
 		return userService.findAll();
 	}
 
+	@GetMapping(produces = { "application/json" }, value = "users/{roleId}")
+	@Operation(summary = "Find all user by role Id", description = "return list of user details from the given role id", tags = {
+			"User" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "User info successfully fetched", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch list of user", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) ,
+			@ApiResponse(description = "If role id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class)))
+	})
+	public List<UserResponse> findAllUsersByRoleId(@Parameter(description = "Role id", required = true) @PathVariable Long roleId) {
+		return userService.findAll(roleId);
+	}
+
+
+
 	@PutMapping(produces = { "application/json" }, consumes = { "application/json" }, value = "user/{id}")
 	@Operation(summary = "Update user details", description = "return user info after updating user details", tags = {
 			"User" })
