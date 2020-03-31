@@ -36,9 +36,10 @@ public class ProductCode extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProductCode(@NotNull(message = "name can't be null") String name) {
+	public ProductCode(@NotNull(message = "name can't be null") String name,ProductFamily productFamily) {
 		super();
 		this.name = name;
+		this.productFamily=productFamily;
 	}
 
 	public String getName() {

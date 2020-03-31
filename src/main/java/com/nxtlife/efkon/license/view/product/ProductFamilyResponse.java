@@ -2,12 +2,13 @@ package com.nxtlife.efkon.license.view.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
+import com.nxtlife.efkon.license.view.Response;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-public class ProductFamilyResponse {
+public class ProductFamilyResponse implements Response {
 
     @Schema(description = "Id of the product family")
     private Long id;
@@ -24,7 +25,7 @@ public class ProductFamilyResponse {
     }
 
     public Long getId() {
-        return id;
+        return mask(id);
     }
 
     public void setId(Long id) {
