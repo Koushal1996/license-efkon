@@ -2,12 +2,12 @@ package com.nxtlife.efkon.license.service.impl;
 
 import java.util.List;
 
+import com.nxtlife.efkon.license.dao.jpa.ProjectTypeJpaDao;
+import com.nxtlife.efkon.license.entity.project.ProjectType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nxtlife.efkon.license.dao.ProjectTypeDao;
-import com.nxtlife.efkon.license.entity.ProjectType;
 import com.nxtlife.efkon.license.service.ProjectTypeService;
 
 @Service("projectTypeServiceImpl")
@@ -15,7 +15,7 @@ import com.nxtlife.efkon.license.service.ProjectTypeService;
 public class ProjectTypeServiceImpl implements ProjectTypeService {
 
 	@Autowired
-	ProjectTypeDao typeDao;
+	ProjectTypeJpaDao typeDao;
 
 	/**
 	 * save the ProjectType

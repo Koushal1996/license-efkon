@@ -1,59 +1,69 @@
 package com.nxtlife.efkon.license.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.nxtlife.efkon.license.dao.jpa.ProductCodeJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProductFamilyJpaDao;
+import com.nxtlife.efkon.license.entity.product.ProductCode;
+import com.nxtlife.efkon.license.entity.product.ProductFamily;
+import com.nxtlife.efkon.license.ex.ValidationException;
+import com.nxtlife.efkon.license.service.ProductFamilyService;
+import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
+import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nxtlife.efkon.license.dao.ProductFamilyDao;
-import com.nxtlife.efkon.license.entity.ProductCode;
-import com.nxtlife.efkon.license.entity.ProductFamily;
-import com.nxtlife.efkon.license.service.ProductFamilyService;
-import com.nxtlife.efkon.license.view.ProductFamilyRequest;
-import com.nxtlife.efkon.license.view.ProductFamilyResponse;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("productFamilyServiceImpl")
 @Transactional
 public class ProductFamilyServiceImpl implements ProductFamilyService {
 
-	@Autowired
-	public ProductFamilyDao productFamilyDao;
+    @Autowired
+    private ProductFamilyJpaDao productFamilyDao;
 
-	/**
-	 * save the ProductFamily
-	 *
-	 * @Param productFamilyRequest call save method of jpa
-	 * @return <tt>ProductFamilyResponse</tt>
-	 */
-	@Override
-	public ProductFamilyResponse saveProductFamily(ProductFamilyRequest productFamilyRequest) {
+    @Autowired
+    private ProductCodeJpaDao productCodeDao;
 
-		ProductFamily productFamily = productFamilyRequest.toEntity();
 
-		for (ProductCode pc : productFamilyRequest.getProductCodes()) {
-			pc.setProductFamily(productFamily);
-		}
+    public void validate(ProductFamilyRequest request) {
+        Set<String> existProductCodes = new HashSet<>();
+        if (productFamilyDao.existsByName(request.getName())) {
+            throw new ValidationException(String.format("Product family (%s) already exist", request.getName()));
+        }
+        List<String> productCodes = productCodeDao.findAllNames();
+        for (String code : request.getProductCodes()) {
+            if (productCodes.contains(code)) {
+                existProductCodes.add(code);
+            }
+        }
+        if (!existProductCodes.isEmpty()) {
+            throw new ValidationException(String.format("Some of the product codes (%s) already exist", existProductCodes));
+        }
 
-		return new ProductFamilyResponse(productFamilyDao.save(productFamily));
 
-	}
+    }
 
-	/**
-	 * return a list of ProductFamily. call findAll() method of jpa which return
-	 * list of objects
-	 *
-	 *
-	 * @return List of <tt>ProductFamilyResponse</tt>
-	 */
-	@Override
-	public List<ProductFamilyResponse> getAllProductFamily() {
+    public ProductFamilyResponse save(ProductFamilyRequest productFamilyRequest) {
 
-		ArrayList<ProductFamilyResponse> familyResponseList = new ArrayList<ProductFamilyResponse>();
-		productFamilyDao.findAll().forEach(family -> familyResponseList.add(new ProductFamilyResponse(family)));
-		return familyResponseList;
+        ProductFamily productFamily;
+        Set<ProductCode> productCodes = new HashSet<>();
+        validate(productFamilyRequest);
+        productFamily = productFamilyRequest.toEntity();
+        for (String code : productFamilyRequest.getProductCodes()) {
+            productCodes.add(new ProductCode(code, productFamily));
+        }
+        productFamily.setProductCodes(productCodes);
+        productFamily = productFamilyDao.save(productFamily);
+        return new ProductFamilyResponse(productFamily);
 
-	}
+    }
+
+    public List<ProductFamilyResponse> findAll() {
+        return productFamilyDao.findAll().stream().map(ProductFamilyResponse::new).collect(Collectors.toList());
+
+    }
 
 }

@@ -7,7 +7,7 @@ declare let $: any;
 })
 export class MainComponent implements OnInit {
 
-  pages: [
+  pages: any[] = [
     { route: '/roles', title: 'Roles' },
     { route: '/users', title: 'Users' }
   ]
@@ -15,6 +15,8 @@ export class MainComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.pages);
+
   }
 
   ngAfterViewInit() {

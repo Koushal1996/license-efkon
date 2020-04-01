@@ -43,13 +43,13 @@ public class RoleController {
 	 */
 
 	@GetMapping("roles")
-	@Operation(summary = "Find roles by organization id", description = "return a list of roles by organization id", tags = {
+	@Operation(summary = "Find all the roles", description = "return a list of roles", tags = {
 			"Role" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = RoleResponse.class)))),
 			@ApiResponse(responseCode = "404", description = "Page not found"),
 			@ApiResponse(responseCode = "400", description = "Bad Request") })
-	public List<RoleResponse> getAllRolesByOrganizationId() {
+	public List<RoleResponse> getAllRoles() {
 		return roleService.getAllRoles();
 	}
 

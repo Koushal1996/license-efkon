@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.nxtlife.efkon.license.dao.jpa.AuthorityJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.RoleJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nxtlife.efkon.license.dao.AuthorityDao;
-import com.nxtlife.efkon.license.dao.RoleDao;
+
 import com.nxtlife.efkon.license.entity.user.Authority;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.service.AuthorityService;
@@ -31,10 +32,10 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 	private static Logger logger = LoggerFactory.getLogger(AuthorityServiceImpl.class);
 
 	@Autowired
-	private AuthorityDao authorityDao;
+	private AuthorityJpaDao authorityDao;
 
 	@Autowired
-	private RoleDao roleDao;
+	private RoleJpaDao roleDao;
 
 	/**
 	 * 

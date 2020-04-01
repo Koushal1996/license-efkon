@@ -2,14 +2,15 @@ package com.nxtlife.efkon.license.service.impl;
 
 import java.util.List;
 
+import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
+import com.nxtlife.efkon.license.entity.project.Project;
+import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nxtlife.efkon.license.dao.ProjectDao;
-import com.nxtlife.efkon.license.dao.ProjectProductDao;
-import com.nxtlife.efkon.license.entity.Project;
-import com.nxtlife.efkon.license.entity.ProjectProduct;
+
 import com.nxtlife.efkon.license.service.ProjectProductService;
 
 @Service("projectProductServiceImpl")
@@ -17,10 +18,10 @@ import com.nxtlife.efkon.license.service.ProjectProductService;
 public class ProjectProductServiceImpl implements ProjectProductService {
 
 	@Autowired
-	ProjectProductDao productDao;
+  	ProjectProductJpaDao projectProductDao;
 
 	@Autowired
-	ProjectDao projectDao;
+	ProjectJpaDao projectDao;
 
 	/**
 	 * save the ProjectProduct
@@ -36,7 +37,7 @@ public class ProjectProductServiceImpl implements ProjectProductService {
 			projectProduct.getProject().setId(project.getId());
 		}
 
-		productDao.save(projectProduct);
+		projectProductDao.save(projectProduct);
 
 	}
 
@@ -49,7 +50,7 @@ public class ProjectProductServiceImpl implements ProjectProductService {
 	 */
 	public List<ProjectProduct> getAllProjectProduct() {
 
-		return productDao.findAll();
+		return projectProductDao.findAll();
 
 	}
 

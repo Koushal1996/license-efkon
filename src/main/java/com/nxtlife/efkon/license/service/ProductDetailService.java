@@ -1,20 +1,13 @@
 package com.nxtlife.efkon.license.service;
 
-import java.util.List;
+import com.nxtlife.efkon.license.entity.product.ProductDetail;
+import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
 
-import com.nxtlife.efkon.license.entity.ProductDetail;
-import com.nxtlife.efkon.license.view.ProductDetailRequest;
+import java.util.List;
 
 public interface ProductDetailService {
 
+    public List<ProductDetail> getProductDetail();
 
-	/**
-	 * this method used to fetch all ProductDetail
-	 * 
-	 * @return list of <tt>ProductDetail</tt>
-	 */
-	public List<ProductDetail> getProductDetail();
-
-	public void saveProductDetail(ProductDetailRequest detailRequest);
-
+    public void saveProductDetail(ProductDetailRequest detailRequest);
 }

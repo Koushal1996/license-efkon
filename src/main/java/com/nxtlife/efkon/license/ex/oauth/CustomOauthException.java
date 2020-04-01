@@ -1,8 +1,7 @@
 package com.nxtlife.efkon.license.ex.oauth;
 
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
-
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 
 @SuppressWarnings("serial")
 @JsonSerialize(using = CustomOauthExceptionSerializer.class)
