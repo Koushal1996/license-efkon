@@ -1,0 +1,50 @@
+<div class="d-flex" id="wrapper">
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">
+      <div class="user">
+        <div class="user-img">
+          <img src="assets/images/user.png" alt="" style="cursor: pointer;">
+        </div>
+        <div class="user-name" style="cursor: pointer;">Pankaj Kharetwal</div>
+      </div>
+    </div>
+    <div class="list-group list-group-flush">
+      <a href="#" class="list-group-item list-group-item-action" *ngFor="let p of pages" [routerLink]="p.route" routerLinkActive="active">{{p.title}}</a>
+    </div>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <button class="btn" id="menu-toggle" (click)="menu()">
+        <!-- <i class="fa fa-bars"></i>{{myMenu?'Close Menu' :'Open Menu '}} -->
+        <i class="fa fa-bars"></i>
+
+      </button>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+          <li class="nav-item ml-3">
+            <h6 (click)="logout()" style="cursor: pointer;">Logout
+              <i class="fa fa-sign-out"></i>
+            </h6>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <router-outlet>
+
+      </router-outlet>
+
+    </div>
+  </div>
+  <!-- /#page-content-wrapper -->
+
+</div>
