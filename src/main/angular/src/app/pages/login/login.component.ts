@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   createForm = () => {
     this.loginForm = this.fb.group({
       username: ['ajay', Validators.required],
-      password: ['24', Validators.required]
+      password: ['12345', Validators.required]
     });
   }
 
@@ -106,8 +106,6 @@ export class LoginComponent implements OnInit {
 
   /**navigate to control-room interface after successfull login */
   navigate() {
-    this.router.navigate(['home']);
+    this.router.navigate(['/']);
   }
-
-
 }
