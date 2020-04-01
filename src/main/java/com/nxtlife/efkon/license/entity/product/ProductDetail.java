@@ -3,11 +3,7 @@ package com.nxtlife.efkon.license.entity.product;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -19,7 +15,8 @@ import com.nxtlife.efkon.license.entity.common.BaseEntity;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "product_detail")
+@Table(name = "product_detail",uniqueConstraints = {
+		@UniqueConstraint(columnNames = {"product_family_id","product_code_id","version_id"})})
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class ProductDetail extends BaseEntity implements Serializable {

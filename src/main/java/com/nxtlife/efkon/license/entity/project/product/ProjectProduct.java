@@ -17,6 +17,7 @@ import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
+@Table(name = "project_product",uniqueConstraints = {@UniqueConstraint(columnNames = {"project_id","product_detail_id"})})
 @DynamicUpdate(value = true)
 @DynamicInsert(value = true)
 public class ProjectProduct extends BaseEntity implements Serializable {

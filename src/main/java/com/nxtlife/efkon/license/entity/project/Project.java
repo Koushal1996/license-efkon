@@ -1,19 +1,15 @@
 package com.nxtlife.efkon.license.entity.project;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
-
 import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
+import com.nxtlife.efkon.license.entity.user.User;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
@@ -25,17 +21,21 @@ public class Project extends BaseEntity implements Serializable {
     private String customerName;
 
     @NotNull(message = "customer_email can't be null")
-    @Column(unique = true)
     private String customerEmail;
 
-    @Column(unique = true)
     private String customerPhoneNo;
 
-    @NotNull(message = "email_send_status can't be null")
-    private String emailSendStatus;
+    @NotNull(message = "is_email_send can't be null")
+    private Boolean isEmailSend;
 
     @ManyToOne
     private ProjectType projectType;
+
+    @ManyToOne
+    private User user;
+
+    @Transient
+    private Long userId;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<ProjectProduct> projectProducts;
@@ -46,11 +46,11 @@ public class Project extends BaseEntity implements Serializable {
     }
 
     public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail, String customerPhoneNo,
-                   @NotNull(message = "email_send_status can't be null") String emailSendStatuss) {
+                   @NotNull(message = "is_email_send can't be null") Boolean isEmailSend) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPhoneNo = customerPhoneNo;
-        this.emailSendStatus = emailSendStatus;
+        this.isEmailSend = isEmailSend;
     }
 
     public String getCustomerName() {
@@ -77,12 +77,32 @@ public class Project extends BaseEntity implements Serializable {
         this.customerPhoneNo = customerPhoneNo;
     }
 
-    public String getEmailSendStatus() {
-        return emailSendStatus;
+    public Boolean getEmailSend() {
+        return isEmailSend;
     }
 
-    public void setEmailSendStatus(String emailSendStatus) {
-        this.emailSendStatus = emailSendStatus;
+    public void setEmailSend(Boolean emailSend) {
+        isEmailSend = emailSend;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        if (userId != null) {
+            this.user = new User();
+            this.user.setId(userId);
+        }
+        this.userId = userId;
     }
 
     public ProjectType getProjectType() {
