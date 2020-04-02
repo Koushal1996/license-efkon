@@ -12,4 +12,6 @@ public interface ProductFamilyService {
     public ProductFamilyResponse save(ProductFamilyRequest productFamilyRequest);
 
     public List<ProductFamilyResponse> findAll();
+    
+    public ProductFamilyResponse update(Long familyId, ProductFamilyRequest productFamilyRequest);
 }

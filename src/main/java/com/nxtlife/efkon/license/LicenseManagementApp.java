@@ -8,7 +8,6 @@ public class LicenseManagementApp {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LicenseManagementApp.class, args);
-
 	}
-
+ 
 }
