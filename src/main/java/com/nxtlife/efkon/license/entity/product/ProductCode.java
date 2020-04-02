@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -28,6 +29,9 @@ public class ProductCode extends BaseEntity implements Serializable {
 	@ManyToOne
 	private ProductFamily productFamily;
 
+	@Transient
+	private Long tProductFamilyId;
+
 	@OneToMany(mappedBy = "productCode", cascade = CascadeType.ALL)
 	private Set<ProductDetail> productDetails;
 
@@ -35,10 +39,15 @@ public class ProductCode extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProductCode(@NotNull(message = "name can't be null") String name,ProductFamily productFamily) {
+	public ProductCode(@NotNull(message = "name can't be null") String name) {
 		super();
 		this.name = name;
-		this.productFamily=productFamily;
+	}
+
+	public ProductCode(@NotNull(message = "name can't be null") String name, ProductFamily productFamily) {
+		super();
+		this.name = name;
+		this.productFamily = productFamily;
 	}
 
 	public String getName() {
@@ -55,6 +64,18 @@ public class ProductCode extends BaseEntity implements Serializable {
 
 	public void setProductFamily(ProductFamily productFamily) {
 		this.productFamily = productFamily;
+	}
+
+	public Long gettProductFamilyId() {
+		return tProductFamilyId;
+	}
+
+	public void settProductFamilyId(Long tProductFamilyId) {
+		if (tProductFamilyId != null) {
+			this.productFamily = new ProductFamily();
+			this.productFamily.setId(tProductFamilyId);
+		}
+		this.tProductFamilyId = tProductFamilyId;
 	}
 
 	public Set<ProductDetail> getProductDetails() {

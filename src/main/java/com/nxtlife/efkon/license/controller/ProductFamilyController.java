@@ -47,11 +47,11 @@ public class ProductFamilyController {
         return productFamilyService.save(productFamilyRequest);
     }
     
-    @PutMapping(value = "product/family/{familyId}",consumes = {"application/json"},produces = {"application/json"})
+    @PutMapping(value = "product/family/{id}",consumes = {"application/json"},produces = {"application/json"})
     @Operation(summary = "Update product family ", description = "return product family info after updating product family details", tags = {
     "Product Family" })
-    public ProductFamilyResponse update(@PathVariable Long familyId, @Valid @RequestBody ProductFamilyRequest productFamilyRequest) {
-		return productFamilyService.update(familyId, productFamilyRequest);
+    public ProductFamilyResponse update(@PathVariable Long id, @RequestBody ProductFamilyRequest request) {
+		return productFamilyService.update(id, request);
     }
 
 }

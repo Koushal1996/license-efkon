@@ -24,7 +24,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
     private String name;
 
     @NotNull(message = "username can't be null")
-    @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
+    @Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
     private String username;
 
     @NotNull(message = "password can't be null")
@@ -77,6 +77,18 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
+    }
+
+    public User(@NotNull(message = "name can't be null") String name, @NotNull(message = "username can't be null") @Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$",
+            message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
+                @NotNull(message = "password can't be null") String password, String email, Boolean isEmailSend, @Size(min = 10, max = 10)
+                @Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit") String contactNo) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.isEmailSend = isEmailSend;
+        this.contactNo = contactNo;
     }
 
     @Override
@@ -210,11 +222,11 @@ public class User extends BaseEntity implements UserDetails, Serializable {
         this.userId = userId;
     }
 
-    public Boolean getEmailSend() {
+    public Boolean getIsEmailSend() {
         return isEmailSend;
     }
 
-    public void setEmailSend(Boolean emailSend) {
+    public void setIsEmailSend(Boolean emailSend) {
         isEmailSend = emailSend;
     }
 

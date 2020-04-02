@@ -2,12 +2,12 @@ package com.nxtlife.efkon.license.view.product;
 
 import java.util.Set;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 
 public class ProductFamilyRequest {
 
@@ -15,22 +15,22 @@ public class ProductFamilyRequest {
 	@NotEmpty(message = "name can't be empty")
 	private String name;
 
-	@Schema(description = "code names of product code")
+	@Schema(description = "codes of product code")
 	@NotEmpty(message = "product codes can't be empty")
-	private Set<String> productCodes;
-	
+	@Valid
+	private Set<ProductCodeRequest> productCodes;
+
 	public ProductFamily toEntity() {
 		ProductFamily productFamily = new ProductFamily();
-		productFamily.setName(this.getName());
+		productFamily.setName(name);
 		return productFamily;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-	public Set<String> getProductCodes() {
+	public Set<ProductCodeRequest> getProductCodes() {
 		return productCodes;
 	}
 }

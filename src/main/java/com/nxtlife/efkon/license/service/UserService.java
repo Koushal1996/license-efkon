@@ -15,7 +15,7 @@ public interface UserService {
      * this method used to save user detail.
      *
      * @param request
-     * @return <tt>UserResponse</tt>
+     * @return {@Link UserResponse}
      * @throws ValidationException if role ids are not valid or username or email or contact
      *                             number already exist
      */

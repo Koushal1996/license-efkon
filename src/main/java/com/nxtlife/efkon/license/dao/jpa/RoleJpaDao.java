@@ -20,7 +20,7 @@ public interface RoleJpaDao extends JpaRepository<Role, Long> {
 	public Set<RoleResponse> findByRoleUsersUserId(Long userId);
 
 
-	public Boolean existsRoleByName(String name);
+	public Boolean existsByName(String name);
 
 	@Query(value = "select id from role where name=?1", nativeQuery = true)
 	public Long findIdByName(String name);
