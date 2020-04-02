@@ -1,20 +1,13 @@
 package com.nxtlife.efkon.license.entity.product;
 
-import java.io.Serializable;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
@@ -23,47 +16,67 @@ import com.nxtlife.efkon.license.entity.common.BaseEntity;
 @DynamicUpdate(value = true)
 public class ProductCode extends BaseEntity implements Serializable {
 
-	@NotNull(message = "name can't be null")
-	private String name;
+    @NotNull(message = "name can't be null")
+    private String name;
 
-	@ManyToOne
-	private ProductFamily productFamily;
+    @ManyToOne
+    private ProductFamily productFamily;
 
-	@OneToMany(mappedBy = "productCode", cascade = CascadeType.ALL)
-	private Set<ProductDetail> productDetails;
+    @Transient
+    private Long tProductFamilyId;
 
-	public ProductCode() {
-		super();
-	}
+    @OneToMany(mappedBy = "productCode", cascade = CascadeType.ALL)
+    private Set<ProductDetail> productDetails;
 
-	public ProductCode(@NotNull(message = "name can't be null") String name,ProductFamily productFamily) {
-		super();
-		this.name = name;
-		this.productFamily=productFamily;
-	}
+    public ProductCode() {
+        super();
+    }
 
-	public String getName() {
-		return name;
-	}
+    public ProductCode(@NotNull(message = "name can't be null") String name) {
+        super();
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public ProductCode(@NotNull(message = "name can't be null") String name, ProductFamily productFamily) {
+        super();
+        this.name = name;
+        this.productFamily = productFamily;
+    }
 
-	public ProductFamily getProductFamily() {
-		return productFamily;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setProductFamily(ProductFamily productFamily) {
-		this.productFamily = productFamily;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set<ProductDetail> getProductDetails() {
-		return productDetails;
-	}
+    public ProductFamily getProductFamily() {
+        return productFamily;
+    }
 
-	public void setProductDetails(Set<ProductDetail> productDetails) {
-		this.productDetails = productDetails;
-	}
+    public void setProductFamily(ProductFamily productFamily) {
+        this.productFamily = productFamily;
+    }
+
+    public Long gettProductFamilyId() {
+        return tProductFamilyId;
+    }
+
+    public void settProductFamilyId(Long tProductFamilyId) {
+        if (tProductFamilyId != null) {
+            this.productFamily = new ProductFamily();
+            this.productFamily.setId(tProductFamilyId);
+        }
+        this.tProductFamilyId = tProductFamilyId;
+    }
+
+    public Set<ProductDetail> getProductDetails() {
+        return productDetails;
+    }
+
+    public void setProductDetails(Set<ProductDetail> productDetails) {
+        this.productDetails = productDetails;
+    }
 
 }

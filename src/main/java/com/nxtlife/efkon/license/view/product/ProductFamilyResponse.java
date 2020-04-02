@@ -19,16 +19,13 @@ public class ProductFamilyResponse implements Response {
 
     private List<ProductCodeResponse> productCodes;
 
-    public ProductFamilyResponse() {
+
+    public ProductFamilyResponse(Long id, String name) {
         super();
+        this.id = id;
+        this.name = name;
     }
 
-    public ProductFamilyResponse(ProductFamily productFamily) {
-        super();
-        this.id = productFamily.getId();
-        this.name = productFamily.getName();
-        this.productCodes=productFamily.getProductCodes().stream().map(ProductCodeResponse::new).collect(Collectors.toList());
-    }
 
     public Long getId() {
         return mask(id);
@@ -52,6 +49,15 @@ public class ProductFamilyResponse implements Response {
 
     public void setProductCodes(List<ProductCodeResponse> productCodes) {
         this.productCodes = productCodes;
+    }
+
+    public static ProductFamilyResponse get(ProductFamily productFamily) {
+        if (productFamily != null) {
+            ProductFamilyResponse response = new ProductFamilyResponse(productFamily.getId(), productFamily.getName());
+            return response;
+        }
+        return null;
+
     }
 
 }
