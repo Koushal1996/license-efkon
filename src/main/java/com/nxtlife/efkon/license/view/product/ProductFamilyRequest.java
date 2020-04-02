@@ -1,11 +1,12 @@
 package com.nxtlife.efkon.license.view.product;
 
-import com.nxtlife.efkon.license.entity.product.ProductCode;
-import com.nxtlife.efkon.license.entity.product.ProductFamily;
-import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
-import java.util.Set;
+
+import com.nxtlife.efkon.license.entity.product.ProductFamily;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 
 public class ProductFamilyRequest {

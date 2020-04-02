@@ -42,11 +42,10 @@ public class Project extends BaseEntity implements Serializable {
 
     public Project() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail, String customerPhoneNo,
-                   @NotNull(message = "email_send_status can't be null") String emailSendStatuss) {
+                   @NotNull(message = "email_send_status can't be null") String emailSendStatus) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPhoneNo = customerPhoneNo;

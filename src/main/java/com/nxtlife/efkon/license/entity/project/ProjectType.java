@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
-import com.nxtlife.efkon.license.entity.project.Project;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
 
 @SuppressWarnings("serial")
 @Entity
