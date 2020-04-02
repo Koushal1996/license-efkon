@@ -1,19 +1,18 @@
 package com.nxtlife.efkon.license.service;
 
-import com.nxtlife.efkon.license.entity.project.ProjectType;
+import com.nxtlife.efkon.license.view.project.ProjectTypeResponse;
 
 import java.util.List;
 
 
 public interface ProjectTypeService {
 
-    public void saveProjectType(ProjectType projectType);
 
     /**
      * this method used to fetch all projectTypes
      *
-     * @return list of <tt>ProjectType</tt>
+     * @return list of <tt>ProjectTypeResponse</tt>
      */
-    public List<ProjectType> getAllProjectType();
+    public List<ProjectTypeResponse> findAll();
 
 }

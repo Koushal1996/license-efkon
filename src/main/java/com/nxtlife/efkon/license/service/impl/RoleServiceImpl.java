@@ -19,9 +19,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -47,6 +49,14 @@ public class RoleServiceImpl extends BaseService implements RoleService {
     @Autowired
     private UserRoleJpaDao userRoleJpaDao;
 
+    @PostConstruct
+    public void init(){
+        if(!roleDao.existsByName("Customer"))
+            roleDao.save(new Role("Customer"));
+        if(!roleDao.existsByName("Project Manager"))
+            roleDao.save(new Role("Project Manager"));
+    }
+
     private void validateAuthorityIds(Set<Long> requestAuthorityIds) {
         List<Long> authorityIds = authorityDao.findAllIds();
         requestAuthorityIds.removeAll(authorityIds);
@@ -63,7 +73,7 @@ public class RoleServiceImpl extends BaseService implements RoleService {
      */
     private void validateRequest(RoleRequest request) {
         validateAuthorityIds(request.getAuthorityIds());
-        if (roleDao.existsRoleByName(request.getName())) {
+        if (roleDao.existsByName(request.getName())) {
             throw new ValidationException(
                     String.format(" Role (%s) is already exists", request.getName()));
         }

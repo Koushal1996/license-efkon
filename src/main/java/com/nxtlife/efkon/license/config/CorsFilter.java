@@ -1,33 +1,13 @@
 package com.nxtlife.efkon.license.config;
 
-import java.io.IOException;
-
-
-
-import javax.servlet.Filter;
-
-import javax.servlet.FilterChain;
-
-import javax.servlet.FilterConfig;
-
-import javax.servlet.ServletException;
-
-import javax.servlet.ServletRequest;
-
-import javax.servlet.ServletResponse;
-
-import javax.servlet.http.HttpServletRequest;
-
-import javax.servlet.http.HttpServletResponse;
-
-
-
 import org.springframework.core.Ordered;
-
 import org.springframework.core.annotation.Order;
-
 import org.springframework.stereotype.Component;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @Component
@@ -35,7 +15,6 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 
 public class CorsFilter implements Filter {
-
 
 
     @Override
@@ -47,7 +26,6 @@ public class CorsFilter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) res;
 
         final HttpServletRequest request = (HttpServletRequest) req;
-
 
 
         response.setCharacterEncoding("UTF-8");
@@ -69,7 +47,6 @@ public class CorsFilter implements Filter {
         if (request.getMethod().equals("OPTIONS")) {
 
 
-
         } else {
 
             chain.doFilter(req, res);
@@ -79,13 +56,11 @@ public class CorsFilter implements Filter {
     }
 
 
-
     @Override
 
     public void destroy() {
 
     }
-
 
 
     @Override

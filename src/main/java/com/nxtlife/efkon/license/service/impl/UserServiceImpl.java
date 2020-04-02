@@ -142,10 +142,10 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
     @Secured(AuthorityUtils.USER_CREATE)
     public UserResponse save(UserRequest request) {
         validate(request);
-        if (request.getEmailSend() && request.getEmail() == null) {
+        User user = request.toEntity();
+        if (user.getIsEmailSend() && request.getEmail() == null) {
             throw new ValidationException("Email can't be empty");
         }
-        User user = request.toEntity();
         user.setPassword(userPasswordEncoder.encode("12345"));
         user = userJpaDao.save(user);
         for (Long roleId : request.getRoleIds()) {

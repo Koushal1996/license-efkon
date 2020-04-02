@@ -28,7 +28,6 @@ public class ProjectType extends BaseEntity implements Serializable {
 
 	public ProjectType() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ProjectType(@NotEmpty(message = "name can't be null") String name) {

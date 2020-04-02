@@ -18,6 +18,8 @@ public interface UserJpaDao extends JpaRepository<User, Long> {
 
 	public List<UserResponse> findByUserRolesRoleId(Long roleId);
 
+	public UserResponse findByEmailAndActive(String email,Boolean active);
+
 
 	public Boolean existsByUsername(String username);
 

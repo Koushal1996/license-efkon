@@ -23,7 +23,7 @@ public class Project extends BaseEntity implements Serializable {
     @NotNull(message = "customer_email can't be null")
     private String customerEmail;
 
-    private String customerPhoneNo;
+    private String customerContactNo;
 
     @NotNull(message = "is_email_send can't be null")
     private Boolean isEmailSend;
@@ -37,6 +37,9 @@ public class Project extends BaseEntity implements Serializable {
     @Transient
     private Long userId;
 
+    @Transient
+    private Long tProjectTypeId;
+
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private Set<ProjectProduct> projectProducts;
 
@@ -45,11 +48,11 @@ public class Project extends BaseEntity implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail, String customerPhoneNo,
+    public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail, String customerContactNo,
                    @NotNull(message = "is_email_send can't be null") Boolean isEmailSend) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
-        this.customerPhoneNo = customerPhoneNo;
+        this.customerContactNo = customerContactNo;
         this.isEmailSend = isEmailSend;
     }
 
@@ -69,19 +72,19 @@ public class Project extends BaseEntity implements Serializable {
         this.customerEmail = customerEmail;
     }
 
-    public String getCustomerPhoneNo() {
-        return customerPhoneNo;
+    public String getCustomerContactNo() {
+        return customerContactNo;
     }
 
-    public void setCustomerPhoneNo(String customerPhoneNo) {
-        this.customerPhoneNo = customerPhoneNo;
+    public void setCustomerContactNo(String customerContactNo) {
+        this.customerContactNo = customerContactNo;
     }
 
-    public Boolean getEmailSend() {
+    public Boolean getIsEmailSend() {
         return isEmailSend;
     }
 
-    public void setEmailSend(Boolean emailSend) {
+    public void setIsEmailSend(Boolean emailSend) {
         isEmailSend = emailSend;
     }
 
@@ -103,6 +106,18 @@ public class Project extends BaseEntity implements Serializable {
             this.user.setId(userId);
         }
         this.userId = userId;
+    }
+
+    public Long gettProjectTypeId() {
+        return tProjectTypeId;
+    }
+
+    public void settProjectTypeId(Long tProjectTypeId) {
+        if (tProjectTypeId != null) {
+            this.projectType = new ProjectType();
+            this.projectType.setId(tProjectTypeId);
+        }
+        this.tProjectTypeId = tProjectTypeId;
     }
 
     public ProjectType getProjectType() {
