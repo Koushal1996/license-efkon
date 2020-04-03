@@ -30,6 +30,8 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 			Long unmaskCodeId = unmask(code.getId());
 			code.setId(unmaskCodeId);
 		}
+		Long unmaskVersionId = unmask(detailRequest.getVersion().getId());
+		detailRequest.getVersion().setId(unmaskVersionId);
 		ProductDetail detail = detailRequest.toEntity();
 		productDetailDao.save(detail);
 	}
