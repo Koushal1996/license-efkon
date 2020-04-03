@@ -1,6 +1,7 @@
 package com.nxtlife.efkon.license.service.impl;
 
 import com.nxtlife.efkon.license.dao.jpa.ProductCodeJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductFamilyJpaDao;
 import com.nxtlife.efkon.license.entity.product.ProductCode;
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
@@ -8,12 +9,14 @@ import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProductFamilyService;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductCodeRequest;
 import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
 import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,9 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 
     @Autowired
     private ProductCodeJpaDao productCodeDao;
+
+    @Autowired
+    private ProductDetailJpaDao productDetailDao;
 
     public void validate(ProductFamilyRequest request) {
         if (productFamilyDao.existsByName(request.getName())) {
@@ -107,5 +113,21 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
         return response;
 
 
+    }
+
+    public SuccessResponse delete(Long id) {
+        Long unmaskId = unmask(id);
+        if (!productFamilyDao.existsById(unmaskId)) {
+            throw new NotFoundException(String.format("Product Family (%s) not found", id));
+        }
+        if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
+            throw new ValidationException(String.format("Product family(%s) can't be delete as some of the version are related to this product family ", unmaskId));
+        }
+        productCodeDao.deleteByProductFamilyId(id, getUserId(), new Date());
+        int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
+        if (rows > 0) {
+            logger.info("Product family {} successfuly deleted", unmaskId);
+        }
+        return new SuccessResponse(HttpStatus.OK.value(), "Product family deleted successfully");
     }
 }

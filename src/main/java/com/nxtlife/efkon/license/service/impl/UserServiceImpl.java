@@ -108,10 +108,7 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
     private void validate(UserRequest request) {
         if (userJpaDao.existsByUsername(request.getUsername())) {
             throw new ValidationException(String.format("This user (%s) already exist", request.getUsername()));
-        } else if (userJpaDao.findIdByContactNoAndActive(request.getContactNo(),
-                true) != null) {
-            throw new ValidationException(String.format("This user's contactNo (%s) already exists",
-                    request.getContactNo() == null ? "NA" : request.getContactNo()));
+
         } else if (userJpaDao.findIdByEmailAndActive(request.getEmail(),
                 true) != null) {
             throw new ValidationException(String.format("This user's email (%s) already exists", request.getEmail()));
@@ -177,7 +174,7 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 
     /**
      * this method used to fetch user response using  roleId
-     *this method is used when we want to get al the names and email ids of the user using particular role
+     * this method is used when we want to get al the names and email ids of the user using particular role
      *
      * @param roleId
      * @return {@link <tt>UserResponse</tt>}
@@ -185,14 +182,12 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 
     @Override
     @Secured(AuthorityUtils.USER_FETCH)
-    public List<UserResponse> findAll(Long roleId)
-    {
-        Long unmaskRoleId=unmask(roleId);
-        if(!roleDao.existsById(unmaskRoleId))
-        {
-            throw new NotFoundException(String.format("Role (%s) not found",roleId));
+    public List<UserResponse> findAll(Long roleId) {
+        Long unmaskRoleId = unmask(roleId);
+        if (!roleDao.existsById(unmaskRoleId)) {
+            throw new NotFoundException(String.format("Role (%s) not found", roleId));
         }
-        List<UserResponse> userResponseList=userJpaDao.findByUserRolesRoleId(roleId);
+        List<UserResponse> userResponseList = userJpaDao.findByUserRolesRoleId(roleId);
         return userResponseList;
     }
 
@@ -248,11 +243,7 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
             if (request.getContactNo().length() != 10 || !Pattern.matches("^[0-9]*$", request.getContactNo())) {
                 throw new ValidationException("Contact number value is not correct");
             }
-            id = userJpaDao.findIdByContactNoAndActive(request.getContactNo(), true);
-            if (id != null && !id.equals(unmaskUserId)) {
-                throw new ValidationException(
-                        String.format("This contact number (%s) already exists", request.getContactNo()));
-            }
+
             user.get().setContactNo(request.getContactNo());
         }
         if (request.getEmail() != null) {
