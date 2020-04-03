@@ -23,7 +23,7 @@ public interface RoleService {
      * then it throws exception otherwise it return saved role details.
      *
      * @param request
-     * @return <tt>RoleResponse</tt>
+     * @return {@Link RoleResponse}
      * @throws ValidationException if role already exist in database or some of the authority
      *                             ids are not valid
      */
