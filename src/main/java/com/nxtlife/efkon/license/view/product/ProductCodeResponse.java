@@ -1,10 +1,13 @@
 package com.nxtlife.efkon.license.view.product;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.product.ProductCode;
 import com.nxtlife.efkon.license.view.Response;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProductCodeResponse implements Response {
 
     @Schema(description = "Id of the product code")
@@ -38,6 +41,15 @@ public class ProductCodeResponse implements Response {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+	public static ProductCodeResponse get(ProductCode productCode) {
+        if (productCode != null) {
+        	ProductCodeResponse response = new ProductCodeResponse(productCode.getId(), productCode.getName());
+            return response;
+        }
+        return null;
+
     }
 
 }
