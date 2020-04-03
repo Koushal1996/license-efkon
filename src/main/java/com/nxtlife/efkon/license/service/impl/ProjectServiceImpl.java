@@ -42,6 +42,9 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
     @Autowired
     private UserRoleJpaDao userRoleDao;
 
+    @Autowired
+    private ProjectProductJpaDao projectProductDao;
+
     public void validateCustomer(ProjectRequest request) {
         List<ProjectResponse> projectResponseList = projectDao.findByCustomerEmailAndActive(request.getCustomerEmail(), true);
         if (!projectResponseList.isEmpty() || projectResponseList != null) {
@@ -93,6 +96,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
         projectDao.save(project);
         ProjectResponse response = projectDao.findResponseById(project.getId());
         response.setProjectTypeResponse(projectTypeDao.findResponseById(request.getProjectTypeId()));
+        response.setProducts(projectProductDao.findByProjectIdAndActive(project.getId(), true));
         return response;
 
 
@@ -106,7 +110,12 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
     @Override
     public List<ProjectResponse> findAll() {
         List<ProjectResponse> projects = projectDao.findByActive(true);
-        projects.stream().forEach(project -> project.setProjectTypeResponse(projectTypeDao.findResponseById(unmask(project.getId()))));
+        projects.stream().forEach(project ->
+        {
+            project.setProjectTypeResponse(projectTypeDao.findResponseById(unmask(project.getId())));
+            project.setProducts(projectProductDao.findByProjectIdAndActive(unmask(project.getId()), true));
+        });
+
         return projects;
 
     }

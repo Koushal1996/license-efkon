@@ -2,7 +2,10 @@ package com.nxtlife.efkon.license.view.project;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.view.Response;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProjectResponse implements Response {
@@ -23,6 +26,8 @@ public class ProjectResponse implements Response {
     private String customerContactNo;
 
     private ProjectTypeResponse projectTypeResponse;
+
+    private List<ProjectProductResponse> products;
 
     public ProjectResponse(Long id, String customerName, String customerEmail, Boolean isEmailSend, String customerContactNo) {
         super();
@@ -79,5 +84,13 @@ public class ProjectResponse implements Response {
 
     public void setProjectTypeResponse(ProjectTypeResponse projectTypeResponse) {
         this.projectTypeResponse = projectTypeResponse;
+    }
+
+    public List<ProjectProductResponse> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProjectProductResponse> products) {
+        this.products = products;
     }
 }
