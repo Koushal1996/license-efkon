@@ -13,6 +13,10 @@ public interface ProductCodeJpaDao extends JpaRepository<ProductCode, Long> {
 
     public List<ProductCodeResponse> findByProductFamilyIdAndActive(Long productFamilyId,Boolean active);
 
+    public ProductCodeResponse findResponseById(Long id);
+
+    public Boolean existsByIdAndProductFamilyIdAndActive(Long id,Long productFamilyId,Boolean active);
+
     public Boolean existsByName(String name);
 
     @Query("select name from ProductCode where id=?1")

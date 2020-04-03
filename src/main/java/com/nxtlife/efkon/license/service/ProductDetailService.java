@@ -9,5 +9,5 @@ public interface ProductDetailService {
 
 	public List<ProductDetailResponse> getProductDetail();
 
-	public ProductDetailResponse saveProductDetail(ProductDetailRequest detailRequest);
+	public ProductDetailResponse save(ProductDetailRequest request);
 }

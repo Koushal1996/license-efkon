@@ -16,6 +16,8 @@ public interface ProductFamilyJpaDao extends JpaRepository<ProductFamily, Long> 
 
 	public Boolean existsByName(String name);
 
+	public Boolean existsByIdAndActive(Long id,Boolean active);
+
 	public ProductFamilyResponse findResponseById(Long id);
 
 	public List<ProductFamilyResponse> findByActive(Boolean active);

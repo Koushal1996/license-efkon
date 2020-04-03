@@ -1,47 +1,33 @@
 package com.nxtlife.efkon.license.view.product;
 
-import com.nxtlife.efkon.license.entity.product.ProductDetail;
-import com.nxtlife.efkon.license.view.version.VersionRequest;
+import com.nxtlife.efkon.license.view.Request;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-public class ProductDetailRequest {
+import javax.validation.constraints.NotNull;
 
-	private ProductFamilyRequest productFamily;
+public class ProductDetailRequest implements Request {
 
-	private VersionRequest version;
+    @Schema(description = "Id of the product family", example = "1", required = true)
+    @NotNull(message = "product family id can't be null")
+    private Long productFamilyId;
 
-	public ProductDetailRequest() {
-		super();
-	}
+    @Schema(description = "Id of the product code", example = "1", required = true)
+    @NotNull(message = "product code id can't be null")
+    private Long productCodeId;
 
-	public ProductDetail toEntity() {
-		ProductDetail detail = new ProductDetail();
-		detail.setProductFamily(this.getProductFamily().toEntity());
-		for (ProductCodeRequest code : this.getProductFamily().getProductCodes()) {
-			detail.setProductCode(code.toEntity());
-		}
-		detail.setVersion(this.getVersion().toEntity());
-		return detail;
-	}
+    @Schema(description = "Id of the version", example = "1", required = true)
+    @NotNull(message = "version id can't be null")
+    private Long versionId;
 
-	public ProductDetailRequest(ProductFamilyRequest productFamily, VersionRequest version) {
-		super();
-		this.productFamily = productFamily;
-		this.version = version;
-	}
+    public Long getProductFamilyId() {
+        return unmask(productFamilyId);
+    }
 
-	public ProductFamilyRequest getProductFamily() {
-		return productFamily;
-	}
+    public Long getProductCodeId() {
+        return unmask(productCodeId);
+    }
 
-	public void setProductFamily(ProductFamilyRequest productFamily) {
-		this.productFamily = productFamily;
-	}
-
-	public VersionRequest getVersion() {
-		return version;
-	}
-
-	public void setVersion(VersionRequest version) {
-		this.version = version;
-	}
+    public Long getVersionId() {
+        return unmask(versionId);
+    }
 }

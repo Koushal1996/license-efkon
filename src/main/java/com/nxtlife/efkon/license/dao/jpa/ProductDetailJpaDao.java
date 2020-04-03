@@ -16,12 +16,14 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 
 	public ProductDetailResponse findResponseById(Long id);
 
-	public List<ProductDetailResponse> findByActive(Boolean active);
+	public List<ProductDetail> findAllByActive(Boolean active);
 
 	@Modifying
 	@Query(value = "update ProductCode set active = false, modified_by =?2, modified_at =?3 where id =?1")
 	public int deleteByProductFamilyId(Long id, Long userId, Date date);
 
 	public Boolean existsByProductFamilyIdAndActive(Long productFamilyId, Boolean active);
+
+	public Boolean existsByProductFamilyIdAndProductCodeIdAndVersionIdAndActive(Long productFamilyId,Long productCodeId,Long versionId,Boolean active);
 
 }

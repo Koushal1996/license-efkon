@@ -22,6 +22,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import javax.validation.Valid;
+
 @RestController
 @Tag(name = "Product Detail", description = "product detail api's for save,fetch,update and delete the product detail")
 @RequestMapping("/api/")
@@ -47,8 +49,8 @@ public class ProductDetailController {
 			@ApiResponse(description = "Product detail response after successfully saved the product detail", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductDetailResponse.class))),
 			@ApiResponse(description = "If user doesn't have access to save product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled or same detail already exist with active status", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public ProductDetailResponse saveProductDetail(@RequestBody ProductDetailRequest detailRequest) {
-		return productDetailService.saveProductDetail(detailRequest);
+	public ProductDetailResponse saveProductDetail(@Valid @RequestBody ProductDetailRequest request) {
+		return productDetailService.save(request);
 	}
 
 }
