@@ -12,8 +12,13 @@ public class VersionResponse implements Response {
 	@Schema(description = "Id of the version")
 	private Long id;
 
-	@Schema(description = "Version of the product")
+	@Schema(description = "Version of the product", example = "2.2")
 	private String version;
+
+	public VersionResponse(String version) {
+		super();
+		this.version = version;
+	}
 
 	public VersionResponse(Long id, String version) {
 		super();
@@ -39,11 +44,9 @@ public class VersionResponse implements Response {
 
 	public static VersionResponse get(Version version) {
 		if (version != null) {
-			VersionResponse response = new VersionResponse(version.getId(), version.getVersion());
-			return response;
+			return new VersionResponse(version.getId(), version.getVersion());
 		}
 		return null;
-
 	}
 
 }

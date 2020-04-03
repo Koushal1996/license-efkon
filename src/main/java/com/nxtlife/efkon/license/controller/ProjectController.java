@@ -1,6 +1,5 @@
 package com.nxtlife.efkon.license.controller;
 
-import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProjectService;
 import com.nxtlife.efkon.license.view.project.ProjectRequest;
@@ -40,7 +39,7 @@ public class ProjectController {
 
     }
 
-    @GetMapping(value = "projects",produces = {"application/json"})
+    @GetMapping(value = "projects", produces = {"application/json"})
     @Operation(summary = "Find all project", description = "return a list of projects", tags = {
             "Project"})
     @ApiResponses(value = {

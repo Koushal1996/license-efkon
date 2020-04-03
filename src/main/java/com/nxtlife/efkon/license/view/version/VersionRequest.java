@@ -12,7 +12,7 @@ public class VersionRequest implements Request {
 	@Schema(description = "Id of the version")
 	private Long id;
 
-	@Schema(description = "version of the product code")
+	@Schema(description = "version of the product code", example = "2.2")
 	@NotEmpty(message = "version can't be empty")
 	private String version;
 

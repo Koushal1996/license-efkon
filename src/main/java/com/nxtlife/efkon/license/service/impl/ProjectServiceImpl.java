@@ -1,14 +1,12 @@
 package com.nxtlife.efkon.license.service.impl;
 
-import java.util.List;
-import java.util.Set;
-
 import com.nxtlife.efkon.license.dao.jpa.*;
 import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.entity.user.UserRole;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
+import com.nxtlife.efkon.license.service.ProjectService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.project.ProjectRequest;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
@@ -20,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import com.nxtlife.efkon.license.service.ProjectService;
+import java.util.List;
+import java.util.Set;
 
 @Service("projectServiceImpl")
 @Transactional
@@ -44,6 +42,15 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
     @Autowired
     private UserRoleJpaDao userRoleDao;
 
+    public void validateCustomer(ProjectRequest request) {
+        List<ProjectResponse> projectResponseList = projectDao.findByCustomerEmailAndActive(request.getCustomerEmail(), true);
+        if (!projectResponseList.isEmpty() || projectResponseList != null) {
+            if (!request.getCustomerName().equals(projectResponseList.get(0).getCustomerName())) {
+                throw new ValidationException(String.format("This email (%s) is already exist", request.getCustomerEmail()));
+            }
+        }
+    }
+
 
     public void validate(ProjectRequest request) {
         if (!projectTypeDao.existsById(request.getProjectTypeId())) {
@@ -59,6 +66,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
         } else {
             throw new ValidationException(String.format("Project Manager (%s) not exist", mask(request.getProjectManagerId())));
         }
+        validateCustomer(request);
 
     }
 
@@ -83,7 +91,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
         project.settProjectTypeId(request.getProjectTypeId());
         project.setUserId(request.getProjectManagerId());
         projectDao.save(project);
-        ProjectResponse response=projectDao.findResponseById(project.getId());
+        ProjectResponse response = projectDao.findResponseById(project.getId());
         response.setProjectTypeResponse(projectTypeDao.findResponseById(request.getProjectTypeId()));
         return response;
 
@@ -97,10 +105,11 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
      */
     @Override
     public List<ProjectResponse> findAll() {
-        List<ProjectResponse> projects=projectDao.findByActive(true);
-        projects.stream().forEach(project->project.setProjectTypeResponse(projectTypeDao.findResponseById(unmask(project.getId()))));
+        List<ProjectResponse> projects = projectDao.findByActive(true);
+        projects.stream().forEach(project -> project.setProjectTypeResponse(projectTypeDao.findResponseById(unmask(project.getId()))));
         return projects;
 
     }
+
 
 }

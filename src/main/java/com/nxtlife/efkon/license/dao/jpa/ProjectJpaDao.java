@@ -17,4 +17,8 @@ public interface ProjectJpaDao extends JpaRepository<Project, Long> {
 
 	public List<ProjectResponse> findByActive(Boolean active);
 
+	public List<ProjectResponse> findByCustomerEmailAndActive(String customerEmail,Boolean active);
+
+	public Boolean existsByCustomerContactNoAndActive(String customerContactNo,Boolean active);
+
 }

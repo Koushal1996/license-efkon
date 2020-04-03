@@ -2,6 +2,7 @@ package com.nxtlife.efkon.license.controller;
 
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProductFamilyService;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
 import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,22 +37,36 @@ public class ProductFamilyController {
         return productFamilyService.findAll();
     }
 
-    @PostMapping(value = "product/family",consumes = {"application/json"},produces = {"application/json"})
+    @PostMapping(value = "product/family", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Save product family ", description = "return product family info after saving product family details", tags = {
-            "Product Family" })
+            "Product Family"})
     @ApiResponses(value = {
             @ApiResponse(description = "Product family response after successfully saved the product family", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductFamilyResponse.class))),
             @ApiResponse(description = "If user doesn't have access to save product family", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
-            @ApiResponse(description = "If required field are not filled or product code name already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+            @ApiResponse(description = "If required field are not filled or product code name already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
     public ProductFamilyResponse saveProductFamily(@Valid @RequestBody ProductFamilyRequest productFamilyRequest) {
         return productFamilyService.save(productFamilyRequest);
     }
-    
-    @PutMapping(value = "product/family/{id}",consumes = {"application/json"},produces = {"application/json"})
+
+    @PutMapping(value = "product/family/{id}", consumes = {"application/json"}, produces = {"application/json"})
     @Operation(summary = "Update product family ", description = "return product family info after updating product family details", tags = {
-    "Product Family" })
+            "Product Family"})
+    @ApiResponses(value = {
+            @ApiResponse(description = "Product Family info after updating product family details", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductFamilyResponse.class))),
+            @ApiResponse(description = "If user doesn't have access to update product family", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+            @ApiResponse(description = "If required field are not filled or name already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
     public ProductFamilyResponse update(@PathVariable Long id, @RequestBody ProductFamilyRequest request) {
-		return productFamilyService.update(id, request);
+        return productFamilyService.update(id, request);
     }
 
+    @DeleteMapping(value = "product/family/{id}", produces = {"application/json"})
+    @Operation(summary = "Delete product family ", description = "return success response after successfully deleting the project family", tags = {
+            "Product Family"})
+    @ApiResponses(value = {
+            @ApiResponse(description = "Product family successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(description = "If user doesn't have access to delete product faamily", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+            @ApiResponse(description = "If product family id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class)))})
+    public SuccessResponse delete(@PathVariable Long id) {
+        return productFamilyService.delete(id);
+    }
 }

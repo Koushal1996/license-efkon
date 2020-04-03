@@ -1,4 +1,8 @@
 package com.nxtlife.efkon.license.view.project.product;
 
-public class ProjectProductResponse {
+import com.nxtlife.efkon.license.view.Response;
+
+public class ProjectProductResponse implements Response {
+
+
 }
