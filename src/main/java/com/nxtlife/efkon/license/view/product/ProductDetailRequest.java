@@ -1,16 +1,13 @@
 package com.nxtlife.efkon.license.view.product;
 
-
-import com.nxtlife.efkon.license.entity.product.ProductCode;
 import com.nxtlife.efkon.license.entity.product.ProductDetail;
-import com.nxtlife.efkon.license.entity.product.ProductFamily;
-import com.nxtlife.efkon.license.entity.version.Version;
+import com.nxtlife.efkon.license.view.version.VersionRequest;
 
 public class ProductDetailRequest {
 
-	private ProductFamily productFamily;
+	private ProductFamilyRequest productFamily;
 
-	private Version version;
+	private VersionRequest version;
 
 	public ProductDetailRequest() {
 		super();
@@ -18,35 +15,33 @@ public class ProductDetailRequest {
 
 	public ProductDetail toEntity() {
 		ProductDetail detail = new ProductDetail();
-		detail.setProductFamily(this.getProductFamily());
-		for (ProductCode code : this.getProductFamily().getProductCodes()) {
-			detail.setProductCode(code);
-			code.setProductFamily(this.getProductFamily());
+		detail.setProductFamily(this.getProductFamily().toEntity());
+		for (ProductCodeRequest code : this.getProductFamily().getProductCodes()) {
+			detail.setProductCode(code.toEntity());
 		}
-		detail.setVersion(this.getVersion());
+		detail.setVersion(this.getVersion().toEntity());
 		return detail;
 	}
 
-	public ProductDetailRequest(ProductFamily productFamily, Version version) {
+	public ProductDetailRequest(ProductFamilyRequest productFamily, VersionRequest version) {
 		super();
 		this.productFamily = productFamily;
 		this.version = version;
 	}
 
-	public ProductFamily getProductFamily() {
+	public ProductFamilyRequest getProductFamily() {
 		return productFamily;
 	}
 
-	public void setProductFamily(ProductFamily productFamily) {
+	public void setProductFamily(ProductFamilyRequest productFamily) {
 		this.productFamily = productFamily;
 	}
 
-	public Version getVersion() {
+	public VersionRequest getVersion() {
 		return version;
 	}
 
-	public void setVersion(Version version) {
+	public void setVersion(VersionRequest version) {
 		this.version = version;
 	}
-
 }
