@@ -1,3 +1,45 @@
-<p>
-  role works!
-</p>
+<div class="container-fluid">
+  <div class="container mt-4">
+  <button class="btn btn-danger" (click)="createRole()">Create Role</button>
+  </div>
+  <div class="text-center">
+    <div *ngIf="isloader" class="spinner-border text-danger" 
+    style="width: 6rem; height: 6rem;"></div>
+  </div>
+  <table class="table table-bordered mt-4">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        
+        <th scope="col">Authorities</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of roles; index as index">
+        <td>{{index+1}}</td>
+        <td>{{item.name}}</td>
+
+        <td>
+          <span  class="badge badge-secondary p-2 mr-2 mb-2 cursor" 
+          *ngFor=" let auth of item.authorities; index as index">
+            
+   {{auth.name}}
+          </span>
+        </td>
+        <td *ngIf="item.active">
+          <a class="text-primary pr-2" (click)="editrole(item)"> 
+            <i class="fa fa-edit"></i>
+          </a> 
+          <a class="text-danger pl-2" (click)="deleterole(item)">
+            <i class="fa fa-trash"></i>
+          </a>
+        </td>
+        <td *ngIf="!item.active"><button (click)="activaterole(item)">
+          activate</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
