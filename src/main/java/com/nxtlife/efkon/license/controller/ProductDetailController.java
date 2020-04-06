@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProductDetailService;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 
@@ -64,6 +66,17 @@ public class ProductDetailController {
             @ApiResponse(description = "If required field are not filled or detail already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
     public ProductDetailResponse update(@PathVariable Long id, @RequestBody ProductDetailRequest request) {
         return productDetailService.update(id, request);
+    }
+	
+	@DeleteMapping(value = "product/detail/{id}", produces = {"application/json"})
+    @Operation(summary = "Delete product detail ", description = "return success response after successfully deleting the project detail", tags = {
+            "Product Detail"})
+    @ApiResponses(value = {
+            @ApiResponse(description = "Product detail successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(description = "If user doesn't have access to delete product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+            @ApiResponse(description = "If product detail id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class)))})
+    public SuccessResponse delete(@PathVariable Long id) {
+        return productDetailService.delete(id);
     }
 
 }

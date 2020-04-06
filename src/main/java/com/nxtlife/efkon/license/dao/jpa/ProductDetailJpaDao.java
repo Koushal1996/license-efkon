@@ -41,5 +41,8 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
     @Query("update ProductDetail set version_id=?1, modified_by =?3, modified_at =?4 where id = ?2 ")
     public int updateVersionIdById(Long versionId, Long id, Long userId, Date date);
 	
+	@Modifying
+    @Query(value = "update ProductDetail set active = false, modified_by =?2, modified_at =?3 where id =?1")
+    public int delete(Long id,Long userId,Date date);
 	
 }

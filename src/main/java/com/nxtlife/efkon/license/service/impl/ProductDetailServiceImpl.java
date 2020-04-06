@@ -7,18 +7,21 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.ProductCodeJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductFamilyJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.VersionJpaDao;
 import com.nxtlife.efkon.license.entity.product.ProductDetail;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProductDetailService;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductCodeResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
@@ -42,6 +45,9 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 
 	@Autowired
 	public VersionJpaDao versionDao;
+
+	@Autowired
+	ProjectProductJpaDao projectProductDao;
 
 	public void validate(ProductDetailRequest request) {
 		if (!productFamilyDao.existsByIdAndActive(request.getProductFamilyId(), true)) {
@@ -96,7 +102,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
 		}
 		validate(request);
-		ProductDetail productDetail = productDetailDao.findById(unmaskId).orElse(null);
+		ProductDetail productDetail = productDetailDao.findById(unmaskId).get();
 		int rows;
 		if (!request.getProductFamilyId().equals(productDetail.getProductFamily().getId())) {
 			rows = productDetailDao.updateProductDetailById(request.getProductFamilyId(), request.getProductCodeId(),
@@ -114,6 +120,25 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 
 		ProductDetailResponse detailResponse = productDetailDao.findResponseById(unmaskId);
 		return detailResponse;
+	}
+
+	public SuccessResponse delete(Long id) {
+
+		Long unmaskId = unmask(id);
+		if (!productDetailDao.existsById(unmaskId)) {
+			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
+		}
+
+		if (projectProductDao.existsByProductDetailIdAndActive(unmaskId, true)) {
+			throw new ValidationException(String.format(
+					"Product detail(%s) can't be delete as some of the version are related to this product detail ",
+					unmaskId));
+		}
+		int rows = productDetailDao.delete(unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("Product detail {} successfuly deleted", unmaskId);
+		}
+		return new SuccessResponse(HttpStatus.OK.value(), "Product detail deleted successfully");
 	}
 
 }
