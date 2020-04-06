@@ -10,4 +10,6 @@ public interface ProductDetailService {
 	public List<ProductDetailResponse> getProductDetail();
 
 	public ProductDetailResponse save(ProductDetailRequest request);
+	
+	public ProductDetailResponse update(Long id, ProductDetailRequest request);
 }
