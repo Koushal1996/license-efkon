@@ -98,7 +98,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 	public ProductDetailResponse update(Long id, ProductDetailRequest request) {
 
 		Long unmaskId = unmask(id);
-		if (!productDetailDao.existsById(unmaskId)) {
+		if (!productDetailDao.existByIdAndActive(unmaskId,true)) {
 			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
 		}
 		validate(request);
@@ -125,7 +125,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 	public SuccessResponse delete(Long id) {
 
 		Long unmaskId = unmask(id);
-		if (!productDetailDao.existsById(unmaskId)) {
+		if (!productDetailDao.existByIdAndActive(unmaskId,true)) {
 			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
 		}
 

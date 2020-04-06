@@ -24,6 +24,8 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 	public int deleteByProductFamilyId(Long id, Long userId, Date date);
 
 	public Boolean existsByProductFamilyIdAndActive(Long productFamilyId, Boolean active);
+	
+	public Boolean existByIdAndActive(Long id, Boolean active);
 
 	public Boolean existsByProductFamilyIdAndProductCodeIdAndVersionIdAndActive(Long productFamilyId,Long productCodeId,Long versionId,Boolean active);
 
