@@ -42,6 +42,21 @@ public class UserRole implements Serializable {
 		this.user = user;
 	}
 
+	public UserRole(Long userId,Long roleId)
+	{
+		this.userRoleKey=new UserRoleKey(userId,roleId);
+		if(userId!=null)
+		{
+			this.user=new User();
+			this.user.setId(userId);
+		}
+		if(roleId!=null)
+		{
+			this.role=new Role();
+			this.role.setId(roleId);
+		}
+	}
+
 	public UserRoleKey getUserRoleKey() {
 		return userRoleKey;
 	}

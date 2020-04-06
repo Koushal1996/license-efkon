@@ -59,6 +59,36 @@ public final class AuthorityUtils {
 	 */
 	public static final String USER_DELETE = "ROLE_USER_DELETE";
 
+	/**
+	 * AUTHORITY TO FETCH PROJECT TYPE
+	 */
+	public static final String PROJECT_TYPE_FETCH = "ROLE_PROJECT_TYPE_FETCH";
+
+	/**
+	 * AUTHORITY TO FETCH PROJECT
+	 */
+	public static final String PROJECT_FETCH = "ROLE_PROJECT_FETCH";
+
+	/**
+	 * AUTHORITY TO CREATE PROJECT
+	 */
+	public static final String PROJECT_CREATE = "ROLE_PROJECT_CREATE";
+
+	/**
+	 * AUTHORITY TO UPDATE PROJECT
+	 */
+	public static final String PROJECT_UPDATE = "ROLE_PROJECT_UPDATE";
+
+	/**
+	 * AUTHORITY TO DELETE PROJECT
+	 */
+	public static final String PROJECT_DELETE = "ROLE_PROJECT_DELETE";
+
+
+
+
+
+
 
 
 }

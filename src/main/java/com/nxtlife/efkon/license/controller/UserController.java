@@ -89,7 +89,7 @@ public class UserController {
 			"User" })
 	@ApiResponses(value = {
 			@ApiResponse(description = "User info after updating user details", responseCode = "200", content = @Content(schema = @Schema(implementation = UserResponse.class))),
-			@ApiResponse(description = "If user doesn't have access to save user", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If user doesn't have access to update user", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled or role ids not valid", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public UserResponse update(@Parameter(description = "User id", required = true) @PathVariable Long id,
 							   @Parameter(description = "User details", required = true) @RequestBody UserRequest request) {

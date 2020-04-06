@@ -50,7 +50,7 @@ public class UserRequest implements Request {
         return contactNo;
     }
 
-    public Boolean getEmailSend() {
+    public Boolean getIsEmailSend() {
         return isEmailSend;
     }
 
@@ -68,9 +68,9 @@ public class UserRequest implements Request {
         user.setContactNo(contactNo);
         user.setUsername(username);
         if(isEmailSend!=null)
-        user.setEmailSend(isEmailSend);
+        user.setIsEmailSend(isEmailSend);
         else{
-            user.setEmailSend(false);
+            user.setIsEmailSend(false);
         }
         return user;
     }

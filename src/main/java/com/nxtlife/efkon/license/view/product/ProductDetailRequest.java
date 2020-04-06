@@ -1,52 +1,33 @@
 package com.nxtlife.efkon.license.view.product;
 
+import com.nxtlife.efkon.license.view.Request;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-import com.nxtlife.efkon.license.entity.product.ProductCode;
-import com.nxtlife.efkon.license.entity.product.ProductDetail;
-import com.nxtlife.efkon.license.entity.product.ProductFamily;
-import com.nxtlife.efkon.license.entity.version.Version;
+import javax.validation.constraints.NotNull;
 
-public class ProductDetailRequest {
+public class ProductDetailRequest implements Request {
 
-	private ProductFamily productFamily;
+    @Schema(description = "Id of the product family", example = "1", required = true)
+    @NotNull(message = "product family id can't be null")
+    private Long productFamilyId;
 
-	private Version version;
+    @Schema(description = "Id of the product code", example = "1", required = true)
+    @NotNull(message = "product code id can't be null")
+    private Long productCodeId;
 
-	public ProductDetailRequest() {
-		super();
-	}
+    @Schema(description = "Id of the version", example = "1", required = true)
+    @NotNull(message = "version id can't be null")
+    private Long versionId;
 
-	public ProductDetail toEntity() {
-		ProductDetail detail = new ProductDetail();
-		detail.setProductFamily(this.getProductFamily());
-		for (ProductCode code : this.getProductFamily().getProductCodes()) {
-			detail.setProductCode(code);
-			code.setProductFamily(this.getProductFamily());
-		}
-		detail.setVersion(this.getVersion());
-		return detail;
-	}
+    public Long getProductFamilyId() {
+        return unmask(productFamilyId);
+    }
 
-	public ProductDetailRequest(ProductFamily productFamily, Version version) {
-		super();
-		this.productFamily = productFamily;
-		this.version = version;
-	}
+    public Long getProductCodeId() {
+        return unmask(productCodeId);
+    }
 
-	public ProductFamily getProductFamily() {
-		return productFamily;
-	}
-
-	public void setProductFamily(ProductFamily productFamily) {
-		this.productFamily = productFamily;
-	}
-
-	public Version getVersion() {
-		return version;
-	}
-
-	public void setVersion(Version version) {
-		this.version = version;
-	}
-
+    public Long getVersionId() {
+        return unmask(versionId);
+    }
 }

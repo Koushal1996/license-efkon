@@ -12,11 +12,11 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
 import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
+@Table(name = "project_product", uniqueConstraints = {@UniqueConstraint(columnNames = {"project_id", "product_detail_id"})})
 @DynamicUpdate(value = true)
 @DynamicInsert(value = true)
 public class ProjectProduct extends BaseEntity implements Serializable {
@@ -33,10 +33,10 @@ public class ProjectProduct extends BaseEntity implements Serializable {
     private long expirationMonthCount;
 
     @NotNull(message = "start_date can't be null")
-    private Date startDate;
+    private String startDate;
 
-    @NotNull(message = "end_date can't be null")
-    private Date endDate;
+
+    private String endDate;
 
     @NotNull(message = "status can't be null")
     @Enumerated(EnumType.STRING)
@@ -61,7 +61,7 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 
     public ProjectProduct(Long licenseCount, @NotNull(message = "license_type can't be null") LicenseType licenseType,
                           @NotNull(message = "expiration_period_type can't be null") String expirationPeriodType,
-                          long expirationMonthCount, @NotNull(message = "start_date can't be null") Date startDate, @NotNull(message = "end_date can't be null") Date endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
+                          long expirationMonthCount, @NotNull(message = "start_date can't be null") String startDate, String endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
         this.licenseCount = licenseCount;
         this.licenseType = licenseType;
         this.expirationPeriodType = expirationPeriodType;
@@ -104,19 +104,19 @@ public class ProjectProduct extends BaseEntity implements Serializable {
         this.expirationMonthCount = expirationMonthCount;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

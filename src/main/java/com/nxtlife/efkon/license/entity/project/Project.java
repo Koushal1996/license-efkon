@@ -4,16 +4,18 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
+import com.nxtlife.efkon.license.entity.user.User;
 
 @SuppressWarnings("serial")
 @Entity
@@ -21,84 +23,122 @@ import org.hibernate.annotations.DynamicUpdate;
 @DynamicInsert(value = true)
 public class Project extends BaseEntity implements Serializable {
 
-    @NotNull(message = "customer_name can't be null")
-    private String customerName;
+	@NotNull(message = "customer_name can't be null")
+	private String customerName;
 
-    @NotNull(message = "customer_email can't be null")
-    @Column(unique = true)
-    private String customerEmail;
+	@NotNull(message = "customer_email can't be null")
+	private String customerEmail;
 
-    @Column(unique = true)
-    private String customerPhoneNo;
+	private String customerContactNo;
 
-    @NotNull(message = "email_send_status can't be null")
-    private String emailSendStatus;
+	@NotNull(message = "is_email_send can't be null")
+	private Boolean isEmailSend;
 
-    @ManyToOne
-    private ProjectType projectType;
+	@ManyToOne
+	private ProjectType projectType;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private Set<ProjectProduct> projectProducts;
+	@ManyToOne
+	private User user;
 
-    public Project() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	@Transient
+	private Long userId;
 
-    public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail, String customerPhoneNo,
-                   @NotNull(message = "email_send_status can't be null") String emailSendStatuss) {
-        this.customerName = customerName;
-        this.customerEmail = customerEmail;
-        this.customerPhoneNo = customerPhoneNo;
-        this.emailSendStatus = emailSendStatus;
-    }
+	@Transient
+	private Long tProjectTypeId;
 
-    public String getCustomerName() {
-        return customerName;
-    }
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	private Set<ProjectProduct> projectProducts;
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
+	public Project() {
+		super();
+	}
 
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
+	public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail,
+			String customerContactNo, @NotNull(message = "is_email_send can't be null") Boolean isEmailSend) {
+		this.customerName = customerName;
+		this.customerEmail = customerEmail;
+		this.customerContactNo = customerContactNo;
+		this.isEmailSend = isEmailSend;
+	}
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
+	public String getCustomerName() {
+		return customerName;
+	}
 
-    public String getCustomerPhoneNo() {
-        return customerPhoneNo;
-    }
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 
-    public void setCustomerPhoneNo(String customerPhoneNo) {
-        this.customerPhoneNo = customerPhoneNo;
-    }
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
 
-    public String getEmailSendStatus() {
-        return emailSendStatus;
-    }
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
 
-    public void setEmailSendStatus(String emailSendStatus) {
-        this.emailSendStatus = emailSendStatus;
-    }
+	public String getCustomerContactNo() {
+		return customerContactNo;
+	}
 
-    public ProjectType getProjectType() {
-        return projectType;
-    }
+	public void setCustomerContactNo(String customerContactNo) {
+		this.customerContactNo = customerContactNo;
+	}
 
-    public void setProjectType(ProjectType projectType) {
-        this.projectType = projectType;
-    }
+	public Boolean getIsEmailSend() {
+		return isEmailSend;
+	}
 
-    public Set<ProjectProduct> getProjectProducts() {
-        return projectProducts;
-    }
+	public void setIsEmailSend(Boolean emailSend) {
+		isEmailSend = emailSend;
+	}
 
-    public void setProjectProducts(Set<ProjectProduct> projectProducts) {
-        this.projectProducts = projectProducts;
-    }
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		if (userId != null) {
+			this.user = new User();
+			this.user.setId(userId);
+		}
+		this.userId = userId;
+	}
+
+	public Long gettProjectTypeId() {
+		return tProjectTypeId;
+	}
+
+	public void settProjectTypeId(Long tProjectTypeId) {
+		if (tProjectTypeId != null) {
+			this.projectType = new ProjectType();
+			this.projectType.setId(tProjectTypeId);
+		}
+		this.tProjectTypeId = tProjectTypeId;
+	}
+
+	public ProjectType getProjectType() {
+		return projectType;
+	}
+
+	public void setProjectType(ProjectType projectType) {
+		this.projectType = projectType;
+	}
+
+	public Set<ProjectProduct> getProjectProducts() {
+		return projectProducts;
+	}
+
+	public void setProjectProducts(Set<ProjectProduct> projectProducts) {
+		this.projectProducts = projectProducts;
+	}
 
 }

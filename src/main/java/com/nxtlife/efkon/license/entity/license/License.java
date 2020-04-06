@@ -2,17 +2,18 @@ package com.nxtlife.efkon.license.entity.license;
 
 import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
+import com.nxtlife.efkon.license.enums.LicenseStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @SuppressWarnings("serial")
 @Entity
+@Table(name = "license",uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"code","project_product_id"})})
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class License extends BaseEntity implements Serializable {
@@ -21,7 +22,6 @@ public class License extends BaseEntity implements Serializable {
     private Long code;
 
     @NotNull(message = "access_id can't be null")
-    @Column(unique = true)
     private Long accessId;
 
     @Column(unique = true)
@@ -30,7 +30,7 @@ public class License extends BaseEntity implements Serializable {
     private String name;
 
     @NotNull(message = "status can't be null")
-    private String status;
+    private LicenseStatus status;
 
     @ManyToOne
     private ProjectProduct projectProduct;
@@ -41,7 +41,7 @@ public class License extends BaseEntity implements Serializable {
     }
 
     public License(@NotNull(message = "code can't be null") Long code, @NotNull(message = "access_id can't be null") Long accessId, Long generatedKey, String name,
-                   @NotNull(message = "status can't be null") String status) {
+                   @NotNull(message = "status can't be null") LicenseStatus status) {
         super();
         this.code = code;
         this.accessId = accessId;
@@ -83,11 +83,11 @@ public class License extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public String getStatus() {
+    public LicenseStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(LicenseStatus status) {
         this.status = status;
     }
 
