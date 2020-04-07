@@ -4,6 +4,7 @@ import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.product.ProductDetail;
 import com.nxtlife.efkon.license.entity.project.Project;
+import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
 import com.nxtlife.efkon.license.enums.LicenseType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import org.hibernate.annotations.DynamicInsert;
@@ -21,16 +22,19 @@ import java.util.Set;
 @DynamicInsert(value = true)
 public class ProjectProduct extends BaseEntity implements Serializable {
 
-    private Long licenseCount;
+    @NotNull(message = "license count can't be null")
+    private Integer licenseCount;
 
     @NotNull(message = "license_type can't be null")
     @Enumerated(EnumType.STRING)
     private LicenseType licenseType;
 
     @NotNull(message = "expiration_period_type can't be null")
-    private String expirationPeriodType;
+    @Enumerated(EnumType.STRING)
+    private ExpirationPeriodType expirationPeriodType;
 
-    private long expirationMonthCount;
+
+    private Integer expirationMonthCount;
 
     @NotNull(message = "start_date can't be null")
     private String startDate;
@@ -44,6 +48,12 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 
     @ManyToOne
     private Project project;
+
+    @Transient
+    private Long tProjectId;
+
+    @Transient
+    private Long tProductDetailId;
 
     @ManyToOne
     private ProductDetail productDetail;
@@ -59,9 +69,9 @@ public class ProjectProduct extends BaseEntity implements Serializable {
         // TODO Auto-generated constructor stub
     }
 
-    public ProjectProduct(Long licenseCount, @NotNull(message = "license_type can't be null") LicenseType licenseType,
-                          @NotNull(message = "expiration_period_type can't be null") String expirationPeriodType,
-                          long expirationMonthCount, @NotNull(message = "start_date can't be null") String startDate, String endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
+    public ProjectProduct(Integer licenseCount, @NotNull(message = "license_type can't be null") LicenseType licenseType,
+                          @NotNull(message = "expiration_period_type can't be null") ExpirationPeriodType expirationPeriodType,
+                          Integer expirationMonthCount, @NotNull(message = "start_date can't be null") String startDate, String endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
         this.licenseCount = licenseCount;
         this.licenseType = licenseType;
         this.expirationPeriodType = expirationPeriodType;
@@ -72,11 +82,11 @@ public class ProjectProduct extends BaseEntity implements Serializable {
     }
 
 
-    public Long getLicenseCount() {
+    public Integer getLicenseCount() {
         return licenseCount;
     }
 
-    public void setLicenseCount(Long licenseCount) {
+    public void setLicenseCount(Integer licenseCount) {
         this.licenseCount = licenseCount;
     }
 
@@ -88,20 +98,44 @@ public class ProjectProduct extends BaseEntity implements Serializable {
         this.licenseType = licenseType;
     }
 
-    public String getExpirationPeriodType() {
+    public ExpirationPeriodType getExpirationPeriodType() {
         return expirationPeriodType;
     }
 
-    public void setExpirationPeriodType(String expirationPeriodType) {
+    public void setExpirationPeriodType(ExpirationPeriodType expirationPeriodType) {
         this.expirationPeriodType = expirationPeriodType;
     }
 
-    public long getExpirationMonthCount() {
+    public Integer getExpirationMonthCount() {
         return expirationMonthCount;
     }
 
-    public void setExpirationMonthCount(long expirationMonthCount) {
+    public void setExpirationMonthCount(Integer expirationMonthCount) {
         this.expirationMonthCount = expirationMonthCount;
+    }
+
+    public Long gettProjectId() {
+        return tProjectId;
+    }
+
+    public void settProjectId(Long tProjectId) {
+        if (tProjectId != null) {
+            this.project = new Project();
+            this.project.setId(tProjectId);
+        }
+        this.tProjectId = tProjectId;
+    }
+
+    public Long gettProductDetailId() {
+        return tProductDetailId;
+    }
+
+    public void settProductDetailId(Long tProductDetailId) {
+        if (tProductDetailId != null) {
+            this.productDetail = new ProductDetail();
+            this.productDetail.setId(tProductDetailId);
+        }
+        this.tProductDetailId = tProductDetailId;
     }
 
     public String getStartDate() {

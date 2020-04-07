@@ -47,7 +47,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 
     public void validateCustomer(ProjectRequest request) {
         List<ProjectResponse> projectResponseList = projectDao.findByCustomerEmailAndActive(request.getCustomerEmail(), true);
-        if (!projectResponseList.isEmpty() || projectResponseList != null) {
+        if (!projectResponseList.isEmpty() && projectResponseList != null) {
             if (!request.getCustomerName().equals(projectResponseList.get(0).getCustomerName())) {
                 throw new ValidationException(String.format("This email (%s) is already exist", request.getCustomerEmail()));
             }

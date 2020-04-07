@@ -2,6 +2,7 @@ package com.nxtlife.efkon.license.dao.jpa;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +15,8 @@ import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 @Repository
 public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> {
 
+	public Boolean existsByIdAndActive(Long id,Boolean active);
+
 	public ProductDetailResponse findResponseById(Long id);
 
 	public List<ProductDetail> findAllByActive(Boolean active);
@@ -23,7 +26,16 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 	public int deleteByProductFamilyId(Long id, Long userId, Date date);
 
 	public Boolean existsByProductFamilyIdAndActive(Long productFamilyId, Boolean active);
+	
+	public Boolean existByIdAndActive(Long id, Boolean active);
 
 	public Boolean existsByProductFamilyIdAndProductCodeIdAndVersionIdAndActive(Long productFamilyId,Long productCodeId,Long versionId,Boolean active);
 
+	public Optional<ProductDetail> findById(Long id);
+
+	
+	@Modifying
+    @Query(value = "update ProductDetail set active = false, modified_by =?2, modified_at =?3 where id =?1")
+    public int delete(Long id,Long userId,Date date);
+	
 }

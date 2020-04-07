@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface ProjectJpaDao extends JpaRepository<Project, Long> {
+
+	public Boolean existsByIdAndActive(Long id,Boolean active);
 	
 	public Project findByCustomerName(String name);
 

@@ -30,7 +30,7 @@ public class ProjectController {
     @Operation(summary = "Save project detail ", description = "return project response after saved the project details", tags = {
             "Project"})
     @ApiResponses(value = {
-            @ApiResponse(description = "Project response after successfully saved the product family", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectResponse.class))),
+            @ApiResponse(description = "Project response after successfully saved the product detail", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectResponse.class))),
             @ApiResponse(description = "If user doesn't have access to save project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
             @ApiResponse(description = "If required field are not filled properly", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
     public ProjectResponse save(@Parameter(description = "Project details which need to be saved") @Valid @RequestBody ProjectRequest request) {

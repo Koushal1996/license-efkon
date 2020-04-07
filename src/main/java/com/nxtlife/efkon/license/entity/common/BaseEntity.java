@@ -79,12 +79,12 @@ public class BaseEntity {
 	 */
 	@PreUpdate
 	protected void preUpdate() {
-		this.createdAt = DateUtil.today();
+		this.modifiedAt = DateUtil.today();
 		this.active = true;
 		Long userId;
 		if ((userId = getUser().getUserId()) != null) {
-			this.createdBy = new User();
-			this.createdBy.setId(userId);
+			this.modifiedBy = new User();
+			this.modifiedBy.setId(userId);
 		}
 	}
 
