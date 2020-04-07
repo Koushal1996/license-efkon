@@ -14,6 +14,8 @@ import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 @Repository
 public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> {
 
+	public Boolean existsByIdAndActive(Long id,Boolean active);
+
 	public ProductDetailResponse findResponseById(Long id);
 
 	public List<ProductDetail> findAllByActive(Boolean active);

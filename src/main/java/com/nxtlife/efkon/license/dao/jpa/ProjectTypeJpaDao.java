@@ -5,6 +5,8 @@ import com.nxtlife.efkon.license.view.project.ProjectTypeResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProjectTypeJpaDao extends JpaRepository<ProjectType, Long> {
 
@@ -13,4 +15,5 @@ public interface ProjectTypeJpaDao extends JpaRepository<ProjectType, Long> {
     public Boolean existsByName(String name);
 
     public ProjectTypeResponse findResponseById(Long id);
+
 }

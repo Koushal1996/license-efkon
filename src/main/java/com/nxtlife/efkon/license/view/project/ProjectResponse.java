@@ -1,6 +1,7 @@
 package com.nxtlife.efkon.license.view.project;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -92,5 +93,17 @@ public class ProjectResponse implements Response {
 
     public void setProducts(List<ProjectProductResponse> products) {
         this.products = products;
+    }
+
+    public static ProjectResponse get(Project project)
+    {
+        if(project!=null)
+        {
+            ProjectResponse response=new ProjectResponse(project.getId(),project.getCustomerName(),project.getCustomerEmail(),
+                    project.getIsEmailSend(),project.getCustomerContactNo());
+            response.setProjectTypeResponse(new ProjectTypeResponse(project.getProjectType()));
+            return response;
+        }
+        return null;
     }
 }
