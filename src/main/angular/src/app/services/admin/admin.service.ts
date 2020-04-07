@@ -55,4 +55,9 @@ export class AdminService {
   activateUser(userId){
     return this.api.put(`api/user/${userId}/activate`,{});
   }
+
+  logout()
+  {
+    return this.api.get('api/me/logout')
+  }
 }
