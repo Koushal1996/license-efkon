@@ -70,8 +70,6 @@ export class CreateUserComponent implements OnInit {
     }
   })
 
-
-
   }
       
   onItemSelect(item: any) {
