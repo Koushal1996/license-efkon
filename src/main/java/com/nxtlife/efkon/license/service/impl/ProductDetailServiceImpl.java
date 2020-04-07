@@ -117,7 +117,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
     public SuccessResponse delete(Long id) {
 
         Long unmaskId = unmask(id);
-        if (!productDetailDao.existByIdAndActive(unmaskId, true)) {
+        if (!productDetailDao.existsByIdAndActive(unmaskId, true)) {
             throw new NotFoundException(String.format("Product Detail (%s) not found", id));
         }
 

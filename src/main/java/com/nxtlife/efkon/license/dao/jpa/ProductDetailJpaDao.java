@@ -27,8 +27,6 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 
 	public Boolean existsByProductFamilyIdAndActive(Long productFamilyId, Boolean active);
 	
-	public Boolean existByIdAndActive(Long id, Boolean active);
-
 	public Boolean existsByProductFamilyIdAndProductCodeIdAndVersionIdAndActive(Long productFamilyId,Long productCodeId,Long versionId,Boolean active);
 
 	public Optional<ProductDetail> findById(Long id);

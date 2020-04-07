@@ -16,6 +16,8 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
     public Boolean existsByProductDetailIdAndActive(Long productDetailId, Boolean active);
 
     public Boolean existsByProjectIdAndProductDetailId(Long projectId,Long projectDetailId);
+    
+    public Boolean existsByIdAndActive(Long id, Boolean active);
 
     public ProjectProduct findByIdAndActive(Long id,Boolean active);
 
