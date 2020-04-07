@@ -6,6 +6,7 @@ import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProductDetailService;
+import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductCodeResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +68,9 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
         }
     }
 
-    public List<ProductDetailResponse> getProductDetail() {
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_DETAIL_FETCH)
+    public List<ProductDetailResponse> findAll() {
         List<ProductDetailResponse> productDetailResponseList = new ArrayList<>();
         List<ProductDetail> productDetails = productDetailDao.findAllByActive(true);
         productDetails.forEach(detail -> {
@@ -79,6 +83,8 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
         return productDetailResponseList;
     }
 
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_DETAIL_CREATE)
     public ProductDetailResponse save(ProductDetailRequest request) {
         validate(request);
         ProductDetail productDetail = productDetailDao.save(
@@ -90,6 +96,8 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
         return response;
     }
 
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_DETAIL_UPDATE)
     public ProductDetailResponse update(Long id, ProductDetailRequest request) {
 
         Long unmaskId = unmask(id);
@@ -114,10 +122,12 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
         return response;
     }
 
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_DETAIL_DELETE)
     public SuccessResponse delete(Long id) {
 
         Long unmaskId = unmask(id);
-        if (!productDetailDao.existByIdAndActive(unmaskId, true)) {
+        if (!productDetailDao.existsByIdAndActive(unmaskId, true)) {
             throw new NotFoundException(String.format("Product Detail (%s) not found", id));
         }
 

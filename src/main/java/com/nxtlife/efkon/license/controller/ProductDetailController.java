@@ -42,8 +42,8 @@ public class ProductDetailController {
 	@ApiResponses(value = {
 			@ApiResponse(description = "product details successfully fetched", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDetailResponse.class)))),
 			@ApiResponse(description = "If user doesn't have access to fetch list of product details", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public List<ProductDetailResponse> getProductDetail() {
-		return productDetailService.getProductDetail();
+	public List<ProductDetailResponse> findAll() {
+		return productDetailService.findAll();
 	}
 
 	@PostMapping(value = "product/detail", consumes = { "application/json" }, produces = { "application/json" })
