@@ -8,8 +8,8 @@ import { map, catchError } from "rxjs/operators";
 })
 export class ApiService {
 
-  url: string = 'http://localhost:8080';
-  // url: string = 'http://enforcement.us-east-2.elasticbeanstalk.com:8080';
+ // url: string = 'http://localhost:8080';
+   url: string = 'http://enforcement.us-east-2.elasticbeanstalk.com:8080';
 
   constructor(public http: HttpClient) {
   }

@@ -1,3 +1,49 @@
-<p>
-  user works!
-</p>
+<div class="container-fluid">
+  <div class="container mt-4">
+  <button class="btn btn-danger" (click)="createuser()">Create User</button>
+  </div>
+  <div class="text-center">
+  <div *ngIf="isloader" class="spinner-border text-danger" 
+  style="width: 6rem; height: 6rem;"></div>
+</div>
+  <table class="table table-bordered mt-4">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">UserName</th>
+        <th scope="col">Email</th>
+        <th scope="col">Contact No.</th>
+        <th scope="col">Roles</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of users; index as index">
+        <td>{{index+1}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.username}}</td>
+        <td>{{item.email}}</td>
+        <td>{{item.contactNo}}</td>
+        <td>
+   <span  class="badge badge-secondary p-2 mr-2 mb-2 cursor" 
+   
+   *ngFor=" let role of item.roles; index as index">
+   {{role.name}}
+          </span>
+        </td>
+        <td *ngIf="item.active">
+          <a class="text-primary pr-2"> 
+            <i class="fa fa-edit" (click)="edituser(item)"></i>
+          </a> 
+          <a class="text-danger pl-2" (click)="deleteuser(item)">
+            <i class="fa fa-trash"></i>
+          </a>
+        </td>
+        <td *ngIf="!item.active"><button (click)="activateuser(item)">
+          activate</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ForgotPwdComponent } from './pages/forgot-pwd/forgot-pwd.component';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +17,8 @@ import { ForgotPwdComponent } from './pages/forgot-pwd/forgot-pwd.component';
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgMultiSelectDropDownModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

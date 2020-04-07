@@ -12,6 +12,8 @@ import java.util.List;
 public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long> {
 
     public List<ProjectProductResponse> findByProjectIdAndActive(Long ProjectId,Boolean active);
+    
+    public Boolean existsByProductDetailIdAndActive(Long productDetailId, Boolean active);
 
     public Boolean existsByProjectIdAndProductDetailId(Long projectId,Long projectDetailId);
 
