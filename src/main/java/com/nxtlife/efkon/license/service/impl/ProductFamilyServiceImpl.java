@@ -9,6 +9,7 @@ import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProductFamilyService;
+import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductCodeRequest;
 import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +53,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
         });
     }
 
-
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_FAMILY_CREATE)
     public ProductFamilyResponse save(ProductFamilyRequest request) {
 
         ProductFamily productFamily;
@@ -69,6 +72,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 
     }
 
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_FAMILY_FETCH)
     public List<ProductFamilyResponse> findAll() {
         List<ProductFamilyResponse> productFamilies = productFamilyDao.findByActive(true);
         productFamilies.stream().forEach(productFamily ->
@@ -76,6 +81,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
         return productFamilies;
     }
 
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_FAMILY_UPDATE)
     public ProductFamilyResponse update(Long id, ProductFamilyRequest request) {
 
         Long unmaskId = unmask(id);
@@ -115,6 +122,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 
     }
 
+    @Override
+    @Secured(AuthorityUtils.PRODUCT_FAMILY_DELETE)
     public SuccessResponse delete(Long id) {
         Long unmaskId = unmask(id);
         if (!productFamilyDao.existsById(unmaskId)) {

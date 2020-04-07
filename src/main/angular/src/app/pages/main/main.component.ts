@@ -1,4 +1,7 @@
+import { Router } from '@angular/router';
+import { AdminService } from './../../services/admin/admin.service';
 import { Component, OnInit } from '@angular/core';
+
 declare let $: any;
 @Component({
   selector: 'app-main',
@@ -12,7 +15,8 @@ export class MainComponent implements OnInit {
     { route: '/users', title: 'Users' }
   ]
 
-  constructor() { }
+  constructor(private adminService:AdminService,
+    private route:Router ) { }
 
   ngOnInit() {
     console.log(this.pages);
@@ -32,6 +36,15 @@ export class MainComponent implements OnInit {
   }
 
   logout() {
+    this.adminService.logout().subscribe(
+      data=>{
+        localStorage.clear()
+        this.route.navigate(['login'])
+      },
+      error=>{
+        
+      }
+    )
 
   }
 

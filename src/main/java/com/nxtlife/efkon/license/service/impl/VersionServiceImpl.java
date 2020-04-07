@@ -6,12 +6,14 @@ import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.VersionService;
+import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.version.VersionRequest;
 import com.nxtlife.efkon.license.view.version.VersionResponse;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +36,7 @@ public class VersionServiceImpl extends BaseService implements VersionService {
     }
 
     @Override
+    @Secured(AuthorityUtils.VERSION_CREATE)
     public VersionResponse save(VersionRequest request) {
         validate(request);
         Version version = request.toEntity();
@@ -42,11 +45,13 @@ public class VersionServiceImpl extends BaseService implements VersionService {
     }
 
     @Override
+    @Secured(AuthorityUtils.VERSION_FETCH)
     public List<VersionResponse> findAll() {
         return versionDao.findByActive(true);
     }
 
     @Override
+    @Secured(AuthorityUtils.VERSION_UPDATE)
     public VersionResponse update(Long id, VersionRequest request) {
         Long unmaskId = unmask(id);
         Version version = versionDao.findById(unmaskId).orElse(null);
@@ -64,6 +69,7 @@ public class VersionServiceImpl extends BaseService implements VersionService {
     }
 
     @Override
+    @Secured(AuthorityUtils.VERSION_DELETE)
     public SuccessResponse delete(Long id) {
 
         Long unmaskId = unmask(id);

@@ -8,4 +8,5 @@ import com.nxtlife.efkon.license.entity.license.License;
 @Repository
 public interface LicenseJpaDao extends JpaRepository<License, Long> {
 
+	public Boolean existsByProjectProductIdAndActive(Long projectProductId, Boolean active);
 }

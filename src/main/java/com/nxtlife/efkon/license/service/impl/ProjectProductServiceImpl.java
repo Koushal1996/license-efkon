@@ -1,8 +1,6 @@
 package com.nxtlife.efkon.license.service.impl;
 
-import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
-import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
-import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.*;
 import com.nxtlife.efkon.license.entity.product.ProductDetail;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
@@ -12,6 +10,8 @@ import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
+import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductCodeResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
@@ -19,12 +19,18 @@ import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 import com.nxtlife.efkon.license.view.version.VersionResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("projectProductServiceImpl")
@@ -39,6 +45,14 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
     @Autowired
     private ProductDetailJpaDao productDetailDao;
+
+    @Autowired
+    private ProjectProductCommentJpaDao projectProductCommentDao;
+
+    @Autowired
+    private LicenseJpaDao licenseDao;
+
+    private static Logger logger = LoggerFactory.getLogger(ProjectProductServiceImpl.class);
 
 
     public void validate(ProjectProductRequest request) {
@@ -92,6 +106,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
     }
 
     @Override
+    @Secured(AuthorityUtils.PROJECT_PRODUCT_CREATE)
     public ProjectProductResponse save(ProjectProductRequest request) {
         validate(request);
         if (projectProductDao.existsByProjectIdAndProductDetailId(request.getProjectId(), request.getProductDetailId())) {
@@ -111,6 +126,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
     }
 
     @Override
+    @Secured(AuthorityUtils.PROJECT_PRODUCT_UPDATE)
     public ProjectProductResponse update(Long id, ProjectProductRequest request) {
         Long unmaskId = unmask(id);
         ProjectProduct projectProduct = projectProductDao.findByIdAndActive(unmaskId, true);
@@ -155,9 +171,47 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
         return getProjectProductResponse(projectProduct, request.getProjectId(), request.getProductDetailId());
     }
 
-    public List<ProjectProduct> getAllProjectProduct() {
+    @Override
+    @Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
+    public List<ProjectProductResponse> findAll() {
 
-        return projectProductDao.findAll();
+        List<ProjectProductResponse> projectProductResponseList = new ArrayList<>();
+        projectProductDao.findAll().forEach(projectProduct -> {
+            ProjectProductResponse response = ProjectProductResponse.get(projectProduct);
+            response.setProjectResponse(ProjectResponse.get(projectProduct.getProject()));
+            ProductDetail productDetail = productDetailDao.findById(projectProduct.getProductDetail().getId()).get();
+            ProductDetailResponse productDetailResponse = new ProductDetailResponse(productDetail.getId());
+            productDetailResponse.setProductFamily(ProductFamilyResponse.get(productDetail.getProductFamily()));
+            productDetailResponse.setProductCode(ProductCodeResponse.get(productDetail.getProductCode()));
+            productDetailResponse.setVersion(VersionResponse.get(productDetail.getVersion()));
+            response.setProductDetailResponse(productDetailResponse);
+            projectProductResponseList.add(response);
+
+        });
+        return projectProductResponseList;
+
+    }
+
+    @Override
+    @Secured(AuthorityUtils.PROJECT_PRODUCT_DELETE)
+    public SuccessResponse delete(Long id) {
+        Long unmaskId = unmask(id);
+        if (!projectProductDao.existsById(unmaskId)) {
+            throw new NotFoundException(String.format("Project product (%s) not found", id));
+        }
+        if (!licenseDao.existsByProjectProductIdAndActive(unmaskId, true)) {
+            throw new ValidationException(String.format(
+                    "Project product (%s) can't be delete as some of the project product have got the licenses ", id));
+        }
+        List<Long> projectProductCommentIds = projectProductCommentDao.findAllIdsByProjectProductIdAndActive(unmaskId, true);
+        if (!projectProductCommentIds.isEmpty()) {
+            projectProductCommentDao.delete(projectProductCommentIds, getUserId(), new Date());
+        }
+        int rows = projectProductDao.delete(unmaskId, getUserId(), new Date());
+        if (rows > 0) {
+            logger.info("project product {} successfully deleted", unmaskId);
+        }
+        return new SuccessResponse(HttpStatus.OK.value(), "Project product successfully deleted");
 
     }
 

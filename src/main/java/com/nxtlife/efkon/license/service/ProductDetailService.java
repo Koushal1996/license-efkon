@@ -16,7 +16,7 @@ public interface ProductDetailService {
      * @return list of <tt>ProductDetailResponse</tt>
      */
 
-    public List<ProductDetailResponse> getProductDetail();
+    public List<ProductDetailResponse> findAll();
 
     /**
      * this method used to save product  detail.

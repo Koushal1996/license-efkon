@@ -108,6 +108,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
      * @return List of <tt>ProjectResponse</tt>
      */
     @Override
+    @Secured(AuthorityUtils.PROJECT_FETCH)
     public List<ProjectResponse> findAll() {
         List<ProjectResponse> projects = projectDao.findByActive(true);
         projects.stream().forEach(project ->

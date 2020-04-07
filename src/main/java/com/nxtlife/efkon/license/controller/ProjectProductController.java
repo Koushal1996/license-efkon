@@ -1,11 +1,12 @@
 package com.nxtlife.efkon.license.controller;
 
-import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProjectProductService;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,7 +24,7 @@ import java.util.List;
 public class ProjectProductController {
 
     @Autowired
-    private ProjectProductService productService;
+    private ProjectProductService projectProductService;
 
     @PostMapping(value = "project/product", produces = {"application/json"}, consumes = {"application/json"})
     @Operation(summary = "Save product in project ", description = "return project product response after saved the products in project", tags = {
@@ -34,7 +35,7 @@ public class ProjectProductController {
             @ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
     public ProjectProductResponse save(@Valid @RequestBody ProjectProductRequest request) {
 
-       return productService.save(request);
+        return projectProductService.save(request);
 
     }
 
@@ -48,17 +49,30 @@ public class ProjectProductController {
             @ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
     public ProjectProductResponse update(@PathVariable Long id, @RequestBody ProjectProductRequest request) {
 
-        return productService.update(id,request);
+        return projectProductService.update(id, request);
 
     }
 
+    @GetMapping(value = "project/product", produces = {"application/json"})
+    @Operation(summary = "Find all project types", description = "return a list of project types", tags = {
+            "Project", "Project Type"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Project product  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+            @ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class)))})
+    public List<ProjectProductResponse> findAll() {
 
+        return projectProductService.findAll();
 
+    }
 
-    @GetMapping("projectproduct")
-    public List<ProjectProduct> getAllProject() {
-
-        return productService.getAllProjectProduct();
-
+    @DeleteMapping(value = "project/product/{id}", produces = {"application/json"})
+    @Operation(summary = "Delete product in a project ", description = "return success response after successfully deleting the product in a project", tags = {
+            "Project", "Project Product"})
+    @ApiResponses(value = {
+            @ApiResponse(description = "product successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(description = "If user doesn't have access to delete product in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+            @ApiResponse(description = "If project product id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class)))})
+    public SuccessResponse delete(@PathVariable Long id) {
+        return projectProductService.delete(id);
     }
 }
