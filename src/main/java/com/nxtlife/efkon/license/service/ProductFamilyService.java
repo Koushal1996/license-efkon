@@ -22,14 +22,14 @@ public interface ProductFamilyService {
     public ProductFamilyResponse save(ProductFamilyRequest request);
 
     /**
-     * this method used to fetch all projects families
+     * this method used to fetch all product families
      *
-     * @return list of <tt>ProjectFamilyResponse</tt>
+     * @return list of <tt>ProductFamilyResponse</tt>
      */
     public List<ProductFamilyResponse> findAll();
 
     /**
-     * this method used to update project family details. It throws exception if product family id
+     * this method used to update product family details. It throws exception if product family id
      * isn't correct
      *
      * @param id

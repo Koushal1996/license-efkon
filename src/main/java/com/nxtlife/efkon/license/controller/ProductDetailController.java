@@ -61,10 +61,10 @@ public class ProductDetailController {
     @Operation(summary = "Update product detail ", description = "return product detail info after updating product detail details", tags = {
             "Product Detail"})
     @ApiResponses(value = {
-            @ApiResponse(description = "Product Detail info after updating product detail details", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductDetailResponse.class))),
+            @ApiResponse(description = "Product Detail info after updating product  details", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductDetailResponse.class))),
             @ApiResponse(description = "If user doesn't have access to update product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
             @ApiResponse(description = "If required field are not filled or detail already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
-    public ProductDetailResponse update(@PathVariable Long id, @RequestBody ProductDetailRequest request) {
+    public ProductDetailResponse update(@PathVariable Long id, @Valid @RequestBody ProductDetailRequest request) {
         return productDetailService.update(id, request);
     }
 	

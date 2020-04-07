@@ -119,7 +119,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
         }
         validate(request);
         if (!projectProduct.getProject().getId().equals(request.getProjectId())) {
-            throw new ValidationException(String.format("Project (%s) can't be update", request.getProjectId()));
+            throw new ValidationException(String.format("Project (%s) can't be update", mask(request.getProjectId())));
         }
         String endDate;
         if (request.getProductDetailId() != null) {
