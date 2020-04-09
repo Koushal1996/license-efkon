@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from './../../../services/admin/admin.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-user',
@@ -22,32 +23,82 @@ export class UserComponent implements OnInit {
         error => {
         }
       )
+
+    
   }
 
-
-
   deleteuser(item) {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to deleted this?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["yes","no"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
     this._admin.deleteUser(item.id).subscribe
       (data => {
         item.active = false
       },
         error => {
         })
+        swal("Delete successfully!");
+      }
+    });
   }
 
   createuser() {
+    console.log("data")
+    this._admin.selecetedUser.subscribe(data =>{
+      console.log(data)
+    })
+   
     this.route.navigate(['users/create'])
 
   }
   edituser(item) {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to edit this?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["yes","no"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
     this._admin.selecetedUser.next(item);
     this.route.navigate(['users', item.id])
   }
+});
+
+ }
   activateuser(item){
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to activate this?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["yes","no"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
     this._admin.activateUser(item.id).subscribe(data => {
       item.active = true
     },
       error => {
       })
+      swal("Activate successfully!");
+    }
+    })
   }
 }

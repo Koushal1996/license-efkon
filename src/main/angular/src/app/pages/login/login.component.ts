@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
+import swal from 'sweetalert';
 
 /**
  * @description
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    
   ) { }
 
   ngOnInit() {
@@ -56,6 +58,14 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.login();
+    swal({
+      icon: "success",
+      title: "login successfully",   
+     timer: 2000,
+     buttons: [false],
+    });
+    
+    
   }
 
   /**

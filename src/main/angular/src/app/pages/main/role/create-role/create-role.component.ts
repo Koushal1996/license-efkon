@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Router, ActivatedRoute } from '@angular/router';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-create-role',
@@ -32,17 +33,7 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
     },error => {
         
     })
-
-    this._adminService.selecetedRole.subscribe(data => {
-      this.createRoleForm.controls['name'].patchValue(data.name);
-      this.selectedItems = data.authorities;
-      const authorityIds = <FormArray>this.createRoleForm.controls['authorityIds'];
-      if(data.authorities)
-        data.authorities.forEach(auth => {
-          authorityIds.push(new FormControl(auth.id));
-        });
-    })
-
+  
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -57,8 +48,23 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
       params => {
         this.roleId = params['id'] 
       })
-  }
 
+      this.patchavalue()
+  }
+  patchavalue(){
+  this._adminService.selecetedRole.subscribe(data => {
+    if(this.roleId){
+    this.createRoleForm.controls['name'].patchValue(data.name);
+    this.selectedItems = data.authorities;
+    const authorityIds = <FormArray>this.createRoleForm.controls['authorityIds'];
+    if(data.authorities)
+      data.authorities.forEach(auth => {
+        authorityIds.push(new FormControl(auth.id));
+      });
+    }
+  
+  })
+  }
   ngAfterViewInit(){
 
   }
@@ -92,20 +98,31 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
     if (this.roleId) {
      this._adminService.updateRole(this.roleId,this.createRoleForm.value)
      .subscribe(data=>{
-     
        this.route.navigate(['roles'])
+       swal("Update role successfully!");
      }, error => {
-      console.log(error);
     })
+   
+     
     } else {
       this._adminService.addRole(this.createRoleForm.value)
         .subscribe(data => {
-        }, error => {
+          this.route.navigate(['roles'])
+          swal("New role added successfully!");
+        },
+         error => {
         })
-      this.route.navigate(['roles'])
+      
     }
   }
 
 
+  goback(){
+    this.route.navigate(['roles'])
+  }
 
+  cancel()
+  {
+    this.patchavalue()
+  }
 }

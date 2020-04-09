@@ -1,7 +1,8 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup , FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnChanges} from '@angular/core';
 import { AdminService } from './../../../../services/admin/admin.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-create-user',
@@ -22,6 +23,7 @@ export class CreateUserComponent implements OnInit {
     private activate:ActivatedRoute) { }
 
   ngOnInit() {
+    
     this.createUserForm = this.fb.group({
       name: ['', Validators.required],
       username:['',Validators.required],
@@ -38,7 +40,7 @@ export class CreateUserComponent implements OnInit {
       }
     )
 
-  
+    
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -54,24 +56,33 @@ export class CreateUserComponent implements OnInit {
     this.userId = params['id']
   })
   
-  this._adminService.selecetedUser.subscribe(data => {
-    this.createUserForm.patchValue({
-      name:data.name,
-      username:data.username,
-      email:data.email,
-      contactNo:data.contactNo,
-    })
-    this.selectedItems = data.roles;
-    const roleIds =<FormArray> this.createUserForm.controls['roleIds']; 
-    if(data.roles){
-    data.roles.forEach(role => {
-      roleIds.push(new FormControl(role.id))
-     });
-    }
-  })
-
+  this.patchavalue()
   }
-      
+     
+
+   patchavalue(){
+    this._adminService.selecetedUser.subscribe(data => {
+      if(this.userId){
+      this.createUserForm.patchValue({
+        name:data.name,
+        username:data.username,
+        email:data.email,
+        contactNo:data.contactNo,
+      })
+      this.selectedItems = data.roles;
+      const roleIds =<FormArray> this.createUserForm.controls['roleIds']; 
+      if(data.roles){
+      data.roles.forEach(role => {
+        roleIds.push(new FormControl(role.id))
+       });
+      }
+    }
+    
+    
+    })
+   }
+
+
   onItemSelect(item: any) {
     const roleIds = <FormArray>this.createUserForm.controls['roleIds'];
     roleIds.push(new FormControl(item.id));
@@ -100,18 +111,33 @@ export class CreateUserComponent implements OnInit {
     if(this.userId){
      this._adminService.updateUser(this.userId,this.createUserForm.value)
      .subscribe(data=>{
+      this.route.navigate(['users'])
+      swal("update user successfully!");
+     
       },
       error=>{
 
       })
-      this.route.navigate(['users'])
+     
     }
     else{
     this._adminService.addUser(this.createUserForm.value).
     subscribe(data=>{
+      this.route.navigate(['users'])
+      swal("new user added successfully!");
     },
       error=>{
       })
-      this.route.navigate(['users'])
+
+      
   }}
+
+
+  goback(){
+    this.route.navigate(['users'])
+  }
+  cancel()
+  {
+    this.patchavalue()
+  }
 }
