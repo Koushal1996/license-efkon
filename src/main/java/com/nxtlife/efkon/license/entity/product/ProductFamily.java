@@ -1,13 +1,18 @@
 package com.nxtlife.efkon.license.entity.product;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Set;
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
 
 @SuppressWarnings("serial")
 @Entity
@@ -16,47 +21,45 @@ import java.util.Set;
 @DynamicUpdate(value = true)
 public class ProductFamily extends BaseEntity implements Serializable {
 
-    @NotNull(message = "name can't be null")
-    private String name;
+	@NotNull(message = "name can't be null")
+	private String name;
 
-    @OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
-    private Set<ProductCode> productCodes;
+	@OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
+	private Set<ProductCode> productCodes;
 
-    @OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
-    private Set<ProductDetail> productDetails;
+	@OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
+	private Set<ProductDetail> productDetails;
 
-    public ProductFamily() {
-        super();
-    }
+	public ProductFamily() {
+		super();
+	}
 
-    public ProductFamily(@NotNull(message = "name can't be null") String name) {
-        super();
-        this.name = name;
-    }
+	public ProductFamily(@NotNull(message = "name can't be null") String name) {
+		super();
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public Set<ProductCode> getProductCodes() {
-        return productCodes;
-    }
+	public Set<ProductCode> getProductCodes() {
+		return productCodes;
+	}
 
-    public void setProductCodes(Set<ProductCode> productCodes) {
-        this.productCodes = productCodes;
-    }
+	public void setProductCodes(Set<ProductCode> productCodes) {
+		this.productCodes = productCodes;
+	}
 
-    public Set<ProductDetail> getProductDetails() {
-        return productDetails;
-    }
+	public Set<ProductDetail> getProductDetails() {
+		return productDetails;
+	}
 
-    public void setProductDetails(Set<ProductDetail> productDetails) {
-        this.productDetails = productDetails;
-    }
-
-
+	public void setProductDetails(Set<ProductDetail> productDetails) {
+		this.productDetails = productDetails;
+	}
 }

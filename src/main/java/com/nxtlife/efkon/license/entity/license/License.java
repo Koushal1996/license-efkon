@@ -1,102 +1,119 @@
 package com.nxtlife.efkon.license.entity.license;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
-import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
-import com.nxtlife.efkon.license.enums.LicenseStatus;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
+import com.nxtlife.efkon.license.enums.LicenseStatus;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "license",uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"code","project_product_id"})})
+@Table(name = "license", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "project_product_id" }) })
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class License extends BaseEntity implements Serializable {
 
-    @NotNull(message = "code can't be null")
-    private Long code;
+	@NotNull(message = "code can't be null")
+	private String code;
 
-    @NotNull(message = "access_id can't be null")
-    private Long accessId;
+	@NotNull(message = "access_id can't be null")
+	private Long accessId;
 
-    @Column(unique = true)
-    private Long generatedKey;
+	@Column(unique = true)
+	private Long generatedKey;
 
-    private String name;
+	private String name;
 
-    @NotNull(message = "status can't be null")
-    private LicenseStatus status;
+	@NotNull(message = "status can't be null")
+	private LicenseStatus status;
 
-    @ManyToOne
-    private ProjectProduct projectProduct;
+	@ManyToOne
+	private ProjectProduct projectProduct;
 
-    public License() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	@Transient
+	private Long tProjectProductId;
 
-    public License(@NotNull(message = "code can't be null") Long code, @NotNull(message = "access_id can't be null") Long accessId, Long generatedKey, String name,
-                   @NotNull(message = "status can't be null") LicenseStatus status) {
-        super();
-        this.code = code;
-        this.accessId = accessId;
-        this.generatedKey = generatedKey;
-        this.name = name;
-        this.status = status;
+	public License() {
+		super();
+	}
 
-    }
+	public License(@NotNull(message = "code can't be null") String code,
+			@NotNull(message = "access_id can't be null") Long accessId, Long generatedKey, String name,
+			@NotNull(message = "status can't be null") LicenseStatus status) {
+		super();
+		this.code = code;
+		this.accessId = accessId;
+		this.generatedKey = generatedKey;
+		this.name = name;
+		this.status = status;
 
-    public Long getCode() {
-        return code;
-    }
+	}
 
-    public void setCode(Long code) {
-        this.code = code;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public Long getAccessId() {
-        return accessId;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setAccessId(Long accessId) {
-        this.accessId = accessId;
-    }
+	public Long getAccessId() {
+		return accessId;
+	}
 
-    public Long getGeneratedKey() {
-        return generatedKey;
-    }
+	public void setAccessId(Long accessId) {
+		this.accessId = accessId;
+	}
 
-    public void setGeneratedKey(Long generatedKey) {
-        this.generatedKey = generatedKey;
-    }
+	public Long getGeneratedKey() {
+		return generatedKey;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setGeneratedKey(Long generatedKey) {
+		this.generatedKey = generatedKey;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public LicenseStatus getStatus() {
-        return status;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setStatus(LicenseStatus status) {
-        this.status = status;
-    }
+	public LicenseStatus getStatus() {
+		return status;
+	}
 
-    public ProjectProduct getProjectProduct() {
-        return projectProduct;
-    }
+	public void setStatus(LicenseStatus status) {
+		this.status = status;
+	}
 
-    public void setProjectProduct(ProjectProduct projectProduct) {
-        this.projectProduct = projectProduct;
-    }
+	public ProjectProduct getProjectProduct() {
+		return projectProduct;
+	}
+
+	public void setProjectProduct(ProjectProduct projectProduct) {
+		this.projectProduct = projectProduct;
+	}
+
+	public Long gettProjectProductId() {
+		return tProjectProductId;
+	}
+
+	public void settProjectProductId(Long tProjectProductId) {
+		this.tProjectProductId = tProjectProductId;
+	}
 
 }
