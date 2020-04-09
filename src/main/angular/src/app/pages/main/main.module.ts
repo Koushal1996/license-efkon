@@ -8,12 +8,13 @@ import { RoleComponent } from './role/role.component';
 import { CreateRoleComponent } from './role/create-role/create-role.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     MainRoutingModule,ReactiveFormsModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [MainComponent, UserComponent, CreateUserComponent, RoleComponent, CreateRoleComponent]
 })

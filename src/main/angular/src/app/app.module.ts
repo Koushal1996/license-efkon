@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ForgotPwdComponent } from './pages/forgot-pwd/forgot-pwd.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgMultiSelectDropDownModule.forRoot()
+    NgMultiSelectDropDownModule.forRoot(),
+    CommonModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
