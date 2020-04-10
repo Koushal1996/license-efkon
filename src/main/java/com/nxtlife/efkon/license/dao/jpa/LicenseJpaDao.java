@@ -1,5 +1,7 @@
 package com.nxtlife.efkon.license.dao.jpa;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,6 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 	public Boolean existsByProjectProductIdAndActive(Long projectProductId, Boolean active);
 	
 	public Boolean existsByProjectProductIdAndCodeAndAccessIdAndActive(Long projectProductId, String code, Long accessId, Boolean active);
+
+	public List<License> findByActive(Boolean active);
 }

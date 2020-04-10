@@ -1,12 +1,13 @@
 package com.nxtlife.efkon.license.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
@@ -29,16 +30,20 @@ import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 import com.nxtlife.efkon.license.view.version.VersionResponse;
 
+@Service("licenseServiceImpl")
+@Transactional
 public class LicenseServiceImpl extends BaseService implements LicenseService {
 
 	@Autowired
 	private ProjectProductJpaDao projectProductDao;
 
+	@Autowired
 	private ProductDetailJpaDao productDetailDao;
 
 	@Autowired
 	private LicenseJpaDao licenseDao;
 
+	@Autowired
 	private ProjectJpaDao projectDao;
 
 	public void validate(LicenseRequest request) {
@@ -66,22 +71,25 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		String delimiter = "-";
 		String code = uid + delimiter + "EF"; // short code of EFKON
 		ProjectProduct projectProduct = projectProductDao.findByIdAndActive(request.getProjectProductId(), true);
-		code = code + String.format("-%04d", projectProduct.gettProjectId());
+		code = code + String.format("-%04d", projectProduct.getProject().getId());
 		code = code + delimiter + "EE"; // short code of product family
-		ProductDetail productDetail = productDetailDao.findByIdAndActive(projectProduct.gettProductDetailId(), true);
-		code = code + String.format("-%02d", productDetail.gettProductCodeId());
+		ProductDetail productDetail = productDetailDao.findByIdAndActive(projectProduct.getProductDetail().getId(),
+				true);
+		code = code + String.format("-%02d", productDetail.getProductCode().getId());
 		code = code + String.format("-%04d", projectProduct.getLicenseCount());
-		if (projectProduct.getLicenseType().equals(LicenseType.COMMERCIAL.name())) {
+		if (projectProduct.getLicenseType().name().equals(LicenseType.COMMERCIAL.name())) {
 			code = code + delimiter + "CL";
 			code = code + String.format("-%04d", projectProduct.getExpirationMonthCount());
 		} else {
 			code = code + delimiter + "DM";
 			code = code + String.format("-%04d", 1);
 		}
-		DateFormat df = new SimpleDateFormat("-ddMMyyyy");
-		String startDateAsString = df.format(projectProduct.getStartDate());
-		String endDateAsString = df
-				.format(setEndDate(projectProduct.getStartDate(), projectProduct.getExpirationMonthCount()));
+		LocalDate startDate = LocalDate.parse(projectProduct.getStartDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String startDateAsString = startDate.format(DateTimeFormatter.ofPattern("-ddMMyyyy"));
+		LocalDate endDate = LocalDate.parse(
+				setEndDate(projectProduct.getStartDate(), projectProduct.getExpirationMonthCount()),
+				DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String endDateAsString = endDate.format(DateTimeFormatter.ofPattern("-ddMMyyyy"));
 		code = code + startDateAsString + endDateAsString;
 		return code;
 	}
@@ -90,26 +98,27 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		LicenseResponse response = LicenseResponse.get(license);
 		ProjectProduct projectProduct = projectProductDao.findByIdAndActive(projectProductId, true);
 		ProjectProductResponse projectProductResponse = ProjectProductResponse.get(projectProduct);
-		ProductDetail productDetail = productDetailDao.findById(projectProduct.gettProductDetailId()).get();
+		ProductDetail productDetail = productDetailDao.findById(projectProduct.getProductDetail().getId()).get();
 		ProductDetailResponse productDetailResponse = ProductDetailResponse.get(productDetail);
 		productDetailResponse.setProductFamily(ProductFamilyResponse.get(productDetail.getProductFamily()));
 		productDetailResponse.setProductCode(ProductCodeResponse.get(productDetail.getProductCode()));
 		productDetailResponse.setVersion(VersionResponse.get(productDetail.getVersion()));
 		projectProductResponse.setProductDetailResponse(productDetailResponse);
-		projectProductResponse
-				.setProjectResponse(ProjectResponse.get(projectDao.findById(projectProduct.gettProjectId()).get()));
+		projectProductResponse.setProjectResponse(
+				ProjectResponse.get(projectDao.findById(projectProduct.getProject().getId()).get()));
 		response.setProjectProduct(projectProductResponse);
 		return response;
 
 	}
 
 	public Long generateLicenseKey() {
-		return null;
+		return 11111111111111111L; // temporary key
 	}
 
 	@Override
 	public LicenseResponse save(LicenseRequest request) {
 		validate(request);
+		String licenseCode = getLicenseCode(request);
 		if (licenseDao.existsByProjectProductIdAndCodeAndAccessIdAndActive(request.getProjectProductId(),
 				getLicenseCode(request), request.getUniqueAccessId(), true)) {
 			throw new ValidationException(String.format(
@@ -118,17 +127,20 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 		License license = request.toEntity();
 		license.setStatus(LicenseStatus.ACTIVE);
-		license.setCode(getLicenseCode(request));
+		license.setCode(licenseCode);
 		license.settProjectProductId(request.getProjectProductId());
 		license.setGeneratedKey(generateLicenseKey());
 		licenseDao.save(license);
-
 		return getLicenseResponse(license, license.gettProjectProductId());
 	}
 
 	@Override
 	public List<LicenseResponse> findAll() {
-		return null;
+
+		List<LicenseResponse> responses = new ArrayList<LicenseResponse>();
+		licenseDao.findByActive(true)
+				.forEach(license -> responses.add(getLicenseResponse(license, license.getProjectProduct().getId())));
+		return responses;
 	}
 
 	@Override

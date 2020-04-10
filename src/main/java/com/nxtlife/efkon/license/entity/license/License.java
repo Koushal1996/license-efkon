@@ -113,6 +113,10 @@ public class License extends BaseEntity implements Serializable {
 	}
 
 	public void settProjectProductId(Long tProjectProductId) {
+		if (tProjectProductId != null) {
+			this.projectProduct = new ProjectProduct();
+			this.projectProduct.setId(tProjectProductId);
+		}
 		this.tProjectProductId = tProjectProductId;
 	}
 
