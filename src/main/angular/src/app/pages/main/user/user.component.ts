@@ -33,7 +33,7 @@ export class UserComponent implements OnInit {
       text: "Are you sure that you want to deleted this?",
       icon: "warning",
       closeOnClickOutside:false,
-      buttons:["yes","no"],
+      buttons:["Yes","No"],
       dangerMode: true,
     })
     .then(willDelete => {
@@ -43,10 +43,11 @@ export class UserComponent implements OnInit {
     this._admin.deleteUser(item.id).subscribe
       (data => {
         item.active = false
+        swal("Delete successfully!");
       },
         error => {
         })
-        swal("Delete successfully!");
+        
       }
     });
   }
@@ -61,31 +62,19 @@ export class UserComponent implements OnInit {
 
   }
   edituser(item) {
-    swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to edit this?",
-      icon: "warning",
-      closeOnClickOutside:false,
-      buttons:["yes","no"],
-      dangerMode: true,
-    })
-    .then(willDelete => {
-      if (willDelete) {    
-      }
-      else {
     this._admin.selecetedUser.next(item);
     this.route.navigate(['users', item.id])
   }
-});
 
- }
+
+
   activateuser(item){
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to activate this?",
       icon: "warning",
       closeOnClickOutside:false,
-      buttons:["yes","no"],
+      buttons:["Yes","No"],
       dangerMode: true,
     })
     .then(willDelete => {
@@ -94,10 +83,11 @@ export class UserComponent implements OnInit {
       else {
     this._admin.activateUser(item.id).subscribe(data => {
       item.active = true
+      swal("Activate successfully!");
     },
       error => {
       })
-      swal("Activate successfully!");
+      
     }
     })
   }

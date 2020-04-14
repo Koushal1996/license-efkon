@@ -1,9 +1,10 @@
 import { AdminService } from './../../../../services/admin/admin.service';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit ,ViewChild,HostListener} from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-create-role',
@@ -17,7 +18,8 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
   dropdownSettings = {};
   roleId
   roledata
-
+  loaderbutton:boolean=false;
+ 
   constructor(private fb: FormBuilder,
     private _adminService: AdminService,
     private route: Router,
@@ -94,23 +96,24 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
 
 
   onSubmit(): void {
-  
+   this.loaderbutton=true
     if (this.roleId) {
      this._adminService.updateRole(this.roleId,this.createRoleForm.value)
      .subscribe(data=>{
        this.route.navigate(['roles'])
        swal("Update role successfully!");
      }, error => {
+      this.loaderbutton=false
     })
-   
-     
-    } else {
+  }
+      else {
       this._adminService.addRole(this.createRoleForm.value)
         .subscribe(data => {
           this.route.navigate(['roles'])
           swal("New role added successfully!");
         },
          error => {
+          this.loaderbutton=false
         })
       
     }

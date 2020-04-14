@@ -1,8 +1,11 @@
+import { DeactivateGuard } from './../../deactivate.guard';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup , FormArray, FormBuilder, FormControl, Validators} from '@angular/forms';
 import { Component, OnInit ,OnChanges} from '@angular/core';
 import { AdminService } from './../../../../services/admin/admin.service';
 import swal from 'sweetalert';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-create-user',
@@ -15,13 +18,12 @@ export class CreateUserComponent implements OnInit {
   selectedItems = [];
   dropdownSettings = {};
   userId
-
-
+  loaderbutton:boolean=false;
   constructor(private fb:FormBuilder,
     private _adminService: AdminService,
     private route:Router,
     private activate:ActivatedRoute) { }
-
+    
   ngOnInit() {
     
     this.createUserForm = this.fb.group({
@@ -58,8 +60,8 @@ export class CreateUserComponent implements OnInit {
   
   this.patchavalue()
   }
-     
-
+  
+ 
    patchavalue(){
     this._adminService.selecetedUser.subscribe(data => {
       if(this.userId){
@@ -106,19 +108,20 @@ export class CreateUserComponent implements OnInit {
     });
   }
 
-
+  
+ 
   onSubmit(){
+
+    this.loaderbutton=true
     if(this.userId){
      this._adminService.updateUser(this.userId,this.createUserForm.value)
      .subscribe(data=>{
       this.route.navigate(['users'])
       swal("update user successfully!");
-     
+      
       },
       error=>{
-
       })
-     
     }
     else{
     this._adminService.addUser(this.createUserForm.value).
@@ -128,11 +131,7 @@ export class CreateUserComponent implements OnInit {
     },
       error=>{
       })
-
-      
-  }}
-
-
+  }} 
   goback(){
     this.route.navigate(['users'])
   }

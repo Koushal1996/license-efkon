@@ -13,8 +13,7 @@ export class AdminService {
     return this.api.get('api/roles');
   }
    
-  getUsers()
-  {
+  getUsers(){
    return this.api.get('api/users');
   }
 

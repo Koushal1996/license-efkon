@@ -12,7 +12,8 @@ export class MainComponent implements OnInit {
 
   pages: any[] = [
     { route: '/roles', title: 'Roles' },
-    { route: '/users', title: 'Users' }
+    { route: '/users', title: 'Users' },
+    { route: '/projects', title: 'Projects'}
   ]
 
   constructor(private adminService:AdminService,
@@ -41,7 +42,7 @@ export class MainComponent implements OnInit {
       text: "Are you sure that you want to logout?",
       icon: "warning",
       closeOnClickOutside:false,
-      buttons:["yes","no"],
+      buttons:["Yes","No"],
       dangerMode: true,
     })
     .then(willDelete => {

@@ -27,32 +27,17 @@ export class RoleComponent implements OnInit {
         })
   }
   editrole(item) {
-    swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to edit this?",
-      icon: "warning",
-      closeOnClickOutside:false,
-      buttons:["yes","no"],
-      dangerMode: true,
-    })
-    .then(willDelete => {
-      if (willDelete) {    
-      }
-      else {
     this._adminService.selecetedRole.next(item);
     this.route.navigate(['roles',item.id])
-
   }
-});
-
-  }
+  
   deleterole(item) {
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to deleted this?",
       icon: "warning",
       closeOnClickOutside:false,
-      buttons:["yes","no"],
+      buttons:["Yes","No"],
       dangerMode: true,
     })
     .then(willDelete => {
@@ -61,12 +46,13 @@ export class RoleComponent implements OnInit {
       else {
         this._adminService.deleteRole(item.id).subscribe(data => {
           item.active = false;
+          swal("Delete successfully!");
         },
           error => {
             console.log(error);
     
           })
-        swal("Delete successfully!");
+        
       }
     });
    
@@ -79,7 +65,7 @@ export class RoleComponent implements OnInit {
       text: "Are you sure that you want to activate this?",
       icon: "warning",
       closeOnClickOutside:false,
-      buttons:["yes","no"],
+      buttons:["Yes","No"],
       dangerMode: true,
     })
     .then(willDelete => {
@@ -88,12 +74,13 @@ export class RoleComponent implements OnInit {
       else {
     this._adminService.deleteRole(item.id).subscribe(data => {
     item.active = true;
+    swal("Activate successfully!");
   },
     error => {
       console.log(error);
 
     })
-    swal("Activate successfully!");
+    
   }
   })
   }

@@ -1,0 +1,100 @@
+<div class="container mt-5">
+<div class="row">
+<div class="col-8 offset-2">
+
+<form (ngSubmit)="onSubmit()" [formGroup]="projectForm">
+
+<div class="form-group">
+<label>Customer Name</label>
+<input type="text" class="form-control" placeholder="Search Customer Name"
+ formControlName="customerName" name="customerName" autocomplete="off"
+ (keyup)="myFunction()" id="fname">
+<span *ngIf="projectForm.get('customerName').errors &&
+(projectForm.get('customerName').touched||projectForm.get('customerName').dirty)">
+<span *ngIf="projectForm.get('customerName').errors.required" class="text-danger">Name is
+  required</span>
+</span>
+</div>
+
+<!-- 
+  <tr *ngFor="let name of projectcustomers | filter:Term">
+ <td> {{name.name}}</td> 
+</tr> -->
+<div>
+<table class="table" id="myTable">
+    <tr *ngFor="let name of searchTerm" (click)="selectsearchTerm(name.name,name.email,name.contactNo)">
+      <td><strong>{{name.name}}</strong></td>
+      <td>{{name.email}}</td>
+      <td>{{name.contactNo}}</td>
+    </tr> 
+</table>
+</div>
+<div class="form-group">
+<label>Customer Email</label>
+<input type="email" class="form-control" formControlName="customerEmail" name="customerEmail">
+<span *ngIf="projectForm.get('customerEmail').errors &&
+(projectForm.get('customerEmail').touched||projectForm.get('customerEmail').dirty)">
+<span *ngIf="projectForm.get('customerEmail').errors.required" class="text-danger">Email is
+  required</span>
+</span>
+</div>
+
+<div class="form-check">
+<label class="form-check-label" for="check1">
+<input type="checkbox" class="form-check-input" id="check1" formControlName="isEmailSend" name="option1" value="something" checked>
+Is email be send or not
+</label>
+</div>
+<div class="form-group">
+<label>Customer Contact No </label>
+<input type="tel" class="form-control" formControlName="customerContactNo" name="customerContactNo">
+<span *ngIf="projectForm.get('customerContactNo').errors &&
+(projectForm.get('customerContactNo').touched||projectForm.get('customerContactNo').dirty)">
+<span *ngIf="projectForm.get('customerContactNo').errors.pattern" class="text-danger">only numbers 
+allowed</span>
+<span *ngIf="projectForm.get('customerContactNo').errors.maxlength" class="text-danger">maximum 10
+digits is required</span>
+<span *ngIf="projectForm.get('customerContactNo').errors.minlength" class="text-danger">minimum 10
+digits is required</span>  
+             
+    </span>
+</div>
+<div class="form-group">
+<label for="sel1">Project Type Name </label>
+<select class="form-control" id="sel1" name="projectTypeId" formControlName="projectTypeId">
+<option *ngFor="let type of projectTypes" value="{{type.id}}" >
+{{type.name}}
+</option>
+</select>
+<span *ngIf="projectForm.get('projectTypeId').errors &&
+(projectForm.get('projectTypeId').touched||projectForm.get('projectTypeId').dirty)">
+<span *ngIf="projectForm.get('projectTypeId').errors.required" class="text-danger">project Type Name is
+  required</span>
+</span>
+</div>
+<div class="form-group">
+<label for="sel1">Project Manager Name </label>
+<select class="form-control" id="sel1" name="projectManagerId" formControlName="projectManagerId">
+<option *ngFor="let Manager of projectManager" value="{{Manager.id}}">{{Manager.name}}</option>
+</select>
+<span *ngIf="projectForm.get('projectManagerId').errors &&
+(projectForm.get('projectManagerId').touched||projectForm.get('projectManagerId').dirty)">
+<span *ngIf="projectForm.get('projectManagerId').errors.required" class="text-danger">project Manager Name is
+  required</span>
+</span>
+</div>
+
+<div class="form-group d-flex mt-3">
+<button type="submit" class="btn btn-danger ml-auto" [disabled]="!projectForm.valid">
+Submit</button>
+</div>
+
+
+
+
+</form>
+
+
+</div>
+</div>
+</div>
