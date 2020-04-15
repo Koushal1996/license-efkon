@@ -19,7 +19,7 @@ public class LicenseResponse implements Response {
 	@Schema(description = "Name of license", example = "location name", required = true)
 	private String name;
 
-	private ProjectProductResponse projectProductResponse;
+	private ProjectProductResponse projectProduct;
 
 	public LicenseResponse(Long id, Long uniqueAccessId, String name) {
 		super();
@@ -52,12 +52,12 @@ public class LicenseResponse implements Response {
 		this.name = name;
 	}
 
-	public ProjectProductResponse getProjectProductResponse() {
-		return projectProductResponse;
+	public ProjectProductResponse getProjectProduct() {
+		return projectProduct;
 	}
 
-	public void setProjectProductResponse(ProjectProductResponse projectProductResponse) {
-		this.projectProductResponse = projectProductResponse;
+	public void setProjectProduct(ProjectProductResponse projectProduct) {
+		this.projectProduct = projectProduct;
 	}
 
 	public static LicenseResponse get(License license) {

@@ -32,6 +32,6 @@ export class AuthService {
   }
 
   resetPassword(payLoad: any) {
-    return this.api.post(`/forgot-password`, payLoad);
+    return this.api.post(`forgot-password`, payLoad);
   }
 }

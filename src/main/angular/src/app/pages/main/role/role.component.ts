@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
 import { hasLifecycleHook } from '@angular/compiler/src/lifecycle_reflector';
 import { Router }  from '@angular/router';
+import swal from 'sweetalert';
 @Component({
   selector: 'app-role',
   templateUrl: './role.component.html',
@@ -28,27 +29,62 @@ export class RoleComponent implements OnInit {
   editrole(item) {
     this._adminService.selecetedRole.next(item);
     this.route.navigate(['roles',item.id])
-
   }
+  
   deleterole(item) {
-    this._adminService.deleteRole(item.id).subscribe(data => {
-      item.active = false;
-    },
-      error => {
-        console.log(error);
-
-      })
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to deleted this?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["Yes","No"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
+        this._adminService.deleteRole(item.id).subscribe(data => {
+          item.active = false;
+          swal("Delete successfully!");
+        },
+          error => {
+            console.log(error);
+    
+          })
+        
+      }
+    });
+   
 
   }
   activaterole(item)
-  {this._adminService.deleteRole(item.id).subscribe(data => {
+  {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to activate this?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["Yes","No"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
+    this._adminService.deleteRole(item.id).subscribe(data => {
     item.active = true;
+    swal("Activate successfully!");
   },
     error => {
       console.log(error);
 
     })
+    
   }
+  })
+  }
+   
   createRole(){
    this.route.navigate(['roles/create'])
   }

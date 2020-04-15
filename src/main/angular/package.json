@@ -25,6 +25,8 @@
     "jquery": "^3.4.1",
     "ng-multiselect-dropdown": "^0.2.10",
     "rxjs": "~6.2.0",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^9.10.9",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {

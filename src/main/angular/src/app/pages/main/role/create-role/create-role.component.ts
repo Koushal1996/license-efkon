@@ -1,8 +1,10 @@
 import { AdminService } from './../../../../services/admin/admin.service';
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit ,ViewChild,HostListener} from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { Router, ActivatedRoute } from '@angular/router';
+import swal from 'sweetalert';
+import {NgForm} from "@angular/forms";
 
 @Component({
   selector: 'app-create-role',
@@ -16,7 +18,8 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
   dropdownSettings = {};
   roleId
   roledata
-
+  loaderbutton:boolean=false;
+ 
   constructor(private fb: FormBuilder,
     private _adminService: AdminService,
     private route: Router,
@@ -32,17 +35,7 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
     },error => {
         
     })
-
-    this._adminService.selecetedRole.subscribe(data => {
-      this.createRoleForm.controls['name'].patchValue(data.name);
-      this.selectedItems = data.authorities;
-      const authorityIds = <FormArray>this.createRoleForm.controls['authorityIds'];
-      if(data.authorities)
-        data.authorities.forEach(auth => {
-          authorityIds.push(new FormControl(auth.id));
-        });
-    })
-
+  
     this.dropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -57,8 +50,23 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
       params => {
         this.roleId = params['id'] 
       })
-  }
 
+      this.patchavalue()
+  }
+  patchavalue(){
+  this._adminService.selecetedRole.subscribe(data => {
+    if(this.roleId){
+    this.createRoleForm.controls['name'].patchValue(data.name);
+    this.selectedItems = data.authorities;
+    const authorityIds = <FormArray>this.createRoleForm.controls['authorityIds'];
+    if(data.authorities)
+      data.authorities.forEach(auth => {
+        authorityIds.push(new FormControl(auth.id));
+      });
+    }
+  
+  })
+  }
   ngAfterViewInit(){
 
   }
@@ -88,24 +96,36 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
 
 
   onSubmit(): void {
-  
+   this.loaderbutton=true
     if (this.roleId) {
      this._adminService.updateRole(this.roleId,this.createRoleForm.value)
      .subscribe(data=>{
-     
        this.route.navigate(['roles'])
+       swal("Update role successfully!");
      }, error => {
-      console.log(error);
+      this.loaderbutton=false
     })
-    } else {
+  }
+      else {
       this._adminService.addRole(this.createRoleForm.value)
         .subscribe(data => {
-        }, error => {
+          this.route.navigate(['roles'])
+          swal("New role added successfully!");
+        },
+         error => {
+          this.loaderbutton=false
         })
-      this.route.navigate(['roles'])
+      
     }
   }
 
 
+  goback(){
+    this.route.navigate(['roles'])
+  }
 
+  cancel()
+  {
+    this.patchavalue()
+  }
 }

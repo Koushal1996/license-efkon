@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,9 +10,10 @@ import { map, catchError } from "rxjs/operators";
 export class ApiService {
 
  // url: string = 'http://localhost:8080';
-   url: string = 'http://enforcement.us-east-2.elasticbeanstalk.com:8080';
-
-  constructor(public http: HttpClient) {
+  // url: string = 'http://enforcement.us-east-2.elasticbeanstalk.com:8080';
+   url: string = 'http://efkon-licence-key.us-east-2.elasticbeanstalk.com:8080';
+  
+   constructor(public http: HttpClient, public router:Router) {
   }
 
   private getAccessToken() {
@@ -95,9 +97,15 @@ export class ApiService {
   };
 
   handleError = (errorResponse: HttpErrorResponse) => {
-    // debugger;
-    if (errorResponse.status)
-      this.showError(errorResponse.error.message || "Something went wrong");
+    console.log(errorResponse);
+    
+    if(errorResponse.status && errorResponse.status === 401){
+      localStorage.clear();
+      this.showError("Invalid Token or Token expired");
+      this.router.navigateByUrl('/login');
+    } else if (errorResponse.status){
+      this.showError(errorResponse.error && errorResponse.error.message || "Something went wrong");
+    }
     return throwError(errorResponse);
   };
 

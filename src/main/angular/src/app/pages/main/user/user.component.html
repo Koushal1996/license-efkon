@@ -5,6 +5,8 @@
   <div class="text-center">
     <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
   </div>
+ 
+      <div class="table-responsive">
   <table class="table table-bordered mt-4">
     <thead>
       <tr>
@@ -30,11 +32,11 @@
           </span>
         </td>
         <td *ngIf="item.active">
-          <a class="text-primary pr-2">
+          <a class="text-primary pr-2 cursor">
             <i class="fa fa-edit" (click)="edituser(item)"></i>
           </a>
-          <a class="text-danger pl-2" (click)="deleteuser(item)">
-            <i class="fa fa-trash"></i>
+          <a class="text-danger pl-2 cursor">
+            <i class="fa fa-trash" (click)="deleteuser(item)"></i>
           </a>
         </td>
         <td *ngIf="!item.active"><button (click)="activateuser(item)">
@@ -42,5 +44,5 @@
       </tr>
     </tbody>
   </table>
-
+  </div>
 </div>

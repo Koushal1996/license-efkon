@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { AdminService } from './../../services/admin/admin.service';
 import { Component, OnInit } from '@angular/core';
-
+import swal from 'sweetalert';
 declare let $: any;
 @Component({
   selector: 'app-main',
@@ -12,7 +12,8 @@ export class MainComponent implements OnInit {
 
   pages: any[] = [
     { route: '/roles', title: 'Roles' },
-    { route: '/users', title: 'Users' }
+    { route: '/users', title: 'Users' },
+    { route: '/projects', title: 'Projects'}
   ]
 
   constructor(private adminService:AdminService,
@@ -36,6 +37,18 @@ export class MainComponent implements OnInit {
   }
 
   logout() {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to logout?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["Yes","No"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
     this.adminService.logout().subscribe(
       data=>{
         localStorage.clear()
@@ -45,7 +58,8 @@ export class MainComponent implements OnInit {
         
       }
     )
-
+  }
+  })
   }
 
 }
