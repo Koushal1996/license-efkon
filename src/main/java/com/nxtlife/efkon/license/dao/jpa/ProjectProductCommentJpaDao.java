@@ -1,6 +1,8 @@
 package com.nxtlife.efkon.license.dao.jpa;
 
 import com.nxtlife.efkon.license.entity.project.product.ProjectProductComment;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductCommentResponse;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +12,8 @@ import java.util.List;
 
 public interface ProjectProductCommentJpaDao extends JpaRepository<ProjectProductComment,Long> {
 
+	public List<ProjectProductCommentResponse> findByProjectProductId(Long projectProductId);
+	
     @Query("select id from ProjectProductComment where project_product_id=?1 and active=?2")
     List<Long> findAllIdsByProjectProductIdAndActive(Long projectProductId,Boolean active);
 

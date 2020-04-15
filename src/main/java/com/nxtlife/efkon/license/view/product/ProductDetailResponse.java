@@ -1,71 +1,153 @@
 package com.nxtlife.efkon.license.view.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.nxtlife.efkon.license.entity.product.ProductDetail;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.version.VersionResponse;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProductDetailResponse implements Response {
 
-    @Schema(description = "Id of the product detail")
-    private Long id;
+	@Schema(description = "Id of the product detail")
+	private Long id;
 
-    @Schema(description = "product family of product detail")
-    private ProductFamilyResponse productFamily;
+	@Schema(description = "product family id", example = "1")
+	private Long productFamilyId;
+	@Schema(description = "product family name", example = "ATCS")
+	private String productFamilyName;
+	@Schema(description = "product family code", example = "AT")
+	private String productFamilyCode;
 
-    @Schema(description = "product code of product detail")
-    private ProductCodeResponse productCode;
+	@Schema(description = "product family of product detail")
+	private ProductFamilyResponse productFamily;
 
-    @Schema(description = "version of product detail")
-    private VersionResponse version;
+	@Schema(description = "product code id", example = "1")
+	private Long productCodeId;
+	@Schema(description = "product code name", example = "ATCS")
+	private String productCodeName;
+	@Schema(description = "product code code", example = "0001")
+	private String productCodeCode;
 
+	@Schema(description = "product code of product detail")
+	private ProductCodeResponse productCode;
 
-    public ProductDetailResponse(Long id) {
-        super();
-        this.id = id;
-    }
+	@Schema(description = "version id", example = "1")
+	private Long versionId;
+	@Schema(description = "version name", example = "v1")
+	private String versionName;
 
-    public Long getId() {
-        return mask(id);
-    }
+	@Schema(description = "version of product detail")
+	private VersionResponse version;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public ProductDetailResponse(Long id, Long productFamilyId, String productFamilyName, String productFamilyCode,
+			Long productCodeId, String productCodeName, String productCodeCode, Long versionId, String versionVersion) {
+		super();
+		this.id = id;
+		this.productFamilyId = productFamilyId;
+		this.productFamilyName = productFamilyName;
+		this.productFamilyCode = productFamilyCode;
+		this.productCodeId = productCodeId;
+		this.productCodeName = productCodeName;
+		this.productCodeCode = productCodeCode;
+		this.versionId = versionId;
+		this.versionName = versionVersion;
+	}
 
-    public ProductFamilyResponse getProductFamily() {
-        return productFamily;
-    }
+	public Long getId() {
+		return mask(id);
+	}
 
-    public void setProductFamily(ProductFamilyResponse productFamily) {
-        this.productFamily = productFamily;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public ProductCodeResponse getProductCode() {
-        return productCode;
-    }
+	public ProductFamilyResponse getProductFamily() {
+		return productFamily;
+	}
 
-    public void setProductCode(ProductCodeResponse productCode) {
-        this.productCode = productCode;
-    }
+	public void setProductFamily(ProductFamilyResponse productFamily) {
+		this.productFamily = productFamily;
+	}
 
-    public VersionResponse getVersion() {
-        return version;
-    }
+	public ProductCodeResponse getProductCode() {
+		return productCode;
+	}
 
-    public void setVersion(VersionResponse version) {
-        this.version = version;
-    }
+	public void setProductCode(ProductCodeResponse productCode) {
+		this.productCode = productCode;
+	}
 
-    public static ProductDetailResponse get(ProductDetail productDetail) {
-        if (productDetail != null) {
-            ProductDetailResponse response = new ProductDetailResponse(productDetail.getId());
-            return response;
-        }
-        return null;
+	public VersionResponse getVersion() {
+		return version;
+	}
 
-    }
+	public void setVersion(VersionResponse version) {
+		this.version = version;
+	}
+
+	public Long getProductFamilyId() {
+		return mask(productFamilyId);
+	}
+
+	public void setProductFamilyId(Long productFamilyId) {
+		this.productFamilyId = productFamilyId;
+	}
+
+	public String getProductFamilyName() {
+		return productFamilyName;
+	}
+
+	public void setProductFamilyName(String productFamilyName) {
+		this.productFamilyName = productFamilyName;
+	}
+
+	public String getProductFamilyCode() {
+		return productFamilyCode;
+	}
+
+	public void setProductFamilyCode(String productFamilyCode) {
+		this.productFamilyCode = productFamilyCode;
+	}
+
+	public Long getProductCodeId() {
+		return mask(productCodeId);
+	}
+
+	public void setProductCodeId(Long productCodeId) {
+		this.productCodeId = productCodeId;
+	}
+
+	public String getProductCodeName() {
+		return productCodeName;
+	}
+
+	public void setProductCodeName(String productCodeName) {
+		this.productCodeName = productCodeName;
+	}
+
+	public String getProductCodeCode() {
+		return productCodeCode;
+	}
+
+	public void setProductCodeCode(String productCodeCode) {
+		this.productCodeCode = productCodeCode;
+	}
+
+	public Long getVersionId() {
+		return mask(versionId);
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public String getVersionName() {
+		return versionName;
+	}
+
+	public void setVersionName(String versionName) {
+		this.versionName = versionName;
+	}
 
 }

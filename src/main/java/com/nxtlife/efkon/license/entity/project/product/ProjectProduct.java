@@ -1,5 +1,21 @@
 package com.nxtlife.efkon.license.entity.project.product;
 
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.product.ProductDetail;
@@ -7,191 +23,183 @@ import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
 import com.nxtlife.efkon.license.enums.LicenseType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Set;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "project_product", uniqueConstraints = {@UniqueConstraint(columnNames = {"project_id", "product_detail_id"})})
+@Table(name = "project_product", uniqueConstraints = {
+		@UniqueConstraint(columnNames = { "project_id", "product_detail_id" }) })
 @DynamicUpdate(value = true)
 @DynamicInsert(value = true)
 public class ProjectProduct extends BaseEntity implements Serializable {
 
-    @NotNull(message = "license count can't be null")
-    private Integer licenseCount;
+	@NotNull(message = "license count can't be null")
+	private Integer licenseCount;
 
-    @NotNull(message = "license_type can't be null")
-    @Enumerated(EnumType.STRING)
-    private LicenseType licenseType;
+	@NotNull(message = "license_type can't be null")
+	@Enumerated(EnumType.STRING)
+	private LicenseType licenseType;
 
-    @NotNull(message = "expiration_period_type can't be null")
-    @Enumerated(EnumType.STRING)
-    private ExpirationPeriodType expirationPeriodType;
+	@NotNull(message = "expiration_period_type can't be null")
+	@Enumerated(EnumType.STRING)
+	private ExpirationPeriodType expirationPeriodType;
 
+	private Integer expirationMonthCount;
 
-    private Integer expirationMonthCount;
+	@NotNull(message = "start_date can't be null")
+	private String startDate;
 
-    @NotNull(message = "start_date can't be null")
-    private String startDate;
+	private String endDate;
 
+	@NotNull(message = "status can't be null")
+	@Enumerated(EnumType.STRING)
+	private ProjectProductStatus status;
 
-    private String endDate;
+	@ManyToOne
+	private Project project;
 
-    @NotNull(message = "status can't be null")
-    @Enumerated(EnumType.STRING)
-    private ProjectProductStatus status;
+	@Transient
+	private Long tProjectId;
 
-    @ManyToOne
-    private Project project;
+	@Transient
+	private Long tProductDetailId;
 
-    @Transient
-    private Long tProjectId;
+	@ManyToOne
+	private ProductDetail productDetail;
 
-    @Transient
-    private Long tProductDetailId;
+	@OneToMany(mappedBy = "projectProduct")
+	private Set<License> licenses;
 
-    @ManyToOne
-    private ProductDetail productDetail;
+	@OneToMany(mappedBy = "projectProduct")
+	private Set<ProjectProductComment> projectProductComments;
 
-    @OneToMany(mappedBy = "projectProduct")
-    private Set<License> licenses;
+	public ProjectProduct() {
+		super();
+	}
 
-    @OneToMany(mappedBy = "projectProduct")
-    private Set<ProjectProductComment> projectProductComments;
+	public ProjectProduct(Integer licenseCount,
+			@NotNull(message = "license_type can't be null") LicenseType licenseType,
+			@NotNull(message = "expiration_period_type can't be null") ExpirationPeriodType expirationPeriodType,
+			Integer expirationMonthCount, @NotNull(message = "start_date can't be null") String startDate,
+			String endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
+		this.licenseCount = licenseCount;
+		this.licenseType = licenseType;
+		this.expirationPeriodType = expirationPeriodType;
+		this.expirationMonthCount = expirationMonthCount;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+	}
 
-    public ProjectProduct() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	public Integer getLicenseCount() {
+		return licenseCount;
+	}
 
-    public ProjectProduct(Integer licenseCount, @NotNull(message = "license_type can't be null") LicenseType licenseType,
-                          @NotNull(message = "expiration_period_type can't be null") ExpirationPeriodType expirationPeriodType,
-                          Integer expirationMonthCount, @NotNull(message = "start_date can't be null") String startDate, String endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
-        this.licenseCount = licenseCount;
-        this.licenseType = licenseType;
-        this.expirationPeriodType = expirationPeriodType;
-        this.expirationMonthCount = expirationMonthCount;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-    }
+	public void setLicenseCount(Integer licenseCount) {
+		this.licenseCount = licenseCount;
+	}
 
+	public LicenseType getLicenseType() {
+		return licenseType;
+	}
 
-    public Integer getLicenseCount() {
-        return licenseCount;
-    }
+	public void setLicenseType(LicenseType licenseType) {
+		this.licenseType = licenseType;
+	}
 
-    public void setLicenseCount(Integer licenseCount) {
-        this.licenseCount = licenseCount;
-    }
+	public ExpirationPeriodType getExpirationPeriodType() {
+		return expirationPeriodType;
+	}
 
-    public LicenseType getLicenseType() {
-        return licenseType;
-    }
+	public void setExpirationPeriodType(ExpirationPeriodType expirationPeriodType) {
+		this.expirationPeriodType = expirationPeriodType;
+	}
 
-    public void setLicenseType(LicenseType licenseType) {
-        this.licenseType = licenseType;
-    }
+	public Integer getExpirationMonthCount() {
+		return expirationMonthCount;
+	}
 
-    public ExpirationPeriodType getExpirationPeriodType() {
-        return expirationPeriodType;
-    }
+	public void setExpirationMonthCount(Integer expirationMonthCount) {
+		this.expirationMonthCount = expirationMonthCount;
+	}
 
-    public void setExpirationPeriodType(ExpirationPeriodType expirationPeriodType) {
-        this.expirationPeriodType = expirationPeriodType;
-    }
+	public Long gettProjectId() {
+		return tProjectId;
+	}
 
-    public Integer getExpirationMonthCount() {
-        return expirationMonthCount;
-    }
+	public void settProjectId(Long tProjectId) {
+		if (tProjectId != null) {
+			this.project = new Project();
+			this.project.setId(tProjectId);
+		}
+		this.tProjectId = tProjectId;
+	}
 
-    public void setExpirationMonthCount(Integer expirationMonthCount) {
-        this.expirationMonthCount = expirationMonthCount;
-    }
+	public Long gettProductDetailId() {
+		return tProductDetailId;
+	}
 
-    public Long gettProjectId() {
-        return tProjectId;
-    }
+	public void settProductDetailId(Long tProductDetailId) {
+		if (tProductDetailId != null) {
+			this.productDetail = new ProductDetail();
+			this.productDetail.setId(tProductDetailId);
+		}
+		this.tProductDetailId = tProductDetailId;
+	}
 
-    public void settProjectId(Long tProjectId) {
-        if (tProjectId != null) {
-            this.project = new Project();
-            this.project.setId(tProjectId);
-        }
-        this.tProjectId = tProjectId;
-    }
+	public String getStartDate() {
+		return startDate;
+	}
 
-    public Long gettProductDetailId() {
-        return tProductDetailId;
-    }
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
 
-    public void settProductDetailId(Long tProductDetailId) {
-        if (tProductDetailId != null) {
-            this.productDetail = new ProductDetail();
-            this.productDetail.setId(tProductDetailId);
-        }
-        this.tProductDetailId = tProductDetailId;
-    }
+	public String getEndDate() {
+		return endDate;
+	}
 
-    public String getStartDate() {
-        return startDate;
-    }
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
+	public ProjectProductStatus getStatus() {
+		return status;
+	}
 
-    public String getEndDate() {
-        return endDate;
-    }
+	public void setStatus(ProjectProductStatus status) {
+		this.status = status;
+	}
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
+	public Project getProject() {
+		return project;
+	}
 
-    public ProjectProductStatus getStatus() {
-        return status;
-    }
+	public void setProject(Project project) {
+		this.project = project;
+	}
 
-    public void setStatus(ProjectProductStatus status) {
-        this.status = status;
-    }
+	public ProductDetail getProductDetail() {
+		return productDetail;
+	}
 
-    public Project getProject() {
-        return project;
-    }
+	public void setProductDetail(ProductDetail productDetail) {
+		this.productDetail = productDetail;
+	}
 
-    public void setProject(Project project) {
-        this.project = project;
-    }
+	public Set<License> getLicenses() {
+		return licenses;
+	}
 
-    public ProductDetail getProductDetail() {
-        return productDetail;
-    }
+	public void setLicenses(Set<License> licenses) {
+		this.licenses = licenses;
+	}
 
-    public void setProductDetail(ProductDetail productDetail) {
-        this.productDetail = productDetail;
-    }
+	public Set<ProjectProductComment> getProjectProductComments() {
+		return projectProductComments;
+	}
 
-    public Set<License> getLicenses() {
-        return licenses;
-    }
-
-    public void setLicenses(Set<License> licenses) {
-        this.licenses = licenses;
-    }
-
-    public Set<ProjectProductComment> getProjectProductComments() {
-        return projectProductComments;
-    }
-
-    public void setProjectProductComments(Set<ProjectProductComment> projectProductComments) {
-        this.projectProductComments = projectProductComments;
-    }
+	public void setProjectProductComments(Set<ProjectProductComment> projectProductComments) {
+		this.projectProductComments = projectProductComments;
+	}
 
 }

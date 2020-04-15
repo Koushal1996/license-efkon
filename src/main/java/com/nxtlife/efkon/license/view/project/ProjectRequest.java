@@ -45,6 +45,8 @@ public class ProjectRequest implements Request {
         else {
             project.setIsEmailSend(false);
         }
+        project.settProjectManagerId(getProjectManagerId());
+        project.settProjectTypeId(getProjectTypeId());
         return project;
     }
 

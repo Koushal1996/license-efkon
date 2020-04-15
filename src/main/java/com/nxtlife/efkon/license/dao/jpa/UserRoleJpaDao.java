@@ -17,6 +17,8 @@ public interface UserRoleJpaDao extends JpaRepository<UserRole, UserRoleKey> {
 	@Query(value = "insert into user_role(user_id,role_id) values (?1,?2)", nativeQuery = true)
 	public int save(Long userId, Long roleId);
 
+	public Boolean existsByUserIdAndRoleName(Long userId, String roleName);
+	
 	@Query(value = "select role_id from user_role where user_id=?1", nativeQuery = true)
 	public Set<Long> findRoleIdsByUserId(Long userId);
 

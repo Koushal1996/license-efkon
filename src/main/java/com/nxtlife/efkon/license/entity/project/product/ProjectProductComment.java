@@ -1,26 +1,34 @@
 package com.nxtlife.efkon.license.entity.project.product;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import java.io.Serializable;
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import com.nxtlife.efkon.license.entity.user.User;
 
 @SuppressWarnings("serial")
 @Entity
 @DynamicUpdate(value = true)
 @DynamicInsert(value = true)
 public class ProjectProductComment extends BaseEntity implements Serializable {
-	
+
+	@NotEmpty(message = "comment can't be empty")
 	private String comment;
-	 
-	private String commentedBy;
-	
+
+	@NotNull(message = "commented by can't be null")
+	@ManyToOne
+	private User commentedBy;
+
 	private String remark;
-	
+
+	@NotNull(message = "project product id can't be null")
 	@ManyToOne
 	private ProjectProduct projectProduct;
 
@@ -28,13 +36,19 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProjectProductComment( String comment, String commentedBy, String remark,
-			ProjectProduct projectProduct) {
+	public ProjectProductComment(String comment, Long commentedById, String remark, Long projectProductId) {
 		super();
 		this.comment = comment;
-		this.commentedBy = commentedBy;
+		if (commentedById != null) {
+			this.commentedBy = new User();
+			this.commentedBy.setId(commentedById);
+		}
+		if (projectProductId != null) {
+			this.projectProduct = new ProjectProduct();
+			this.projectProduct.setId(projectProductId);
+		}
 		this.remark = remark;
-		this.projectProduct = projectProduct;
+
 	}
 
 	public String getComment() {
@@ -45,11 +59,11 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 		this.comment = comment;
 	}
 
-	public String getCommentedBy() {
+	public User getCommentedBy() {
 		return commentedBy;
 	}
 
-	public void setCommentedBy(String commentedBy) {
+	public void setCommentedBy(User commentedBy) {
 		this.commentedBy = commentedBy;
 	}
 
@@ -68,5 +82,5 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 	public void setProjectProduct(ProjectProduct projectProduct) {
 		this.projectProduct = projectProduct;
 	}
-	
+
 }

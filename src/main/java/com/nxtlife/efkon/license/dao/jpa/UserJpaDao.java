@@ -17,6 +17,8 @@ public interface UserJpaDao extends JpaRepository<User, Long> {
 	public User findByUsername(String username);
 
 	public List<UserResponse> findByUserRolesRoleId(Long roleId);
+	
+	public List<UserResponse> findByUserRolesRoleName(String roleName);
 
 	public UserResponse findByEmailAndActive(String email,Boolean active);
 

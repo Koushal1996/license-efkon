@@ -1,241 +1,260 @@
 package com.nxtlife.efkon.license.entity.user;
 
-import com.nxtlife.efkon.license.entity.common.BaseEntity;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.nxtlife.efkon.license.entity.common.BaseEntity;
+
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name = "user", uniqueConstraints = { @UniqueConstraint(columnNames = { "username" }) })
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class User extends BaseEntity implements UserDetails, Serializable {
 
-    @NotNull(message = "name can't be null")
-    private String name;
+	@NotNull(message = "name can't be null")
+	private String name;
 
-    @NotNull(message = "username can't be null")
-    @Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
-    private String username;
+	private String code;
 
-    @NotNull(message = "password can't be null")
-    private String password;
+	@NotNull(message = "username can't be null")
+	@Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
+	private String username;
 
-    private Boolean active;
+	@NotNull(message = "password can't be null")
+	private String password;
 
-    private String generatedPassword;
+	private Boolean active;
 
-    private String email;
+	private String generatedPassword;
 
-    private Boolean isEmailSend;
+	private String email;
 
-    @Size(min = 10, max = 10)
-    @Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit")
-    private String contactNo;
+	private Boolean isEmailSend;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean accountExpired = false;
+	@Size(min = 10, max = 10)
+	@Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit")
+	private String contactNo;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean accountLocked = false;
+	@Column(columnDefinition = "boolean default false")
+	private boolean accountExpired = false;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean credentialsExpired = false;
+	@Column(columnDefinition = "boolean default false")
+	private boolean accountLocked = false;
 
-    @Column(columnDefinition = "boolean default false")
-    private boolean enabled = true;
+	@Column(columnDefinition = "boolean default false")
+	private boolean credentialsExpired = false;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private List<UserRole> userRoles;
+	@Column(columnDefinition = "boolean default false")
+	private boolean enabled = true;
 
-    @Transient
-    private Collection<Authority> authorities;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+	private List<UserRole> userRoles;
 
-    @Transient
-    private Collection<Role> roles;
+	@Transient
+	private Collection<Authority> authorities;
 
-    @Transient
-    private Long userId;
+	@Transient
+	private Collection<Role> roles;
 
-    public User() {
+	@Transient
+	private Long userId;
 
-    }
+	public User() {
 
-    public User(
-            @NotNull @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
-            @NotNull String password, Collection<Authority> authorities) {
-        super();
-        this.username = username;
-        this.password = password;
-        this.authorities = authorities;
-    }
+	}
 
-    public User(@NotNull(message = "name can't be null") String name, @NotNull(message = "username can't be null") @Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$",
-            message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
-                @NotNull(message = "password can't be null") String password, String email, Boolean isEmailSend, @Size(min = 10, max = 10)
-                @Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit") String contactNo) {
-        this.name = name;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.isEmailSend = isEmailSend;
-        this.contactNo = contactNo;
-    }
+	public User(
+			@NotNull @Pattern(regexp = "^[@A-Za-z0-9_]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
+			@NotNull String password, Collection<Authority> authorities) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.authorities = authorities;
+	}
 
-    @Override
-    public String getUsername() {
-        return username;
-    }
+	public User(@NotNull(message = "name can't be null") String name, String code,
+			@NotNull(message = "username can't be null") @Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20") String username,
+			@NotNull(message = "password can't be null") String password, String email, Boolean isEmailSend,
+			@Size(min = 10, max = 10) @Pattern(regexp = "^[0-9]*$", message = "Contact no should contain only digit") String contactNo) {
+		this.name = name;
+		this.code = code;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.isEmailSend = isEmailSend;
+		this.contactNo = contactNo;
+	}
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public String getUsername() {
+		return username;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
+	@Override
+	public String getPassword() {
+		return password;
+	}
 
-    @Override
-    public Collection<Authority> getAuthorities() {
-        return authorities;
-    }
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
 
-    public String getName() {
-        return name;
-    }
+	@Override
+	public Collection<Authority> getAuthorities() {
+		return authorities;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public String getContactNo() {
-        return contactNo;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setContactNo(String contactNo) {
-        this.contactNo = contactNo;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public boolean isAccountExpired() {
-        return accountExpired;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setAccountExpired(boolean accountExpired) {
-        this.accountExpired = accountExpired;
-    }
+	public String getContactNo() {
+		return contactNo;
+	}
 
-    public boolean isAccountLocked() {
-        return accountLocked;
-    }
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
 
-    public void setAccountLocked(boolean accountLocked) {
-        this.accountLocked = accountLocked;
-    }
+	public boolean isAccountExpired() {
+		return accountExpired;
+	}
 
-    public boolean isCredentialsExpired() {
-        return credentialsExpired;
-    }
+	public void setAccountExpired(boolean accountExpired) {
+		this.accountExpired = accountExpired;
+	}
 
-    public void setCredentialsExpired(boolean credentialsExpired) {
-        this.credentialsExpired = credentialsExpired;
-    }
+	public boolean isAccountLocked() {
+		return accountLocked;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public void setAccountLocked(boolean accountLocked) {
+		this.accountLocked = accountLocked;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public boolean isCredentialsExpired() {
+		return credentialsExpired;
+	}
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+	public void setCredentialsExpired(boolean credentialsExpired) {
+		this.credentialsExpired = credentialsExpired;
+	}
 
-    public String getGeneratedPassword() {
-        return generatedPassword;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setGeneratedPassword(String generatedPassword) {
-        this.generatedPassword = generatedPassword;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setAuthorities(Collection<Authority> authorities) {
-        this.authorities = authorities;
-    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return !isAccountExpired();
-    }
+	public String getGeneratedPassword() {
+		return generatedPassword;
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return !isAccountLocked();
-    }
+	public void setGeneratedPassword(String generatedPassword) {
+		this.generatedPassword = generatedPassword;
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return !isCredentialsExpired();
-    }
+	public void setAuthorities(Collection<Authority> authorities) {
+		this.authorities = authorities;
+	}
 
-    public List<UserRole> getUserRoles() {
-        return userRoles;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return !isAccountExpired();
+	}
 
-    public void setUserRoles(List<UserRole> userRoles) {
-        this.userRoles = userRoles;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return !isAccountLocked();
+	}
 
-    public Boolean getActive() {
-        return active;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return !isCredentialsExpired();
+	}
 
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+	public List<UserRole> getUserRoles() {
+		return userRoles;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
+	public void setUserRoles(List<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public Boolean getActive() {
+		return active;
+	}
 
-    public Boolean getIsEmailSend() {
-        return isEmailSend;
-    }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
-    public void setIsEmailSend(Boolean emailSend) {
-        isEmailSend = emailSend;
-    }
+	public Long getUserId() {
+		return userId;
+	}
 
-    public Collection<Role> getRoles() {
-        return roles;
-    }
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
-    }
+	public Boolean getIsEmailSend() {
+		return isEmailSend;
+	}
+
+	public void setIsEmailSend(Boolean emailSend) {
+		isEmailSend = emailSend;
+	}
+
+	public Collection<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
+	}
 
 }

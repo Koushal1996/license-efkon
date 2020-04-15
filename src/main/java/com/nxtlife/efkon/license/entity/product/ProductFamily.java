@@ -18,6 +18,9 @@ public class ProductFamily extends BaseEntity implements Serializable {
 
     @NotNull(message = "name can't be null")
     private String name;
+    
+    @NotNull(message = "code can't be null")
+    private String code;
 
     @OneToMany(mappedBy = "productFamily", cascade = CascadeType.ALL)
     private Set<ProductCode> productCodes;
@@ -42,7 +45,15 @@ public class ProductFamily extends BaseEntity implements Serializable {
         this.name = name;
     }
 
-    public Set<ProductCode> getProductCodes() {
+    public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Set<ProductCode> getProductCodes() {
         return productCodes;
     }
 

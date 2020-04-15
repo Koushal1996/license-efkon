@@ -23,10 +23,13 @@ import com.nxtlife.efkon.license.entity.user.User;
 @DynamicInsert(value = true)
 public class Project extends BaseEntity implements Serializable {
 
-	@NotNull(message = "customer_name can't be null")
+	@NotNull(message = "customer code can't be null")
+	private String customerCode;
+
+	@NotNull(message = "customer name can't be null")
 	private String customerName;
 
-	@NotNull(message = "customer_email can't be null")
+	@NotNull(message = "customer email can't be null")
 	private String customerEmail;
 
 	private String customerContactNo;
@@ -34,14 +37,16 @@ public class Project extends BaseEntity implements Serializable {
 	@NotNull(message = "is_email_send can't be null")
 	private Boolean isEmailSend;
 
+	@NotNull(message = "project type can't be null")
 	@ManyToOne
 	private ProjectType projectType;
 
+	@NotNull(message = "project manager can't be null")
 	@ManyToOne
-	private User user;
+	private User projectManager;
 
 	@Transient
-	private Long userId;
+	private Long tProjectManagerId;
 
 	@Transient
 	private Long tProjectTypeId;
@@ -53,7 +58,7 @@ public class Project extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public Project(@NotNull(message = "customer_name can't be null") String customerName, String customerEmail,
+	public Project(@NotNull(message = "customer name can't be null") String customerName, String customerEmail,
 			String customerContactNo, @NotNull(message = "is_email_send can't be null") Boolean isEmailSend) {
 		this.customerName = customerName;
 		this.customerEmail = customerEmail;
@@ -93,24 +98,24 @@ public class Project extends BaseEntity implements Serializable {
 		isEmailSend = emailSend;
 	}
 
-	public User getUser() {
-		return user;
+	public User getProjectManager() {
+		return projectManager;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setProjectManager(User projectManager) {
+		this.projectManager = projectManager;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public Long gettProjectManagerId() {
+		return tProjectManagerId;
 	}
 
-	public void setUserId(Long userId) {
-		if (userId != null) {
-			this.user = new User();
-			this.user.setId(userId);
+	public void settProjectManagerId(Long tProjectManagerId) {
+		if (tProjectManagerId != null) {
+			this.projectManager = new User();
+			this.projectManager.setId(tProjectManagerId);
 		}
-		this.userId = userId;
+		this.tProjectManagerId = tProjectManagerId;
 	}
 
 	public Long gettProjectTypeId() {
@@ -139,6 +144,14 @@ public class Project extends BaseEntity implements Serializable {
 
 	public void setProjectProducts(Set<ProjectProduct> projectProducts) {
 		this.projectProducts = projectProducts;
+	}
+
+	public String getCustomerCode() {
+		return customerCode;
+	}
+
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
 	}
 
 }

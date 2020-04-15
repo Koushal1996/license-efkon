@@ -14,50 +14,61 @@ public class ProductFamilyResponse implements Response {
 	@Schema(description = "Id of the product family")
 	private Long id;
 
-    @Schema(description = "Name of the product family")
-    private String name;
+	@Schema(description = "Name of the product family")
+	private String name;
 
-    private List<ProductCodeResponse> productCodes;
+	@Schema(description = "Code of product family")
+	private String code;
 
+	private List<ProductCodeResponse> productCodes;
 
-    public ProductFamilyResponse(Long id, String name) {
-        super();
-        this.id = id;
-        this.name = name;
-    }
+	public ProductFamilyResponse(Long id, String name, String code) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.code = code;
+	}
 
+	public Long getId() {
+		return mask(id);
+	}
 
-    public Long getId() {
-        return mask(id);
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getCode() {
+		return code;
+	}
 
-    public List<ProductCodeResponse> getProductCodes() {
-        return productCodes;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public void setProductCodes(List<ProductCodeResponse> productCodes) {
-        this.productCodes = productCodes;
-    }
+	public List<ProductCodeResponse> getProductCodes() {
+		return productCodes;
+	}
 
-    public static ProductFamilyResponse get(ProductFamily productFamily) {
-        if (productFamily != null) {
-            ProductFamilyResponse response = new ProductFamilyResponse(productFamily.getId(), productFamily.getName());
-            return response;
-        }
-        return null;
+	public void setProductCodes(List<ProductCodeResponse> productCodes) {
+		this.productCodes = productCodes;
+	}
 
-    }
+	public static ProductFamilyResponse get(ProductFamily productFamily) {
+		if (productFamily != null) {
+			ProductFamilyResponse response = new ProductFamilyResponse(productFamily.getId(), productFamily.getName(),
+					productFamily.getCode());
+			return response;
+		}
+		return null;
+
+	}
 
 }

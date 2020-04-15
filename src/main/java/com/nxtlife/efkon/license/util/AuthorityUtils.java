@@ -13,27 +13,27 @@ package com.nxtlife.efkon.license.util;
  *
  */
 public final class AuthorityUtils {
-	
+
 	/**
 	 * AUTHORITY TO FETCH AUTHORITY
 	 */
-	public static final String AUTHORITY_FETCH= "ROLE_AUTHORITY_FETCH";
-	
+	public static final String AUTHORITY_FETCH = "ROLE_AUTHORITY_FETCH";
+
 	/**
 	 * AUTHORITY TO FETCH ROLE
 	 */
 	public static final String ROLE_FETCH = "ROLE_ROLE_FETCH";
-	
+
 	/**
 	 * AUTHORITY TO CREATE ROLE
 	 */
 	public static final String ROLE_CREATE = "ROLE_ROLE_CREATE";
-	
+
 	/**
 	 * AUTHORITY TO UPDATE ROLE
 	 */
 	public static final String ROLE_UPDATE = "ROLE_ROLE_UPDATE";
-	
+
 	/**
 	 * AUTHORITY TO DELETE ROLE
 	 */
@@ -165,22 +165,23 @@ public final class AuthorityUtils {
 	public static final String PROJECT_PRODUCT_UPDATE = "ROLE_PROJECT_PRODUCT_UPDATE";
 
 	/**
+	 * AUTHORITY TO REVIEW PROJECT PRODUCT
+	 */
+	public static final String PROJECT_PRODUCT_REVIEW = "ROLE_PROJECT_PRODUCT_REVIEW";
+
+	/**
+	 * AUTHORITY TO APPROVE PROJECT PRODUCT
+	 */
+	public static final String PROJECT_PRODUCT_APPROVE = "ROLE_PROJECT_PRODUCT_APPROVE";
+	
+	/**
+	 * AUTHORITY TO SUBMIT PROJECT PRODUCT
+	 */
+	public static final String PROJECT_PRODUCT_SUBMIT = "ROLE_PROJECT_PRODUCT_SUBMIT";
+
+	/**
 	 * AUTHORITY TO DELETE PROJECT PRODUCT
 	 */
 	public static final String PROJECT_PRODUCT_DELETE = "ROLE_PROJECT_PRODUCT_DELETE";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

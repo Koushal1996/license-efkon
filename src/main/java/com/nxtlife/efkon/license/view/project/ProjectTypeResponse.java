@@ -3,6 +3,7 @@ package com.nxtlife.efkon.license.view.project;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.ProjectType;
 import com.nxtlife.efkon.license.view.Response;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -18,6 +19,7 @@ public class ProjectTypeResponse implements Response {
     private Boolean active;
 
     public ProjectTypeResponse(){super();}
+    
     public ProjectTypeResponse(ProjectType projectType)
     {
         super();

@@ -1,109 +1,171 @@
 package com.nxtlife.efkon.license.view.project;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
-import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProjectResponse implements Response {
 
-    @Schema(description = "Id of the project", example = "1")
-    private Long id;
+	@Schema(description = "Id of the project", example = "1")
+	private Long id;
 
-    @Schema(description = "Name of the customer", example = "Rahul")
-    private String customerName;
+	@Schema(description = "Code of the customer", example = "0001")
+	private String customerCode;
 
-    @Schema(description = "Email of the customer", example = "abc@gmail.com")
-    private String customerEmail;
+	@Schema(description = "Name of the customer", example = "Rahul")
+	private String customerName;
 
-    @Schema(description = "Is email be send or not", example = "true")
-    private Boolean isEmailSend;
+	@Schema(description = "Email of the customer", example = "abc@gmail.com")
+	private String customerEmail;
 
-    @Schema(description = "Contact of the customer", example = "1234567890")
-    private String customerContactNo;
+	@Schema(description = "Is email be send or not", example = "true")
+	private Boolean isEmailSend;
 
-    private ProjectTypeResponse projectTypeResponse;
+	@Schema(description = "Contact of the customer", example = "1234567890")
+	private String customerContactNo;
 
-    private List<ProjectProductResponse> products;
+	@Schema(example = "1")
+	private Long projectTypeId;
 
-    public ProjectResponse(Long id, String customerName, String customerEmail, Boolean isEmailSend, String customerContactNo) {
-        super();
-        this.id = id;
-        this.customerName = customerName;
-        this.customerEmail = customerEmail;
-        this.isEmailSend = isEmailSend;
-        this.customerContactNo = customerContactNo;
-    }
+	@Schema(description = "Project type like Clean India or Traffic Related", example = "Clean India")
+	private String projectTypeName;
 
-    public Long getId() {
-        return mask(id);
-    }
+	@Schema(example = "1")
+	private Long projectManagerId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Schema(example = "Mr. Kumar")
+	private String projectManagerName;
 
-    public String getCustomerName() {
-        return customerName;
-    }
+	private ProjectTypeResponse projectTypeResponse;
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
+	private List<ProjectProductResponse> products;
 
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
+	public ProjectResponse(Long id, String customerCode, String customerName, String customerEmail, Boolean isEmailSend,
+			String customerContactNo, Long projectTypeId, String projectTypeName, Long projectManagerId,
+			String projectManagerName) {
+		super();
+		this.id = id;
+		this.customerCode = customerCode;
+		this.customerName = customerName;
+		this.customerEmail = customerEmail;
+		this.isEmailSend = isEmailSend;
+		this.customerContactNo = customerContactNo;
+		this.projectTypeId = projectTypeId;
+		this.projectTypeName = projectTypeName;
+		this.projectManagerId = projectManagerId;
+		this.projectManagerName = projectManagerName;
+	}
 
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
+	public Long getId() {
+		return mask(id);
+	}
 
-    public Boolean getIsEmailSend() {
-        return isEmailSend;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setIsEmailSend(Boolean emailSend) {
-        isEmailSend = emailSend;
-    }
+	public String getCustomerCode() {
+		return customerCode;
+	}
 
-    public String getCustomerContactNo() {
-        return customerContactNo;
-    }
+	public void setCustomerCode(String customerCode) {
+		this.customerCode = customerCode;
+	}
 
-    public void setCustomerContactNo(String customerContactNo) {
-        this.customerContactNo = customerContactNo;
-    }
+	public String getCustomerName() {
+		return customerName;
+	}
 
-    public ProjectTypeResponse getProjectTypeResponse() {
-        return projectTypeResponse;
-    }
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
+	}
 
-    public void setProjectTypeResponse(ProjectTypeResponse projectTypeResponse) {
-        this.projectTypeResponse = projectTypeResponse;
-    }
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
 
-    public List<ProjectProductResponse> getProducts() {
-        return products;
-    }
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
 
-    public void setProducts(List<ProjectProductResponse> products) {
-        this.products = products;
-    }
+	public Boolean getIsEmailSend() {
+		return isEmailSend;
+	}
 
-    public static ProjectResponse get(Project project)
-    {
-        if(project!=null)
-        {
-            ProjectResponse response=new ProjectResponse(project.getId(),project.getCustomerName(),project.getCustomerEmail(),
-                    project.getIsEmailSend(),project.getCustomerContactNo());
-            response.setProjectTypeResponse(new ProjectTypeResponse(project.getProjectType()));
-            return response;
-        }
-        return null;
-    }
+	public void setIsEmailSend(Boolean emailSend) {
+		isEmailSend = emailSend;
+	}
+
+	public String getCustomerContactNo() {
+		return customerContactNo;
+	}
+
+	public void setCustomerContactNo(String customerContactNo) {
+		this.customerContactNo = customerContactNo;
+	}
+
+	public ProjectTypeResponse getProjectTypeResponse() {
+		return projectTypeResponse;
+	}
+
+	public void setProjectTypeResponse(ProjectTypeResponse projectTypeResponse) {
+		this.projectTypeResponse = projectTypeResponse;
+	}
+
+	public List<ProjectProductResponse> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<ProjectProductResponse> products) {
+		this.products = products;
+	}
+
+	public Long getProjectTypeId() {
+		return mask(projectTypeId);
+	}
+
+	public void setProjectTypeId(Long projectTypeId) {
+		this.projectTypeId = projectTypeId;
+	}
+
+	public String getProjectTypeName() {
+		return projectTypeName;
+	}
+
+	public void setProjectTypeName(String projectTypeName) {
+		this.projectTypeName = projectTypeName;
+	}
+
+	public Long getProjectManagerId() {
+		return mask(projectManagerId);
+	}
+
+	public void setProjectManagerId(Long projectManagerId) {
+		this.projectManagerId = projectManagerId;
+	}
+
+	public String getProjectManagerName() {
+		return projectManagerName;
+	}
+
+	public void setProjectManagerName(String projectManagerName) {
+		this.projectManagerName = projectManagerName;
+	}
+
+	public static ProjectResponse get(Project project) {
+		if (project != null) {
+			ProjectResponse response = new ProjectResponse(project.getId(), project.getCustomerCode(),
+					project.getCustomerName(), project.getCustomerEmail(), project.getIsEmailSend(),
+					project.getCustomerContactNo(), null, null, null, null);
+			response.setProjectTypeResponse(new ProjectTypeResponse(project.getProjectType()));
+			return response;
+		}
+		return null;
+	}
 }

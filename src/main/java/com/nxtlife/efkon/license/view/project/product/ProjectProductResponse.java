@@ -1,5 +1,8 @@
 package com.nxtlife.efkon.license.view.project.product;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
@@ -8,139 +11,188 @@ import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public class ProjectProductResponse implements Response {
 
-    @Schema(description = " Id of the project product", example = "1")
-    private Long id;
+	@Schema(description = " Id of the project product", example = "1")
+	private Long id;
 
-    private ProjectResponse projectResponse;
+	private Long projectId;
 
-    private ProductDetailResponse productDetailResponse;
+	private ProjectResponse projectResponse;
 
-    @Schema(description = "No of license", example = "4")
-    private Integer licenseCount;
+	private Long productDetailId;
 
-    @Schema(description = "Type of license", example = "Demo")
-    private LicenseType licenseType;
+	private ProductDetailResponse productDetailResponse;
 
-    @Schema(description = "Type of expiration period", example = "Demo")
-    private ExpirationPeriodType expirationPeriodType;
+	@Schema(description = "No of license", example = "4")
+	private Integer licenseCount;
 
-    @Schema(description = "Month count of expiration", example = "3")
-    private Integer expirationMonthCount;
+	@Schema(description = "Type of license", example = "Demo")
+	private LicenseType licenseType;
 
-    @Schema(description = "Start date for limited license expiry", example = "2020-04-02T13:56:52.837+0530")
-    private String startDate;
+	@Schema(description = "Type of expiration period", example = "Demo")
+	private ExpirationPeriodType expirationPeriodType;
 
-    @Schema(description = "End date for limited license expiry", example = "2020-04-02T13:56:52.837+0530")
-    private String endDate;
+	@Schema(description = "Month count of expiration", example = "3")
+	private Integer expirationMonthCount;
 
-    @Schema(description = "status of the project product", example = "Approved")
-    private ProjectProductStatus status;
+	@Schema(description = "Start date for limited license expiry", example = "2020-04-02T13:56:52.837+0530")
+	private String startDate;
 
-    public ProjectProductResponse(Long id, Integer licenseCount, LicenseType licenseType, ExpirationPeriodType expirationPeriodType,
-                                  Integer expirationMonthCount, String startDate, String endDate, ProjectProductStatus status) {
-        super();
-        this.id = id;
-        this.licenseCount = licenseCount;
-        this.licenseType = licenseType;
-        this.expirationPeriodType = expirationPeriodType;
-        this.expirationMonthCount = expirationMonthCount;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-    }
+	@Schema(description = "End date for limited license expiry", example = "2020-04-02T13:56:52.837+0530")
+	private String endDate;
 
-    public Long getId() {
-        return mask(id);
-    }
+	@Schema(description = "status of the project product", example = "Approved")
+	private ProjectProductStatus status;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@JsonIgnore
+	private Long createdById;
+	
+	private List<ProjectProductCommentResponse> comments;
 
-    public Integer getLicenseCount() {
-        return licenseCount;
-    }
+	public ProjectProductResponse(Long id, Integer licenseCount, LicenseType licenseType,
+			ExpirationPeriodType expirationPeriodType, Integer expirationMonthCount, String startDate, String endDate,
+			ProjectProductStatus status, Long projectId, Long productDetailId, Long createdById) {
+		super();
+		this.id = id;
+		this.licenseCount = licenseCount;
+		this.licenseType = licenseType;
+		this.expirationPeriodType = expirationPeriodType;
+		this.expirationMonthCount = expirationMonthCount;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.status = status;
+		this.projectId = projectId;
+		this.productDetailId = productDetailId;
+		this.createdById = createdById;
+	}
 
-    public void setLicenseCount(Integer licenseCount) {
-        this.licenseCount = licenseCount;
-    }
+	public Long getId() {
+		return mask(id);
+	}
 
-    public LicenseType getLicenseType() {
-        return licenseType;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setLicenseType(LicenseType licenseType) {
-        this.licenseType = licenseType;
-    }
+	public Integer getLicenseCount() {
+		return licenseCount;
+	}
 
-    public ExpirationPeriodType getExpirationPeriodType() {
-        return expirationPeriodType;
-    }
+	public void setLicenseCount(Integer licenseCount) {
+		this.licenseCount = licenseCount;
+	}
 
-    public void setExpirationPeriodType(ExpirationPeriodType expirationPeriodType) {
-        this.expirationPeriodType = expirationPeriodType;
-    }
+	public LicenseType getLicenseType() {
+		return licenseType;
+	}
 
-    public Integer getExpirationMonthCount() {
-        return expirationMonthCount;
-    }
+	public void setLicenseType(LicenseType licenseType) {
+		this.licenseType = licenseType;
+	}
 
-    public void setExpirationMonthCount(Integer expirationMonthCount) {
-        this.expirationMonthCount = expirationMonthCount;
-    }
+	public ExpirationPeriodType getExpirationPeriodType() {
+		return expirationPeriodType;
+	}
 
-    public String getStartDate() {
-        return startDate;
-    }
+	public void setExpirationPeriodType(ExpirationPeriodType expirationPeriodType) {
+		this.expirationPeriodType = expirationPeriodType;
+	}
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
+	public Integer getExpirationMonthCount() {
+		return expirationMonthCount;
+	}
 
-    public ProjectProductStatus getStatus() {
-        return status;
-    }
+	public void setExpirationMonthCount(Integer expirationMonthCount) {
+		this.expirationMonthCount = expirationMonthCount;
+	}
 
-    public void setStatus(ProjectProductStatus status) {
-        this.status = status;
-    }
+	public String getStartDate() {
+		return startDate;
+	}
 
-    public ProjectResponse getProjectResponse() {
-        return projectResponse;
-    }
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
 
-    public void setProjectResponse(ProjectResponse projectResponse) {
-        this.projectResponse = projectResponse;
-    }
+	public ProjectProductStatus getStatus() {
+		return status;
+	}
 
-    public ProductDetailResponse getProductDetailResponse() {
-        return productDetailResponse;
-    }
+	public void setStatus(ProjectProductStatus status) {
+		this.status = status;
+	}
 
-    public void setProductDetailResponse(ProductDetailResponse productDetailResponse) {
-        this.productDetailResponse = productDetailResponse;
-    }
+	public ProjectResponse getProjectResponse() {
+		return projectResponse;
+	}
 
-    public String getEndDate() {
-        return endDate;
-    }
+	public void setProjectResponse(ProjectResponse projectResponse) {
+		this.projectResponse = projectResponse;
+	}
 
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
+	public ProductDetailResponse getProductDetailResponse() {
+		return productDetailResponse;
+	}
 
-    public static ProjectProductResponse get(ProjectProduct projectProduct) {
-        if (projectProduct != null) {
-            ProjectProductResponse response = new ProjectProductResponse(projectProduct.getId(), projectProduct.getLicenseCount(), projectProduct.getLicenseType(),
-                    projectProduct.getExpirationPeriodType(), projectProduct.getExpirationMonthCount(), projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus());
-            return response;
-        }
-        return null;
-    }
+	public void setProductDetailResponse(ProductDetailResponse productDetailResponse) {
+		this.productDetailResponse = productDetailResponse;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public Long getProjectId() {
+		return mask(projectId);
+	}
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
+	}
+
+	public Long getProductDetailId() {
+		return mask(productDetailId);
+	}
+
+	public void setProductDetailId(Long productDetailId) {
+		this.productDetailId = productDetailId;
+	}
+
+	public Long getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(Long createdById) {
+		this.createdById = createdById;
+	}
+
+	public List<ProjectProductCommentResponse> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<ProjectProductCommentResponse> comments) {
+		this.comments = comments;
+	}
+
+	public static ProjectProductResponse get(ProjectProduct projectProduct) {
+		if (projectProduct != null) {
+			ProjectProductResponse response = new ProjectProductResponse(projectProduct.getId(),
+					projectProduct.getLicenseCount(), projectProduct.getLicenseType(),
+					projectProduct.getExpirationPeriodType(), projectProduct.getExpirationMonthCount(),
+					projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus(), null, null,
+					null);
+			return response;
+		}
+		return null;
+	}
 
 }

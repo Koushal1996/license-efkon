@@ -26,6 +26,9 @@ public class ProductCode extends BaseEntity implements Serializable {
 	@NotNull(message = "name can't be null")
 	private String name;
 
+	@NotNull(message = "code can't be null")
+	private String code;
+
 	@ManyToOne
 	private ProductFamily productFamily;
 
@@ -39,9 +42,12 @@ public class ProductCode extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProductCode(@NotNull(message = "name can't be null") String name) {
+	public ProductCode(@NotNull(message = "name can't be null") String name,
+			@NotNull(message = "code can't be null") String code, Long productFamilyId) {
 		super();
 		this.name = name;
+		this.code = code;
+		this.settProductFamilyId(productFamilyId);
 	}
 
 	public ProductCode(@NotNull(message = "name can't be null") String name, ProductFamily productFamily) {

@@ -28,6 +28,16 @@ public interface RoleService {
      *                             ids are not valid
      */
     public RoleResponse save(RoleRequest request);
+    
+    /**
+	 * this method used to fetch role details by id
+	 * 
+	 * @param id
+	 * @return {@link RoleResponse}
+	 * @throws NotFoundException
+	 *             if role not found
+	 */
+	public RoleResponse findById(Long id);
 
     /**
      * this method used to update role details. It throws exception if role id

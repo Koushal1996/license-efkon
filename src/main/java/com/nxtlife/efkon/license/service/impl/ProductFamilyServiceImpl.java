@@ -1,5 +1,17 @@
 package com.nxtlife.efkon.license.service.impl;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.nxtlife.efkon.license.dao.jpa.ProductCodeJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductFamilyJpaDao;
@@ -14,129 +26,123 @@ import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductCodeRequest;
 import com.nxtlife.efkon.license.view.product.ProductFamilyRequest;
 import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Service("productFamilyServiceImpl")
 @Transactional
 public class ProductFamilyServiceImpl extends BaseService implements ProductFamilyService {
 
-    private static Logger logger = LoggerFactory.getLogger(ProductFamilyServiceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(ProductFamilyServiceImpl.class);
 
-    @Autowired
-    private ProductFamilyJpaDao productFamilyDao;
+	@Autowired
+	private ProductFamilyJpaDao productFamilyDao;
 
-    @Autowired
-    private ProductCodeJpaDao productCodeDao;
+	@Autowired
+	private ProductCodeJpaDao productCodeDao;
 
-    @Autowired
-    private ProductDetailJpaDao productDetailDao;
+	@Autowired
+	private ProductDetailJpaDao productDetailDao;
 
-    public void validate(ProductFamilyRequest request) {
-        if (productFamilyDao.existsByName(request.getName())) {
-            throw new ValidationException(String.format("Product family (%s) already exist", request.getName()));
-        }
-        request.getProductCodes().stream().forEach(codeRequest -> {
-            if (codeRequest.getId() == null && productCodeDao.existsByName(codeRequest.getName())) {
-                throw new ValidationException(String.format("Project code (%s) already exist", codeRequest.getName()));
-            }
-        });
-    }
+	public void validate(ProductFamilyRequest request) {
+		if (productFamilyDao.existsByName(request.getName())) {
+			throw new ValidationException(String.format("Product family (%s) already exist", request.getName()));
+		}
+		request.getProductCodes().stream().forEach(codeRequest -> {
+			if (codeRequest.getId() == null && productCodeDao.existsByName(codeRequest.getName())) {
+				throw new ValidationException(String.format("Project code (%s) already exist", codeRequest.getName()));
+			}
+		});
+	}
 
-    @Override
-    @Secured(AuthorityUtils.PRODUCT_FAMILY_CREATE)
-    public ProductFamilyResponse save(ProductFamilyRequest request) {
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_FAMILY_CREATE)
+	public ProductFamilyResponse save(ProductFamilyRequest request) {
+		validate(request);
+		ProductFamily productFamily = request.toEntity();
+		productFamily.setProductCodes(new HashSet<>());
+		for (ProductCodeRequest codeRequest : request.getProductCodes()) {
+			productFamily.getProductCodes().add(new ProductCode(codeRequest.getName(), productFamily));
+		}
+		productFamilyDao.save(productFamily);
+		ProductFamilyResponse response = productFamilyDao.findResponseById(productFamily.getId());
+		response.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(productFamily.getId(), true));
+		return response;
 
-        ProductFamily productFamily;
-        Set<ProductCode> productCodes = new HashSet<>();
-        validate(request);
-        productFamily = request.toEntity();
-        for (ProductCodeRequest codeRequest : request.getProductCodes()) {
-            productCodes.add(new ProductCode(codeRequest.getName(), productFamily));
-        }
-        productFamily.setProductCodes(productCodes);
-        productFamilyDao.save(productFamily);
-        ProductFamilyResponse response = productFamilyDao.findResponseById(productFamily.getId());
-        response.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(productFamily.getId(), true));
-        return response;
+	}
 
-    }
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_FAMILY_FETCH)
+	public List<ProductFamilyResponse> findAll() {
+		List<ProductFamilyResponse> productFamilies = productFamilyDao.findByActive(true);
+		productFamilies.stream().forEach(productFamily -> productFamily
+				.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmask(productFamily.getId()), true)));
+		return productFamilies;
+	}
 
-    @Override
-    @Secured(AuthorityUtils.PRODUCT_FAMILY_FETCH)
-    public List<ProductFamilyResponse> findAll() {
-        List<ProductFamilyResponse> productFamilies = productFamilyDao.findByActive(true);
-        productFamilies.stream().forEach(productFamily ->
-                productFamily.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmask(productFamily.getId()), true)));
-        return productFamilies;
-    }
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_FAMILY_UPDATE)
+	public ProductFamilyResponse update(Long id, ProductFamilyRequest request) {
+		Long unmaskId = unmask(id);
+		ProductFamilyResponse productFamily = productFamilyDao.findResponseById(unmaskId);
+		if (productFamily == null) {
+			throw new NotFoundException("Product family not found");
+		}
+		if (!productFamily.getName().equals(request.getName())) {
+			if (productFamilyDao.existsByName(request.getName())) {
+				throw new ValidationException("This product family already exists");
+			}
+		}
+		if (request.getProductCodes() != null) {
+			request.getProductCodes().forEach(productCode -> {
+				Long productCodeId = productCodeDao.findIdByName(productCode.getName());
+				if (productCode.getId() != null && productCodeId != null && !productCodeId.equals(productCodeId)) {
+					throw new ValidationException(
+							String.format("This product code(%s) already exist", productCode.getName()));
+				}
+			});
+		}
+		int rows = productFamilyDao.updateById(request.getName(), request.getCode(), unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("Product family {} updated successfully", unmaskId);
+		}
+		List<Long> productFamilyCodeIds = productCodeDao.findAllIdsByProductFamilyIdAndActive(unmaskId, true);
+		ProductCode productcode;
+		for (ProductCodeRequest codeRequest : request.getProductCodes()) {
+			if (codeRequest.getId() == null) {
+				productcode = new ProductCode(codeRequest.getName(),
+						String.format("%4d", sequenceGenerator("PRODUCTCODE")), unmaskId);
+				productCodeDao.save(productcode);
+			} else {
+				productCodeDao.updateNameById(codeRequest.getName(), codeRequest.getId(), getUserId(), new Date());
+				productFamilyCodeIds.remove(codeRequest.getId());
+			}
+		}
+		if (!productFamilyCodeIds.isEmpty()) {
+			productCodeDao.deleteByIds(productFamilyCodeIds, getUserId(), new Date());
+		}
 
-    @Override
-    @Secured(AuthorityUtils.PRODUCT_FAMILY_UPDATE)
-    public ProductFamilyResponse update(Long id, ProductFamilyRequest request) {
+		ProductFamilyResponse response = productFamilyDao.findResponseById(unmaskId);
+		response.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmaskId, true));
+		return response;
 
-        Long unmaskId = unmask(id);
-        if (!productFamilyDao.existsById(unmaskId)) {
-            throw new NotFoundException(String.format("Product Family (%s) not found", id));
-        }
-        validate(request);
-        List<Long> productFamilyCodeIds = productCodeDao.findAllIdsByProductFamilyIdAndActive(unmaskId, true);
-        for (ProductCodeRequest codeRequest : request.getProductCodes()) {
-            ProductCode productcode;
-            String codeName;
-            if (codeRequest.getId() == null) {
-                productcode = new ProductCode(codeRequest.getName());
-                productcode.settProductFamilyId(unmaskId);
-                productCodeDao.save(productcode);
-            } else {
-                codeName = productCodeDao.findNameById(codeRequest.getId());
-                if (!codeRequest.getName().equals(codeName))
-                    productCodeDao.updateNameById(codeRequest.getName(), codeRequest.getId(), getUserId(), new Date());
-                productFamilyCodeIds.remove(codeRequest.getId());
-            }
-        }
-        if (!productFamilyCodeIds.isEmpty()) {
-            productCodeDao.deleteByIds(productFamilyCodeIds, getUserId(), new Date());
-        }
-        if (request.getName() != null) {
-            int rows = productFamilyDao.updateNameById(request.getName(), unmaskId, getUserId(), new Date());
-            if (rows > 0) {
-                logger.info("Product family {} updated successfully", unmaskId);
-            }
-        }
+	}
 
-        ProductFamilyResponse response = productFamilyDao.findResponseById(unmaskId);
-        response.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmaskId, true));
-        return response;
-
-
-    }
-
-    @Override
-    @Secured(AuthorityUtils.PRODUCT_FAMILY_DELETE)
-    public SuccessResponse delete(Long id) {
-        Long unmaskId = unmask(id);
-        if (!productFamilyDao.existsById(unmaskId)) {
-            throw new NotFoundException(String.format("Product Family (%s) not found", id));
-        }
-        if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
-            throw new ValidationException(String.format("Product family(%s) can't be delete as some of the version are related to this product family ", unmaskId));
-        }
-        productCodeDao.deleteByProductFamilyId(id, getUserId(), new Date());
-        int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
-        if (rows > 0) {
-            logger.info("Product family {} successfuly deleted", unmaskId);
-        }
-        return new SuccessResponse(HttpStatus.OK.value(), "Product family deleted successfully");
-    }
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_FAMILY_DELETE)
+	public SuccessResponse delete(Long id) {
+		Long unmaskId = unmask(id);
+		if (!productFamilyDao.existsById(unmaskId)) {
+			throw new NotFoundException(String.format("Product Family (%s) not found", id));
+		}
+		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
+			throw new ValidationException(String.format(
+					"Product family(%s) can't be delete as some of the version are related to this product family ",
+					unmaskId));
+		}
+		productCodeDao.deleteByProductFamilyId(id, getUserId(), new Date());
+		int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("Product family {} successfuly deleted", unmaskId);
+		}
+		return new SuccessResponse(HttpStatus.OK.value(), "Product family deleted successfully");
+	}
 }
