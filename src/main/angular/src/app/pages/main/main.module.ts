@@ -10,7 +10,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectComponent } from './project/project.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
-import { FilterPipe } from './project/create-project/filter.pipe';
 
 
 @NgModule({
@@ -21,7 +20,7 @@ import { FilterPipe } from './project/create-project/filter.pipe';
     NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [MainComponent, UserComponent,
-     CreateUserComponent, RoleComponent, CreateRoleComponent, ProjectComponent, CreateProjectComponent, FilterPipe, 
+     CreateUserComponent, RoleComponent, CreateRoleComponent, ProjectComponent, CreateProjectComponent,
      ]
 })
 export class MainModule { }

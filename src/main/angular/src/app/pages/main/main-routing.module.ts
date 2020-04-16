@@ -14,9 +14,11 @@ const routes: Routes = [
     children: [
       { path: 'roles', component: RoleComponent },
       { path: 'roles/create', component: CreateRoleComponent,
-       canDeactivate:[DeactivateGuard]},
+       //canDeactivate:[DeactivateGuard]
+      },
       { path: 'roles/:id', component: CreateRoleComponent,
-       canDeactivate:[DeactivateGuard]},
+       //canDeactivate:[DeactivateGuard]
+      },
       { path: 'users', component: UserComponent },
       { path: 'users/create', component: CreateUserComponent},
       { path: 'users/:id', component: CreateUserComponent},

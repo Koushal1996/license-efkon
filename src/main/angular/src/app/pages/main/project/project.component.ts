@@ -9,6 +9,8 @@ import { ProjectService } from './../../../services/project/project.service';
 })
 export class ProjectComponent implements OnInit {
   public projects = []
+  isloader:boolean=true
+
   constructor(private projectservice:ProjectService,
     private route:Router) { }
     
@@ -16,8 +18,8 @@ export class ProjectComponent implements OnInit {
     this.projectservice.getProjects().subscribe
     ( data => {
         console.log(data)
-       
         this.projects = data
+        this.isloader=false
       },
       error => {
         console.log(error)

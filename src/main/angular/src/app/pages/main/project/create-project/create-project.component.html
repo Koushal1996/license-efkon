@@ -1,34 +1,29 @@
 <div class="container mt-5">
 <div class="row">
-<div class="col-8 offset-2">
+<div class="col-8 offset-2 form">
 
 <form (ngSubmit)="onSubmit()" [formGroup]="projectForm">
 
 <div class="form-group">
 <label>Customer Name</label>
-<input type="text" class="form-control" placeholder="Search Customer Name"
- formControlName="customerName" name="customerName" autocomplete="off"
- (keyup)="myFunction()" id="fname">
+<input class="form-control" type="text" autocomplete="off"
+ formControlName="customerName" name="customerName" 
+ (ngModelChange)="selectSearchTerm($event)" id="fname" list="browsers">
+ <datalist id="browsers" class="hello">
+  <option [value]="name.name"
+  *ngFor="let name of projectcustomers" style="width: 100%;"> 
+  {{name.name}}
+ </option>
+</datalist>
 <span *ngIf="projectForm.get('customerName').errors &&
 (projectForm.get('customerName').touched||projectForm.get('customerName').dirty)">
 <span *ngIf="projectForm.get('customerName').errors.required" class="text-danger">Name is
   required</span>
 </span>
+
 </div>
 
-<!-- 
-  <tr *ngFor="let name of projectcustomers | filter:Term">
- <td> {{name.name}}</td> 
-</tr> -->
-<div>
-<table class="table" id="myTable">
-    <tr *ngFor="let name of searchTerm" (click)="selectsearchTerm(name.name,name.email,name.contactNo)">
-      <td><strong>{{name.name}}</strong></td>
-      <td>{{name.email}}</td>
-      <td>{{name.contactNo}}</td>
-    </tr> 
-</table>
-</div>
+
 <div class="form-group">
 <label>Customer Email</label>
 <input type="email" class="form-control" formControlName="customerEmail" name="customerEmail">
@@ -39,12 +34,6 @@
 </span>
 </div>
 
-<div class="form-check">
-<label class="form-check-label" for="check1">
-<input type="checkbox" class="form-check-input" id="check1" formControlName="isEmailSend" name="option1" value="something" checked>
-Is email be send or not
-</label>
-</div>
 <div class="form-group">
 <label>Customer Contact No </label>
 <input type="tel" class="form-control" formControlName="customerContactNo" name="customerContactNo">
@@ -83,18 +72,20 @@ digits is required</span>
   required</span>
 </span>
 </div>
-
+<div class="form-check">
+  <label class="form-check-label" for="check1">
+  <input type="checkbox" class="form-check-input" id="check1" formControlName="isEmailSend" name="option1" value="something" checked>
+  Is email be send or not
+  </label>
+  </div>
+  
 <div class="form-group d-flex mt-3">
 <button type="submit" class="btn btn-danger ml-auto" [disabled]="!projectForm.valid">
 Submit</button>
 </div>
 
 
-
-
 </form>
-
-
 </div>
 </div>
 </div>

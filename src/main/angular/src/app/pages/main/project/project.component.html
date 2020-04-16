@@ -2,7 +2,9 @@
   <button class="btn btn-danger" (click)="createpProject()">Create Project</button>
 </div>
 
-
+<div class="text-center">
+  <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
+</div>
 <div class="table-responsive">
 
   <table class="table table-bordered mt-4">
