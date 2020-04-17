@@ -1,0 +1,38 @@
+<!-- <p>
+  family works!
+  is component me sirf 
+  product family wali get api call karni hai aur table me show karana hai.
+</p> -->
+
+<div class="cpntainer-fluid mt-5">
+<div class="col-md-12">
+  <h2 class="text-center"> Product Family  </h2>
+  <div class="table-responsive">
+    <table class="table table-bordered mt-4">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Id</th>
+          <th scope="col">Name</th>
+          <th scope="col">Code</th>
+          <th scope="col">Product Codes</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor ="let family of Family; index as i">
+              <td>{{i+1}}</td>
+              <td>{{family.id}}</td>
+              <td>{{family.name}}</td>
+              <td>{{family.code}}</td>
+              <td><span  *ngFor ="let fam of family.productCodes">
+   <span class="badge badge-success p-2 mr-2 mb-2">{{fam.name}}</span>
+              </span>
+               
+              </td>
+              
+            </tr>
+          </tbody>
+          </table>
+</div>
+</div>
+</div>

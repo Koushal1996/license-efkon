@@ -1,3 +1,4 @@
+import { VersionComponent } from './product/version/version.component';
 import { DeactivateGuard } from './deactivate.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -8,6 +9,10 @@ import { RoleComponent } from './role/role.component';
 import { CreateRoleComponent } from './role/create-role/create-role.component';
 import { ProjectComponent } from './project/project.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
+import { ProductComponent } from './product/product.component';
+import { FamilyComponent } from './product/family/family.component';
+import { DetailComponent } from './product/detail/detail.component';
+
 const routes: Routes = [
   {
     path: '', component: MainComponent,
@@ -23,7 +28,14 @@ const routes: Routes = [
       { path: 'users/create', component: CreateUserComponent},
       { path: 'users/:id', component: CreateUserComponent},
       { path: 'projects', component: ProjectComponent },
-      { path: 'projects/create', component: CreateProjectComponent }
+      { path: 'projects/create', component: CreateProjectComponent },
+      { path: 'products', component: ProductComponent, 
+        children:[
+          {path: 'version', component: VersionComponent},
+          {path: 'family', component: FamilyComponent},
+          {path: 'detail', component:DetailComponent}
+        ]
+      }
     ]
   }
 ]
