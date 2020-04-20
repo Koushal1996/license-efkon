@@ -9,11 +9,11 @@ import { map, catchError } from "rxjs/operators";
 })
 export class ApiService {
 
- // url: string = 'http://localhost:8080';
+  // url: string = 'http://localhost:8080';
   // url: string = 'http://enforcement.us-east-2.elasticbeanstalk.com:8080';
-   url: string = 'http://efkon-licence-key.us-east-2.elasticbeanstalk.com:8080';
-  
-   constructor(public http: HttpClient, public router:Router) {
+  url: string = 'http://efkon-licence-key.us-east-2.elasticbeanstalk.com:8080';
+
+  constructor(public http: HttpClient, public router: Router) {
   }
 
   private getAccessToken() {
@@ -51,7 +51,7 @@ export class ApiService {
     //   }
     // }
     const headers = this.addHeaders(reqOpts);
-    return this.http.get(this.url + '/' + endpoint, { headers: headers, observe: 'response' })
+    return this.http.get(this.url + '/' + endpoint.replace(/[\u200B-\u200D\uFEFF]/g, ''), { headers: headers, observe: 'response' })
       .pipe(
         map(this.extractData),
         catchError(this.handleError)
@@ -60,7 +60,7 @@ export class ApiService {
 
   post(endpoint: string, body: any, reqOpts?: any) {
     const headers = this.addHeaders(reqOpts);
-    return this.http.post(this.url + '/' + endpoint, body, { headers: headers, observe: 'response' })
+    return this.http.post(this.url + '/' + endpoint.replace(/[\u200B-\u200D\uFEFF]/g, ''), body, { headers: headers, observe: 'response' })
       .pipe(
         map(this.extractData),
         catchError(this.handleError)
@@ -69,7 +69,7 @@ export class ApiService {
 
   put(endpoint: string, body: any, reqOpts?: any) {
     const headers = this.addHeaders(reqOpts);
-    return this.http.put(this.url + '/' + endpoint, body, { headers: headers, observe: 'response' })
+    return this.http.put(this.url + '/' + endpoint.replace(/[\u200B-\u200D\uFEFF]/g, ''), body, { headers: headers, observe: 'response' })
       .pipe(
         map(this.extractData),
         catchError(this.handleError)
@@ -78,7 +78,7 @@ export class ApiService {
 
   delete(endpoint: string, reqOpts?: any) {
     const headers = this.addHeaders(reqOpts);
-    return this.http.delete(this.url + '/' + endpoint, { headers: headers, observe: 'response' })
+    return this.http.delete(this.url + '/' + endpoint.replace(/[\u200B-\u200D\uFEFF]/g, ''), { headers: headers, observe: 'response' })
       .pipe(
         map(this.extractData),
         catchError(this.handleError)
@@ -86,7 +86,7 @@ export class ApiService {
   }
 
   patch(endpoint: string, body: any, reqOpts?: any) {
-    return this.http.patch(this.url + '/' + endpoint, body, reqOpts)
+    return this.http.patch(this.url + '/' + endpoint.replace(/[\u200B-\u200D\uFEFF]/g, ''), body, reqOpts)
   }
 
   extractData = (response: HttpResponse<any>) => {
@@ -98,12 +98,12 @@ export class ApiService {
 
   handleError = (errorResponse: HttpErrorResponse) => {
     console.log(errorResponse);
-    
-    if(errorResponse.status && errorResponse.status === 401){
+
+    if (errorResponse.status && errorResponse.status === 401) {
       localStorage.clear();
       this.showError("Invalid Token or Token expired");
       this.router.navigateByUrl('/login');
-    } else if (errorResponse.status){
+    } else if (errorResponse.status) {
       this.showError(errorResponse.error && errorResponse.error.message || "Something went wrong");
     }
     return throwError(errorResponse);
