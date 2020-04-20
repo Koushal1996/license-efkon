@@ -9,63 +9,101 @@ import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@ang
 })
 export class DetailComponent implements OnInit {
 
-  Family=[];
-  productCodes=[];
-  Versions=[];
-  
-  constructor(private _productService :ProductService,
+  Family = [];
+  productCodes = [];
+  Versions = [];
+  productDetail = [];
+  detailId
+  isCreateDetail:boolean = false
+  constructor(private _productService: ProductService,
     private fb: FormBuilder) { }
   createDetailForm: FormGroup;
   ngOnInit() {
-  //   this._productService.getProductDetails().subscribe(
-  //     data=>{
-  //      console.log(data)
-  //     }
-  //   )
-  this.createDetailForm = this.initProductDetailForm();
-  this.getProductFamilies()
-  this.getversions();
 
+    this.createDetailForm = this.initProductDetailForm();
+    this.getversions();
+    this.getProductFamilies()
+    this.getProductDetail()
 
-   }
+  }
 
-    onchange(productFamilyId:number) {
-      console.log(productFamilyId)  
-      // this.productCodes = 
-      // this.Family.filter(res => res.id == productFamilyId).productCodes;
-      const family = this.Family.find((item) =>item.id == productFamilyId)
-      this.productCodes = family.productCodes;
-      console.log(this.productCodes)
- }
+  onchange(productFamilyId: number) {
+    console.log(productFamilyId)
+    // this.productCodes = 
+    // this.Family.filter(res => res.id == productFamilyId).productCodes;
+    const family = this.Family.find((item) => item.id == productFamilyId)
+    this.productCodes = family.productCodes;
+    console.log(this.productCodes)
+  }
 
-   initProductDetailForm() {
+  initProductDetailForm() {
     return this.fb.group({
-      "productFamilyId":["", [Validators.required]],
-      "productCodeId":["",[Validators.required]],
-      "versionId":["", [Validators.required]]
+      "productFamilyId": ["", [Validators.required]],
+      "productCodeId": ["", [Validators.required]],
+      "versionId": ["", [Validators.required]]
     });
   }
-  getProductFamilies(){
+  getProductFamilies() {
     this._productService.getProductFamilies().subscribe(
-      data=>{
-      this.Family= data;
-          
-
-  })}
+      data => {
+        this.Family = data;
+      })
+  }
 
   getversions() {
     this._productService.getVersions().subscribe(data => {
-      console.log(data)
+      // console.log(data)
       this.Versions = data
     })
   }
 
-  onSubmit()
-  {
-    console.log(this.createDetailForm.value)
-    this._productService.addProductDetail(this.createDetailForm.value).subscribe(data => {
-      console.log(data) 
-    })
+  onSubmit() {
+    if (this.detailId) {
+      this._productService.updateProductDetail(this.detailId, this.createDetailForm.value)
+        .subscribe(data => {
+          console.log(data)
+          this.getProductDetail()
+          this.isCreateDetail = false
+        }, error => {
+          console.log("error")
+        }
+        )
+    } else {
+      this._productService.addProductDetail(this.createDetailForm.value).
+        subscribe(data => {
+          //console.log(data)
+          this.getProductDetail()
+          this.isCreateDetail = false
+        })
+    }
+  }
+  getProductDetail() {
+    this._productService.getProductDetails().subscribe(
+      data => {
+        console.log(data)
+        this.productDetail = data
+        console.log(this.productDetail)
+      })
   }
 
+  editProductDetail(detail) {
+    this.isCreateDetail = true
+    //console.log(this.detailId)
+    this.detailId = detail.id
+    console.log(detail)
+    this.createDetailForm.patchValue(detail);
+
+  }
+  deleteProductDetail(detail) {
+    console.log(detail.id)
+    this._productService.deleteProductDetail(detail.id).subscribe(
+      data => {
+        this.getProductDetail()
+      }
+    )
+  }
+  showDetailForm()
+  {
+    this.isCreateDetail = true
+  }
 }

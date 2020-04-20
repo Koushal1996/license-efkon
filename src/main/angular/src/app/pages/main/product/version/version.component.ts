@@ -9,14 +9,16 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./version.component.scss']
 })
 export class VersionComponent implements OnInit {
-  Versions=[];
+  Versions = [];
   versionid;
   createVersionForm: FormGroup;
+  isCreateVersion: boolean = false
+  isVersionTable: boolean
   constructor(
     private _productservice: ProductService,
     private fb: FormBuilder,
-    private activate:ActivatedRoute ) { }
-  
+    private activate: ActivatedRoute) { }
+
   ngOnInit() {
     this.getversions();
     this.createVersionForm = this.initProjectForm();
@@ -26,6 +28,7 @@ export class VersionComponent implements OnInit {
     this._productservice.getVersions().subscribe(data => {
       console.log(data)
       this.Versions = data
+
     })
   }
   initProjectForm() {
@@ -34,37 +37,41 @@ export class VersionComponent implements OnInit {
     });
   }
   onSubmit() {
-    if(this.versionid)
-    {
-    this._productservice.updateVersions(this.versionid,this.createVersionForm.value)
-    .subscribe(data=>{
-        this.getversions()
-      })
+    if (this.versionid) {
+      this._productservice.updateVersions(this.versionid, this.createVersionForm.value)
+        .subscribe(data => {
+          this.getversions()
+          this.isCreateVersion = false
+        })
     }
-    else
-    {
-    this._productservice.addVersions(this.createVersionForm.value).
-      subscribe(data => {
-        this.getversions()
-        this.createVersionForm.reset()
-      },
-        error => {
-        } )
-   }
+    else {
+      this._productservice.addVersions(this.createVersionForm.value).
+        subscribe(data => {
+          this.getversions()
+          this.createVersionForm.reset()
+          this.isCreateVersion = false
+        },
+          error => {
+          })
+    }
   }
   deleteVersion(version) {
-  this._productservice.deleteVersions(version.id).subscribe(data=>{
-    this.getversions() 
-  },
-  error => {
+    this._productservice.deleteVersions(version.id).subscribe(data => {
+      this.getversions()
+    },
+      error => {
 
-  } )
+      })
   }
-  editVersion(version){
-     //console.log(version.version)
-     this.versionid= version.id
-     this.createVersionForm.patchValue({
-      version:version.version
-     })
+  editVersion(version) {
+    this.isCreateVersion = true
+    //console.log(version.version)
+    this.versionid = version.id
+    this.createVersionForm.patchValue({
+      version: version.version
+    })
+  }
+  showVersionForm() {
+    this.isCreateVersion = true
   }
 }

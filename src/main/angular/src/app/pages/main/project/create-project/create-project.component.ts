@@ -58,16 +58,16 @@ export class CreateProjectComponent implements OnInit {
   getCustomer() {
     this._projectService.getCustomer().subscribe(data => {
       this.projectcustomers = data
-      console.log(this.projectcustomers)
+     // console.log(this.projectcustomers)
     })
   }
 
 
   onSubmit() {
-    console.log(this.projectForm.value)
+    //console.log(this.projectForm.value)
     this._projectService.addProject(this.projectForm.value).subscribe(
       data => {
-        console.log(data)
+        //console.log(data)
          this.route.navigate(['projects'])
          swal("New Project Added successfully!");
       },

@@ -28,8 +28,15 @@ export class ProductService {
       return this.api.get('api​/product​/details');
     }
     addProductDetail(data){
-      debugger
+     // debugger
       return this.api.post('api​/product​/detail',data);
+    }
+    deleteProductDetail(Id){
+      return this.api.delete(`api/product/detail/${Id}`)
+    }
+    updateProductDetail(Id,data)
+    {
+      return this.api.put(`api/product/detail/${Id}`, data);
     }
   
 }
