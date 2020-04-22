@@ -3,12 +3,14 @@
 <div class="cpntainer-fluid mt-5">
 <div class="col-md-12">
   <h2 class="text-center"> Product Family  </h2>
+  <div class="text-center">
+    <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
+  </div>
   <div class="table-responsive">
     <table class="table table-bordered mt-4">
       <thead>
         <tr>
           <th scope="col">#</th>
-          <th scope="col">Id</th>
           <th scope="col">Name</th>
           <th scope="col">Code</th>
           <th scope="col">Product Codes</th>
@@ -17,7 +19,6 @@
           <tbody>
             <tr *ngFor ="let family of Family; index as i">
               <td>{{i+1}}</td>
-              <td>{{family.id}}</td>
               <td>{{family.name}}</td>
               <td>{{family.code}}</td>
               <td><span  *ngFor ="let fam of family.productCodes">

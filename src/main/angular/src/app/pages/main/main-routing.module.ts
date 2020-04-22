@@ -12,6 +12,7 @@ import { CreateProjectComponent } from './project/create-project/create-project.
 import { ProductComponent } from './product/product.component';
 import { FamilyComponent } from './product/family/family.component';
 import { DetailComponent } from './product/detail/detail.component';
+import { AddProductComponent } from './project/add-product/add-product.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,8 @@ const routes: Routes = [
       { path: 'users/:id', component: CreateUserComponent},
       { path: 'projects', component: ProjectComponent },
       { path: 'projects/create', component: CreateProjectComponent },
+      { path: 'projects/product', component: AddProductComponent },
+      { path: 'projects/product/:id', component: AddProductComponent },
       { path: 'products', component: ProductComponent, 
         children:[
           {path: 'version', component: VersionComponent},

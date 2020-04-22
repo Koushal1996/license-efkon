@@ -7,7 +7,6 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Id</th>
               <th scope="col">Version</th>
               <th scope="col">Action</th>
             </tr>
@@ -15,7 +14,6 @@
           <tbody>
             <tr *ngFor="let version of Versions; index as i">
               <td>{{i+1}}</td>
-              <td>{{version.id}}</td>
               <td>{{version.version}}</td>
               <td>
                 <a class="text-primary pr-2 cursor" (click)="editVersion(version)">
@@ -37,9 +35,14 @@
         <div class="form-group">
           <label>Version</label>
           <input type="text" class="form-control" name="Version" placeholder="Version" formControlName="version">
+          <span *ngIf="createVersionForm.get('version').errors &&
+          (createVersionForm.get('version').touched||createVersionForm.get('version').dirty)">
+          <span *ngIf="createVersionForm.get('version').errors.required" class="text-danger">Version is
+            required</span>
+          </span>       
         </div>
-        <button type="submit" class="btn btn-danger ml-auto">
-          Submit</button>
+        <button type="submit" class="btn btn-danger ml-auto" [disabled]="!createVersionForm.valid">
+          {{versionId ?'Update': 'Submit'}}</button>
       </form>
     </div>
 

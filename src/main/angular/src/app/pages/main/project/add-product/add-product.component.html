@@ -1,0 +1,80 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-8 offset-2 form">
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+          <label>Product Detail </label>
+          <select class="form-control" id="sel1" name="productDetailId" formControlName="productDetailId">
+            <option *ngFor="let product of productDetail" value={{product.id}}>
+              {{product.productFamilyName}} {{product.productFamilyCode}}
+              {{product.productCodeName}} {{product.versionName}}
+            </option>
+          </select>
+          <span *ngIf="productForm.get('productDetailId').errors &&
+(productForm.get('productDetailId').touched||productForm.get('productDetailId').dirty)">
+            <span *ngIf="productForm.get('productDetailId').errors.required" class="text-danger">Product detail
+              is required</span>
+          </span>
+        </div>
+        <div class="form-group">
+          <label>License Count </label>
+          <input type="number" class="form-control" formControlName="licenseCount" name="licenseCount">
+          <span *ngIf="productForm.get('licenseCount').errors &&
+          (productForm.get('licenseCount').touched||productForm.get('licenseCount').dirty)">
+            <span *ngIf="productForm.get('licenseCount').errors.required" class="text-danger">License Count
+              is required</span>
+          </span>
+        </div>
+        <div class="form-group">
+          <label>License Type </label>
+          <select class="form-control" name="licenseType" formControlName="licenseType">
+            <option>COMMERICAL</option>
+            <option>DEMO</option>
+          </select>
+          <span *ngIf="productForm.get('licenseType').errors &&
+          (productForm.get('licenseType').touched||productForm.get('licenseType').dirty)">
+            <span *ngIf="productForm.get('licenseType').errors.required" class="text-danger">License Type
+              is required</span>
+          </span>
+        </div>
+        <div class="form-group">
+          <label>Expiration Period </label>
+          <select class="form-control" name="expirationPeriodType" formControlName="expirationPeriodType">
+            <option>LIMITED</option>
+            <option>LIFETIME </option>
+          </select>
+          <span *ngIf="productForm.get('expirationPeriodType').errors &&
+          (productForm.get('expirationPeriodType').touched||productForm.get('expirationPeriodType').dirty)">
+            <span *ngIf="productForm.get('expirationPeriodType').errors.required" class="text-danger">
+              Expiration Period Type
+              is required</span>
+          </span>
+        </div>
+        <div class="form-group">
+          <label>Expiration Month </label>
+          <input type="number" class="form-control" formControlName="expirationMonthCount" name="expirationMonthCount">
+        </div>
+        <div class="form-group">
+          <label>Start Date</label>
+          <input type="date" class="form-control" formControlName="startDate" name="startDate">
+          <span *ngIf="productForm.get('startDate').errors &&
+          (productForm.get('startDate').touched||productForm.get('startDate').dirty)">
+            <span *ngIf="productForm.get('startDate').errors.required" class="text-danger">
+              Start Date
+              is required</span>
+          </span>
+        </div>
+
+        <div class="form-group d-flex mt-3">
+          <button type="submit" class="btn btn-danger ml-auto" [disabled]="!productForm.valid">
+            Submit</button>
+        </div>
+
+      </form>
+
+
+    </div>
+  </div>
+</div>

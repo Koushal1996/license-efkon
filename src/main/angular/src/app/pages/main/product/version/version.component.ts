@@ -2,6 +2,7 @@ import { ProductService } from './../../../../services/product/product.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-version',
@@ -10,10 +11,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class VersionComponent implements OnInit {
   Versions = [];
-  versionid;
+  versionId;
   createVersionForm: FormGroup;
   isCreateVersion: boolean = false
-  isVersionTable: boolean
+  //isVersionTable: boolean = true
   constructor(
     private _productservice: ProductService,
     private fb: FormBuilder,
@@ -22,6 +23,7 @@ export class VersionComponent implements OnInit {
   ngOnInit() {
     this.getversions();
     this.createVersionForm = this.initProjectForm();
+   
   }
 
   getversions() {
@@ -37,9 +39,10 @@ export class VersionComponent implements OnInit {
     });
   }
   onSubmit() {
-    if (this.versionid) {
-      this._productservice.updateVersions(this.versionid, this.createVersionForm.value)
+    if (this.versionId) {
+      this._productservice.updateVersions(this.versionId, this.createVersionForm.value)
         .subscribe(data => {
+          swal("Update successfully!");
           this.getversions()
           this.isCreateVersion = false
         })
@@ -47,6 +50,7 @@ export class VersionComponent implements OnInit {
     else {
       this._productservice.addVersions(this.createVersionForm.value).
         subscribe(data => {
+          swal("Add successfully!");
           this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
@@ -56,17 +60,33 @@ export class VersionComponent implements OnInit {
     }
   }
   deleteVersion(version) {
-    this._productservice.deleteVersions(version.id).subscribe(data => {
-      this.getversions()
-    },
-      error => {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to deleted this?",
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    })
+      .then(willDelete => {
+        if (willDelete) {
+        }
+        else {
+          this._productservice.deleteVersions(version.id).subscribe(data => {
 
-      })
+            this.getversions()
+            swal("Delete successfully!");
+          },
+            error => {
+            })
+
+        }
+      });
   }
   editVersion(version) {
     this.isCreateVersion = true
     //console.log(version.version)
-    this.versionid = version.id
+    this.versionId = version.id
     this.createVersionForm.patchValue({
       version: version.version
     })
@@ -74,4 +94,5 @@ export class VersionComponent implements OnInit {
   showVersionForm() {
     this.isCreateVersion = true
   }
+
 }

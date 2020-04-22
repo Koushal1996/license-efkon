@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from './../../../../services/product/product.service';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-detail',
@@ -64,6 +65,7 @@ export class DetailComponent implements OnInit {
           console.log(data)
           this.getProductDetail()
           this.isCreateDetail = false
+          swal("Update Successfully!");
         }, error => {
           console.log("error")
         }
@@ -72,6 +74,7 @@ export class DetailComponent implements OnInit {
       this._productService.addProductDetail(this.createDetailForm.value).
         subscribe(data => {
           //console.log(data)
+          swal("Add Successfully!");
           this.getProductDetail()
           this.isCreateDetail = false
         })
@@ -95,13 +98,29 @@ export class DetailComponent implements OnInit {
 
   }
   deleteProductDetail(detail) {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to deleted this?",
+      icon: "warning",
+      closeOnClickOutside:false,
+      buttons:["Yes","No"],
+      dangerMode: true,
+    })
+    .then(willDelete => {
+      if (willDelete) {    
+      }
+      else {
     console.log(detail.id)
     this._productService.deleteProductDetail(detail.id).subscribe(
       data => {
         this.getProductDetail()
-      }
+        swal("Delete successfully!");
+      },
+      error=>{}
     )
   }
+});
+}
   showDetailForm()
   {
     this.isCreateDetail = true

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,6 @@ import { ApiService } from '../api/api.service';
 export class ProjectService {
 
   constructor(private api:ApiService ) { }
-
   getProjects(){
     return this.api.get('api/projects');
   }
@@ -32,4 +32,5 @@ export class ProjectService {
   getCustomer(){
      return this.api.get('api/users/customer')
  }
+
 }

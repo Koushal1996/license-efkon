@@ -8,6 +8,7 @@ import { ProductService } from './../../../../services/product/product.service';
 })
 export class FamilyComponent implements OnInit {
   Family= []
+  isloader:boolean= true
   constructor(private _productService :ProductService) { }
 
   ngOnInit() {
@@ -15,6 +16,7 @@ export class FamilyComponent implements OnInit {
       data=>{
         this.Family= data
         console.log(data)
+        this.isloader = false
       }
     )
   }

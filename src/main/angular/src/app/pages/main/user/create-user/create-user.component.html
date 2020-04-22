@@ -71,7 +71,7 @@
 
                 <div class="form-group d-flex mt-3">
                     <button type="submit" *ngIf="!loaderbutton" class="btn btn-danger ml-auto" [disabled]="!createUserForm.valid">
-                        Submit</button>
+                        {{userId ?'Update': 'Submit'}}</button>
                         <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
                             <i class="fa fa-refresh fa-spin"></i> Loading
                           </button>
