@@ -10,6 +10,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.VersionJpaDao;
 import com.nxtlife.efkon.license.entity.version.Version;
 import com.nxtlife.efkon.license.ex.NotFoundException;
@@ -29,6 +30,9 @@ public class VersionServiceImpl extends BaseService implements VersionService {
 
 	@Autowired
 	public VersionJpaDao versionDao;
+
+	@Autowired
+	private ProductDetailJpaDao productDetailJpaDao;
 
 	public void validate(VersionRequest request) {
 		if (versionDao.existsByVersionAndActive(request.getVersion(), true)) {
@@ -72,6 +76,9 @@ public class VersionServiceImpl extends BaseService implements VersionService {
 		Long unmaskId = unmask(id);
 		if (!versionDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("Version (%s) not found", id));
+		}
+		if (productDetailJpaDao.existsByVersionIdAndActive(unmaskId, true)) {
+			throw new ValidationException("You can't delete this version because its already in use");
 		}
 		int rows = versionDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
