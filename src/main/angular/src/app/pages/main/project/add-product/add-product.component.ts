@@ -40,7 +40,7 @@ export class AddProductComponent implements OnInit {
       "licenseCount": ["", [Validators.required]],
       "licenseType": ["", [Validators.required]],
       "expirationPeriodType": ["", [Validators.required]],
-      "expirationMonthCount": [''],
+      "expirationMonthCount": ['',[Validators.min(1)]],
       "startDate": ["", [Validators.required]]
     })
   }

@@ -55,6 +55,11 @@
         <div class="form-group">
           <label>Expiration Month </label>
           <input type="number" class="form-control" formControlName="expirationMonthCount" name="expirationMonthCount">
+          <span *ngIf="productForm.get('expirationMonthCount').errors &&
+          (productForm.get('expirationMonthCount').touched||productForm.get('expirationMonthCount').dirty)">
+            <span *ngIf="productForm.get('expirationMonthCount').errors.min" class="text-danger">
+          minimun 1 is required</span>
+          </span>
         </div>
         <div class="form-group">
           <label>Start Date</label>
