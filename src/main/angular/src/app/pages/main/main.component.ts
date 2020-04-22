@@ -13,7 +13,8 @@ export class MainComponent implements OnInit {
   pages: any[] = [
     { route: '/roles', title: 'Roles' },
     { route: '/users', title: 'Users' },
-    { route: '/projects', title: 'Projects'}
+    { route: '/projects', title: 'Projects'},
+    { route: '/products', title: 'Products'}
   ]
 
   constructor(private adminService:AdminService,

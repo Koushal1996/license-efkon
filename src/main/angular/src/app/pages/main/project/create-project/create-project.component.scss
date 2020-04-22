@@ -1,14 +1,4 @@
-
-  #myTable {
-    border-collapse: collapse; /* Collapse borders */
-    width: 100%; /* Full-width */
-    border: 1px solid #ddd; /* Add a grey border */
-    font-size: 18px; /* Increase font-size */
-  }
-  
- 
-  
-  #myTable tr.header, #myTable tr:hover {
-    /* Add a grey background color to the table header and on hover */
-    background-color: #f1f1f1;
-  }
+.errorinput{border:1px #f00 solid}
+.form{box-shadow: 0 0 25px #ccc;
+    background-color: #ffffff;
+    padding: 20px 30px;}

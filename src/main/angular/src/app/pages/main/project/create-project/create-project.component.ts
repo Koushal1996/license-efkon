@@ -1,8 +1,9 @@
-import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
+import { Router } from '@angular/router';
 import { AdminService } from './../../../../services/admin/admin.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProjectService } from './../../../../services/project/project.service';
-import { Component, OnInit ,OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges } from '@angular/core';
+import swal from 'sweetalert';
 
 
 @Component({
@@ -11,95 +12,78 @@ import { Component, OnInit ,OnChanges } from '@angular/core';
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent implements OnInit {
-  projectForm:FormGroup;
+  projectForm: FormGroup;
   projectTypes: any[] = [];
   projectManager: any[] = [];
-  projectcustomers: any[]=[];
-  searchTerm=[];
-  searchtable:boolean=true
-  constructor(private fb:FormBuilder, 
+  projectcustomers: any[] = [];
+  searchTerm = [];
+  searchtable: boolean = true
+  constructor(private fb: FormBuilder,
     private _projectService: ProjectService,
-    private _adminService:AdminService) { }
+    private _adminService: AdminService,
+    private route:Router) { }
 
   ngOnInit() {
     this.getProjectTypes();
     this.getProjectManagers();
     this.getCustomer();
     this.projectForm = this.initProjectForm();
-   
-  }  
 
-  myFunction()
-  {
-    console.log(this.projectForm.get('customerName').value)
-    let filter = this.projectcustomers.filter(
-      (item) => {
-        // return item.name  == this.projectForm.get('customerName').value
-       // return item.name.indexOf(this.projectForm.get('customerName').value) > -1
-        return item.name.toLowerCase().indexOf(this.projectForm.get('customerName').value.toLowerCase()) > -1
-      }
-    )
-    console.log(filter)
-    if(this.projectForm.get('customerName').value== ''){
-     this.searchTerm = []
-    }else{
-      this.searchTerm = filter
-    }
   }
-  initProjectForm(){
+
+  initProjectForm() {
     return this.fb.group({
-      "customerName":["", [Validators.required]],
-      "customerEmail":["", [Validators.required]],
-      "isEmailSend":[false],
-      "customerContactNo":['', [Validators.maxLength(10),
-        Validators.minLength(10),Validators.pattern("^[0-9]*$")]],
-      "projectTypeId":['', [Validators.required]],
-      "projectManagerId":['', [Validators.required]]
+      "customerName": ["", [Validators.required]],
+      "customerEmail": ["", [Validators.required]],
+      "isEmailSend": [false],
+      "customerContactNo": ['', [Validators.maxLength(10),
+      Validators.minLength(10), Validators.pattern("^[0-9]*$")]],
+      "projectTypeId": ['', [Validators.required]],
+      "projectManagerId": ['', [Validators.required]]
     })
   }
 
-  getProjectTypes(){
-    this._projectService.getProjectTypes().subscribe(data =>{
+  getProjectTypes() {
+    this._projectService.getProjectTypes().subscribe(data => {
       this.projectTypes = data;
     })
   }
 
-  getProjectManagers(){
-    this._projectService.getProjectManager().subscribe(data =>{ 
-       this.projectManager = data;
-     })
+  getProjectManagers() {
+    this._projectService.getProjectManager().subscribe(data => {
+      this.projectManager = data;
+    })
   }
 
-  getCustomer()
-  {
-    this._projectService.getCustomer().subscribe(data =>{
+  getCustomer() {
+    this._projectService.getCustomer().subscribe(data => {
       this.projectcustomers = data
-      console.log(this.projectcustomers)
+     // console.log(this.projectcustomers)
     })
   }
 
 
-  onSubmit()
-  {
-    console.log(this.projectForm.value)
+  onSubmit() {
+    //console.log(this.projectForm.value)
     this._projectService.addProject(this.projectForm.value).subscribe(
-      data=>{
-      console.log(data)
+      data => {
+        //console.log(data)
+         this.route.navigate(['projects'])
+         swal("New Project Added successfully!");
       },
-      error=>{}
+      error => { }
     )
   }
 
-   
-  selectsearchTerm(name, email,contactNo)
-  {
-  this.projectForm.patchValue({
-    customerName:name,
-    customerEmail:email,
-    customerContactNo:contactNo
 
-  })
- this.searchTerm=[];
+  selectSearchTerm(name) {
+    const customer = this.projectcustomers.find(c => c.name === name);
+    if(customer){
+      this.projectForm.patchValue({
+        customerEmail: customer.email,
+        customerContactNo: customer.contactNo
+      })
+    }
   }
 
 }

@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from './../../../services/project/project.service';
+import swal from 'sweetalert';
 
 @Component({
   selector: 'app-project',
@@ -9,25 +10,54 @@ import { ProjectService } from './../../../services/project/project.service';
 })
 export class ProjectComponent implements OnInit {
   public projects = []
-  constructor(private projectservice:ProjectService,
-    private route:Router) { }
-    
+  isloader: boolean = true
+  projectsProduct: any;
+  show: boolean = false
+  constructor(private projectservice: ProjectService,
+    private route: Router) { }
+
   ngOnInit() {
     this.projectservice.getProjects().subscribe
-    ( data => {
-        console.log(data)
-       
+      (data => {
         this.projects = data
+        this.isloader = false
+        console.log(data)
       },
-      error => {
-        console.log(error)
-      } )
+        error => {
+          console.log(error)
+        })
   }
-   
 
-  createpProject()
-  {
+  createpProject() {
     this.route.navigate(['projects/create'])
   }
 
+  addProduct(project) {
+    this.route.navigate(['projects/product', project.id])
+    console.log(project)
+  }
+  deleteProduct(pro) {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to deleted this?",
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    })
+      .then(willDelete => {
+        if (willDelete) {
+        }
+        else {
+          this.projectservice.deleteProduct(pro.id).subscribe(data => {
+            console.log(data)
+            console.log("deletesucesful")
+          },
+            error => {
+              console.log("error");
+            })
+
+        }
+      });
+  }
 }

@@ -1,0 +1,86 @@
+<div class="container-fluid mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="text-center">Product Detail Table</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered mt-4">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Product Family</th>
+              <th scope="col">Product Code</th>
+              <th scope="col">Version</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of productDetail; index as i">
+              <td>{{i+1}}</td>
+              <td> {{detail.productFamilyName}}</td>
+              <td>{{detail.productCodeName}}</td>
+              <td>{{detail.versionName}}</td>
+              <td>
+                <a class="text-primary pr-2 cursor">
+                  <i class="fa fa-edit" (click)="editProductDetail(detail)"></i>
+                </a>
+                <a class="text-danger pl-2 cursor">
+                  <i class="fa fa-trash" (click)="deleteProductDetail(detail)"></i>
+                </a>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn btn-danger"  *ngIf="!isCreateDetail"
+      (click)="showDetailForm()">Add Product Detail </button>
+    </div>
+    <div class="col-md-6" *ngIf="isCreateDetail">
+      <h2 class="text-center">Product Detail</h2>
+      <form (ngSubmit)="onSubmit()" [formGroup]="createDetailForm">
+        <div class="form-group">
+          <label>Product Family</label>
+          <select class="form-control" (ngModelChange)="onchange($event)" formControlName="productFamilyId">
+            <option value={{name.id}} *ngFor="let name of Family">{{name.name}}</option>
+          </select>
+          <span *ngIf="createDetailForm.get('productFamilyId').errors &&
+(createDetailForm.get('productFamilyId').touched||createDetailForm.get('productFamilyId').dirty)">
+<span *ngIf="createDetailForm.get('productFamilyId').errors.required" class="text-danger">project Family is
+  required</span>
+</span>
+        </div>
+
+        <div class="form-group">
+          <label>Product Code </label>
+          <select class="form-control" formControlName="productCodeId">
+            <option *ngFor="let productCode of productCodes" value="{{productCode.id}}">
+              {{productCode.name}}
+            </option>
+          </select>
+          <span *ngIf="createDetailForm.get('productCodeId').errors &&
+          (createDetailForm.get('productCodeId').touched||createDetailForm.get('productCodeId').dirty)">
+          <span *ngIf="createDetailForm.get('productCodeId').errors.required" class="text-danger">project Code is
+            required</span>
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label>Version</label>
+          <select class="form-control" formControlName="versionId">
+            <option *ngFor="let name of Versions" value={{name.id}}>
+              {{name.version}}
+            </option>
+          </select>
+          <span *ngIf="createDetailForm.get('versionId').errors &&
+          (createDetailForm.get('versionId').touched||createDetailForm.get('versionId').dirty)">
+          <span *ngIf="createDetailForm.get('versionId').errors.required" class="text-danger">Version  is
+            required</span>
+          </span>
+        </div>
+        <button type="submit" class="btn btn-danger ml-auto" [disabled]="!createDetailForm.valid">
+          {{detailId ?'Update': 'Submit'}} </button>
+      </form>
+    </div>
+
+  </div>
+</div>

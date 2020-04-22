@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <div class="row">
-    <div class="col-8 offset-2">
+    <div class="col-8 offset-2 form">
       <form (ngSubmit)="onSubmit()" [formGroup]="createRoleForm">
         <div class="form-group">
           <label>Name</label>
@@ -21,7 +21,7 @@
 
         <div class="form-group d-flex mt-3">
           <button type="submit" *ngIf="!loaderbutton" class="btn btn-danger ml-auto" [disabled]="!createRoleForm.valid">
-            Submit</button>
+            {{roleId ?'Update': 'Submit'}}</button>
             <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading
             </button>

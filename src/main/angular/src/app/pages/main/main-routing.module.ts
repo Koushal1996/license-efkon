@@ -1,3 +1,4 @@
+import { VersionComponent } from './product/version/version.component';
 import { DeactivateGuard } from './deactivate.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -8,20 +9,36 @@ import { RoleComponent } from './role/role.component';
 import { CreateRoleComponent } from './role/create-role/create-role.component';
 import { ProjectComponent } from './project/project.component';
 import { CreateProjectComponent } from './project/create-project/create-project.component';
+import { ProductComponent } from './product/product.component';
+import { FamilyComponent } from './product/family/family.component';
+import { DetailComponent } from './product/detail/detail.component';
+import { AddProductComponent } from './project/add-product/add-product.component';
+
 const routes: Routes = [
   {
     path: '', component: MainComponent,
     children: [
       { path: 'roles', component: RoleComponent },
       { path: 'roles/create', component: CreateRoleComponent,
-       canDeactivate:[DeactivateGuard]},
+       //canDeactivate:[DeactivateGuard]
+      },
       { path: 'roles/:id', component: CreateRoleComponent,
-       canDeactivate:[DeactivateGuard]},
+       //canDeactivate:[DeactivateGuard]
+      },
       { path: 'users', component: UserComponent },
       { path: 'users/create', component: CreateUserComponent},
       { path: 'users/:id', component: CreateUserComponent},
       { path: 'projects', component: ProjectComponent },
-      { path: 'projects/create', component: CreateProjectComponent }
+      { path: 'projects/create', component: CreateProjectComponent },
+      { path: 'projects/product', component: AddProductComponent },
+      { path: 'projects/product/:id', component: AddProductComponent },
+      { path: 'products', component: ProductComponent, 
+        children:[
+          {path: 'version', component: VersionComponent},
+          {path: 'family', component: FamilyComponent},
+          {path: 'detail', component:DetailComponent}
+        ]
+      }
     ]
   }
 ]
