@@ -173,7 +173,7 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO APPROVE PROJECT PRODUCT
 	 */
 	public static final String PROJECT_PRODUCT_APPROVE = "ROLE_PROJECT_PRODUCT_APPROVE";
-	
+
 	/**
 	 * AUTHORITY TO SUBMIT PROJECT PRODUCT
 	 */
@@ -183,5 +183,15 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO DELETE PROJECT PRODUCT
 	 */
 	public static final String PROJECT_PRODUCT_DELETE = "ROLE_PROJECT_PRODUCT_DELETE";
+
+	/**
+	 * AUTHORITY TO FETCH LICENSE
+	 */
+	public static final String LICENSE_FETCH = "ROLE_LICENSE_FETCH";
+
+	/**
+	 * AUTHORITY TO UPDATE LICENSE
+	 */
+	public static final String LICENSE_UPDATE = "ROLE_LICENSE_UPDATE";
 
 }

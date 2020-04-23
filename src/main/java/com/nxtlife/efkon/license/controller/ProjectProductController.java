@@ -119,13 +119,22 @@ public class ProjectProductController {
 	}
 
 	@GetMapping(value = "project/product", produces = { "application/json" })
-	@Operation(summary = "Find all project types", description = "return a list of project types", tags = { "Project",
-			"Project Type" })
+	@Operation(summary = "Find all project types", description = "return a list of project types", tags = { "Project" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Project product  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductResponse> findAll() {
 		return projectProductService.findAll();
+
+	}
+
+	@GetMapping(value = "project/{projectId}/product", produces = { "application/json" })
+	@Operation(summary = "Find all project types", description = "return a list of project types", tags = { "Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Project product  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<ProjectProductResponse> findByProjectId(@PathVariable Long projectId) {
+		return projectProductService.findByProjectId(projectId);
 
 	}
 

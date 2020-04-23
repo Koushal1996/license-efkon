@@ -48,6 +48,14 @@ public interface ProjectProductService {
 	public List<ProjectProductResponse> findAll();
 
 	/**
+	 * fetch project product by project id
+	 * 
+	 * @param projectId
+	 * @return list of {@link ProjectProductResponse}
+	 */
+	public List<ProjectProductResponse> findByProjectId(Long projectId);
+
+	/**
 	 * this method used to fetch project product response
 	 * 
 	 * @param id

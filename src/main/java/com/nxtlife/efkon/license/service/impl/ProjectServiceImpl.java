@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
-import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectTypeJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.RoleJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.UserJpaDao;
@@ -48,9 +47,6 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 
 	@Autowired
 	private UserRoleJpaDao userRoleDao;
-
-	@Autowired
-	private ProjectProductJpaDao projectProductDao;
 
 	/**
 	 * this method used to validate request. In this we are validating that
@@ -127,9 +123,6 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 				projects = projectDao.findByActive(true);
 			}
 		}
-		projects.stream().forEach(project -> {
-			project.setProducts(projectProductDao.findByProjectIdAndActive(unmask(project.getId()), true));
-		});
 
 		return projects;
 

@@ -1,7 +1,6 @@
 package com.nxtlife.efkon.license.view.license;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -13,19 +12,29 @@ public class LicenseResponse implements Response {
 	@Schema(description = "Id of the license", example = "1")
 	private Long id;
 
+	private String code;
+
 	@Schema(description = "Unique access Id of the local system", example = "1", required = true)
-	private Long uniqueAccessId;
+	private String accessId;
+
+	private String generatedKey;
 
 	@Schema(description = "Name of license", example = "location name", required = true)
 	private String name;
 
+	private Long projectProductId;
+
 	private ProjectProductResponse projectProduct;
 
-	public LicenseResponse(Long id, Long uniqueAccessId, String name) {
+	public LicenseResponse(Long id, String name, String code, String accessId, String generatedKey,
+			Long projectProductId) {
 		super();
 		this.id = id;
-		this.uniqueAccessId = uniqueAccessId;
+		this.accessId = accessId;
+		this.code = code;
+		this.generatedKey = generatedKey;
 		this.name = name;
+		this.projectProductId = projectProductId;
 	}
 
 	public Long getId() {
@@ -34,14 +43,6 @@ public class LicenseResponse implements Response {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getUniqueAccessId() {
-		return uniqueAccessId;
-	}
-
-	public void setUniqueAccessId(Long uniqueAccessId) {
-		this.uniqueAccessId = uniqueAccessId;
 	}
 
 	public String getName() {
@@ -60,11 +61,36 @@ public class LicenseResponse implements Response {
 		this.projectProduct = projectProduct;
 	}
 
-	public static LicenseResponse get(License license) {
-		if (license != null) {
-			LicenseResponse response = new LicenseResponse(license.getId(), license.getAccessId(), license.getName());
-			return response;
-		}
-		return null;
+	public String getCode() {
+		return code;
 	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getAccessId() {
+		return accessId;
+	}
+
+	public void setAccessId(String accessId) {
+		this.accessId = accessId;
+	}
+
+	public String getGeneratedKey() {
+		return generatedKey;
+	}
+
+	public void setGeneratedKey(String generatedKey) {
+		this.generatedKey = generatedKey;
+	}
+
+	public Long getProjectProductId() {
+		return mask(projectProductId);
+	}
+
+	public void setProjectProductId(Long projectProductId) {
+		this.projectProductId = projectProductId;
+	}
+
 }

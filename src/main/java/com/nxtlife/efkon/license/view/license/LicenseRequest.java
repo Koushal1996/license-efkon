@@ -9,10 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class LicenseRequest implements Request {
 
-	@Schema(description = "Id of the project product", example = "1", required = true)
-	@NotNull(message = "project product Id can't be null")
-	private Long projectProductId;
-
 	@Schema(description = "Unique access Id of the local system", example = "1", required = true)
 	@NotNull(message = "Unique access Id can't be null")
 	private Long uniqueAccessId;
@@ -21,22 +17,10 @@ public class LicenseRequest implements Request {
 	@NotNull(message = "Name type can't be null")
 	private String name;
 
-	@Schema(description = "Status of the license", example = "Renewed")
-	private String status;
-
 	public License toEntity() {
 		License license = new License();
-		license.setAccessId(uniqueAccessId);
 		license.setName(name);
 		return license;
-	}
-
-	public Long getProjectProductId() {
-		return unmask(projectProductId);
-	}
-
-	public void setProjectProductId(Long projectProductId) {
-		this.projectProductId = projectProductId;
 	}
 
 	public Long getUniqueAccessId() {
@@ -53,14 +37,6 @@ public class LicenseRequest implements Request {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setLicenseStatus(String status) {
-		this.status = status;
 	}
 
 }
