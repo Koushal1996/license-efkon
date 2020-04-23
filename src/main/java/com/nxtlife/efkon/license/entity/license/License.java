@@ -26,10 +26,10 @@ public class License extends BaseEntity implements Serializable {
 	@NotNull(message = "code can't be null")
 	private String code;
 
-	private Long accessId;
+	private String accessId;
 
 	@Column(unique = true)
-	private Long generatedKey;
+	private String generatedKey;
 
 	private String name;
 
@@ -55,7 +55,7 @@ public class License extends BaseEntity implements Serializable {
 	}
 
 	public License(@NotNull(message = "code can't be null") String code,
-			@NotNull(message = "access_id can't be null") Long accessId, Long generatedKey, String name,
+			@NotNull(message = "access_id can't be null") String accessId, String generatedKey, String name,
 			@NotNull(message = "status can't be null") LicenseStatus status) {
 		super();
 		this.code = code;
@@ -73,19 +73,19 @@ public class License extends BaseEntity implements Serializable {
 		this.code = code;
 	}
 
-	public Long getAccessId() {
+	public String getAccessId() {
 		return accessId;
 	}
 
-	public void setAccessId(Long accessId) {
+	public void setAccessId(String accessId) {
 		this.accessId = accessId;
 	}
 
-	public Long getGeneratedKey() {
+	public String getGeneratedKey() {
 		return generatedKey;
 	}
 
-	public void setGeneratedKey(Long generatedKey) {
+	public void setGeneratedKey(String generatedKey) {
 		this.generatedKey = generatedKey;
 	}
 

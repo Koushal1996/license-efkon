@@ -21,7 +21,13 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	public List<ProjectProductResponse> findByProjectProjectManagerIdAndActive(Long projectManagerId, Boolean active);
 
+	public List<ProjectProductResponse> findByProjectIdAndProjectProjectManagerIdAndActive(Long projectId,
+			Long projectManagerId, Boolean active);
+
 	public List<ProjectProductResponse> findByProjectCustomerEmailAndActive(String customerEmail, Boolean active);
+
+	public List<ProjectProductResponse> findByProjectIdAndProjectCustomerEmailAndActive(Long projectId,
+			String customerEmail, Boolean active);
 
 	public ProjectProductResponse findByIdAndProjectProjectManagerIdAndActive(Long id, Long projectManagerId,
 			Boolean active);
