@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ProjectService {
-
+  selecetedProduct : BehaviorSubject<any> = new BehaviorSubject<any>({});
   constructor(private api:ApiService ) { }
   getProjects(){
     return this.api.get('api/projects');
@@ -22,6 +22,9 @@ export class ProjectService {
   }
   deleteProduct(Id){
     return this.api.delete(`api/project/product/${Id}`);
+  }
+  updateProduct(Id,data){
+    return this.api.put(`api/project/product/${Id}`,data)
   }
   getProjectTypes(){
     return this.api.get('api/project/types');

@@ -16,6 +16,8 @@ export class AddProductComponent implements OnInit {
   productId
   projects
   productDetail: any;
+  eachProductId
+  LIFETIME: any;
 
   constructor(
     private fb: FormBuilder,
@@ -31,7 +33,12 @@ export class AddProductComponent implements OnInit {
       this.productId = params['id']
       this.productForm.controls['projectId'].patchValue(this.productId);
     })
+    this.activate.params.subscribe(params =>{
+      this.eachProductId= params['id']
+      console.log(this.eachProductId)
+    })
     this.getProductDetail()
+    this.patchavalue()
   }
   initProductForm() {
     return this.fb.group({
@@ -46,6 +53,9 @@ export class AddProductComponent implements OnInit {
   }
 
   patchavalue() {
+    this.projectservice.selecetedProduct.subscribe(data=>{
+      console.log(data)
+    })
   }
 
   getProductDetail() {
@@ -65,5 +75,25 @@ export class AddProductComponent implements OnInit {
       },
       error=>{}
     )
+  }
+  onLicenseChange(licenseType)
+  {
+     console.log(licenseType)
+     if(licenseType=='DEMO')
+     {
+     this.productForm.controls['expirationPeriodType'].patchValue('LIMITED');
+     }
+  }
+  onExpirationChange(expirationPeriodType)
+  {
+    console.log(expirationPeriodType)
+    if(expirationPeriodType=='LIFETIME')
+    {
+      this.productForm.controls['expirationMonthCount'].disable();
+    }
+    else
+    {
+      this.productForm.controls['expirationMonthCount'].enable();
+    }
   }
 }

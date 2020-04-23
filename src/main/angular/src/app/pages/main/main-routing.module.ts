@@ -32,13 +32,14 @@ const routes: Routes = [
       { path: 'projects/create', component: CreateProjectComponent },
       { path: 'projects/product', component: AddProductComponent },
       { path: 'projects/product/:id', component: AddProductComponent },
-      { path: 'products', component: ProductComponent, 
+      { path: 'products', component: ProductComponent,
         children:[
           {path: 'version', component: VersionComponent},
           {path: 'family', component: FamilyComponent},
-          {path: 'detail', component:DetailComponent}
+          {path: 'detail', component:DetailComponent }
         ]
       }
+
     ]
   }
 ]

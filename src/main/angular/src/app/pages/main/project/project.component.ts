@@ -60,4 +60,8 @@ export class ProjectComponent implements OnInit {
         }
       });
   }
+  editProduct(pro){
+    this.projectservice.selecetedProduct.next(pro);
+    this.route.navigate(['projects/product', pro.id])
+  }
 }

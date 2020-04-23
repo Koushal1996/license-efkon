@@ -1,3 +1,4 @@
+import { MainService } from './../../services/main/main.service';
 import { Router } from '@angular/router';
 import { AdminService } from './../../services/admin/admin.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,14 +15,20 @@ export class MainComponent implements OnInit {
     { route: '/roles', title: 'Roles' },
     { route: '/users', title: 'Users' },
     { route: '/projects', title: 'Projects'},
-    { route: '/products', title: 'Products'}
+    { route: '/products/detail', title: 'Products'}
   ]
+  UserInfo: any;
 
   constructor(private adminService:AdminService,
-    private route:Router ) { }
+    private route:Router,
+    private mainService:MainService ) { }
 
   ngOnInit() {
     console.log(this.pages);
+    this.mainService.getLoginUser().subscribe(data=>{
+      console.log(data)
+      this.UserInfo = data
+    })
 
   }
 

@@ -40,7 +40,8 @@
               <table class="table table-bordered">
                 <tr class="text-primary">
                   <th scope="col">#</th>
-                   <th scope="col">License</th>
+                  <th scope="col">Product Detail</th>
+                   <th scope="col">No of License</th>
                   <th scope="col">License Type</th>
                   <th scope="col">Expiration Period</th>
                   <th scope="col">Expiration Month</th>
@@ -51,6 +52,7 @@
                   </tr>
                 <tr *ngFor="let pro of project.products ; index as i">
                   <td>{{i+1}}</td>
+                  <td>static</td>
                   <td>{{pro.licenseCount}}</td>
                   <td>{{pro.licenseType}}</td>
                   <td>{{pro.expirationPeriodType}}</td>
@@ -59,6 +61,9 @@
                   <td>{{pro.endDate}}</td>
                   <td>{{pro.status}}</td>
                   <td>
+                    <a class="text-primary pr-2 cursor" (click)="editProduct(pro)">
+                      <i class="fa fa-edit"></i>
+                    </a>
                     <a class="text-danger pl-2 cursor" (click)="deleteProduct(pro)">
                     <i class="fa fa-trash"></i>
                   </a>
