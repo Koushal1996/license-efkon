@@ -126,11 +126,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_CREATE)
 	public ProjectProductResponse save(ProjectProductRequest request) {
 		validate(request);
-		if (projectProductDao.existsByProjectIdAndProductDetailId(request.getProjectId(),
-				request.getProductDetailId())) {
-			throw new ValidationException(String.format("This product detail(%s) already assigned with project (%s)",
-					mask(request.getProductDetailId()), mask(request.getProjectId())));
-		}
+//		if (projectProductDao.existsByProjectIdAndProductDetailId(request.getProjectId(),
+//				request.getProductDetailId())) {
+//			throw new ValidationException(String.format("This product detail(%s) already assigned with project (%s)",
+//					mask(request.getProductDetailId()), mask(request.getProjectId())));
+//		}
 		ProjectProduct projectProduct = request.toEntity();
 		String endDate;
 		if (request.getExpirationPeriodType().equals(ExpirationPeriodType.LIMITED.name())) {

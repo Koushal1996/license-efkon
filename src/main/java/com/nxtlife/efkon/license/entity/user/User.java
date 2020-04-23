@@ -34,7 +34,7 @@ public class User extends BaseEntity implements UserDetails, Serializable {
 	private String code;
 
 	@NotNull(message = "username can't be null")
-	@Pattern(regexp = "^[@A-Za-z0-9._]{3,20}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
+	@Pattern(regexp = "^[@A-Za-z0-9._]{3,50}$", message = "username should contains only alphabets/digit/@ and length should be in between 4 to 20")
 	private String username;
 
 	@NotNull(message = "password can't be null")

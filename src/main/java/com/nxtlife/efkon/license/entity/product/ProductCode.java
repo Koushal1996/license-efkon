@@ -50,9 +50,10 @@ public class ProductCode extends BaseEntity implements Serializable {
 		this.settProductFamilyId(productFamilyId);
 	}
 
-	public ProductCode(@NotNull(message = "name can't be null") String name, ProductFamily productFamily) {
+	public ProductCode(@NotNull(message = "name can't be null") String name, @NotNull(message = "code can't be null") String code, ProductFamily productFamily) {
 		super();
 		this.name = name;
+		this.code= code;
 		this.productFamily = productFamily;
 	}
 

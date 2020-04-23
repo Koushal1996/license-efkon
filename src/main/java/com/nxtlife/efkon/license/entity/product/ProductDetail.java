@@ -99,6 +99,10 @@ public class ProductDetail extends BaseEntity implements Serializable {
 	}
 
 	public void settProductCodeId(Long tProductCodeId) {
+		if (tProductCodeId != null) {
+			this.productCode = new ProductCode();
+			this.productCode.setId(tProductCodeId);
+		}
 		this.tProductCodeId = tProductCodeId;
 	}
 
@@ -107,6 +111,10 @@ public class ProductDetail extends BaseEntity implements Serializable {
 	}
 
 	public void settProductFamilyId(Long tProductFamilyId) {
+		if (tProductFamilyId != null) {
+			this.productFamily = new ProductFamily();
+			this.productFamily.setId(tProductFamilyId);
+		}
 		this.tProductFamilyId = tProductFamilyId;
 	}
 
@@ -115,6 +123,10 @@ public class ProductDetail extends BaseEntity implements Serializable {
 	}
 
 	public void settVersionId(Long tVersionId) {
+		if (tVersionId != null) {
+			this.version = new Version();
+			this.version.setId(tVersionId);
+		}
 		this.tVersionId = tVersionId;
 	}
 

@@ -60,7 +60,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		ProductFamily productFamily = request.toEntity();
 		productFamily.setProductCodes(new HashSet<>());
 		for (ProductCodeRequest codeRequest : request.getProductCodes()) {
-			productFamily.getProductCodes().add(new ProductCode(codeRequest.getName(), productFamily));
+			productFamily.getProductCodes().add(new ProductCode(codeRequest.getName(),
+					String.format("%02d", sequenceGenerator("PRODUCTCODE")), productFamily));
 		}
 		productFamilyDao.save(productFamily);
 		ProductFamilyResponse response = productFamilyDao.findResponseById(productFamily.getId());
@@ -94,7 +95,7 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		if (request.getProductCodes() != null) {
 			request.getProductCodes().forEach(productCode -> {
 				Long productCodeId = productCodeDao.findIdByName(productCode.getName());
-				if (productCode.getId() != null && productCodeId != null && !productCodeId.equals(productCodeId)) {
+				if (productCode.getId() != null && productCodeId != null && !productCode.getId().equals(productCodeId)) {
 					throw new ValidationException(
 							String.format("This product code(%s) already exist", productCode.getName()));
 				}
@@ -109,7 +110,7 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		for (ProductCodeRequest codeRequest : request.getProductCodes()) {
 			if (codeRequest.getId() == null) {
 				productcode = new ProductCode(codeRequest.getName(),
-						String.format("%4d", sequenceGenerator("PRODUCTCODE")), unmaskId);
+						String.format("%02d", sequenceGenerator("PRODUCTCODE")), unmaskId);
 				productCodeDao.save(productcode);
 			} else {
 				productCodeDao.updateNameById(codeRequest.getName(), codeRequest.getId(), getUserId(), new Date());

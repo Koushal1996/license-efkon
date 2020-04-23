@@ -53,8 +53,8 @@ public class ProjectProductRequest implements Request {
 			projectProduct.setExpirationMonthCount(expirationMonthCount);
 		projectProduct.setExpirationPeriodType(ExpirationPeriodType.valueOf(expirationPeriodType));
 		projectProduct.setStartDate(startDate);
-		projectProduct.settProductDetailId(productDetailId);
-		projectProduct.settProjectId(projectId);
+		projectProduct.settProductDetailId(unmask(productDetailId));
+		projectProduct.settProjectId(unmask(projectId));
 		return projectProduct;
 
 	}
