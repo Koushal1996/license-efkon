@@ -20,28 +20,29 @@
         <th scope="col">Action</th>
       </tr>
     </thead>
-    <tbody *ngFor="let project of projects ; index as i">  
-      <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i">
-        <td>{{i+1}}</td>
-        <td>{{project.customerName}}</td>
-        <td>{{project.customerEmail}}</td>
-        <td>{{project.isEmailSend}}</td>
-        <td>{{project.customerContactNo}}</td>
-        <td>{{project.projectTypeName}}</td>
-        <td>{{project.projectManagerName}}</td>
-        <td><button class=" btn btn-primary" 
-          (click)="addProduct(project)"
-          >Add Product</button></td>
-      </tr>
-    
-        <tr *ngIf="project.products.length">
+    <tbody id="accordion">
+      <ng-container *ngFor="let project of projects ; index as i">
+        <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i" 
+         (click)="getProductsByProjectId(project)">
+          <td>{{i+1}}</td>
+          <td>{{project.customerName}}</td>
+          <td>{{project.customerEmail}}</td>
+          <td>{{project.isEmailSend}}</td>
+          <td>{{project.customerContactNo}}</td>
+          <td>{{project.projectTypeName}}</td>
+          <td>{{project.projectManagerName}}</td>
+          <td><button class=" btn btn-primary" 
+            (click)="addProduct(project)"
+            >Add Product</button></td>
+        </tr>
+        <tr *ngIf="project.products && project.products.length">
           <td colspan="8" class="padding">
-            <div [attr.id]="'collapse' + i" class="collapse">
+            <div [attr.id]="'collapse' + i" class="collapse" data-parent="#accordion">
               <table class="table table-bordered">
                 <tr class="text-primary">
                   <th scope="col">#</th>
                   <th scope="col">Product Detail</th>
-                   <th scope="col">No of License</th>
+                    <th scope="col">No of License</th>
                   <th scope="col">License Type</th>
                   <th scope="col">Expiration Period</th>
                   <th scope="col">Expiration Month</th>
@@ -52,7 +53,12 @@
                   </tr>
                 <tr *ngFor="let pro of project.products ; index as i">
                   <td>{{i+1}}</td>
-                  <td>static</td>
+                  <td>
+                    {{pro.productDetailResponse.productCodeName}}
+                    {{pro.productDetailResponse.productFamilyName}}
+                    {{pro.productDetailResponse.versionName}}
+                    
+                  </td>
                   <td>{{pro.licenseCount}}</td>
                   <td>{{pro.licenseType}}</td>
                   <td>{{pro.expirationPeriodType}}</td>
@@ -61,7 +67,7 @@
                   <td>{{pro.endDate}}</td>
                   <td>{{pro.status}}</td>
                   <td>
-                    <a class="text-primary pr-2 cursor" (click)="editProduct(pro)">
+                    <a class="text-primary pr-2 cursor" (click)="editProduct(project,pro)">
                       <i class="fa fa-edit"></i>
                     </a>
                     <a class="text-danger pl-2 cursor" (click)="deleteProduct(pro)">
@@ -73,6 +79,7 @@
             </div>
           </td>
         </tr>
+      </ng-container>
 
     </tbody>
   </table>

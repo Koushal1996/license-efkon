@@ -54,8 +54,9 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
       this.patchavalue()
   }
   patchavalue(){
-  this._adminService.selecetedRole.subscribe(data => {
     if(this.roleId){
+  this._adminService.selecetedRole.subscribe(data => {
+    if(Object.keys(data).length){
     this.createRoleForm.controls['name'].patchValue(data.name);
     this.selectedItems = data.authorities;
     const authorityIds = <FormArray>this.createRoleForm.controls['authorityIds'];
@@ -64,9 +65,21 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
         authorityIds.push(new FormControl(auth.id));
       });
     }
-  
-  })
+    else{
+      this._adminService.getRoleById(this.roleId).subscribe(data=>{
+        this.createRoleForm.patchValue(data)
+        this.selectedItems = data.authorities;
+        const authorityIds = <FormArray>this.createRoleForm.controls['authorityIds'];
+        if(data.authorities)
+          data.authorities.forEach(auth => {
+            authorityIds.push(new FormControl(auth.id));
+          });
+      })
+    }
+    })
   }
+  }
+
   ngAfterViewInit(){
 
   }

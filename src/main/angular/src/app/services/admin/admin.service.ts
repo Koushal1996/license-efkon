@@ -55,8 +55,12 @@ export class AdminService {
     return this.api.put(`api/user/${userId}/activate`,{});
   }
 
-  logout()
-  {
+  logout(){
     return this.api.get('api/me/logout')
+  }
+   
+  getRoleById(roleId)
+  {
+    return this.api.get(`api/role/${roleId}`)
   }
 }

@@ -2,11 +2,11 @@
   <!-- Sidebar -->
   <div class="bg-light border-right" id="sidebar-wrapper">
     <div class="sidebar-heading">
-      <div class="user">
+      <div class="user" (click)="userProfile()">
         <div class="user-img">
           <img src="assets/images/user.png" alt="" style="cursor: pointer;">
         </div>
-        <div class="user-name" style="cursor: pointer;">{{UserInfo.name}}
+        <div class="user-name" style="cursor: pointer;">{{UserInfo}}
         </div>
 
       </div>

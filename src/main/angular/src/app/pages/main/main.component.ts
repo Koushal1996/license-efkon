@@ -27,7 +27,8 @@ export class MainComponent implements OnInit {
     console.log(this.pages);
     this.mainService.getLoginUser().subscribe(data=>{
       console.log(data)
-      this.UserInfo = data
+      this.UserInfo = data.name
+
     })
 
   }
@@ -69,5 +70,8 @@ export class MainComponent implements OnInit {
   }
   })
   }
-
+  userProfile()
+  {
+    this.route.navigate(['profile'])
+  }
 }

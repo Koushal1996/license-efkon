@@ -34,9 +34,11 @@ export class ProductService {
     deleteProductDetail(Id){
       return this.api.delete(`api/product/detail/${Id}`)
     }
-    updateProductDetail(Id,data)
-    {
+    updateProductDetail(Id,data){
       return this.api.put(`api/product/detail/${Id}`, data);
+    }
+    getProductById(Id){
+      return this.api.get(`api/project/product/${Id}`)
     }
   
 }

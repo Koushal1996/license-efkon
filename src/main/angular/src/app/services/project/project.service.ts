@@ -35,5 +35,8 @@ export class ProjectService {
   getCustomer(){
      return this.api.get('api/users/customer')
  }
+ getProductsByProjectId(projectId){
+  return this.api.get(`api/project/${projectId}/product`)
+ }
 
 }

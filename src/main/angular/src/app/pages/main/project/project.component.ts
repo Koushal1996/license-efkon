@@ -33,7 +33,7 @@ export class ProjectComponent implements OnInit {
   }
 
   addProduct(project) {
-    this.route.navigate(['projects/product', project.id])
+    this.route.navigate([`projects/${project.id}/product`])
     console.log(project)
   }
   deleteProduct(pro) {
@@ -60,8 +60,16 @@ export class ProjectComponent implements OnInit {
         }
       });
   }
-  editProduct(pro){
-    this.projectservice.selecetedProduct.next(pro);
-    this.route.navigate(['projects/product', pro.id])
+  editProduct(project,product){
+    this.projectservice.selecetedProduct.next(product);
+    this.route.navigate([`projects/${project.id}/product/${product.id}`])
   }
+  getProductsByProjectId(project){
+    console.log(project.id)
+  this.projectservice.getProductsByProjectId(project.id).subscribe
+  (data => {
+    console.log(data)
+   project.products = data
+  })
+}
 }

@@ -1,5 +1,4 @@
 import { VersionComponent } from './product/version/version.component';
-import { DeactivateGuard } from './deactivate.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
@@ -13,6 +12,7 @@ import { ProductComponent } from './product/product.component';
 import { FamilyComponent } from './product/family/family.component';
 import { DetailComponent } from './product/detail/detail.component';
 import { AddProductComponent } from './project/add-product/add-product.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -30,15 +30,16 @@ const routes: Routes = [
       { path: 'users/:id', component: CreateUserComponent},
       { path: 'projects', component: ProjectComponent },
       { path: 'projects/create', component: CreateProjectComponent },
-      { path: 'projects/product', component: AddProductComponent },
-      { path: 'projects/product/:id', component: AddProductComponent },
+      { path: 'projects/:id/product', component: AddProductComponent },
+      { path: 'projects/:id/product/:productId', component: AddProductComponent },
       { path: 'products', component: ProductComponent,
         children:[
           {path: 'version', component: VersionComponent},
           {path: 'family', component: FamilyComponent},
           {path: 'detail', component:DetailComponent }
         ]
-      }
+      },
+      {path:'profile', component:ProfileComponent}
 
     ]
   }

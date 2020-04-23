@@ -24,22 +24,21 @@ export class AddProductComponent implements OnInit {
     private activate: ActivatedRoute,
     private projectservice: ProjectService,
     private _productService: ProductService,
-    private route:Router
+    private route: Router
   ) { }
 
   ngOnInit() {
     this.productForm = this.initProductForm()
     this.activate.params.subscribe(params => {
-      this.productId = params['id']
-      this.productForm.controls['projectId'].patchValue(this.productId);
-    })
-    this.activate.params.subscribe(params =>{
-      this.eachProductId= params['id']
-      console.log(this.eachProductId)
+      if (params.productId)
+        this.productId = params['productId']
+      if (params.id)
+        this.productForm.controls['projectId'].patchValue(params.id);
     })
     this.getProductDetail()
     this.patchavalue()
   }
+
   initProductForm() {
     return this.fb.group({
       "projectId": ["", [Validators.required]],
@@ -47,15 +46,26 @@ export class AddProductComponent implements OnInit {
       "licenseCount": ["", [Validators.required]],
       "licenseType": ["", [Validators.required]],
       "expirationPeriodType": ["", [Validators.required]],
-      "expirationMonthCount": ['',[Validators.min(1)]],
+      "expirationMonthCount": ['', [Validators.min(1)]],
       "startDate": ["", [Validators.required]]
     })
   }
 
   patchavalue() {
-    this.projectservice.selecetedProduct.subscribe(data=>{
-      console.log(data)
-    })
+    if (this.productId) {
+      this.projectservice.selecetedProduct.subscribe(data => {
+        if(Object.keys(data).length){
+          this.productForm.patchValue(data)
+        } else {
+         
+         this._productService.getProductById(this.productId).subscribe(
+           data=>{
+             console.log(data)
+             this.productForm.patchValue(data)
+           })
+        }
+      })
+    }
   }
 
   getProductDetail() {
@@ -64,35 +74,40 @@ export class AddProductComponent implements OnInit {
         this.productDetail = data
       })
   }
-  onSubmit()
-  {
-    this.projectservice.addProduct(this.productForm.value).subscribe(
-      data=>{
-        console.log(data)
-        this.route.navigate(['projects'])
-        swal("New Product Added successfully!");
-        
-      },
-      error=>{}
-    )
+  onSubmit() {
+    if (this.productId) {
+      this.projectservice.updateProduct(this.productId, this.productForm.value).subscribe(
+        data => {
+          this.route.navigate(['projects'])
+          swal(" Product Update successfully!");
+        },
+        error => { }
+      )
+
+    } else {
+      this.projectservice.addProduct(this.productForm.value).subscribe(
+        data => {
+          console.log(data)
+          this.route.navigate(['projects'])
+          swal("New Product Added successfully!");
+
+        },
+        error => { }
+      )
+    }
   }
-  onLicenseChange(licenseType)
-  {
-     console.log(licenseType)
-     if(licenseType=='DEMO')
-     {
-     this.productForm.controls['expirationPeriodType'].patchValue('LIMITED');
-     }
+  onLicenseChange(licenseType) {
+    console.log(licenseType)
+    if (licenseType == 'DEMO') {
+      this.productForm.controls['expirationPeriodType'].patchValue('LIMITED');
+    }
   }
-  onExpirationChange(expirationPeriodType)
-  {
+  onExpirationChange(expirationPeriodType) {
     console.log(expirationPeriodType)
-    if(expirationPeriodType=='LIFETIME')
-    {
+    if (expirationPeriodType == 'LIFETIME') {
       this.productForm.controls['expirationMonthCount'].disable();
     }
-    else
-    {
+    else {
       this.productForm.controls['expirationMonthCount'].enable();
     }
   }
