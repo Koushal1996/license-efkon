@@ -17,17 +17,20 @@ export class ProjectComponent implements OnInit {
     private route: Router) { }
 
   ngOnInit() {
-    this.projectservice.getProjects().subscribe
-      (data => {
-        this.projects = data
-        this.isloader = false
-        console.log(data)
-      },
-        error => {
-          console.log(error)
-        })
+    this.getProjects()
   }
 
+  getProjects(){
+  this.projectservice.getProjects().subscribe
+  (data => {
+    this.projects = data
+    this.isloader = false
+    console.log(data)
+  },
+    error => {
+      console.log(error)
+    })
+  }
   createpProject() {
     this.route.navigate(['projects/create'])
   }
@@ -51,25 +54,26 @@ export class ProjectComponent implements OnInit {
         else {
           this.projectservice.deleteProduct(pro.id).subscribe(data => {
             console.log(data)
-            console.log("deletesucesful")
+            swal("Delete Successfully!");
+            this.getProjects()
+
           },
             error => {
               console.log("error");
             })
-
         }
       });
   }
-  editProduct(project,product){
+  editProduct(project, product) {
     this.projectservice.selecetedProduct.next(product);
     this.route.navigate([`projects/${project.id}/product/${product.id}`])
   }
-  getProductsByProjectId(project){
+  getProductsByProjectId(project) {
     console.log(project.id)
-  this.projectservice.getProductsByProjectId(project.id).subscribe
-  (data => {
-    console.log(data)
-   project.products = data
-  })
-}
+    this.projectservice.getProductsByProjectId(project.id).subscribe
+      (data => {
+        console.log(data)
+        project.products = data
+      })
+  }
 }

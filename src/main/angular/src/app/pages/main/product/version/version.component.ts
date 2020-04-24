@@ -14,6 +14,8 @@ export class VersionComponent implements OnInit {
   versionId;
   createVersionForm: FormGroup;
   isCreateVersion: boolean = false
+  isloader:boolean= true
+
   //isVersionTable: boolean = true
   constructor(
     private _productservice: ProductService,
@@ -30,6 +32,7 @@ export class VersionComponent implements OnInit {
     this._productservice.getVersions().subscribe(data => {
       console.log(data)
       this.Versions = data
+      this.isloader = false
 
     })
   }
