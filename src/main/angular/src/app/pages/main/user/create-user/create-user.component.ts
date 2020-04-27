@@ -1,4 +1,3 @@
-import { DeactivateGuard } from './../../deactivate.guard';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormArray, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, OnChanges } from '@angular/core';
@@ -116,7 +115,7 @@ export class CreateUserComponent implements OnInit {
       this._adminService.updateUser(this.userId, this.createUserForm.value)
         .subscribe(data => {
           this.route.navigate(['users'])
-          swal("update user successfully!");
+          swal("Update User Successfully!");
 
         },
           error => {
@@ -126,7 +125,7 @@ export class CreateUserComponent implements OnInit {
       this._adminService.addUser(this.createUserForm.value).
         subscribe(data => {
           this.route.navigate(['users'])
-          swal("new user added successfully!");
+          swal("New User Added Successfully!");
         },
           error => {
           })

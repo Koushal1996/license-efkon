@@ -16,6 +16,7 @@ export class DetailComponent implements OnInit {
   productDetail = [];
   detailId
   isCreateDetail:boolean = false
+  isloader:boolean= true
   constructor(private _productService: ProductService,
     private fb: FormBuilder) { }
   createDetailForm: FormGroup;
@@ -86,6 +87,7 @@ export class DetailComponent implements OnInit {
         console.log(data)
         this.productDetail = data
         console.log(this.productDetail)
+        this.isloader = false
       })
   }
 
