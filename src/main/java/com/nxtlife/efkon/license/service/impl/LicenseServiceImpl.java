@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
+import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
@@ -33,7 +34,13 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	}
 
 	@Override
+	@Secured(AuthorityUtils.LICENSE_UPDATE)
 	public LicenseResponse update(Long id, LicenseRequest request) {
+		Long unmaskId = unmask(id);
+		LicenseResponse license = licenseDao.findResponseById(unmaskId);
+		if (license == null) {
+			throw new NotFoundException(String.format("License (%s) not found", id));
+		}
 		return null;
 	}
 

@@ -60,7 +60,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 	private static Logger logger = LoggerFactory.getLogger(ProjectProductServiceImpl.class);
 
-	public void validate(String expirationPeriodType, String licenseType, Integer expirationMonthCount) {
+	private void validate(String expirationPeriodType, String licenseType, Integer expirationMonthCount) {
 		if (expirationPeriodType != null && !ExpirationPeriodType.matches(expirationPeriodType)) {
 			throw new ValidationException(
 					String.format("Expiration period type (%s) is not valid", expirationPeriodType));
@@ -78,7 +78,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		}
 	}
 
-	public void validate(ProjectProductRequest request) {
+	private void validate(ProjectProductRequest request) {
 		if (!projectDao.existsByIdAndActive(request.getProjectId(), true)) {
 			throw new ValidationException(String.format("Project (%s) not exist", mask(request.getProjectId())));
 		}
@@ -126,13 +126,6 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_CREATE)
 	public ProjectProductResponse save(ProjectProductRequest request) {
 		validate(request);
-		// if
-		// (projectProductDao.existsByProjectIdAndProductDetailId(request.getProjectId(),
-		// request.getProductDetailId())) {
-		// throw new ValidationException(String.format("This product detail(%s)
-		// already assigned with project (%s)",
-		// mask(request.getProductDetailId()), mask(request.getProjectId())));
-		// }
 		ProjectProduct projectProduct = request.toEntity();
 		String endDate;
 		if (request.getExpirationPeriodType().equals(ExpirationPeriodType.LIMITED.name())) {
@@ -155,14 +148,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		if (!projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)) {
 			throw new ValidationException("Project product can't be updated after submitting");
 		}
-		if (request.getProjectId() != null && !projectProduct.getProjectId().equals(mask(request.getProjectId()))) {
-			throw new ValidationException(String.format("Project (%s) can't be update", mask(request.getProjectId())));
-		}
-		if (request.getProductDetailId() != null
-				&& !projectProduct.getProductDetailId().equals(mask(request.getProductDetailId()))) {
-			throw new ValidationException(
-					String.format("Product detail (%s) can't be update", mask(request.getProjectId())));
-		}
+
 		validate(request.getExpirationPeriodType(), request.getLicenseType(), request.getExpirationMonthCount());
 		int rows = projectProductDao.update(unmaskId,
 				request.getLicenseCount() == null ? projectProduct.getLicenseCount() : request.getLicenseCount(),
@@ -334,7 +320,12 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (status.equals(ProjectProductStatus.REJECT) && projectProductStatus.equals(ProjectProductStatus.DRAFT)) {
 				throw new ValidationException("You can't reject project product in draft mode");
 			}
-			int rows = projectProductDao.update(unmaskId, status, getUserId(), new Date());
+			int rows;
+			if (status.equals(ProjectProductStatus.REJECT)) {
+				rows = projectProductDao.update(unmaskId, ProjectProductStatus.DRAFT, getUserId(), new Date());
+			} else {
+				rows = projectProductDao.update(unmaskId, status, getUserId(), new Date());
+			}
 			if (comment != null && !comment.isEmpty()) {
 				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(), status.name(), unmaskId));
 			}
@@ -344,7 +335,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 				projectProductResponse
 						.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
-				if (rows > 0) {
+				if (status.equals(ProjectProductStatus.APPROVED) && rows > 0) {
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
@@ -354,7 +345,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 												projectProductResponse.getProjectResponse().getCustomerCode(),
 												projectProductResponse.getProductDetailResponse()
 														.getProductFamilyCode(),
-												projectProductResponse.getProductDetailResponse().getProductCode(),
+												projectProductResponse.getProductDetailResponse().getProductCodeCode(),
 												getUser().getCode(), projectProductResponse.getLicenseType().getCode(),
 												(i + 1),
 												projectProductResponse.getExpirationMonthCount() == null ? 0
@@ -373,7 +364,6 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				}
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
 			}
-
 			return projectProductResponse;
 		} else {
 			throw new NotFoundException(String.format("Project product (%s) not found", id));
@@ -388,7 +378,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		if (!projectProductDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("Project product (%s) not found", id));
 		}
-		if (!licenseDao.existsByProjectProductIdAndActive(unmaskId, true)) {
+		if (licenseDao.existsByProjectProductIdAndActive(unmaskId, true)) {
 			throw new ValidationException(String.format(
 					"Project product (%s) can't be delete as some of the project product have got the licenses ", id));
 		}

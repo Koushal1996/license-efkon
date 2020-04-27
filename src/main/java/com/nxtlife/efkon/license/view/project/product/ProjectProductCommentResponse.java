@@ -11,6 +11,14 @@ public class ProjectProductCommentResponse implements Response {
 	public String comment;
 	public String remark;
 
+	public ProjectProductCommentResponse(Long commentedById, String commentedByName, String comment, String remark) {
+		super();
+		this.commentedById = commentedById;
+		this.commentedBy = commentedByName;
+		this.comment = comment;
+		this.remark = remark;
+	}
+
 	public Long getCommentedById() {
 		return mask(commentedById);
 	}
