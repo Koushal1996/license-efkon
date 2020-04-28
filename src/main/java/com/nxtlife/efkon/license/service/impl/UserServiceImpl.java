@@ -189,6 +189,18 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 		return userResponseList;
 	}
 
+	@Override
+	@Secured(AuthorityUtils.USER_FETCH)
+	public UserResponse findById(Long userId) {
+		Long unmaskId = unmask(userId);
+		UserResponse user = userJpaDao.findResponseById(unmaskId);
+		user.setRoles(roleDao.findByRoleUsersUserId(unmaskId));
+		for (RoleResponse role : user.getRoles()) {
+			role.setAuthorities(authorityDao.findByAuthorityRolesRoleId(unmask(role.getId())));
+		}
+		return user;
+	}
+
 	/**
 	 * this method used to fetch user response using roleId this method is used
 	 * when we want to get al the names and email ids of the user using

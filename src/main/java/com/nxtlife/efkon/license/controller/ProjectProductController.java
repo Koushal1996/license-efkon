@@ -106,7 +106,21 @@ public class ProjectProductController {
 		return projectProductService.updateStatus(id, ProjectProductStatus.REVIEWED, request.getComment());
 	}
 
-	@GetMapping(value = "project/product/{id}", produces = { "application/json" }, consumes = { "application/json" })
+	@PutMapping(value = "project/product/{id}/reject", produces = { "application/json" }, consumes = {
+			"application/json" })
+	@Operation(summary = "update product status to reject ", description = "return project product response after updated details", tags = {
+			"Project", "Project Product" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Project Product response after successfully update the product details in project", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to update product details in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project product id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	@Secured({ AuthorityUtils.PROJECT_PRODUCT_REVIEW, AuthorityUtils.PROJECT_PRODUCT_REVIEW })
+	public ProjectProductResponse reject(@PathVariable Long id, @RequestBody ProjectProductCommentRequest request) {
+		return projectProductService.updateStatus(id, ProjectProductStatus.REJECT, request.getComment());
+	}
+
+	@GetMapping(value = "project/product/{id}", produces = { "application/json" })
 	@Operation(summary = "fetch product and license detail ", description = "return project product response", tags = {
 			"Project", "Project Product" })
 	@ApiResponses(value = {

@@ -2,6 +2,8 @@ package com.nxtlife.efkon.license.entity.common;
 
 import static com.nxtlife.efkon.license.service.BaseService.getUser;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,8 +16,8 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotNull;
 
 import com.nxtlife.efkon.license.entity.user.User;
-import com.nxtlife.efkon.license.util.DateUtil;
 import com.nxtlife.efkon.license.service.BaseService;
+import com.nxtlife.efkon.license.util.DateUtil;
 
 @MappedSuperclass
 public class BaseEntity {
@@ -30,7 +32,7 @@ public class BaseEntity {
 	private String createdAt;
 
 	@Column(name = "modified_at")
-	private String modifiedAt;
+	private Date modifiedAt;
 
 	@ManyToOne
 	@JoinColumn(name = "created_by")
@@ -79,7 +81,7 @@ public class BaseEntity {
 	 */
 	@PreUpdate
 	protected void preUpdate() {
-		this.modifiedAt = DateUtil.today();
+		this.modifiedAt = new Date();
 		this.active = true;
 		Long userId;
 		if ((userId = getUser().getUserId()) != null) {
@@ -104,11 +106,11 @@ public class BaseEntity {
 		this.createdAt = createdAt;
 	}
 
-	public String getModifiedAt() {
+	public Date getModifiedAt() {
 		return modifiedAt;
 	}
 
-	public void setModifiedAt(String modifiedAt) {
+	public void setModifiedAt(Date modifiedAt) {
 		this.modifiedAt = modifiedAt;
 	}
 

@@ -32,6 +32,14 @@ public interface UserService {
 	public List<UserResponse> findAll();
 
 	/**
+	 * this method used to fetch user info
+	 * 
+	 * @param userId
+	 * @return {@link UserResponse}
+	 */
+	public UserResponse findById(Long userId);
+
+	/**
 	 * this method used to fetch user details by role id
 	 *
 	 * @param roleId

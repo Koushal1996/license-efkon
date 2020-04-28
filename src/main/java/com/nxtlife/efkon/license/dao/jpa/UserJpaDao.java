@@ -17,16 +17,17 @@ public interface UserJpaDao extends JpaRepository<User, Long> {
 	public User findByUsername(String username);
 
 	public List<UserResponse> findByUserRolesRoleId(Long roleId);
-	
+
 	public List<UserResponse> findByUserRolesRoleName(String roleName);
 
-	public UserResponse findByEmailAndActive(String email,Boolean active);
+	public UserResponse findByEmailAndActive(String email, Boolean active);
 
+	public UserResponse findResponseById(Long userId);
 
 	public Boolean existsByUsername(String username);
 
 	@Query(value = "select id from User where contact_no = ?1 and active = ?2")
-	public Long findIdByContactNoAndActive( String contactNo, Boolean active);
+	public Long findIdByContactNoAndActive(String contactNo, Boolean active);
 
 	@Query(value = "select id from User where  email = ?1 and active = ?2")
 	public Long findIdByEmailAndActive(String email, Boolean active);

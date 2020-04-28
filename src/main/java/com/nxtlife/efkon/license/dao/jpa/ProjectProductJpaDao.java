@@ -62,16 +62,16 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public Integer findLicenseCountById(Long id);
 
 	@Modifying
-	@Query(value = "update project_product set license_count=?2, license_type =?3, expiration_period_type=?4, expiration_month_count=?5, start_date=?6, end_date=?7, modified_by =?8, modified_at =?9 where id =?1", nativeQuery = true)
+	@Query(value = "update ProjectProduct set licenseCount=?2, licenseType =?3, expirationPeriodType=?4, expirationMonthCount=?5, startDate=?6, endDate=?7, modifiedBy.id =?8, modifiedAt =?9 where id =?1")
 	public int update(Long id, Integer licenseCount, LicenseType licenseType, ExpirationPeriodType expirationPeriodType,
 			Integer expirationMonthCoun, String startDate, String endDate, Long userId, Date date);
 
 	@Modifying
-	@Query(value = "update project_product set status=?2, modified_by =?3, modified_at =?4 where id =?1", nativeQuery = true)
+	@Query(value = "update ProjectProduct set status=?2, modifiedBy.id =?3, modifiedAt =?4 where id =?1")
 	public int update(Long id, ProjectProductStatus status, Long userId, Date date);
 
 	@Modifying
-	@Query(value = "update project_product set active = false, modified_by =?2, modified_at =?3 where id =?1", nativeQuery = true)
+	@Query(value = "update ProjectProduct set active = false, modifiedBy.id =?2, modifiedAt =?3 where id =?1")
 	public int delete(Long id, Long userId, Date date);
 
 }
