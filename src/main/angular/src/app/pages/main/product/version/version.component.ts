@@ -46,7 +46,7 @@ export class VersionComponent implements OnInit {
       this._productservice.updateVersions(this.versionId, this.createVersionForm.value)
         .subscribe(data => {
           swal("Update successfully!");
-          this.Versions.push(data)
+          this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
         })
@@ -55,9 +55,9 @@ export class VersionComponent implements OnInit {
       this._productservice.addVersions(this.createVersionForm.value).
         subscribe(data => {
           swal("Add successfully!");
+          this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
-          this.Versions.push(data)
         },
           error => {
           })
