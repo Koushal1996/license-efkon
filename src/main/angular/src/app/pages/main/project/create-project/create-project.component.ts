@@ -18,6 +18,8 @@ export class CreateProjectComponent implements OnInit {
   projectcustomers: any[] = [];
   searchTerm = [];
   searchtable: boolean = true
+  loaderbutton:boolean=false;
+
   constructor(private fb: FormBuilder,
     private _projectService: ProjectService,
     private _adminService: AdminService,
@@ -64,6 +66,7 @@ export class CreateProjectComponent implements OnInit {
 
 
   onSubmit() {
+    this.loaderbutton=true
     //console.log(this.projectForm.value)
     this._projectService.addProject(this.projectForm.value).subscribe(
       data => {
@@ -71,7 +74,9 @@ export class CreateProjectComponent implements OnInit {
          this.route.navigate(['projects'])
          swal("New Project Added successfully!");
       },
-      error => { }
+      error => {
+        this.loaderbutton=false
+       }
     )
   }
 

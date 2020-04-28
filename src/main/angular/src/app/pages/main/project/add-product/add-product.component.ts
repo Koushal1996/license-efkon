@@ -11,7 +11,7 @@ import swal from 'sweetalert';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
-
+  loaderbutton:boolean=false;
   productForm: FormGroup;
   productId
   projects
@@ -75,13 +75,16 @@ export class AddProductComponent implements OnInit {
       })
   }
   onSubmit() {
+    this.loaderbutton=true
     if (this.productId) {
       this.projectservice.updateProduct(this.productId, this.productForm.value).subscribe(
         data => {
           this.route.navigate(['projects'])
           swal(" Product Update successfully!");
         },
-        error => { }
+        error => {
+          this.loaderbutton=false
+         }
       )
 
     } else {
@@ -92,7 +95,7 @@ export class AddProductComponent implements OnInit {
           swal("New Product Added successfully!");
 
         },
-        error => { }
+        error => {this.loaderbutton=false }
       )
     }
   }

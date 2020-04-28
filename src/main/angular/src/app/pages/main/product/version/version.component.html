@@ -5,7 +5,7 @@
       <div class="text-center">
         <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
       </div>
-      <div class="table-responsive">
+      <div class="table-responsive" *ngIf="Versions">
         <table class="table table-bordered mt-4">
           <thead>
             <tr>
@@ -32,7 +32,7 @@
         <button class="btn btn-danger" *ngIf="!isCreateVersion" (click)="showVersionForm()">Add Version</button>
       </div>
     </div>
-    <div class="col-md-6" *ngIf="isCreateVersion">
+    <div class="col-md-6" *ngIf="isCreateVersion || !Versions">
       <h2 class="text-center">Create Version</h2>
       <form (ngSubmit)="onSubmit()" [formGroup]="createVersionForm">
         <div class="form-group">
@@ -44,8 +44,12 @@
             required</span>
           </span>       
         </div>
-        <button type="submit" class="btn btn-danger ml-auto" [disabled]="!createVersionForm.valid">
+        <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton" 
+        [disabled]="!createVersionForm.valid">
           {{versionId ?'Update': 'Submit'}}</button>
+          <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
+            <i class="fa fa-refresh fa-spin"></i> Loading
+          </button>
       </form>
     </div>
 

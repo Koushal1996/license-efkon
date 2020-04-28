@@ -26,6 +26,18 @@ export class ProjectService {
   updateProduct(Id,data){
     return this.api.put(`api/project/product/${Id}`,data)
   }
+  submitProductStatus(Id, data){
+    return this.api.put(`api/project/product/${Id}/submit`,data)
+  }
+  reviewProductStatus(Id,data){
+    return this.api.put(`api/project/product/${Id}/review`,data)
+  }
+  approveProductStatus(Id, data){
+    return this.api.put(`api/project/product/${Id}/approve`,data)
+  }
+  rejectProductStatus(Id, data){
+    return this.api.put(`api/project/product/${Id}/reject`,data)
+  }
   getProjectTypes(){
     return this.api.get('api/project/types');
   }
