@@ -317,8 +317,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (status.equals(ProjectProductStatus.REJECT) && (comment == null || comment.isEmpty())) {
 				throw new ValidationException("Comment is required at the reject time");
 			}
-			if (status.equals(ProjectProductStatus.REJECT) && projectProductStatus.equals(ProjectProductStatus.DRAFT)) {
-				throw new ValidationException("You can't reject project product in draft mode");
+			if (status.equals(ProjectProductStatus.REJECT) && (projectProductStatus.equals(ProjectProductStatus.DRAFT)
+					|| projectProductStatus.equals(ProjectProductStatus.APPROVED))) {
+				throw new ValidationException("You can't reject project product in draft and approved mode");
 			}
 			int rows;
 			if (status.equals(ProjectProductStatus.REJECT)) {

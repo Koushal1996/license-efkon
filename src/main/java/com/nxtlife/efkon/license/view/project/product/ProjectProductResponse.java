@@ -1,7 +1,9 @@
 package com.nxtlife.efkon.license.view.project.product;
 
+import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -19,6 +21,11 @@ public class ProjectProductResponse implements Response {
 
 	@Schema(description = " Id of the project product", example = "1")
 	private Long id;
+
+	private String createdAt;
+
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	private Date modifiedAt;
 
 	private Long projectId;
 
@@ -51,12 +58,13 @@ public class ProjectProductResponse implements Response {
 
 	@JsonIgnore
 	private Long createdById;
-	
+
 	private List<ProjectProductCommentResponse> comments;
 
 	public ProjectProductResponse(Long id, Integer licenseCount, LicenseType licenseType,
 			ExpirationPeriodType expirationPeriodType, Integer expirationMonthCount, String startDate, String endDate,
-			ProjectProductStatus status, Long projectId, Long productDetailId, Long createdById) {
+			ProjectProductStatus status, String createdAt, Date modifiedAt, Long projectId, Long productDetailId,
+			Long createdById) {
 		super();
 		this.id = id;
 		this.licenseCount = licenseCount;
@@ -66,6 +74,8 @@ public class ProjectProductResponse implements Response {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.status = status;
+		this.createdAt = createdAt;
+		this.modifiedAt = modifiedAt;
 		this.projectId = projectId;
 		this.productDetailId = productDetailId;
 		this.createdById = createdById;
@@ -151,6 +161,22 @@ public class ProjectProductResponse implements Response {
 		this.endDate = endDate;
 	}
 
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getModifiedAt() {
+		return modifiedAt;
+	}
+
+	public void setModifiedAt(Date modifiedAt) {
+		this.modifiedAt = modifiedAt;
+	}
+
 	public Long getProjectId() {
 		return mask(projectId);
 	}
@@ -188,8 +214,8 @@ public class ProjectProductResponse implements Response {
 			ProjectProductResponse response = new ProjectProductResponse(projectProduct.getId(),
 					projectProduct.getLicenseCount(), projectProduct.getLicenseType(),
 					projectProduct.getExpirationPeriodType(), projectProduct.getExpirationMonthCount(),
-					projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus(), null, null,
-					null);
+					projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus(),
+					projectProduct.getCreatedAt(), projectProduct.getModifiedAt(), null, null, null);
 			return response;
 		}
 		return null;

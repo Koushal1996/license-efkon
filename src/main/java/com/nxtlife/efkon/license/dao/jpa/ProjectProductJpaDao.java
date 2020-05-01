@@ -47,11 +47,11 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	public Boolean existsByIdAndActive(Long id, Boolean active);
 
-	@Query(value = "select projectProduct.status from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where id =?1 and project.projectManager.id=?2 and active=?3")
+	@Query(value = "select projectProduct.status from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where projectProduct.id =?1 and project.projectManager.id=?2 and projectProduct.active=?3")
 	public ProjectProductStatus findStatusByIdAndProjectProjectManagerIdAndActive(Long id, Long projectManagerId,
 			Boolean active);
 
-	@Query(value = "select projectProduct.status from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where id =?1 and project.customerEmail=?2 and active=?3")
+	@Query(value = "select projectProduct.status from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where projectProduct.id =?1 and project.customerEmail=?2 and projectProduct.active=?3")
 	public ProjectProductStatus findStatusByIdAndProjectCustomerEmailAndActive(Long id, String customerEmail,
 			Boolean active);
 

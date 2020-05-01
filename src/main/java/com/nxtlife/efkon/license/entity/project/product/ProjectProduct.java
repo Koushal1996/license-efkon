@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -26,8 +25,7 @@ import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "project_product", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "project_id", "product_detail_id" }) })
+@Table(name = "project_product")
 @DynamicUpdate(value = true)
 @DynamicInsert(value = true)
 public class ProjectProduct extends BaseEntity implements Serializable {
