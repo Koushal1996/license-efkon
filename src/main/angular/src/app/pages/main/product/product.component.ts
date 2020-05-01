@@ -1,3 +1,4 @@
+import { StorageService } from './../../../services/storage/storage.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _storageService:StorageService) { }
 
   ngOnInit() {
   }
-
+  hasAuthority(authority){
+    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+    return authorities.includes(authority);
+  }
 }

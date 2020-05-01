@@ -19,17 +19,25 @@
               <td>{{i+1}}</td>
               <td>{{version.version}}</td>
               <td>
-                <a class="text-primary pr-2 cursor" (click)="editVersion(version)">
+                <a class="text-primary pr-2 cursor"
+                *ngIf="hasAuthority('VERSION_UPDATE')"
+                 (click)="editVersion(version)">
                   <i class="fa fa-edit"></i>
                 </a>
-                <a class="text-danger pl-2 cursor" (click)="deleteVersion(version)">
+                <a class="text-danger pl-2 cursor" 
+                *ngIf="hasAuthority('VERSION_DELETE')"
+                 (click)="deleteVersion(version)">
                   <i class="fa fa-trash"></i>
                 </a>
               </td>
             </tr>
           </tbody>
         </table>
-        <button class="btn btn-danger" *ngIf="!isCreateVersion" (click)="showVersionForm()">Add Version</button>
+        <ng-container *ngIf="hasAuthority('VERSION_CREATE')" >
+        <button class="btn btn-danger"
+         *ngIf="!isCreateVersion" 
+         (click)="showVersionForm()">Add Version</button>
+        </ng-container>
       </div>
     </div>
     <div class="col-md-6" *ngIf="isCreateVersion || !Versions">

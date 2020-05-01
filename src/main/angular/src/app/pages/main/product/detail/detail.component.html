@@ -24,10 +24,12 @@
               <td>{{detail.versionName}}</td>
               <td>
                 <a class="text-primary pr-2 cursor">
-                  <i class="fa fa-edit" (click)="editProductDetail(detail)"></i>
+                  <i class="fa fa-edit" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
+                   (click)="editProductDetail(detail)"></i>
                 </a>
                 <a class="text-danger pl-2 cursor">
-                  <i class="fa fa-trash" (click)="deleteProductDetail(detail)"></i>
+                  <i class="fa fa-trash" *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
+                  (click)="deleteProductDetail(detail)"></i>
                 </a>
               </td>
 
@@ -35,8 +37,10 @@
           </tbody>
         </table>
       </div>
+      <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')" >
       <button class="btn btn-danger"  *ngIf="!isCreateDetail"
       (click)="showDetailForm()">Add Product Detail </button>
+      </ng-container>
     </div>
     <div class="col-md-6" *ngIf="isCreateDetail">
       <h2 class="text-center">Product Detail</h2>
@@ -80,8 +84,12 @@
             required</span>
           </span>
         </div>
-        <button type="submit" class="btn btn-danger ml-auto" [disabled]="!createDetailForm.valid">
+        <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton"
+         [disabled]="!createDetailForm.valid">
           {{detailId ?'Update': 'Submit'}} </button>
+          <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
+            <i class="fa fa-refresh fa-spin"></i> Loading
+          </button>
       </form>
     </div>
 

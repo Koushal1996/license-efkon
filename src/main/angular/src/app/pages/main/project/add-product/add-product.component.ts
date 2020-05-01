@@ -17,7 +17,7 @@ export class AddProductComponent implements OnInit {
   projects
   productDetail: any;
   eachProductId
-  LIFETIME: any;
+
 
   constructor(
     private fb: FormBuilder,
@@ -88,7 +88,8 @@ export class AddProductComponent implements OnInit {
       )
 
     } else {
-      this.projectservice.addProduct(this.productForm.value).subscribe(
+      const requestBody = this.productForm.getRawValue();
+      this.projectservice.addProduct(requestBody).subscribe(
         data => {
           console.log(data)
           this.route.navigate(['projects'])
@@ -103,6 +104,7 @@ export class AddProductComponent implements OnInit {
     console.log(licenseType)
     if (licenseType == 'DEMO') {
       this.productForm.controls['expirationPeriodType'].patchValue('LIMITED');
+      this.productForm.controls['expirationPeriodType'].disable();
     }
   }
   onExpirationChange(expirationPeriodType) {

@@ -1,3 +1,4 @@
+import { StorageService } from './../../../../services/storage/storage.service';
 import { ProductService } from './../../../../services/product/product.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -15,19 +16,22 @@ export class VersionComponent implements OnInit {
   createVersionForm: FormGroup;
   isCreateVersion: boolean = false
   isloader:boolean= true
-
+  loaderbutton:boolean=false;
   //isVersionTable: boolean = true
   constructor(
     private _productservice: ProductService,
     private fb: FormBuilder,
-    private activate: ActivatedRoute) { }
+    private activate: ActivatedRoute,
+    private _storageService:StorageService) { }
 
   ngOnInit() {
     this.getversions();
     this.createVersionForm = this.initProjectForm();
-   
   }
-
+  hasAuthority(authority){
+    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+    return authorities.includes(authority);
+  }
   getversions() {
     this._productservice.getVersions().subscribe(data => {
       console.log(data)
@@ -42,6 +46,7 @@ export class VersionComponent implements OnInit {
     });
   }
   onSubmit() {
+    this.loaderbutton=true
     if (this.versionId) {
       this._productservice.updateVersions(this.versionId, this.createVersionForm.value)
         .subscribe(data => {
@@ -49,6 +54,10 @@ export class VersionComponent implements OnInit {
           this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
+          this.versionId = ''
+          this.loaderbutton=false
+        }, error => {
+          this.loaderbutton=false
         })
     }
     else {
@@ -58,8 +67,10 @@ export class VersionComponent implements OnInit {
           this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
+          this.loaderbutton=false
         },
           error => {
+            this.loaderbutton=false
           })
     }
   }

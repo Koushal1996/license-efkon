@@ -1,5 +1,6 @@
-<div class="container mt-4">
-  <button class="btn btn-danger" (click)="createpProject()">Create Project</button>
+<div class="mt-4">
+  <button class="btn btn-danger"  *ngIf="hasAuthority('PROJECT_CREATE')"
+   (click)="createpProject()">Create Project</button>
 </div>
 <div class="text-center">
   <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
@@ -21,7 +22,7 @@
     </thead>
     <tbody id="accordion">
       <ng-container *ngFor="let project of projects ; index as i">
-        <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i" (click)="getProductsByProjectId(project)">
+        <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i" #c (click)="getProductsByProjectId(c, project)">
           <td>{{i+1}}</td>
           <td>{{project.customerName}}</td>
           <td>{{project.customerEmail}}</td>
@@ -29,17 +30,23 @@
           <td>{{project.customerContactNo}}</td>
           <td>{{project.projectTypeName}}</td>
           <td>{{project.projectManagerName}}</td>
-          <td><button class=" btn btn-primary" (click)="addProduct(project)">Add Product</button></td>
+          <td><button class=" btn btn-primary"
+            *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
+             (click)="addProduct(project)">Add Product</button></td>
         </tr>
         <tr>
           <td colspan="8" class="padding">
             <div [attr.id]="'collapse' + i" class="collapse" data-parent="#accordion">
-              <div *ngIf="!project.products || !project.products.length">
-                <p class="text-black-50 text-center"> No Products Available Now</p>
+              <div class="text-center" *ngIf="project.productLoader">
+                <div class="spinner-border text-danger mt-2" style="width: 3rem; height: 3rem;"></div>
               </div>
-              <table class="table table-bordered">
+              <div *ngIf="!project.products?.length && !project.productLoader">
+                <p class="text-black-50 text-center pt-3">No Products Available Now</p>
+              </div>
+              <div class="col-12 mt-3">
+              <table class="table table-bordered innertable">
+               
                 <tr class="text-primary" *ngIf="project.products && project.products.length">
-                  <th scope="col">#</th>
                   <th scope="col">Product Detail</th>
                   <th scope="col">No of License</th>
                   <th scope="col">License Type</th>
@@ -50,8 +57,7 @@
                   <th scope="col">Status</th>
                   <th scope="col">Action</th>
                 </tr>
-                <tr *ngFor="let pro of project.products ; index as i">
-                  <td>{{i+1}}</td>
+                <tr *ngFor="let pro of project.products ; index as i"> 
                   <td>
                     {{pro.productDetailResponse.productCodeName}}
                     {{pro.productDetailResponse.productFamilyName}}
@@ -60,38 +66,54 @@
                   <td>{{pro.licenseCount}}</td>
                   <td>{{pro.licenseType}}</td>
                   <td>{{pro.expirationPeriodType}}</td>
-                  <td>{{pro.expirationMonthCount}}</td>
+                  <td *ngIf="pro.expirationPeriodType=='LIMITED'">{{pro.expirationMonthCount}}</td>
+                   <td *ngIf="pro.expirationPeriodType=='LIFETIME'">NA</td>
                   <td>{{pro.startDate}}</td>
-                  <td>{{pro.endDate}}</td>
-                  <td>{{pro.status}}</td>
+                  <td *ngIf="pro.expirationPeriodType=='LIMITED'">{{pro.endDate}}</td>
+                  <td *ngIf="pro.expirationPeriodType=='LIFETIME'">NA</td>
+                  <td>{{pro.status}}
+                    <br>
+                    <a class="cursor text-danger"
+                    (click)="showComments(pro)">comments
+                  </a>
+                 
+                  </td>
                   <td *ngIf="pro.status=='DRAFT'">
                     <a class="text-primary pr-2 cursor" 
+                    *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
                     (click)="editProduct(project,pro)">
                       <i class="fa fa-edit"></i>
                     </a>
                     <a class="text-danger pl-2 cursor" 
+                    *ngIf="hasAuthority('PROJECT_PRODUCT_DELETE')"
                     (click)="deleteProduct(pro)">
                       <i class="fa fa-trash"></i>
                     </a>
                     <button class="btn btn-danger ml-3" type="button"
+                    *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                      (click)="submitProductStatus(pro)">Submit</button>
                   </td>
                   <td *ngIf="pro.status=='SUBMIT'">
-                    <button class="btn btn-danger" type="button"
+                    <button class="btn btn-danger mr-1" type="button"
+
                     (click)="reviewProductStatus(pro)">Review</button>
+                    <button class="btn btn-danger" type="button"
+
+                    (click)="rejectProductStatus(pro)">Reject</button>
                   </td>
                   <td *ngIf="pro.status=='REVIEWED'">
-                    <button class="btn btn-danger" type="button"
+                    <button class="btn btn-danger mr-1" type="button"
+
                     (click)="approveProductStatus(pro)">Approved</button>
-                  </td>
-                  <td *ngIf="pro.status=='APPROVED'">
                     <button class="btn btn-danger" type="button"
-                      (click)="rejectProductStatus(pro)" 
-                      >Reject
-                    </button>
+                  
+                    (click)="rejectProductStatus(pro)">Reject</button>
+                  </td>
+                  <td *ngIf="pro.status=='APPROVED' || pro.status=='REJECTED' ">
                   </td>
                 </tr>
               </table>
+            </div>
             </div>
           </td>
         </tr>
@@ -115,14 +137,14 @@
              <textarea class="form-control"
              formControlName="comment" name="comment" ></textarea>
              <span *ngIf="popUpForm.get('comment').errors &&
-             (popUpForm.get('comment').touched||popUpForm.get('comment').dirty)">
+             (popUpForm.get('comment').touched || popUpForm.get('comment').dirty)">
                <span *ngIf="popUpForm.get('comment').errors.required" class="text-danger">
              Comment is required</span>
              </span>
            </div>
           </div>
             <div class="modal-footer">
-            <button type="submit" class="btn btn-danger"  [disabled]="!popUpForm.valid">
+            <button type="submit" class="btn btn-danger" [disabled]="!popUpForm.valid">
               {{commentSubmitButton}}
           </button>
            </div>
@@ -131,3 +153,28 @@
     </div>
   </div>
   </div>
+
+  <div class="modal" id="myModal" 
+  [style.display]="showCommentModal ? 'block' : 'none'">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+          <h4 class="modal-title"> Comments</h4>
+          <button type="button" class="close" data-dismiss="modal"
+          (click) = "hideCommentModel()">&times;</button>
+        </div>
+        <div class="modal-body">
+     <ul *ngFor =" let c of comments">
+      <li>NAME :{{c.commentedBy}}
+          COMMENT :{{c.comment}}
+          TIME:{{c.createdAt | date:'medium'}}
+      </li>
+
+     </ul>
+     
+        </div>
+      </div>
+    </div>
+    </div>
+
+

@@ -89,6 +89,9 @@ export class CreateProjectComponent implements OnInit {
         customerContactNo: customer.contactNo
       })
     }
+    else{
+     this.projectForm.reset()
+    }
   }
 
 }

@@ -1,11 +1,14 @@
 <div class="container-fluid">
-  <div class="container mt-4">
-    <button class="btn btn-danger" (click)="createRole()">Create Role</button>
+  <div class="mt-4">
+    <button class="btn btn-danger"  *ngIf="hasAuthority('ROLE_CREATE')"
+    (click)="createRole()">Create Role</button>
   </div>
   <div class="text-center">
     <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
   </div>
+ <ng-container >
   <div class="table-responsive">
+   
   <table class="table table-bordered mt-4">
     <thead>
       <tr>
@@ -24,22 +27,29 @@
         <td>
           <span class="badge badge-secondary p-2 mr-2 mb-2 cursor"
             *ngFor=" let auth of item.authorities; index as index">
-
             {{auth.name}}
           </span>
         </td>
         <td *ngIf="item.active">
-          <a class="text-primary pr-2 cursor" (click)="editrole(item)">
+          <a class="text-primary pr-2 cursor"
+          *ngIf="hasAuthority('ROLE_UPDATE')"
+          (click)="editrole(item)">
             <i class="fa fa-edit"></i>
           </a>
-          <a class="text-danger pl-2 cursor" (click)="deleterole(item)">
+          <a class="text-danger pl-2 cursor"
+          *ngIf="hasAuthority('ROLE_DELETE')"
+          (click)="deleterole(item)">
             <i class="fa fa-trash"></i>
           </a>
         </td>
-        <td *ngIf="!item.active"><button (click)="activaterole(item)">
+        <td *ngIf="!item.active">
+          <button *ngIf="hasAuthority('ROLE_DELETE')"
+          (click)="activaterole(item)">
             activate</button></td>
       </tr>
     </tbody>
   </table>
+
 </div>
+</ng-container>
 </div>

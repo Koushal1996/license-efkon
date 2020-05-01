@@ -1,3 +1,4 @@
+import { StorageService } from './../../../services/storage/storage.service';
 import { AdminService } from './../../../services/admin/admin.service';
 import { Component, OnInit } from '@angular/core';
 import { _keyValueDiffersFactory } from '@angular/core/src/application_module';
@@ -12,20 +13,30 @@ import swal from 'sweetalert';
 export class RoleComponent implements OnInit {
   public roles = [];
   isloader:boolean=true
+  authorities: any;
+  AuthoritiesName: any;
+ 
   constructor(private _adminService: AdminService,
-    private route:Router ) { }
+    private route:Router,
+    private _storageService:StorageService ) { }
 
   ngOnInit() {
     this._adminService.getRoles()
       .subscribe(data => {
         this.roles = data
+        console.log(this.roles)
         this.isloader=false
-      },
-        error => {
-          console.log(error);
-
-        })
+      },error => {
+        console.log(error);
+      })  
   }
+
+  hasAuthority(authority){
+    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+    return authorities.includes(authority);
+  }
+
+  
   editrole(item) {
     this._adminService.selecetedRole.next(item);
     this.route.navigate(['roles',item.id])
@@ -88,4 +99,5 @@ export class RoleComponent implements OnInit {
   createRole(){
    this.route.navigate(['roles/create'])
   }
+  
 }

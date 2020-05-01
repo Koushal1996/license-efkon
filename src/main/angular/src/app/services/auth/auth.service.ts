@@ -25,7 +25,6 @@ export class AuthService {
   }
 
   saveUserDetails(userInfo: any) { localStorage.setItem('userInfo', JSON.stringify(userInfo)); }
-
   /**indicates server to send the OTP to user*/
   forgotPassword(username: string) {
     return this.api.get(`forgot-password/${username}`);

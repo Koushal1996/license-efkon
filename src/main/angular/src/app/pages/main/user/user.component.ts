@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from './../../../services/admin/admin.service';
 import swal from 'sweetalert';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Component({
   selector: 'app-user',
@@ -11,7 +12,8 @@ import swal from 'sweetalert';
 export class UserComponent implements OnInit {
 
   constructor(private _admin: AdminService,
-    private route: Router) { }
+    private route: Router,
+    private _storageService:StorageService) { }
   public users = []
   isloader:boolean=true
   ngOnInit() {
@@ -26,6 +28,11 @@ export class UserComponent implements OnInit {
 
     
   }
+  hasAuthority(authority){
+    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+    return authorities.includes(authority);
+  }
+
 
   deleteuser(item) {
     swal({

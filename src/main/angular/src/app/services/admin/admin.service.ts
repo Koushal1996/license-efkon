@@ -59,8 +59,11 @@ export class AdminService {
     return this.api.get('api/me/logout')
   }
    
-  getRoleById(roleId)
-  {
+  getRoleById(roleId){
     return this.api.get(`api/role/${roleId}`)
+  }
+
+  getUserById(userId){
+    return this.api.get(`api/user/${userId}`)
   }
 }

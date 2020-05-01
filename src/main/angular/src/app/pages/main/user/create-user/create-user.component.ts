@@ -62,14 +62,10 @@ export class CreateUserComponent implements OnInit {
 
 
   patchavalue() {
+    if (this.userId) {
     this._adminService.selecetedUser.subscribe(data => {
-      if (this.userId) {
-        this.createUserForm.patchValue({
-          name: data.name,
-          username: data.username,
-          email: data.email,
-          contactNo: data.contactNo,
-        })
+      if(Object.keys(data).length){
+        this.createUserForm.patchValue(data)
         this.selectedItems = data.roles;
         const roleIds = <FormArray>this.createUserForm.controls['roleIds'];
         if (data.roles) {
@@ -78,10 +74,20 @@ export class CreateUserComponent implements OnInit {
           });
         }
       }
-
-
+      else{
+       this._adminService.getUserById(this.userId).subscribe(data=>{
+        this.createUserForm.patchValue(data)
+        this.selectedItems = data.roles;
+        const roleIds = <FormArray>this.createUserForm.controls['roleIds'];
+        if (data.roles) {
+          data.roles.forEach(role => {
+            roleIds.push(new FormControl(role.id))
+          });
+        }
+       })
+      }   
     })
-  }
+  }}
 
 
   onItemSelect(item: any) {

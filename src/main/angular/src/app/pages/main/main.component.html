@@ -12,7 +12,13 @@
       </div>
     </div>
     <div class="list-group list-group-flush">
-      <a href="#" class="list-group-item list-group-item-action" *ngFor="let p of pages" [routerLink]="[p.route]" routerLinkActive="active">{{p.title}}</a>
+      <ng-container *ngFor="let p of pages">
+      <a href="#" class="list-group-item list-group-item-action" 
+ [routerLink]="[p.route]"  routerLinkActive="active"
+ *ngIf="pageAuthority(p.privilege)">
+        {{p.title}}
+    </a>
+  </ng-container>
     </div>
   </div>
   <!-- /#sidebar-wrapper -->

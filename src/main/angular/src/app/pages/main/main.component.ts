@@ -1,3 +1,4 @@
+import { StorageService } from './../../services/storage/storage.service';
 import { MainService } from './../../services/main/main.service';
 import { Router } from '@angular/router';
 import { AdminService } from './../../services/admin/admin.service';
@@ -12,27 +13,32 @@ declare let $: any;
 export class MainComponent implements OnInit {
 
   pages: any[] = [
-    { route: '/roles', title: 'Roles' },
-    { route: '/users', title: 'Users' },
-    { route: '/projects', title: 'Projects'},
-    { route: '/products/detail', title: 'Products'}
+    { route: '/roles', title: 'Roles' , privilege :'ROLE_FETCH' },
+    { route: '/users', title: 'Users' ,privilege :'USER_FETCH'},
+    { route: '/projects', title: 'Projects', privilege :'PROJECT_FETCH'},
+    { route: '/products/detail', title: 'Products',privilege :'PRODUCT_DETAIL_FETCH'}
   ]
   UserInfo: any;
-
+  UserAuthorities
   constructor(private adminService:AdminService,
     private route:Router,
-    private mainService:MainService ) { }
+    private mainService:MainService,
+    private _storageService:StorageService ) { }
 
   ngOnInit() {
     console.log(this.pages);
     this.mainService.getLoginUser().subscribe(data=>{
       console.log(data)
       this.UserInfo = data.name
-
+      this._storageService.storeData('userAuthorities',data.authorities)
     })
 
   }
-
+  pageAuthority(authority)
+  {
+    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+    return authorities.includes(authority);
+  }
   ngAfterViewInit() {
     $("#menu-toggle").click(function (e) {
       e.preventDefault();

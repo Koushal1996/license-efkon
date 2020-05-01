@@ -1,3 +1,4 @@
+import { StorageService } from './../../../../services/storage/storage.service';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from './../../../../services/product/product.service';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
@@ -17,18 +18,21 @@ export class DetailComponent implements OnInit {
   detailId
   isCreateDetail:boolean = false
   isloader:boolean= true
+  loaderbutton:boolean=false;
   constructor(private _productService: ProductService,
-    private fb: FormBuilder) { }
+    private fb: FormBuilder,
+    private _storageService:StorageService) { }
   createDetailForm: FormGroup;
   ngOnInit() {
-
     this.createDetailForm = this.initProductDetailForm();
     this.getversions();
     this.getProductFamilies()
     this.getProductDetail()
-
   }
-
+  hasAuthority(authority){
+    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+    return authorities.includes(authority);
+  }
   onchange(productFamilyId: number) {
     console.log(productFamilyId)
     // this.productCodes = 
@@ -60,15 +64,18 @@ export class DetailComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loaderbutton=true
     if (this.detailId) {
       this._productService.updateProductDetail(this.detailId, this.createDetailForm.value)
         .subscribe(data => {
           console.log(data)
           this.getProductDetail()
           this.isCreateDetail = false
+          this.detailId=''
+          this.loaderbutton=false
           swal("Update Successfully!");
         }, error => {
-          console.log("error")
+          this.loaderbutton=false
         }
         )
     } else {
@@ -78,7 +85,11 @@ export class DetailComponent implements OnInit {
           swal("Add Successfully!");
           this.getProductDetail()
           this.isCreateDetail = false
-        })
+          this.loaderbutton=false
+        },error => {
+          this.loaderbutton=false
+        }
+        )
     }
   }
   getProductDetail() {
