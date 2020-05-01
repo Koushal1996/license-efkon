@@ -95,21 +95,19 @@
                   </td>
                   <td *ngIf="pro.status=='SUBMIT'">
                     <button class="btn btn-danger mr-1" type="button"
-
+                    *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                     (click)="reviewProductStatus(pro)">Review</button>
                     <button class="btn btn-danger" type="button"
-
                     (click)="rejectProductStatus(pro)">Reject</button>
                   </td>
                   <td *ngIf="pro.status=='REVIEWED'">
                     <button class="btn btn-danger mr-1" type="button"
-
+                    *ngIf="hasAuthority('PROJECT_PRODUCT_APPROVE')"
                     (click)="approveProductStatus(pro)">Approved</button>
                     <button class="btn btn-danger" type="button"
-                  
                     (click)="rejectProductStatus(pro)">Reject</button>
                   </td>
-                  <td *ngIf="pro.status=='APPROVED' || pro.status=='REJECTED' ">
+                  <td *ngIf="pro.status=='APPROVED' ||pro.status=='REJECTED' ">
                   </td>
                 </tr>
               </table>
