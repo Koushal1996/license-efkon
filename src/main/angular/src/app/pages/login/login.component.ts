@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
-    
+
   ) { }
 
   ngOnInit() {
@@ -60,12 +60,13 @@ export class LoginComponent implements OnInit {
     this.login();
     swal({
       icon: "success",
-      title: "login successfully",   
-     timer: 2000,
-     buttons: [false],
+      title: "Login Successfully",
+      text: 'Redirecting...',
+      timer: 500,
+      buttons: [false],
     });
-    
-    
+
+
   }
 
   /**

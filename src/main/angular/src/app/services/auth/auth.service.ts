@@ -24,7 +24,10 @@ export class AuthService {
     return this.api.get('api/me');
   }
 
-  saveUserDetails(userInfo: any) { localStorage.setItem('userInfo', JSON.stringify(userInfo)); }
+  saveUserDetails(userInfo: any) {
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    localStorage.setItem('userAuthorities', JSON.stringify(userInfo.authorities));
+  }
   /**indicates server to send the OTP to user*/
   forgotPassword(username: string) {
     return this.api.get(`forgot-password/${username}`);
