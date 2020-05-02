@@ -9,3 +9,46 @@ body {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.table {
+  width: 100%;
+  margin-bottom: 0;
+  color: #212529;
+  margin-top: 10px;
+  .users_table_hader {
+    width: 100%;
+    th {
+      background: #ffffff;
+      color: #333;
+      font-size: 12px;
+      border-bottom: solid 2px #ddd;
+    }
+  }
+  td {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    color: #333;
+    button.text-primary {
+      background: no-repeat;
+      border: none;
+    }
+    button.text-danger {
+      background: no-repeat;
+      border: none;
+    }
+    button:focus {
+      box-shadow: none;
+      outline: none;
+      outline: none;
+  }
+  }
+}
+
+.middle-content {
+  margin-top: 15px;
+  box-shadow: 0 0 5px #ddd;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
