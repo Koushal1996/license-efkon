@@ -1,11 +1,6 @@
 <div class="container-fluid">
     <button class="btn btn-danger"   *ngIf="hasAuthority('USER_CREATE')"
      (click)="createuser()">Create User</button>
-  <!-- <div class="text-center">
-    <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-  </div> -->
- 
-  <div class="table-responsive">
   <table class="table table-bordered">
     <thead class="users_table_hader">
       <tr>
@@ -32,14 +27,14 @@
           </span>
         </td>
         <td *ngIf="item.active">
-          <a class="text-primary pr-2 cursor" 
+          <button class="text-primary "
           *ngIf="hasAuthority('USER_DELETE')" >
             <i class="fa fa-edit" (click)="edituser(item)"></i>
-          </a>
-          <a class="text-danger pl-2 cursor"
+          </button>
+          <button class="text-danger"
           *ngIf="hasAuthority('USER_DELETE')">
             <i class="fa fa-trash" (click)="deleteuser(item)"></i>
-          </a>
+          </button>
         </td>
         <td *ngIf="!item.active">
           <button *ngIf="hasAuthority('USER_DELETE')"
@@ -48,5 +43,4 @@
       </tr>
     </tbody>
   </table>
-  </div>
 </div>
