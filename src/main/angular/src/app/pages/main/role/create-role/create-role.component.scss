@@ -1,4 +1,73 @@
 .errorinput{border:1px #f00 solid}
-.form{box-shadow: 0 0 25px #ccc;
-    background-color: #ffffff;
-    padding: 20px 30px;}
+
+    
+    .role_from {
+        display: inline-block;
+        width: 100%;
+        position: relative;
+        form {
+            display: inline-block;
+            width: 450px;
+            box-shadow: 0px 0px 5px #ddd;
+            padding: 15px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            label {
+                display: inline-block;
+                width: auto;
+                float: left;
+                margin-bottom: 0;
+                padding: 5px 0;
+            }
+            .dropdown-list[_ngcontent-c3] {
+                position: absolute;
+                width: 100%;
+                z-index: 9999;
+                border-radius: 3px;
+                background: #fff;
+                margin-top: 10px;
+                box-shadow: 0px 0px 5px #ddd;
+                li{
+                    display: inline-block;
+                    width: 100%;
+                }
+            }
+        }
+    }
+
+
+    .dropdown-list[_ngcontent-c3] li[_ngcontent-c3] {
+        padding: 6px 10px;
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+    }
+    .form-control:focus {
+        color: #495057;
+        background-color: #fff;
+        border-color: none;
+        outline: 0;
+        box-shadow: none;
+    }
+
+    .loading_back_button {
+        display: inline-block;
+        width: auto;
+        float: right;
+        .btn.btn-danger {
+            background: #e74111;
+            font-size: 15px;
+            display: inline-block;
+            width: auto;
+            margin-right: 10px;
+        }
+        .btn.btn-danger_back {
+            background: gray;
+            color: #fff;
+            display: inline-block;
+            width: auto;
+        }
+    }
+    

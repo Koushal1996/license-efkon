@@ -1,11 +1,13 @@
 #sidebar-wrapper {
   margin-left: 0;
-  position: static;
+  position: fixed;
   z-index: 33;
   margin-top: 0;
   width: 250px;
   box-shadow: 0 0 10px #999;
   transition: all 0.5s;
+  min-height: 100vh;
+  height: 100%;
   .sidebar-heading {
     padding: 0.875rem 1.25rem;
     font-size: 1.2rem;
@@ -49,7 +51,7 @@
 }
 a.list-group-item.list-group-item-action.active, 
 a.list-group-item.list-group-item-action:hover{
-  background-color: #ef4000;
+  background-color: #e74111;
   color: white;
 }
 
@@ -83,7 +85,7 @@ a.list-group-item i {
         width: 100%;
         h6{
           font-size: 17px;
-          color: #1b00ff;
+          color: #333;
           padding: 0 10px;
         }
       }
@@ -113,10 +115,27 @@ a.list-group-item i {
     margin-bottom: 0;
     background: no-repeat;
     width: 100%;
+    font-family: 'Hind Madurai', sans-serif;
+}
+.sidebar-logo {
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+}
+.list-group-item{
+  background: none;
 }
 .list-group-item.active {
   z-index: 2;
   color: #fff;
   background-color: none;
   border-color: none;
+}
+.dropdown_sidebar {
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  &:last-child{
+    border-block-end: none;
+  }
 }
