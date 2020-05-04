@@ -80,3 +80,16 @@ table.table.table-bordered {
   padding: 5px 0;
   height: 100vh;
 }
+.btn-danger {
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  bottom: 2px;
+  right: 15px;
+  background-color: #e74111;
+  border-color: #e74111;
+}
+table.table.table-bordered {
+  margin-bottom: 0;
+  display: inherit;
+}
