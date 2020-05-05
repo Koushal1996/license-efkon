@@ -17,7 +17,7 @@
         <th scope="col">Email</th>
         <th scope="col">Contact No.</th>
         <th scope="col">Roles</th>
-        <th scope="col">Action</th>
+        <th scope="col"  *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')" >Action</th>
       </tr>
     </thead>
     <tbody>
@@ -33,9 +33,10 @@
             {{role.name}}
           </span>
         </td>
+        <ng-container *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')">
         <td *ngIf="item.active">
           <a class="text-primary pr-2 cursor" 
-          *ngIf="hasAuthority('USER_DELETE')" >
+          *ngIf="hasAuthority('USER_UPDATE')" >
             <i class="fa fa-edit" (click)="edituser(item)"></i>
           </a>
           <a class="text-danger pl-2 cursor"
@@ -47,6 +48,7 @@
           <button *ngIf="hasAuthority('USER_DELETE')"
            (click)="activateuser(item)">
             activate</button></td>
+       </ng-container>
       </tr>
     </tbody>
   </table>

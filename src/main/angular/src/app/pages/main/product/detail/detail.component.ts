@@ -19,6 +19,8 @@ export class DetailComponent implements OnInit {
   isCreateDetail:boolean = false
   isloader:boolean= true
   loaderbutton:boolean=false;
+  Detail: any;
+  formDetail: any;
   constructor(private _productService: ProductService,
     private fb: FormBuilder,
     private _storageService:StorageService) { }
@@ -73,7 +75,7 @@ export class DetailComponent implements OnInit {
           this.isCreateDetail = false
           this.detailId=''
           this.loaderbutton=false
-          swal("Update Successfully!");
+          swal("Product’s details updated successfully!");
         }, error => {
           this.loaderbutton=false
         }
@@ -82,7 +84,7 @@ export class DetailComponent implements OnInit {
       this._productService.addProductDetail(this.createDetailForm.value).
         subscribe(data => {
           //console.log(data)
-          swal("Add Successfully!");
+          swal("Product’s details added successfully");
           this.getProductDetail()
           this.isCreateDetail = false
           this.loaderbutton=false
@@ -107,13 +109,13 @@ export class DetailComponent implements OnInit {
     //console.log(this.detailId)
     this.detailId = detail.id
     console.log(detail)
+    this.formDetail = detail
     this.createDetailForm.patchValue(detail);
-
   }
   deleteProductDetail(detail) {
     swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to deleted this?",
+      title: "You sure?",
+      text: "You want to go ahead with deletion?",
       icon: "warning",
       closeOnClickOutside:false,
       buttons:["Yes","No"],
@@ -127,15 +129,20 @@ export class DetailComponent implements OnInit {
     this._productService.deleteProductDetail(detail.id).subscribe(
       data => {
         this.getProductDetail()
-        swal("Delete successfully!");
+        swal("Product’s details delete successfully!");
       },
       error=>{}
     )
   }
 });
 }
-  showDetailForm()
-  {
+  showDetailForm(){
     this.isCreateDetail = true
+  }
+  Reset(){
+    this.createDetailForm.patchValue(this.formDetail);
+  }
+  close(){
+    this.isCreateDetail = false
   }
 }

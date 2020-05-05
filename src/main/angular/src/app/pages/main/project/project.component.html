@@ -17,7 +17,7 @@
         <th scope="col">Customer Contact NO</th>
         <th scope="col"> Project Type</th>
         <th scope="col">Project Manager</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">Action</th>
       </tr>
     </thead>
     <tbody id="accordion">
@@ -30,8 +30,8 @@
           <td>{{project.customerContactNo}}</td>
           <td>{{project.projectTypeName}}</td>
           <td>{{project.projectManagerName}}</td>
-          <td><button class=" btn btn-primary"
-            *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
+          <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
+            <button class=" btn btn-primary"
              (click)="addProduct(project)">Add Product</button></td>
         </tr>
         <tr>
@@ -50,8 +50,8 @@
                   <th scope="col">Product Detail</th>
                   <th scope="col">No of License</th>
                   <th scope="col">License Type</th>
-                  <th scope="col">Expiration Period</th>
-                  <th scope="col">Expiration Month</th>
+                  <th scope="col">Expiry</th>
+                  <th scope="col">Expiry Period (in months)</th>
                   <th scope="col"> Start Date </th>
                   <th scope="col">End Date</th>
                   <th scope="col">Status</th>
@@ -73,7 +73,7 @@
                   <td *ngIf="pro.expirationPeriodType=='LIFETIME'">NA</td>
                   <td>{{pro.status}}
                     <br>
-                    <a class="cursor text-danger"
+                    <a class="cursor text-danger" *ngIf="pro.status!=='DRAFT'"
                     (click)="showComments(pro)">comments
                   </a>
                  
@@ -163,8 +163,11 @@
         </div>
         <div class="modal-body">
      <ul *ngFor =" let c of comments">
-      <li>NAME :{{c.commentedBy}}
+      <li>
+        <span *ngIf="!hasUserId(c)"> NAME :{{c.commentedBy}}</span>
+        <span *ngIf="hasUserId(c)" > NAME : me</span>
           COMMENT :{{c.comment}}
+          
           TIME:{{c.createdAt | date:'medium'}}
       </li>
 

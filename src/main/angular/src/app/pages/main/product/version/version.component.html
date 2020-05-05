@@ -11,14 +11,14 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Version</th>
-              <th scope="col">Action</th>
+              <th scope="col" *ngIf="hasAuthority('VERSION_UPDATE') || hasAuthority('VERSION_DELETE')">Action</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let version of Versions; index as i">
               <td>{{i+1}}</td>
               <td>{{version.version}}</td>
-              <td>
+              <td *ngIf="hasAuthority('VERSION_UPDATE') || hasAuthority('VERSION_DELETE')">
                 <a class="text-primary pr-2 cursor"
                 *ngIf="hasAuthority('VERSION_UPDATE')"
                  (click)="editVersion(version)">
@@ -58,6 +58,11 @@
           <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
             <i class="fa fa-refresh fa-spin"></i> Loading
           </button>
+          <button type="button" class="btn btn-danger ml-2"
+          (click)="Reset()" >
+          <i class="fa fa-times"></i> Reset</button>
+          <button type="button" class="btn btn-danger ml-2"
+          (click)="close()"> Close</button>
       </form>
     </div>
 

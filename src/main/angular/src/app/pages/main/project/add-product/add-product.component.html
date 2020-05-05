@@ -42,7 +42,8 @@
           </span>
         </div>
         <div class="form-group">
-          <label>Expiration Period </label>
+          <!-- <label>Expiration Period </label> -->
+          <label>Expiry</label>
           <select class="form-control" name="expirationPeriodType"
            (ngModelChange)="onExpirationChange($event)"
           formControlName="expirationPeriodType">
@@ -57,9 +58,9 @@
           </span>
         </div>
         <div class="form-group">
-          <label>Expiration Month </label>
+          <label>Expiry Period (in months) </label>
           <input type="number" class="form-control" formControlName="expirationMonthCount" 
-          name="expirationMonthCount">
+          name="expirationMonthCount" (ngModelChange)="onExpirationMonthCount($event)">
           <span *ngIf="productForm.get('expirationMonthCount').errors &&
           (productForm.get('expirationMonthCount').touched||productForm.get('expirationMonthCount').dirty)">
             <span *ngIf="productForm.get('expirationMonthCount').errors.min" class="text-danger">
@@ -68,7 +69,8 @@
         </div>
         <div class="form-group">
           <label>Start Date</label>
-          <input type="date" class="form-control" formControlName="startDate" name="startDate">
+          <input type="date" class="form-control" (ngModelChange)="onStartDate($event)"
+           formControlName="startDate" name="startDate">
           <span *ngIf="productForm.get('startDate').errors &&
           (productForm.get('startDate').touched||productForm.get('startDate').dirty)">
             <span *ngIf="productForm.get('startDate').errors.required" class="text-danger">
@@ -78,8 +80,8 @@
         </div>
         <div class="form-group">
           <label>End Date</label>
-          <input type="date" class="form-control"  name="EndDate">
-          
+          <input type="date" class="form-control" formControlName="EndDate" 
+           name="EndDate">
         </div>
         <div class="form-group d-flex mt-3">
           <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton"
@@ -88,6 +90,12 @@
             <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading
             </button>
+            <button type="button" class="btn btn-danger ml-2"
+            (click)="Reset()" >
+            <i class="fa fa-times"></i> Reset</button>
+            <button type="button" class="btn btn-danger ml-2"
+            (click)="close()" >
+            <i class="fa fa-times"></i> Close</button>
         </div>
 
       </form>

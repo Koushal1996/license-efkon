@@ -13,7 +13,7 @@
               <th scope="col">Product Family</th>
               <th scope="col">Product Code</th>
               <th scope="col">Version</th>
-              <th scope="col">Action</th>
+              <th scope="col" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -22,14 +22,16 @@
               <td> {{detail.productFamilyName}}</td>
               <td>{{detail.productCodeName}}</td>
               <td>{{detail.versionName}}</td>
-              <td>
-                <a class="text-primary pr-2 cursor">
-                  <i class="fa fa-edit" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
-                   (click)="editProductDetail(detail)"></i>
+              <td *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">
+                <a class="text-primary pr-2 cursor"
+                 *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
+                (click)="editProductDetail(detail)">
+                  <i class="fa fa-edit"></i>
                 </a>
-                <a class="text-danger pl-2 cursor">
-                  <i class="fa fa-trash" *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
-                  (click)="deleteProductDetail(detail)"></i>
+                <a class="text-danger pl-2 cursor" 
+                *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
+                (click)="deleteProductDetail(detail)">
+                  <i class="fa fa-trash"></i>
                 </a>
               </td>
 
@@ -90,6 +92,11 @@
           <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
             <i class="fa fa-refresh fa-spin"></i> Loading
           </button>
+          <button type="button" class="btn btn-danger ml-2"
+          (click)="Reset()" >
+          <i class="fa fa-times"></i> Reset</button>
+          <button type="button" class="btn btn-danger ml-2"
+          (click)="close()"> Close</button>
       </form>
     </div>
 

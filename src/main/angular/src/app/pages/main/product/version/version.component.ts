@@ -17,6 +17,7 @@ export class VersionComponent implements OnInit {
   isCreateVersion: boolean = false
   isloader:boolean= true
   loaderbutton:boolean=false;
+  formDetail: any;
   //isVersionTable: boolean = true
   constructor(
     private _productservice: ProductService,
@@ -50,7 +51,7 @@ export class VersionComponent implements OnInit {
     if (this.versionId) {
       this._productservice.updateVersions(this.versionId, this.createVersionForm.value)
         .subscribe(data => {
-          swal("Update successfully!");
+          swal("Version updated successfully!");
           this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
@@ -63,7 +64,7 @@ export class VersionComponent implements OnInit {
     else {
       this._productservice.addVersions(this.createVersionForm.value).
         subscribe(data => {
-          swal("Add successfully!");
+          swal("Version added successfully!");
           this.getversions()
           this.createVersionForm.reset()
           this.isCreateVersion = false
@@ -76,8 +77,8 @@ export class VersionComponent implements OnInit {
   }
   deleteVersion(version) {
     swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to deleted this?",
+      title: "You sure?",
+      text: "You want to go ahead with deletion?",
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -90,7 +91,7 @@ export class VersionComponent implements OnInit {
           this._productservice.deleteVersions(version.id).subscribe(data => {
 
             this.getversions()
-            swal("Delete successfully!");
+            swal("Version deleted successfully");
           },
             error => {
             })
@@ -102,13 +103,19 @@ export class VersionComponent implements OnInit {
     this.isCreateVersion = true
     //console.log(version.version)
     this.versionId = version.id
+    this.formDetail=version
     this.createVersionForm.patchValue({
       version: version.version
     })
   }
-  showVersionForm() {
+  showVersionForm(){
     this.isCreateVersion = true
     this.createVersionForm.reset()
   }
-
+  Reset(){
+    this.createVersionForm.patchValue(this.formDetail);
+  }
+  close(){
+    this.isCreateVersion = false
+  }
 }

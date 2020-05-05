@@ -16,7 +16,7 @@
         <th scope="col">Name</th>
 
         <th scope="col">Authorities</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -30,6 +30,7 @@
             {{auth.name}}
           </span>
         </td>
+        <ng-container  *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')">
         <td *ngIf="item.active">
           <a class="text-primary pr-2 cursor"
           *ngIf="hasAuthority('ROLE_UPDATE')"
@@ -46,6 +47,7 @@
           <button *ngIf="hasAuthority('ROLE_DELETE')"
           (click)="activaterole(item)">
             activate</button></td>
+        </ng-container>
       </tr>
     </tbody>
   </table>
