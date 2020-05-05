@@ -123,9 +123,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 				projects = projectDao.findByActive(true);
 			}
 		}
-
 		return projects;
-
 	}
 
 }

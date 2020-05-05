@@ -15,6 +15,9 @@ public class ProjectResponse implements Response {
 	@Schema(description = "Id of the project", example = "1")
 	private Long id;
 
+	@Schema(description = "Project created date", example = "2020-12-06'T'12:12:12.234")
+	private String createdAt;
+
 	@Schema(description = "Code of the customer", example = "0001")
 	private String customerCode;
 
@@ -46,11 +49,12 @@ public class ProjectResponse implements Response {
 
 	private List<ProjectProductResponse> products;
 
-	public ProjectResponse(Long id, String customerCode, String customerName, String customerEmail, Boolean isEmailSend,
-			String customerContactNo, Long projectTypeId, String projectTypeName, Long projectManagerId,
-			String projectManagerName) {
+	public ProjectResponse(Long id, String createdAt, String customerCode, String customerName, String customerEmail,
+			Boolean isEmailSend, String customerContactNo, Long projectTypeId, String projectTypeName,
+			Long projectManagerId, String projectManagerName) {
 		super();
 		this.id = id;
+		this.createdAt = createdAt;
 		this.customerCode = customerCode;
 		this.customerName = customerName;
 		this.customerEmail = customerEmail;
@@ -68,6 +72,14 @@ public class ProjectResponse implements Response {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(String createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public String getCustomerCode() {
@@ -160,9 +172,9 @@ public class ProjectResponse implements Response {
 
 	public static ProjectResponse get(Project project) {
 		if (project != null) {
-			ProjectResponse response = new ProjectResponse(project.getId(), project.getCustomerCode(),
-					project.getCustomerName(), project.getCustomerEmail(), project.getIsEmailSend(),
-					project.getCustomerContactNo(), null, null, null, null);
+			ProjectResponse response = new ProjectResponse(project.getId(), project.getCreatedAt(),
+					project.getCustomerCode(), project.getCustomerName(), project.getCustomerEmail(),
+					project.getIsEmailSend(), project.getCustomerContactNo(), null, null, null, null);
 			response.setProjectTypeResponse(new ProjectTypeResponse(project.getProjectType()));
 			return response;
 		}

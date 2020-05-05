@@ -1,58 +1,44 @@
-<div class="d-flex" id="wrapper">
-  <!-- Sidebar -->
+<div id="wrapper">
   <div class="bg-light border-right" id="sidebar-wrapper">
-    <div class="sidebar-heading">
+    <div class="sidebar-logo">
       <div class="user" (click)="userProfile()">
         <div class="user-img">
           <img src="assets/images/user.png" alt="" style="cursor: pointer;">
         </div>
         <div class="user-name" style="cursor: pointer;">{{UserInfo}}
         </div>
-
       </div>
     </div>
     <div class="list-group list-group-flush">
       <ng-container *ngFor="let p of pages">
-      <a href="#" class="list-group-item list-group-item-action" 
- [routerLink]="[p.route]"  routerLinkActive="active"
- *ngIf="pageAuthority(p.privilege)">
-        {{p.title}}
-    </a>
-  </ng-container>
+          <div class="dropdown_sidebar">
+            <a href="#" class="list-group-item list-group-item-action" 
+                [routerLink]="[p.route]"  routerLinkActive="active"
+                *ngIf="pageAuthority(p.privilege)">
+                {{p.title}}
+            </a>
+          </div>
+    </ng-container>
     </div>
   </div>
-  <!-- /#sidebar-wrapper -->
-
-  <!-- Page Content -->
   <div id="page-content-wrapper">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-      <button class="btn" id="menu-toggle" (click)="menu()">
-        <!-- <i class="fa fa-bars"></i>{{myMenu?'Close Menu' :'Open Menu '}} -->
-        <i class="fa fa-bars"></i>
-
-      </button>
-
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-        aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-          <li class="nav-item ml-3">
+    <div class="header_main">
+      <button class="toggle_main" id="menu-toggle" (click)="menu()"><i class="fa fa-bars"></i> </button>
+      <div class="manu" id="navbarSupportedContent">
+        <ul>
+          <li >
             <h6 (click)="logout()" style="cursor: pointer;">Logout
               <i class="fa fa-sign-out"></i>
             </h6>
           </li>
         </ul>
       </div>
-    </nav>
+  </div>
     <div class="container-fluid">
-      <router-outlet>
-
-      </router-outlet>
-
+        <div class="middle-content">
+           <router-outlet></router-outlet>
+        </div>
     </div>
   </div>
-  <!-- /#page-content-wrapper -->
 
 </div>

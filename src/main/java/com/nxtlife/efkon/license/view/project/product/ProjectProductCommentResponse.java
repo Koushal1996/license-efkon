@@ -1,5 +1,7 @@
 package com.nxtlife.efkon.license.view.project.product;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.view.Response;
 
@@ -10,13 +12,18 @@ public class ProjectProductCommentResponse implements Response {
 	public String commentedBy;
 	public String comment;
 	public String remark;
+	public String createdAt;
+	public Date modifiedAt;
 
-	public ProjectProductCommentResponse(Long commentedById, String commentedByName, String comment, String remark) {
+	public ProjectProductCommentResponse(Long commentedById, String commentedByName, String comment, String remark,
+			String createdAt, Date modifiedAt) {
 		super();
 		this.commentedById = commentedById;
 		this.commentedBy = commentedByName;
 		this.comment = comment;
 		this.remark = remark;
+		this.createdAt = createdAt;
+		this.modifiedAt = modifiedAt;
 	}
 
 	public Long getCommentedById() {

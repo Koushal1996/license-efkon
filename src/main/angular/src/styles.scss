@@ -1,11 +1,131 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./app/app.component.scss";
 body {
-  // font-family: 'Roboto', sans-serif !important;
-  // font-family: 'Open Sans', sans-serif;
   font-family: 'Lato', sans-serif !important;
   margin: 0;
   overflow-y:scroll;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.table {
+  width: 100%;
+  margin-bottom: 0;
+  color: #212529;
+  margin-top: 10px;
+  .users_table_hader {
+    width: 100%;
+    th {
+      background: #ffffff;
+      color: #333;
+      font-size: 12px;
+      border-bottom: solid 2px #ddd;
+    }
+  }
+  td {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    color: #333;
+    button.text-primary {
+      background: no-repeat;
+    border: 1px solid green;
+    padding: 0 5px;
+    margin-right: 3px;
+    border-radius: 3px;
+    i.fa.fa-edit {
+      color: green;
+      margin-top: 4px;
+  }
+    }
+    button {
+      background: green;
+      border: 1px solid green;
+      border-radius: 3px;
+      color: #fff;
+  }
+    button.text-danger {
+      background: no-repeat;
+    border: 1px solid #e74111;
+    padding: 0 5px;
+    border-radius: 3px;
+    i.fa.fa-trash {
+      color: #e74111;
+      margin-top: 4px;
+  }
+    }
+    button:focus {
+      box-shadow: none;
+      outline: none;
+      outline: none;
+  }
+  .badge-secondary {
+    color: #fff;
+    font-size: 10px;
+    background-color: #555;
+    padding: 5px;
+    margin: 5px 0 0 5px;
+}
+  }
+}
+
+table.table.table-bordered {
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.middle-content {
+  margin: 15px 0;
+  box-shadow: 0 0 5px #ddd;
+  padding: 5px 0;
+  height: 100vh;
+}
+.btn-danger {
+  color: #fff;
+  text-align: center;
+  position: fixed;
+  bottom: 2px;
+  right: 15px;
+  background-color: #e74111 !important;
+  border-color: #e74111 !important;
+  
+}
+table.table.table-bordered {
+  margin-bottom: 0;
+  display: inline-table;
+}
+.form-group {
+  display: inline-block;
+  width: 100%;
+  label {
+    display: inline-block;
+    width: 250px;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+  input{
+    display: inline-block;
+    width: 250px;
+    border: 1px solid #ddd;
+    font-size: 15px;
+    float: right;
+  }
+}
+.role_from {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  form {
+    display: inline-block;
+    width: 550px;
+    box-shadow: 0px 0px 5px #ddd;
+    padding: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, 50%);
+    transform: translate(-50%, 50%);
+}
+}
