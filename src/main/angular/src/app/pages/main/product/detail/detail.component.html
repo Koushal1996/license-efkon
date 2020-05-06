@@ -40,66 +40,76 @@
         </table>
       <!-- </div> -->
       <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')" >
-      <button class="btn btn-danger"  *ngIf="!isCreateDetail"
+      <button class="btn btn-success mb-3 mt-1"  *ngIf="!isCreateDetail"
       (click)="showDetailForm()">Add Product Detail </button>
       </ng-container>
     </div>
-    <div class="col-md-12" *ngIf="isCreateDetail">
-      <h2 class="text-center">Product Detail</h2>
-      <form (ngSubmit)="onSubmit()" [formGroup]="createDetailForm">
-        <div class="form-group">
-          <label>Product Family</label>
-          <select class="form-control" (ngModelChange)="onchange($event)" formControlName="productFamilyId">
-            <option value={{name.id}} *ngFor="let name of Family">{{name.name}}</option>
-          </select>
-          <span *ngIf="createDetailForm.get('productFamilyId').errors &&
-(createDetailForm.get('productFamilyId').touched||createDetailForm.get('productFamilyId').dirty)">
-<span *ngIf="createDetailForm.get('productFamilyId').errors.required" class="text-danger">project Family is
-  required</span>
-</span>
-        </div>
-
-        <div class="form-group">
-          <label>Product Code </label>
-          <select class="form-control" formControlName="productCodeId">
-            <option *ngFor="let productCode of productCodes" value="{{productCode.id}}">
-              {{productCode.name}}
-            </option>
-          </select>
-          <span *ngIf="createDetailForm.get('productCodeId').errors &&
-          (createDetailForm.get('productCodeId').touched||createDetailForm.get('productCodeId').dirty)">
-          <span *ngIf="createDetailForm.get('productCodeId').errors.required" class="text-danger">project Code is
-            required</span>
-          </span>
-        </div>
-
-        <div class="form-group">
-          <label>Version</label>
-          <select class="form-control" formControlName="versionId">
-            <option *ngFor="let name of Versions" value={{name.id}}>
-              {{name.version}}
-            </option>
-          </select>
-          <span *ngIf="createDetailForm.get('versionId').errors &&
-          (createDetailForm.get('versionId').touched||createDetailForm.get('versionId').dirty)">
-          <span *ngIf="createDetailForm.get('versionId').errors.required" class="text-danger">Version  is
-            required</span>
-          </span>
-        </div>
-        <div class="form-group">
-        <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton"
-         [disabled]="!createDetailForm.valid">
-          {{detailId ?'Update': 'Submit'}} </button>
-          <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
-            <i class="fa fa-refresh fa-spin"></i> Loading
-          </button>
-          <button type="button" class="btn btn-danger ml-2"
-          (click)="Reset()" >
-          <i class="fa fa-times"></i> Reset</button>
-          <button type="button" class="btn btn-danger ml-2"
-          (click)="close()"> Close</button>
+    
+    <div class="" *ngIf="isCreateDetail">
+      <div class="popup_main">
+        <div class="form_main">
+          <div class="popup_header">
+           <h2 class="text-center">Product Detail</h2>
+           <button type="button" class="close_btn"
+             (click)="close()"><i class="fa fa-times" aria-hidden="true"></i></button>
           </div>
-      </form>
+         <form (ngSubmit)="onSubmit()" [formGroup]="createDetailForm">
+           <div class="input_feild">
+           <div class="form-group">
+             <label>Product Family</label>
+             <select class="form-control" (ngModelChange)="onchange($event)" formControlName="productFamilyId">
+               <option value={{name.id}} *ngFor="let name of Family">{{name.name}}</option>
+             </select>
+             <span *ngIf="createDetailForm.get('productFamilyId').errors &&
+   (createDetailForm.get('productFamilyId').touched||createDetailForm.get('productFamilyId').dirty)">
+   <span *ngIf="createDetailForm.get('productFamilyId').errors.required" class="field_error">project Family is
+     required</span>
+   </span>
+           </div>
+   
+           <div class="form-group">
+             <label>Product Code </label>
+             <select class="form-control" formControlName="productCodeId">
+               <option *ngFor="let productCode of productCodes" value="{{productCode.id}}">
+                 {{productCode.name}}
+               </option>
+             </select>
+             <span *ngIf="createDetailForm.get('productCodeId').errors &&
+             (createDetailForm.get('productCodeId').touched||createDetailForm.get('productCodeId').dirty)">
+             <span *ngIf="createDetailForm.get('productCodeId').errors.required" class="field_error">project Code is
+               required</span>
+             </span>
+           </div>
+   
+           <div class="form-group">
+             <label>Version</label>
+             <select class="form-control" formControlName="versionId">
+               <option *ngFor="let name of Versions" value={{name.id}}>
+                 {{name.version}}
+               </option>
+             </select>
+             <span *ngIf="createDetailForm.get('versionId').errors &&
+             (createDetailForm.get('versionId').touched||createDetailForm.get('versionId').dirty)">
+             <span *ngIf="createDetailForm.get('versionId').errors.required" class="field_error">Version  is
+               required</span>
+             </span>
+           </div>
+           
+             </div>
+         </form>
+         <div class="modal_footer">
+          <button type="submit" class="btn btn-success ml-auto float-right" *ngIf="!loaderbutton"
+           [disabled]="!createDetailForm.valid">
+            {{detailId ?'Update': 'Submit'}} </button>
+            <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
+              <i class="fa fa-refresh fa-spin"></i> Loading
+            </button>
+            <!-- <button type="button" class="btn btn-danger ml-2"
+            (click)="Reset()" >
+            <i class="fa fa-times"></i> Reset</button> -->
+          </div>
+         </div>
+      </div>
     </div>
 
   </div>

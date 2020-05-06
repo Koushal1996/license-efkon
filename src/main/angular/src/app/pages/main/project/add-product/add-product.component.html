@@ -1,9 +1,10 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-
-      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-
+       
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form_main">
+        <h3>Add Product</h3>
+        <div class="input_feild">
         <div class="form-group">
           <label>Product Detail </label>
           <select class="form-control" id="sel1" name="productDetailId" formControlName="productDetailId">
@@ -15,7 +16,7 @@
           </select>
           <span *ngIf="productForm.get('productDetailId').errors &&
 (productForm.get('productDetailId').touched||productForm.get('productDetailId').dirty)">
-            <span *ngIf="productForm.get('productDetailId').errors.required" class="text-danger">Product detail
+            <span *ngIf="productForm.get('productDetailId').errors.required" class="field_error">Product detail
               is required</span>
           </span>
         </div>
@@ -24,7 +25,7 @@
           <input type="number" class="form-control" formControlName="licenseCount" name="licenseCount">
           <span *ngIf="productForm.get('licenseCount').errors &&
           (productForm.get('licenseCount').touched||productForm.get('licenseCount').dirty)">
-            <span *ngIf="productForm.get('licenseCount').errors.required" class="text-danger">License Count
+            <span *ngIf="productForm.get('licenseCount').errors.required" class="field_error">License Count
               is required</span>
           </span>
         </div>
@@ -37,7 +38,7 @@
           </select>
           <span *ngIf="productForm.get('licenseType').errors &&
           (productForm.get('licenseType').touched||productForm.get('licenseType').dirty)">
-            <span *ngIf="productForm.get('licenseType').errors.required" class="text-danger">License Type
+            <span *ngIf="productForm.get('licenseType').errors.required" class="field_error">License Type
               is required</span>
           </span>
         </div>
@@ -52,7 +53,7 @@
           </select>
           <span *ngIf="productForm.get('expirationPeriodType').errors &&
           (productForm.get('expirationPeriodType').touched||productForm.get('expirationPeriodType').dirty)">
-            <span *ngIf="productForm.get('expirationPeriodType').errors.required" class="text-danger">
+            <span *ngIf="productForm.get('expirationPeriodType').errors.required" class="field_error">
               Expiration Period Type
               is required</span>
           </span>
@@ -63,7 +64,7 @@
           name="expirationMonthCount" (ngModelChange)="onExpirationMonthCount($event)">
           <span *ngIf="productForm.get('expirationMonthCount').errors &&
           (productForm.get('expirationMonthCount').touched||productForm.get('expirationMonthCount').dirty)">
-            <span *ngIf="productForm.get('expirationMonthCount').errors.min" class="text-danger">
+            <span *ngIf="productForm.get('expirationMonthCount').errors.min" class="field_error">
           minimun 1 is required</span>
           </span>
         </div>
@@ -73,7 +74,7 @@
            formControlName="startDate" name="startDate">
           <span *ngIf="productForm.get('startDate').errors &&
           (productForm.get('startDate').touched||productForm.get('startDate').dirty)">
-            <span *ngIf="productForm.get('startDate').errors.required" class="text-danger">
+            <span *ngIf="productForm.get('startDate').errors.required" class="field_error">
               Start Date
               is required</span>
           </span>
@@ -84,20 +85,17 @@
            name="EndDate">
         </div>
         <div class="form-group d-flex mt-3">
-          <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton"
+          <button type="submit" class="btn btn-success ml-auto" *ngIf="!loaderbutton"
            [disabled]="!productForm.valid">
             Submit</button>
             <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading
             </button>
             <button type="button" class="btn btn-danger ml-2"
-            (click)="Reset()" >
-            <i class="fa fa-times"></i> Reset</button>
-            <button type="button" class="btn btn-danger ml-2"
             (click)="close()" >
             <i class="fa fa-times"></i> Close</button>
         </div>
-
+      </div>
       </form>
 
 
