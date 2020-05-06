@@ -50,5 +50,7 @@ export class ProjectService {
  getProductsByProjectId(projectId){
   return this.api.get(`api/project/${projectId}/product`)
  }
-
+ getProjectProducts(){
+   return this.api.get('api/project/product')
+ }
 }

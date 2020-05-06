@@ -1,81 +1,59 @@
-import { MainService } from './../../../services/main/main.service';
 import { StorageService } from './../../../services/storage/storage.service';
-import { Router } from '@angular/router';
+import { MainService } from './../../../services/main/main.service';
+import { ProjectService } from 'src/app/services/project/project.service';
 import { Component, OnInit } from '@angular/core';
-import { ProjectService } from './../../../services/project/project.service';
-import swal from 'sweetalert';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-declare let $: any;
+import swal from 'sweetalert';
+
 @Component({
-  selector: 'app-project',
-  templateUrl: './project.component.html',
-  styleUrls: ['./project.component.scss']
+  selector: 'app-project-product',
+  templateUrl: './project-product.component.html',
+  styleUrls: ['./project-product.component.scss']
 })
-export class ProjectComponent implements OnInit {
-  public projects = []
+export class ProjectProductComponent implements OnInit {
+  projectProduct
   isloader: boolean = true
-  isProductloader: boolean = true
-  projectsProduct: any;
-  show: boolean = false
   showModal: boolean = false
   showCommentModal: boolean = false
   popUpForm: FormGroup;
   commentValue: any;
   commentSubmitButton: string;
   selectedProduct: any;
-  isNoProducts: boolean = false;
-  comments =[]
-  userId
-  commentID: any[];
-  constructor(private projectservice: ProjectService,
+  comments: any;
+  userId: any;
+  constructor(private _projectService:ProjectService,
     private _storageService:StorageService,
     private mainService:MainService,
     private route: Router,
     private fb: FormBuilder) { }
 
   ngOnInit() {
-    this.getProjects()
-    this.popUpForm = this.initpopUpForm();
-    // let userInfo = JSON.parse(localStorage.getItem("userInfo"))
-    // let userId =  userInfo.id
-    // console.log(userId)
+    this.getProjectProducts()
     this.mainService.getLoginUser().subscribe(data=>{
       console.log(data)
       this.userId = data.id
     })
+    this.popUpForm = this.initpopUpForm();
   }
-
+  getProjectProducts()
+  {
+    this._projectService.getProjectProducts().subscribe(data=>{
+      console.log(data)
+      this.projectProduct = data
+      this.isloader = false
+    })
+  }
   hasAuthority(authority){
     const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
     return authorities.includes(authority);
   }
-
   initpopUpForm() {
     return this.fb.group({
       "comment": [""]
     })
   }
-
-
-  getProjects() {
-    this.projectservice.getProjects().subscribe
-      (data => {
-        this.projects = data
-        this.isloader = false
-        console.log(data)
-      },
-        error => {
-          console.log(error)
-        })
-  }
-  createpProject() {
-    this.route.navigate(['projects/create'])
-  }
-
-  addProduct(project) {
-    this.route.navigate([`projects/${project.id}/product`])
-  }
-  deleteProduct(pro) {
+  deleteProduct(project){
     swal({
       title: "You sure?",
       text: "You want to go ahead with deletion?",
@@ -88,10 +66,10 @@ export class ProjectComponent implements OnInit {
         if (willDelete) {
         }
         else {
-          this.projectservice.deleteProduct(pro.id).subscribe(data => {
+          this._projectService.deleteProduct(project.id).subscribe(data => {
             console.log(data)
-            swal("Delete Successfully!");
-            this.getProjects()
+            swal("Delete Successfully!")
+            this.getProjectProducts()
           },
             error => {
               console.log("error");
@@ -99,23 +77,12 @@ export class ProjectComponent implements OnInit {
         }
       });
   }
-  editProduct(project, product) {
-    this.projectservice.selecetedProduct.next(product);
-    this.route.navigate([`projects/${project.id}/product/${product.id}`])
+
+  editProduct(product) {
+    this._projectService.selecetedProduct.next(product);
+    this.route.navigate([`projects/${product.projectId}/product/${product.id}`])
   }
-  getProductsByProjectId(event, project) {
-    if ($(event)[0].ariaExpanded == null || $(event).hasClass("collapsed")) {
-      project.productLoader = true
-      this.projectservice.getProductsByProjectId(project.id).subscribe
-        (data => {
-          console.log(data)
-          project.products = data;
-          project.productLoader = false;    
-        }, error => {
-          project.productLoader = false;
-        })
-    }
-  }
+
   onSubmitComment() {
     this.showModal = false;
     switch (this.commentSubmitButton) {
@@ -132,12 +99,12 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.submitProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
+              this._projectService.submitProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log(data)
                   console.log("submit")
                   this.selectedProduct.status = 'SUBMIT'
-                  //this.projects = data
+                   this.getProjectProducts()
                   swal("Project Submit successfully!");
                 }
               )
@@ -157,10 +124,11 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.rejectProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
+              this._projectService.rejectProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log("rejected")
                   this.selectedProduct.status = 'REJECTED'
+                  this.getProjectProducts()
                   swal("Project Reject successfully!");
                 }
               )
@@ -180,10 +148,11 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.reviewProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
+              this._projectService.reviewProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log("review")
                   this.selectedProduct.status = 'REVIEWED'
+                  this.getProjectProducts()
                   swal("Project Review successfully!");
                 }
               )
@@ -203,10 +172,11 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.approveProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
+              this._projectService.approveProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log("approved")
                   this.selectedProduct.status = 'APPROVED'
+                  this.getProjectProducts()
                   swal("Project Approve successfully!");
                 }
               )
@@ -215,39 +185,43 @@ export class ProjectComponent implements OnInit {
         break;
     }
   }
-  submitProductStatus(pro) {
+  submitProductStatus(project) {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = 'Submit'
-    this.selectedProduct = pro
+    this.selectedProduct = project
   }
-  reviewProductStatus(pro) {
+  reviewProductStatus(project) {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = 'Review'
-    this.selectedProduct = pro
+    this.selectedProduct = project
   }
-  approveProductStatus(pro) {
+  approveProductStatus(project) {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = 'Approved'
-    this.selectedProduct = pro
+    this.selectedProduct = project
   }
-  rejectProductStatus(pro) {
+  rejectProductStatus(project) {
     this.showModal = true;
     this.popUpForm.controls['comment'].setValidators(Validators.required);
     this.commentSubmitButton = 'Reject'
-    this.selectedProduct = pro;
+    this.selectedProduct = project;
     this.popUpForm.reset();
   }
   hide() {
     this.showModal = false;
   }
+
+
+
+
   hideCommentModel(){
     this.showCommentModal=false;
   }
-  showComments(pro){
-    this.comments = pro.comments
+  showComments(project){
+    this.comments = project.comments
     console.log(this.comments) 
     if(this.comments.length > 0){
      this.showCommentModal=true

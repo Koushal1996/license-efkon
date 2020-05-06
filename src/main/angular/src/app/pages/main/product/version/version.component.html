@@ -1,7 +1,6 @@
 <div class="cpntainer-fluid mt-5">
   <div class="row">
     <div class="col-md-6">
-      <h2 class="text-center"> Versions Table</h2>
       <div class="text-center">
         <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
       </div>
@@ -41,7 +40,7 @@
       </div>
     </div>
     <div class="col-md-6" *ngIf="isCreateVersion || !Versions">
-      <h2 class="text-center">Create Version</h2>
+      <h2 class="text-center">{{versiontype}} Version</h2>
       <form (ngSubmit)="onSubmit()" [formGroup]="createVersionForm">
         <div class="form-group">
           <label>Version</label>

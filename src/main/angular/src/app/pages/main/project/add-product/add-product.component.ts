@@ -39,12 +39,10 @@ export class AddProductComponent implements OnInit {
         this.productForm.controls['projectId'].patchValue(params.id);
     })
     this.getProductDetail()
-    this.patchavalue()
-    var today = new Date();
-    this.todayDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)) + '-' + '0' + today.getDate();
-    console.log(this.todayDate)
-    this.productForm.controls['startDate'].patchValue(this.todayDate)
+    this.patchavalue() 
+    
   }
+  
 
   initProductForm() {
     return this.fb.group({
@@ -64,8 +62,10 @@ export class AddProductComponent implements OnInit {
       this.projectservice.selecetedProduct.subscribe(data => {
         if (Object.keys(data).length) {
           this.productForm.patchValue(data)
-        } else {
+          this.productForm.controls['EndDate'].patchValue(data.endDate)
 
+          console.log(data)
+        } else {
           this._productService.getProductById(this.productId).subscribe(
             data => {
               console.log(data)
@@ -81,6 +81,11 @@ export class AddProductComponent implements OnInit {
       data => {
         this.productDetail = data
       })
+
+      var today = new Date();
+      this.todayDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)) + '-' + '0' + today.getDate();
+      console.log(this.todayDate)
+      this.productForm.controls['startDate'].patchValue(this.todayDate)
   }
   onSubmit() {
     this.loaderbutton = true
