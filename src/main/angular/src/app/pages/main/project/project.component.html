@@ -1,14 +1,9 @@
-<div class="mt-4">
+<div class="container-fluid">
   <button class="btn btn-danger"  *ngIf="hasAuthority('PROJECT_CREATE')"
    (click)="createpProject()">Create Project</button>
-</div>
-<div class="text-center">
-  <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-</div>
-<div class="table-responsive">
 
-  <table class="table table-bordered mt-4">
-    <thead>
+  <table class="table table-bordered">
+    <thead  class="users_table_hader">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Customer Name</th>
@@ -31,7 +26,7 @@
           <td>{{project.projectTypeName}}</td>
           <td>{{project.projectManagerName}}</td>
           <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
-            <button class=" btn btn-primary"
+            <button class=" btn add_product"
              (click)="addProduct(project)">Add Product</button></td>
         </tr>
         <tr>

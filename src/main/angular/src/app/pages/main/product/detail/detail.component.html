@@ -1,19 +1,19 @@
-<div class="container-fluid mt-5">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <h2 class="text-center">Product Detail Table</h2>
-      <div class="text-center">
+      <!-- <div class="text-center">
         <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-      </div>
-      <div class="table-responsive">
+      </div> -->
+      <!-- <div class="table-responsive"> -->
         <table class="table table-bordered mt-4">
-          <thead>
+          <thead  class="users_table_hader">
             <tr>
               <th scope="col">#</th>
               <th scope="col">Product Family</th>
               <th scope="col">Product Code</th>
               <th scope="col">Version</th>
-              <th scope="col" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">Action</th>
+              <th scope="col" class="action_width" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -23,28 +23,28 @@
               <td>{{detail.productCodeName}}</td>
               <td>{{detail.versionName}}</td>
               <td *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">
-                <a class="text-primary pr-2 cursor"
+                <button class="edit_button"
                  *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
                 (click)="editProductDetail(detail)">
                   <i class="fa fa-edit"></i>
-                </a>
-                <a class="text-danger pl-2 cursor" 
+                </button>
+                <button class="delete_button" 
                 *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
                 (click)="deleteProductDetail(detail)">
                   <i class="fa fa-trash"></i>
-                </a>
+                </button>
               </td>
 
             </tr>
           </tbody>
         </table>
-      </div>
+      <!-- </div> -->
       <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')" >
       <button class="btn btn-danger"  *ngIf="!isCreateDetail"
       (click)="showDetailForm()">Add Product Detail </button>
       </ng-container>
     </div>
-    <div class="col-md-6" *ngIf="isCreateDetail">
+    <div class="col-md-12" *ngIf="isCreateDetail">
       <h2 class="text-center">Product Detail</h2>
       <form (ngSubmit)="onSubmit()" [formGroup]="createDetailForm">
         <div class="form-group">
@@ -86,6 +86,7 @@
             required</span>
           </span>
         </div>
+        <div class="form-group">
         <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton"
          [disabled]="!createDetailForm.valid">
           {{detailId ?'Update': 'Submit'}} </button>
@@ -97,6 +98,7 @@
           <i class="fa fa-times"></i> Reset</button>
           <button type="button" class="btn btn-danger ml-2"
           (click)="close()"> Close</button>
+          </div>
       </form>
     </div>
 

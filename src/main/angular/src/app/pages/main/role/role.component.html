@@ -8,7 +8,7 @@
         <th scope="col">#</th>
         <th scope="col">Name</th>
         <th scope="col">Authorities</th>
-        <th scope="col" *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')">Action</th>
+        <th class="action_width" scope="col" *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -16,26 +16,26 @@
         <td>{{index+1}}</td>
         <td>{{item.name}}</td>
         <td>
-          <span class="badge badge-secondary"
+          <span class="badge badge-secondary custom_badge"
             *ngFor=" let auth of item.authorities; index as index">
             {{auth.name}}
           </span>
         </td>
         <ng-container  *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')">
         <td *ngIf="item.active">
-          <button class="text-primary "
+          <button class="edit_button"
           *ngIf="hasAuthority('ROLE_UPDATE')"
           (click)="editrole(item)">
             <i class="fa fa-edit"></i>
           </button>
-          <button class="text-danger"
+          <button class="delete_button"
           *ngIf="hasAuthority('ROLE_DELETE')"
           (click)="deleterole(item)">
             <i class="fa fa-trash"></i>
           </button>
         </td>
         <td *ngIf="!item.active">
-          <button *ngIf="hasAuthority('ROLE_DELETE')"
+          <button class="roleactive" *ngIf="hasAuthority('ROLE_DELETE')"
           (click)="activaterole(item)">
             activate</button></td>
         </ng-container>

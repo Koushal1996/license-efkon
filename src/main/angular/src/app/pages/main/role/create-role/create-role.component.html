@@ -1,8 +1,7 @@
 
   <div class="role_from">
-    <div class="container">
-  <div class="row">
-    <div class="col-12">
+
+      <div class="roal_create_roal">
       <form (ngSubmit)="onSubmit()" [formGroup]="createRoleForm">
         <div class="form-group">
           <label>Name</label>
@@ -29,14 +28,13 @@
           <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading
             </button>
-            <button type="button" class="btn btn-danger ml-2" (click)="cancel()">
-              <i class="fa fa-times"></i> Reset</button>
-            <button type="button" class="btn btn-danger ml-2" (click)="goback()">
+            <!-- <button type="button" class="btn btn-danger ml-2" (click)="cancel()">
+              <i class="fa fa-times"></i> Reset</button> -->
+            <button type="button" class="btn btn-danger ml-auto" (click)="goback()">
               <i class="fa fa-arrow-left"></i> Back</button>
               </div>
         </div>
       </form>
     </div>
-  </div>
-  </div>
+
 </div>

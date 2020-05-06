@@ -1,14 +1,14 @@
 
 
-<div class="cpntainer-fluid mt-5">
+<div class="cpntainer-fluid">
 <div class="col-md-12">
   <h2 class="text-center"> Product Family  </h2>
-  <div class="text-center">
+  <!-- <div class="text-center">
     <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-  </div>
-  <div class="table-responsive">
-    <table class="table table-bordered mt-4">
-      <thead>
+  </div> -->
+  <!-- <div class="table-responsive"> -->
+    <table class="table table-bordered">
+      <thead class="users_table_hader">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
@@ -22,7 +22,7 @@
               <td>{{family.name}}</td>
               <td>{{family.code}}</td>
               <td><span  *ngFor ="let fam of family.productCodes">
-   <span class="badge p-2 mr-2 mb-2 cursor">{{fam.name}}</span>
+   <span class="badge mr-2  custom_badge">{{fam.name}}</span>
               </span>
                
               </td>
@@ -30,6 +30,6 @@
             </tr>
           </tbody>
           </table>
-</div>
+<!-- </div> -->
 </div>
 </div>
