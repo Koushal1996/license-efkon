@@ -24,7 +24,7 @@
       {{project.productDetailResponse.versionName}}
     </td>
     <td>{{project.licenseCount}}</td>
-    <td>{{project.licenseType}}</td>
+    <td>{{project.licenseTypeName}}</td>
     <td>{{project.expirationPeriodType}}</td>
     <td *ngIf="project.expirationPeriodType=='LIMITED'">{{project.expirationMonthCount}}</td>
     <td *ngIf="project.expirationPeriodType=='LIFETIME'">NA</td>
@@ -66,7 +66,7 @@
   <button type="button"
   (click)="rejectProductStatus(project)">Reject</button>
 </td>
-<td *ngIf="project.status=='APPROVED' ||project.status=='REJECTED' ">
+<td *ngIf="project.status=='APPROVED' ||project.status=='REJECTED'">NA
 </td>
   </tr>
 </table>

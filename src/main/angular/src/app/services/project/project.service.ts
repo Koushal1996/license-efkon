@@ -53,4 +53,8 @@ export class ProjectService {
  getProjectProducts(){
   return this.api.get('api/project/product')
  }
+ getLicenseType(){
+   return this.api.get('api/license/types')
+ }
+
 }

@@ -7,7 +7,8 @@
         <div class="input_feild">
         <div class="form-group">
           <label>Product Family </label>
-          <select class="form-control" id="sel1" name="productDetailId" (ngModelChange)="productCodes = $event.productCodes" [ngModelOptions]="{standalone: true}" ngModel>
+          <select class="form-control" name="productFamily" 
+          (ngModelChange)="productCodes = $event.productCodes" [ngModelOptions]="{standalone: true}" ngModel>
             <option value="" disabled>Select Product Family</option>
             <option *ngFor="let product of productDetail" [ngValue]="product">
               {{product.name}}
@@ -16,8 +17,8 @@
         </div>
         <div class="form-group" >
           <label>Product Code </label>
-          <select class="form-control" id="sel1" name="productDetailId" (ngModelChange)="getVersions($event)" [ngModelOptions]="{standalone: true}" ngModel>
-            <option value="" disabled>Select Product Code</option>
+          <select class="form-control" name="productCode" (ngModelChange)="getVersions($event)" [ngModelOptions]="{standalone: true}" ngModel>
+            <option value="" disabled>Product Code</option>
             <option *ngFor="let code of productCodes" [ngValue]="code">
               {{code.name}}
             </option>
@@ -25,8 +26,8 @@
         </div>
         <div class="form-group">
           <label>Product Version </label>
-          <select class="form-control" id="sel1" name="productDetailId" formControlName="productDetailId">
-            <option value="" disabled>Select Product Version</option>
+          <select class="form-control" name="productVersion" formControlName="productDetailId">
+            <option value="" disabled>Select Version</option>
             <option *ngFor="let v of versions" [value]="v.productDetailId">
               {{v.version}}
             </option>
@@ -48,14 +49,14 @@
         </div>
         <div class="form-group">
           <label>License Type </label>
-          <select class="form-control" name="licenseType" (ngModelChange)="onLicenseChange($event)"
-           formControlName="licenseType">
-            <option>COMMERCIAL</option>
-            <option>DEMO</option>
+          <select class="form-control" name="licenseTypeId" (ngModelChange)="onLicenseChange($event)"
+           formControlName="licenseTypeId">
+            <option *ngFor="let license of licenseType" value ={{license.id}}
+          >{{license.name}}</option>
           </select>
-          <span *ngIf="productForm.get('licenseType').errors &&
-          (productForm.get('licenseType').touched||productForm.get('licenseType').dirty)">
-            <span *ngIf="productForm.get('licenseType').errors.required" class="field_error">License Type
+          <span *ngIf="productForm.get('licenseTypeId').errors &&
+          (productForm.get('licenseTypeId').touched||productForm.get('licenseTypeId').dirty)">
+            <span *ngIf="productForm.get('licenseTypeId').errors.required" class="field_error">License Type
               is required</span>
           </span>
         </div>

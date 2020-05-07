@@ -22,6 +22,7 @@ export class AddProductComponent implements OnInit {
   d: any;
   todayDate: string;
   versions:any[];
+  licenseType: any;
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -40,22 +41,24 @@ export class AddProductComponent implements OnInit {
     })
     this.getProductDetail()
     this.patchavalue()
-    var today = new Date();
-    this.todayDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)) + '-' + '0' + today.getDate();
-    console.log(this.todayDate)
-    this.productForm.controls['startDate'].patchValue(this.todayDate)
+    this.getLicenseType()
   }
 
   getVersions(c){
     this.versions = c.versions;
   }
-
+getLicenseType(){
+   this.projectservice.getLicenseType().subscribe(data=>{
+     console.log(data)
+     this.licenseType= data
+   })
+ }
   initProductForm() {
     return this.fb.group({
       "projectId": ["", [Validators.required]],
       "productDetailId": ["", [Validators.required]],
       "licenseCount": ["", [Validators.required]],
-      "licenseType": ["", [Validators.required]],
+      "licenseTypeId": ["", [Validators.required]],
       "expirationPeriodType": ["", [Validators.required]],
       "expirationMonthCount": ['', [Validators.min(1)]],
       "startDate": ["", [Validators.required]],
@@ -84,6 +87,10 @@ export class AddProductComponent implements OnInit {
     this._productService.getProductDetails().subscribe(
       data => {
         this.productDetail = data
+        var today = new Date();
+    this.todayDate = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)) + '-' + '0' + today.getDate();
+    console.log(this.todayDate)
+    this.productForm.controls['startDate'].patchValue(this.todayDate)
       })
   }
   onSubmit() {
@@ -126,13 +133,19 @@ export class AddProductComponent implements OnInit {
       )
     }
   }
-  onLicenseChange(licenseType) {
-    console.log(licenseType)
-    if (licenseType == 'DEMO') {
+  onLicenseChange(licenseTypeId) {
+    console.log(licenseTypeId)
+    const foundItem = this.licenseType.find((item)=>{
+      return item.id == licenseTypeId
+    })
+    console.log(foundItem)
+    if (foundItem.name == 'DEMO') {
       this.productForm.controls['expirationPeriodType'].patchValue('LIMITED');
+      this.productForm.controls['expirationMonthCount'].patchValue(foundItem.maxMonthCount);
       this.productForm.controls['expirationPeriodType'].disable();
     }
     else {
+      this.productForm.controls['expirationMonthCount'].patchValue(foundItem.maxMonthCount);
       this.productForm.controls['expirationPeriodType'].enable();
     }
   }
