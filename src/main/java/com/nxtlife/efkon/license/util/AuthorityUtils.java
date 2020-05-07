@@ -180,6 +180,11 @@ public final class AuthorityUtils {
 	public static final String PROJECT_PRODUCT_SUBMIT = "ROLE_PROJECT_PRODUCT_SUBMIT";
 
 	/**
+	 * AUTHORITY TO RENEW PROJECT PRODUCT
+	 */
+	public static final String PROJECT_PRODUCT_RENEW = "ROLE_PROJECT_PRODUCT_RENEW";
+
+	/**
 	 * AUTHORITY TO DELETE PROJECT PRODUCT
 	 */
 	public static final String PROJECT_PRODUCT_DELETE = "ROLE_PROJECT_PRODUCT_DELETE";
@@ -193,5 +198,10 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO UPDATE LICENSE
 	 */
 	public static final String LICENSE_UPDATE = "ROLE_LICENSE_UPDATE";
+
+	/**
+	 * AUTHORITY TO UPDATE LICENSE TYPE
+	 */
+	public static final String LICENSE_TYPE_UPDATE = "ROLE_LICENSE_TYPE_UPDATE";
 
 }

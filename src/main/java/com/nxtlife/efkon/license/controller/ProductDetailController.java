@@ -19,6 +19,7 @@ import com.nxtlife.efkon.license.service.ProductDetailService;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
+import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -40,9 +41,9 @@ public class ProductDetailController {
 	@Operation(summary = "Find all product details", description = "return list of product details ", tags = {
 			"Product Detail" })
 	@ApiResponses(value = {
-			@ApiResponse(description = "product details successfully fetched", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductDetailResponse.class)))),
+			@ApiResponse(description = "product details successfully fetched", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductFamilyResponse.class)))),
 			@ApiResponse(description = "If user doesn't have access to fetch list of product details", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public List<ProductDetailResponse> findAll() {
+	public List<ProductFamilyResponse> findAll() {
 		return productDetailService.findAll();
 	}
 
@@ -56,27 +57,27 @@ public class ProductDetailController {
 	public ProductDetailResponse saveProductDetail(@Valid @RequestBody ProductDetailRequest request) {
 		return productDetailService.save(request);
 	}
-	
-	@PutMapping(value = "product/detail/{id}", consumes = {"application/json"}, produces = {"application/json"})
-    @Operation(summary = "Update product detail ", description = "return product detail info after updating product detail details", tags = {
-            "Product Detail"})
-    @ApiResponses(value = {
-            @ApiResponse(description = "Product Detail info after updating product  details", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductDetailResponse.class))),
-            @ApiResponse(description = "If user doesn't have access to update product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
-            @ApiResponse(description = "If required field are not filled or detail already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class)))})
-    public ProductDetailResponse update(@PathVariable Long id, @Valid @RequestBody ProductDetailRequest request) {
-        return productDetailService.update(id, request);
-    }
-	
-	@DeleteMapping(value = "product/detail/{id}", produces = {"application/json"})
-    @Operation(summary = "Delete product detail ", description = "return success response after successfully deleting the project detail", tags = {
-            "Product Detail"})
-    @ApiResponses(value = {
-            @ApiResponse(description = "Product detail successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
-            @ApiResponse(description = "If user doesn't have access to delete product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
-            @ApiResponse(description = "If product detail id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class)))})
-    public SuccessResponse delete(@PathVariable Long id) {
-        return productDetailService.delete(id);
-    }
+
+	@PutMapping(value = "product/detail/{id}", consumes = { "application/json" }, produces = { "application/json" })
+	@Operation(summary = "Update product detail ", description = "return product detail info after updating product detail details", tags = {
+			"Product Detail" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Product Detail info after updating product  details", responseCode = "200", content = @Content(schema = @Schema(implementation = ProductDetailResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to update product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If required field are not filled or detail already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public ProductDetailResponse update(@PathVariable Long id, @Valid @RequestBody ProductDetailRequest request) {
+		return productDetailService.update(id, request);
+	}
+
+	@DeleteMapping(value = "product/detail/{id}", produces = { "application/json" })
+	@Operation(summary = "Delete product detail ", description = "return success response after successfully deleting the project detail", tags = {
+			"Product Detail" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Product detail successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to delete product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If product detail id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public SuccessResponse delete(@PathVariable Long id) {
+		return productDetailService.delete(id);
+	}
 
 }

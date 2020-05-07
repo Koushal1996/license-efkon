@@ -5,6 +5,7 @@ import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailRequest;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
+import com.nxtlife.efkon.license.view.product.ProductFamilyResponse;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface ProductDetailService {
      * @return list of <tt>ProductDetailResponse</tt>
      */
 
-    public List<ProductDetailResponse> findAll();
+	public List<ProductFamilyResponse> findAll();
 
     /**
      * this method used to save product  detail.

@@ -26,6 +26,8 @@ import com.nxtlife.efkon.license.entity.version.Version;
 @DynamicUpdate(value = true)
 public class ProductDetail extends BaseEntity implements Serializable {
 
+	private String description;
+
 	@ManyToOne
 	private ProductCode productCode;
 
@@ -51,8 +53,9 @@ public class ProductDetail extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProductDetail(Long tProductCodeId, Long tProductFamilyId, Long tVersionId) {
+	public ProductDetail(String description, Long tProductCodeId, Long tProductFamilyId, Long tVersionId) {
 		super();
+		this.description = description;
 		if (tProductCodeId != null) {
 			this.productCode = new ProductCode();
 			this.productCode.setId(tProductCodeId);
@@ -68,6 +71,14 @@ public class ProductDetail extends BaseEntity implements Serializable {
 		this.tProductCodeId = tProductCodeId;
 		this.tProductFamilyId = tProductFamilyId;
 		this.tVersionId = tVersionId;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public ProductCode getProductCode() {

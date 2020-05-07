@@ -20,6 +20,10 @@ public class ProductFamilyRequest implements Request {
 	@NotEmpty(message = "code can't be empty")
 	private String code;
 
+	@Schema(description = "description of the product family")
+	@NotEmpty(message = "description can't be empty")
+	private String description;
+
 	@Schema(description = "codes of product code")
 	@NotEmpty(message = "product codes can't be empty")
 	@Valid
@@ -29,6 +33,7 @@ public class ProductFamilyRequest implements Request {
 		ProductFamily productFamily = new ProductFamily();
 		productFamily.setName(name);
 		productFamily.setCode(code);
+		productFamily.setDescription(description);
 		return productFamily;
 	}
 
@@ -38,6 +43,10 @@ public class ProductFamilyRequest implements Request {
 
 	public String getCode() {
 		return code;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public Set<ProductCodeRequest> getProductCodes() {

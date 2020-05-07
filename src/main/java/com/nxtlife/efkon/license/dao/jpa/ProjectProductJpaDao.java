@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
-import com.nxtlife.efkon.license.enums.LicenseType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -62,8 +61,8 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public Integer findLicenseCountById(Long id);
 
 	@Modifying
-	@Query(value = "update ProjectProduct set licenseCount=?2, licenseType =?3, expirationPeriodType=?4, expirationMonthCount=?5, startDate=?6, endDate=?7, modifiedBy.id =?8, modifiedAt =?9 where id =?1")
-	public int update(Long id, Integer licenseCount, LicenseType licenseType, ExpirationPeriodType expirationPeriodType,
+	@Query(value = "update ProjectProduct set licenseCount=?2, licenseType.id =?3, expirationPeriodType=?4, expirationMonthCount=?5, startDate=?6, endDate=?7, modifiedBy.id =?8, modifiedAt =?9 where id =?1")
+	public int update(Long id, Integer licenseCount, Long licenseTypeId, ExpirationPeriodType expirationPeriodType,
 			Integer expirationMonthCoun, String startDate, String endDate, Long userId, Date date);
 
 	@Modifying

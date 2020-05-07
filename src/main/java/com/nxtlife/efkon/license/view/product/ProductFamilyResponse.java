@@ -20,13 +20,17 @@ public class ProductFamilyResponse implements Response {
 	@Schema(description = "Code of product family")
 	private String code;
 
+	@Schema(description = "Description of product family")
+	private String description;
+
 	private List<ProductCodeResponse> productCodes;
 
-	public ProductFamilyResponse(Long id, String name, String code) {
+	public ProductFamilyResponse(Long id, String name, String code, String description) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.code = code;
+		this.description = description;
 	}
 
 	public Long getId() {
@@ -53,6 +57,14 @@ public class ProductFamilyResponse implements Response {
 		this.code = code;
 	}
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public List<ProductCodeResponse> getProductCodes() {
 		return productCodes;
 	}
@@ -64,7 +76,7 @@ public class ProductFamilyResponse implements Response {
 	public static ProductFamilyResponse get(ProductFamily productFamily) {
 		if (productFamily != null) {
 			ProductFamilyResponse response = new ProductFamilyResponse(productFamily.getId(), productFamily.getName(),
-					productFamily.getCode());
+					productFamily.getCode(), productFamily.getDescription());
 			return response;
 		}
 		return null;
