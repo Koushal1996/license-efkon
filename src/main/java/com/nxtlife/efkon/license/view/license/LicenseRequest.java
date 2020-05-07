@@ -27,4 +27,12 @@ public class LicenseRequest implements Request {
 		this.name = name;
 	}
 
+	public String getAccessId() {
+		return accessId;
+	}
+
+	public void setAccessId(String accessId) {
+		this.accessId = accessId;
+	}
+
 }
