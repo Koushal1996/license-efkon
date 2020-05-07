@@ -10,7 +10,7 @@
         <th scope="col">Email</th>
         <th scope="col">Contact No.</th>
         <th scope="col">Roles</th>
-        <th scope="col"  *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')" >Action</th>
+        <th scope="col" class="action_width"  *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')" >Action</th>
       </tr>
     </thead>
     <tbody>
@@ -21,24 +21,24 @@
         <td>{{item.email}}</td>
         <td>{{item.contactNo}}</td>
         <td>
-          <span class="badge p-2 mr-2 mb-2 cursor"
+          <span class="badge custom_badge"
            *ngFor=" let role of item.roles; index as index">
             {{role.name}}
           </span>
         </td>
         <ng-container *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')">
         <td *ngIf="item.active">
-          <button class="text-primary "
+          <button class="edit_button"
           *ngIf="hasAuthority('USER_DELETE')" >
             <i class="fa fa-edit" (click)="edituser(item)"></i>
           </button>
-          <button class="text-danger"
+          <button class="delete_button"
           *ngIf="hasAuthority('USER_DELETE')">
             <i class="fa fa-trash" (click)="deleteuser(item)"></i>
           </button>
         </td>
         <td *ngIf="!item.active">
-          <button *ngIf="hasAuthority('USER_DELETE')"
+          <button class="roleactive" *ngIf="hasAuthority('USER_DELETE')"
            (click)="activateuser(item)">
             activate</button></td>
        </ng-container>

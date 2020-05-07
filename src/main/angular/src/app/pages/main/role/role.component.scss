@@ -9,10 +9,15 @@
 .btn-danger {
     color: #fff;
     text-align: center;
-    position: fixed;
+    position: inherit;
     bottom: 2px;
     right: 15px;
     background-color: #e74111;
     border-color: #e74111;
 }
-
+// .btn:hover {
+//     color: #212529 !important;
+//     background: #fff !important;
+//     text-decoration: none;
+//     border: 1px solid fff !important;
+// }

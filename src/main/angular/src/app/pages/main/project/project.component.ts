@@ -137,7 +137,6 @@ export class ProjectComponent implements OnInit {
                   console.log(data)
                   console.log("submit")
                   this.selectedProduct.status = 'SUBMIT'
-                  //this.projects = data
                   swal("Project Submit successfully!");
                 }
               )

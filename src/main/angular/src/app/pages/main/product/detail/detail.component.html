@@ -1,18 +1,19 @@
-<div class="container-fluid mt-5">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
-      <div class="text-center">
+    <div class="col-md-12">
+      <h2 class="text-center">Product Detail Table</h2>
+      <!-- <div class="text-center">
         <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-      </div>
-      <div class="table-responsive">
+      </div> -->
+      <!-- <div class="table-responsive"> -->
         <table class="table table-bordered mt-4">
-          <thead>
+          <thead  class="users_table_hader">
             <tr>
               <th scope="col">#</th>
               <th scope="col" >Product Family</th>
               <th scope="col">Product Code</th>
               <th scope="col">Version</th>
-              <th scope="col" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">Action</th>
+              <th scope="col" class="action_width" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -46,9 +47,9 @@
             </ng-container>
           </tbody>
         </table>
-      </div>
+      <!-- </div> -->
       <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')" >
-      <button class="btn btn-danger"  *ngIf="!isCreateDetail"
+      <button class="btn btn-success mb-3 mt-1"  *ngIf="!isCreateDetail"
       (click)="showDetailForm()">Add Product Detail </button>
       </ng-container>
     </div>

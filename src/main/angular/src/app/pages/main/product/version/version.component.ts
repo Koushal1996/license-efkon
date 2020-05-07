@@ -13,7 +13,6 @@ import swal from 'sweetalert';
 export class VersionComponent implements OnInit {
   Versions = [];
   versionId;
-  versiontype
   createVersionForm: FormGroup;
   isCreateVersion: boolean = false
   isloader:boolean= true
@@ -102,7 +101,6 @@ export class VersionComponent implements OnInit {
   }
   editVersion(version) {
     this.isCreateVersion = true
-    this.versiontype = 'Edit'
     //console.log(version.version)
     this.versionId = version.id
     this.formDetail=version
@@ -112,7 +110,6 @@ export class VersionComponent implements OnInit {
   }
   showVersionForm(){
     this.isCreateVersion = true
-    this.versiontype = 'Add'
     this.createVersionForm.reset()
   }
   Reset(){
