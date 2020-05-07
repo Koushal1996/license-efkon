@@ -4,6 +4,8 @@ import { HttpClient, HttpParams, HttpHeaders, HttpResponse, HttpErrorResponse } 
 import { Observable } from 'rxjs';
 import { throwError } from "rxjs";
 import { map, catchError } from "rxjs/operators";
+import swal from 'sweetalert';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -110,6 +112,7 @@ export class ApiService {
   };
 
   async showError(message) {
-    alert(message)
+    //alert(message)
+    swal("ERROR!",message ,"error");
   }
 }

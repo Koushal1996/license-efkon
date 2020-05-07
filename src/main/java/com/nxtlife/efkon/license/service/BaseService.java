@@ -64,4 +64,17 @@ public abstract class BaseService {
 		}
 		return sequenceGenerator.getSequence();
 	}
+	
+	protected void updateSequenceGenerator(String type, Integer sequence) {
+		SequenceGenerator sequenceGenerator = sequenceGeneratorJpaDao.findByType(type);
+		if (sequenceGenerator == null) {
+			sequenceGeneratorJpaDao.save(new SequenceGenerator(type, sequence));
+			return ;
+		}
+		int rows = sequenceGeneratorJpaDao.updateSequence(sequenceGenerator.getId(), sequence, getUser().getUserId(),
+				new Date());
+		if (rows == 0) {
+			throw new RuntimeException("sequence generator row updated is zero");
+		}
+	}
 }

@@ -16,6 +16,8 @@ import { FamilyComponent } from './product/family/family.component';
 import { DetailComponent } from './product/detail/detail.component';
 import { AddProductComponent } from './project/add-product/add-product.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ProjectProductComponent } from './project-product/project-product.component';
+import { CreateFamilyComponent } from './product/family/create-family/create-family.component';
 
 
 @NgModule({
@@ -26,7 +28,7 @@ import { ProfileComponent } from './profile/profile.component';
     NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [MainComponent, UserComponent,
-     CreateUserComponent, RoleComponent, CreateRoleComponent, ProjectComponent, CreateProjectComponent, ProductComponent, VersionComponent, FamilyComponent, DetailComponent, AddProductComponent, ProfileComponent,
+     CreateUserComponent, RoleComponent, CreateRoleComponent, ProjectComponent, CreateProjectComponent, ProductComponent, VersionComponent, FamilyComponent, DetailComponent, AddProductComponent, ProfileComponent, ProjectProductComponent, CreateFamilyComponent,
      ]
 })
 export class MainModule { }

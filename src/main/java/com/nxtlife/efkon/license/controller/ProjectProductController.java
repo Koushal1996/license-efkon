@@ -60,7 +60,7 @@ public class ProjectProductController {
 			@ApiResponse(description = "If user doesn't have access to update product details in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If project product id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public ProjectProductResponse update(@PathVariable Long id, @RequestBody ProjectProductRequest request) {
+	public ProjectProductResponse update(@PathVariable Long id, @Valid @RequestBody ProjectProductRequest request) {
 		return projectProductService.update(id, request);
 	}
 
@@ -101,7 +101,7 @@ public class ProjectProductController {
 			@ApiResponse(description = "If user doesn't have access to update product details in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If project product id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	@Secured(AuthorityUtils.PROJECT_PRODUCT_SUBMIT)
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_REVIEW)
 	public ProjectProductResponse review(@PathVariable Long id, @RequestBody ProjectProductCommentRequest request) {
 		return projectProductService.updateStatus(id, ProjectProductStatus.REVIEWED, request.getComment());
 	}
@@ -115,9 +115,22 @@ public class ProjectProductController {
 			@ApiResponse(description = "If user doesn't have access to update product details in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If project product id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	@Secured({ AuthorityUtils.PROJECT_PRODUCT_REVIEW, AuthorityUtils.PROJECT_PRODUCT_REVIEW })
+	@Secured({ AuthorityUtils.PROJECT_PRODUCT_REVIEW, AuthorityUtils.PROJECT_PRODUCT_APPROVE })
 	public ProjectProductResponse reject(@PathVariable Long id, @RequestBody ProjectProductCommentRequest request) {
 		return projectProductService.updateStatus(id, ProjectProductStatus.REJECT, request.getComment());
+	}
+
+	@PutMapping(value = "project/product/{id}/renew", produces = { "application/json" }, consumes = {
+			"application/json" })
+	@Operation(summary = "Renew project product ", description = "return project product response after renew details", tags = {
+			"Project", "Project Product" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Project Product response after successfully renew the product details in project", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to renew product details in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project product id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public ProjectProductResponse renew(@PathVariable Long id, @RequestBody ProjectProductRequest request) {
+		return projectProductService.renew(id, request);
 	}
 
 	@GetMapping(value = "project/product/{id}", produces = { "application/json" })
@@ -133,7 +146,7 @@ public class ProjectProductController {
 	}
 
 	@GetMapping(value = "project/product", produces = { "application/json" })
-	@Operation(summary = "Find all project types", description = "return a list of project types", tags = { "Project" })
+	@Operation(summary = "Find all projects", description = "return a list of projects", tags = { "Project" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Project product  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })

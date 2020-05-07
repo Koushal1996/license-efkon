@@ -17,14 +17,16 @@ public interface VersionJpaDao extends JpaRepository<Version, Long> {
 	public List<VersionResponse> findByActive(Boolean active);
 
 	public VersionResponse findResponseById(Long id);
-	
-	public Boolean existsByVersionAndActive(String version,Boolean active);
 
-	public Boolean existsByIdAndActive(Long id,Boolean active);
+	@Query(value = "select id from Version where version = ?1 and active = ?2")
+	public Long findIdByNameAndActive(String version, Boolean active);
+
+	public Boolean existsByVersionAndActive(String version, Boolean active);
+
+	public Boolean existsByIdAndActive(Long id, Boolean active);
 
 	@Modifying
 	@Query(value = "update Version set active = false, modified_by =?2, modified_at =?3 where id =?1")
 	public int delete(Long id, Long userId, Date date);
-
 
 }

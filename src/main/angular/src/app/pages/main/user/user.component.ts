@@ -36,8 +36,8 @@ export class UserComponent implements OnInit {
 
   deleteuser(item) {
     swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to deleted this?",
+      title: "You sure?",
+      text: "You want to go ahead with deletion?",
       icon: "warning",
       closeOnClickOutside:false,
       buttons:["Yes","No"],

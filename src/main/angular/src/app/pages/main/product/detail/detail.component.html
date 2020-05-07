@@ -1,44 +1,55 @@
-<div class="container-fluid mt-5">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <h2 class="text-center">Product Detail Table</h2>
-      <div class="text-center">
+      <!-- <div class="text-center">
         <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-      </div>
-      <div class="table-responsive">
+      </div> -->
+      <!-- <div class="table-responsive"> -->
         <table class="table table-bordered mt-4">
-          <thead>
+          <thead  class="users_table_hader">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Product Family</th>
+              <th scope="col" >Product Family</th>
               <th scope="col">Product Code</th>
               <th scope="col">Version</th>
-              <th scope="col">Action</th>
+              <th scope="col" class="action_width" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let detail of productDetail; index as i">
-              <td>{{i+1}}</td>
-              <td> {{detail.productFamilyName}}</td>
-              <td>{{detail.productCodeName}}</td>
-              <td>{{detail.versionName}}</td>
-              <td>
-                <a class="text-primary pr-2 cursor">
-                  <i class="fa fa-edit" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
-                   (click)="editProductDetail(detail)"></i>
-                </a>
-                <a class="text-danger pl-2 cursor">
-                  <i class="fa fa-trash" *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
-                  (click)="deleteProductDetail(detail)"></i>
-                </a>
-              </td>
-
-            </tr>
+            <ng-container *ngFor="let detail of productDetail; index as i">
+              <tr >
+                <td [attr.rowspan]="getDetailRowspan(detail)">{{i}}</td>
+                <td [attr.rowspan]="getDetailRowspan(detail)">{{detail.name}}</td>
+              </tr> 
+              <ng-container *ngFor="let code of detail.productCodes">
+                <tr>
+                  <td [attr.rowspan]="code.versions.length + 1">{{code.name}}</td>
+                </tr>
+                <ng-container *ngFor="let version of code.versions">
+                  <tr>
+                    <td>{{version.version}}</td>
+                    <td *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE') || hasAuthority('PRODUCT_DETAIL_DELETE')">
+                      <a class="text-primary pr-2 cursor"
+                       *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
+                      (click)="editProductDetail(detail, code, version)">
+                        <i class="fa fa-edit"></i>
+                      </a>
+                      <a class="text-danger pl-2 cursor" 
+                      *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
+                      (click)="deleteProductDetail(detail, code, version.productDetailId)">
+                        <i class="fa fa-trash"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </ng-container>
+              </ng-container>
+            </ng-container>
           </tbody>
         </table>
-      </div>
+      <!-- </div> -->
       <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')" >
-      <button class="btn btn-danger"  *ngIf="!isCreateDetail"
+      <button class="btn btn-success mb-3 mt-1"  *ngIf="!isCreateDetail"
       (click)="showDetailForm()">Add Product Detail </button>
       </ng-container>
     </div>
@@ -73,23 +84,34 @@
 
         <div class="form-group">
           <label>Version</label>
-          <select class="form-control" formControlName="versionId">
-            <option *ngFor="let name of Versions" value={{name.id}}>
-              {{name.version}}
-            </option>
-          </select>
-          <span *ngIf="createDetailForm.get('versionId').errors &&
-          (createDetailForm.get('versionId').touched||createDetailForm.get('versionId').dirty)">
-          <span *ngIf="createDetailForm.get('versionId').errors.required" class="text-danger">Version  is
+          <input type="text" class="form-control" formControlName="version">
+          <span *ngIf="createDetailForm.get('version').errors &&
+          (createDetailForm.get('version').touched||createDetailForm.get('version').dirty)">
+          <span *ngIf="createDetailForm.get('version').errors.required" class="text-danger">Version  is
             required</span>
           </span>
         </div>
-        <button type="submit" class="btn btn-danger ml-auto" *ngIf="!loaderbutton"
+        <div class="form-group">
+          <label>Description</label>
+          <textarea name="description"  class="form-control" formControlName="description"></textarea>
+          <span *ngIf="createDetailForm.get('description').errors &&
+          (createDetailForm.get('description').touched||createDetailForm.get('description').dirty)">
+          <span *ngIf="createDetailForm.get('description').errors.required" class="text-danger">Description  is
+            required</span>
+          </span>
+        </div>
+
+        <button type="submit" *ngIf="!loaderbutton"
          [disabled]="!createDetailForm.valid">
           {{detailId ?'Update': 'Submit'}} </button>
-          <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
+          <button class="buttonload" *ngIf="loaderbutton">
             <i class="fa fa-refresh fa-spin"></i> Loading
           </button>
+          <button type="button"
+          (click)="Reset()" >
+          <i class="fa fa-times"></i> Reset</button>
+          <button type="button"
+          (click)="close()"> Close</button>
       </form>
     </div>
 

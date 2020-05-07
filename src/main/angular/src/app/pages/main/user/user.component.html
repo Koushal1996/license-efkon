@@ -1,15 +1,8 @@
 <div class="container-fluid">
-  <div class="mt-4">
     <button class="btn btn-danger"   *ngIf="hasAuthority('USER_CREATE')"
      (click)="createuser()">Create User</button>
-  </div>
-  <div class="text-center">
-    <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-  </div>
- 
-      <div class="table-responsive">
-  <table class="table table-bordered mt-4">
-    <thead>
+  <table class="table table-bordered">
+    <thead class="users_table_hader">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
@@ -17,7 +10,7 @@
         <th scope="col">Email</th>
         <th scope="col">Contact No.</th>
         <th scope="col">Roles</th>
-        <th scope="col">Action</th>
+        <th scope="col" class="action_width"  *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')" >Action</th>
       </tr>
     </thead>
     <tbody>
@@ -28,27 +21,28 @@
         <td>{{item.email}}</td>
         <td>{{item.contactNo}}</td>
         <td>
-          <span class="badge p-2 mr-2 mb-2 cursor"
+          <span class="badge custom_badge"
            *ngFor=" let role of item.roles; index as index">
             {{role.name}}
           </span>
         </td>
+        <ng-container *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')">
         <td *ngIf="item.active">
-          <a class="text-primary pr-2 cursor" 
+          <button class="edit_button"
           *ngIf="hasAuthority('USER_DELETE')" >
             <i class="fa fa-edit" (click)="edituser(item)"></i>
-          </a>
-          <a class="text-danger pl-2 cursor"
+          </button>
+          <button class="delete_button"
           *ngIf="hasAuthority('USER_DELETE')">
             <i class="fa fa-trash" (click)="deleteuser(item)"></i>
-          </a>
+          </button>
         </td>
         <td *ngIf="!item.active">
-          <button *ngIf="hasAuthority('USER_DELETE')"
+          <button class="roleactive" *ngIf="hasAuthority('USER_DELETE')"
            (click)="activateuser(item)">
             activate</button></td>
+       </ng-container>
       </tr>
     </tbody>
   </table>
-  </div>
 </div>

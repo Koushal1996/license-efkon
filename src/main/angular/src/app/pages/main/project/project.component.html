@@ -1,14 +1,9 @@
-<div class="mt-4">
+<div class="container-fluid">
   <button class="btn btn-danger"  *ngIf="hasAuthority('PROJECT_CREATE')"
    (click)="createpProject()">Create Project</button>
-</div>
-<div class="text-center">
-  <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-</div>
-<div class="table-responsive">
 
-  <table class="table table-bordered mt-4">
-    <thead>
+  <table class="table table-bordered">
+    <thead  class="users_table_hader">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Customer Name</th>
@@ -17,7 +12,7 @@
         <th scope="col">Customer Contact NO</th>
         <th scope="col"> Project Type</th>
         <th scope="col">Project Manager</th>
-        <th scope="col">Action</th>
+        <th scope="col" *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">Action</th>
       </tr>
     </thead>
     <tbody id="accordion">
@@ -30,8 +25,8 @@
           <td>{{project.customerContactNo}}</td>
           <td>{{project.projectTypeName}}</td>
           <td>{{project.projectManagerName}}</td>
-          <td><button class=" btn btn-primary"
-            *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
+          <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
+            <button class=" btn add_product"
              (click)="addProduct(project)">Add Product</button></td>
         </tr>
         <tr>
@@ -50,8 +45,8 @@
                   <th scope="col">Product Detail</th>
                   <th scope="col">No of License</th>
                   <th scope="col">License Type</th>
-                  <th scope="col">Expiration Period</th>
-                  <th scope="col">Expiration Month</th>
+                  <th scope="col">Expiry</th>
+                  <th scope="col">Expiry Period (in months)</th>
                   <th scope="col"> Start Date </th>
                   <th scope="col">End Date</th>
                   <th scope="col">Status</th>
@@ -64,7 +59,7 @@
                     {{pro.productDetailResponse.versionName}}
                   </td>
                   <td>{{pro.licenseCount}}</td>
-                  <td>{{pro.licenseType}}</td>
+                  <td>{{pro.licenseTypeName}}</td>
                   <td>{{pro.expirationPeriodType}}</td>
                   <td *ngIf="pro.expirationPeriodType=='LIMITED'">{{pro.expirationMonthCount}}</td>
                    <td *ngIf="pro.expirationPeriodType=='LIFETIME'">NA</td>
@@ -73,7 +68,7 @@
                   <td *ngIf="pro.expirationPeriodType=='LIFETIME'">NA</td>
                   <td>{{pro.status}}
                     <br>
-                    <a class="cursor text-danger"
+                    <a class="cursor text-danger" *ngIf="pro.status!=='DRAFT'"
                     (click)="showComments(pro)">comments
                   </a>
                  
@@ -108,6 +103,7 @@
                     (click)="rejectProductStatus(pro)">Reject</button>
                   </td>
                   <td *ngIf="pro.status=='APPROVED' ||pro.status=='REJECTED' ">
+                    NA
                   </td>
                 </tr>
               </table>
@@ -163,8 +159,11 @@
         </div>
         <div class="modal-body">
      <ul *ngFor =" let c of comments">
-      <li>NAME :{{c.commentedBy}}
+      <li>
+        <span *ngIf="!hasUserId(c)"> NAME :{{c.commentedBy}}</span>
+        <span *ngIf="hasUserId(c)" > NAME : me</span>
           COMMENT :{{c.comment}}
+          
           TIME:{{c.createdAt | date:'medium'}}
       </li>
 

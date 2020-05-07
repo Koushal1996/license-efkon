@@ -16,7 +16,8 @@ export class MainComponent implements OnInit {
     { route: '/roles', title: 'Roles' , privilege :'ROLE_FETCH' },
     { route: '/users', title: 'Users' ,privilege :'USER_FETCH'},
     { route: '/projects', title: 'Projects', privilege :'PROJECT_FETCH'},
-    { route: '/products/detail', title: 'Products',privilege :'PRODUCT_DETAIL_FETCH'}
+    { route: '/products/detail', title: 'Products',privilege :'PRODUCT_DETAIL_FETCH'},
+    { route: '/projectproduct', title: 'Project-Products',privilege :'PROJECT_PRODUCT_FETCH'}
   ]
   UserInfo: any;
   UserAuthorities

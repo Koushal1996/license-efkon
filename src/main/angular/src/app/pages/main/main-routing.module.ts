@@ -13,6 +13,7 @@ import { FamilyComponent } from './product/family/family.component';
 import { DetailComponent } from './product/detail/detail.component';
 import { AddProductComponent } from './project/add-product/add-product.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ProjectProductComponent } from './project-product/project-product.component';
 
 const routes: Routes = [
   {
@@ -39,7 +40,8 @@ const routes: Routes = [
           {path: 'detail', component:DetailComponent }
         ]
       },
-      {path:'profile', component:ProfileComponent}
+      {path:'profile', component:ProfileComponent},
+      {path:'projectproduct', component:ProjectProductComponent}
 
     ]
   }

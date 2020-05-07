@@ -117,6 +117,6 @@ export class LoginComponent implements OnInit {
 
   /**navigate to control-room interface after successfull login */
   navigate() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/projects']);
   }
 }

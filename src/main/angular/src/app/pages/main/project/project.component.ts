@@ -1,3 +1,4 @@
+import { MainService } from './../../../services/main/main.service';
 import { StorageService } from './../../../services/storage/storage.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -21,17 +22,27 @@ export class ProjectComponent implements OnInit {
   popUpForm: FormGroup;
   commentValue: any;
   commentSubmitButton: string;
-  selectedProdcut: any;
+  selectedProduct: any;
   isNoProducts: boolean = false;
   comments =[]
+  userId
+  commentID: any[];
   constructor(private projectservice: ProjectService,
     private _storageService:StorageService,
+    private mainService:MainService,
     private route: Router,
     private fb: FormBuilder) { }
 
   ngOnInit() {
     this.getProjects()
     this.popUpForm = this.initpopUpForm();
+    // let userInfo = JSON.parse(localStorage.getItem("userInfo"))
+    // let userId =  userInfo.id
+    // console.log(userId)
+    this.mainService.getLoginUser().subscribe(data=>{
+      console.log(data)
+      this.userId = data.id
+    })
   }
 
   hasAuthority(authority){
@@ -66,8 +77,8 @@ export class ProjectComponent implements OnInit {
   }
   deleteProduct(pro) {
     swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to deleted this?",
+      title: "You sure?",
+      text: "You want to go ahead with deletion?",
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -111,7 +122,7 @@ export class ProjectComponent implements OnInit {
       case 'Submit':
         swal({
           title: "Are you sure?",
-          text: "Are you sure that you want to Submit this?",
+          text: "You want to Submit this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -121,12 +132,12 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.submitProductStatus(this.selectedProdcut.id, this.popUpForm.value).subscribe(
+              this.projectservice.submitProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log(data)
                   console.log("submit")
-                  this.selectedProdcut.status = 'SUBMIT'
-                  swal("Submit successfully!");
+                  this.selectedProduct.status = 'SUBMIT'
+                  swal("Project Submit successfully!");
                 }
               )
             }
@@ -135,7 +146,7 @@ export class ProjectComponent implements OnInit {
       case 'Reject':
         swal({
           title: "Are you sure?",
-          text: "Are you sure that you want to Reject this?",
+          text: "You want to Reject this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -145,11 +156,11 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.rejectProductStatus(this.selectedProdcut.id, this.popUpForm.value).subscribe(
+              this.projectservice.rejectProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log("rejected")
-                  this.selectedProdcut.status = 'REJECTED'
-                  swal("Reject successfully!");
+                  this.selectedProduct.status = 'REJECTED'
+                  swal("Project Reject successfully!");
                 }
               )
             }
@@ -158,7 +169,7 @@ export class ProjectComponent implements OnInit {
       case 'Review':
         swal({
           title: "Are you sure?",
-          text: "Are you sure that you want to Review this?",
+          text: "You want to Review this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -168,11 +179,11 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.reviewProductStatus(this.selectedProdcut.id, this.popUpForm.value).subscribe(
+              this.projectservice.reviewProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log("review")
-                  this.selectedProdcut.status = 'REVIEWED'
-                  swal("Review successfully!");
+                  this.selectedProduct.status = 'REVIEWED'
+                  swal("Project Review successfully!");
                 }
               )
             }
@@ -181,7 +192,7 @@ export class ProjectComponent implements OnInit {
       case 'Approved':
         swal({
           title: "Are you sure?",
-          text: "Are you sure that you want to Approved this?",
+          text: "You want to Approve this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -191,11 +202,11 @@ export class ProjectComponent implements OnInit {
             if (willDelete) {
             }
             else {
-              this.projectservice.approveProductStatus(this.selectedProdcut.id, this.popUpForm.value).subscribe(
+              this.projectservice.approveProductStatus(this.selectedProduct.id, this.popUpForm.value).subscribe(
                 data => {
                   console.log("approved")
-                  this.selectedProdcut.status = 'APPROVED'
-                  swal("Approved successfully!");
+                  this.selectedProduct.status = 'APPROVED'
+                  swal("Project Approve successfully!");
                 }
               )
             }
@@ -207,25 +218,25 @@ export class ProjectComponent implements OnInit {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = 'Submit'
-    this.selectedProdcut = pro
+    this.selectedProduct = pro
   }
   reviewProductStatus(pro) {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = 'Review'
-    this.selectedProdcut = pro
+    this.selectedProduct = pro
   }
   approveProductStatus(pro) {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = 'Approved'
-    this.selectedProdcut = pro
+    this.selectedProduct = pro
   }
   rejectProductStatus(pro) {
     this.showModal = true;
     this.popUpForm.controls['comment'].setValidators(Validators.required);
     this.commentSubmitButton = 'Reject'
-    this.selectedProdcut = pro;
+    this.selectedProduct = pro;
     this.popUpForm.reset();
   }
   hide() {
@@ -235,16 +246,23 @@ export class ProjectComponent implements OnInit {
     this.showCommentModal=false;
   }
   showComments(pro){
-    
     this.comments = pro.comments
     console.log(this.comments) 
-    if(this.comments.length > 0)
-    {
-      this.showCommentModal=true
+    if(this.comments.length > 0){
+     this.showCommentModal=true
     }
-    else
-    {
+    else{
       swal("No Comments Found")
     }
   }
+
+  hasUserId(c){
+  if(c.commentedById ==this.userId)
+  {
+    return true
+  }
+  else{
+    return false
+  }
+}
 }

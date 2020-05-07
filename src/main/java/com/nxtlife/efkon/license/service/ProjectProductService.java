@@ -72,6 +72,8 @@ public interface ProjectProductService {
 	 */
 	public ProjectProductResponse updateStatus(Long id, ProjectProductStatus status, String comment);
 
+	public ProjectProductResponse renew(Long id, ProjectProductRequest request);
+
 	/**
 	 * this method used to delete product in project. It throws exception if
 	 * project product id not found
