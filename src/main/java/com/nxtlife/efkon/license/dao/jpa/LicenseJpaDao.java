@@ -23,13 +23,13 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 
 	public LicenseResponse findResponseByIdAndActiveTrue(Long id);
 
-	public List<License> findByActive(Boolean active);
+	public List<LicenseResponse> findByActive(Boolean active);
 
-	public List<License> findAllByActiveTrue();
+	public List<LicenseResponse> findAllByActiveTrue();
 
-	public License findByIdAndActiveTrue(Long unmaskId);
+	public LicenseResponse findByIdAndActiveTrue(Long unmaskId);
 
-	public List<LicenseResponse> findAllResponseByProjectProductIdAndGeneratedKeyIsNotNullAndActiveTrue(Long id);
+	public List<LicenseResponse> findByProjectProductIdAndActiveTrue(Long id);
 
 	@Modifying
 	@Query(value = "update License set generatedKey=?2, name=?3, modifiedBy.id=?4, modifiedAt=?5 where id =?1")

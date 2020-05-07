@@ -40,7 +40,7 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	public ProjectProductResponse findResponseById(Long id);
 
-	public List<ProjectProductResponse> findAllResponseByProjectIdAndProductDetailIdAndActiveTrue(Long projectId,
+	public List<ProjectProductResponse> findByProjectIdAndProductDetailIdAndActiveTrue(Long projectId,
 			Long projectDetailId);
 
 	public Boolean existsByProductDetailIdAndActive(Long productDetailId, Boolean active);

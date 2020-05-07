@@ -236,6 +236,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 			projectProduct.setProjectResponse(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
+			projectProduct.setLicenses(licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()), true));
 		});
 		return projectProductResponseList;
 	}

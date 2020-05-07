@@ -27,14 +27,12 @@ public class LicenseResponse implements Response {
 
 	private ProjectProductResponse projectProduct;
 
-	public LicenseResponse(License license) {
-		super();
-		this.id = license.getId();
-		this.accessId = license.getAccessId();
-		this.code = license.getCode();
-		this.generatedKey = license.getGeneratedKey();
-		this.name = license.getName();
-		this.projectProductId = license.getProjectProduct().getId();
+	public LicenseResponse get(License license) {
+		if (license != null) {
+			return new LicenseResponse(license.getId(), license.getName(), license.getCode(), license.getAccessId(),
+					license.getGeneratedKey(), license.getProjectProduct().getId());
+		}
+		return null;
 	}
 
 	public LicenseResponse(Long id, String name, String code, String accessId, String generatedKey,
