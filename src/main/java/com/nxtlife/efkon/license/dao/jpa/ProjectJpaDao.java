@@ -7,22 +7,21 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public interface ProjectJpaDao extends JpaRepository<Project, Long> {
 
-	public Boolean existsByIdAndActive(Long id,Boolean active);
-	
+	public Boolean existsByIdAndActive(Long id, Boolean active);
+
 	public Project findByCustomerName(String name);
 
 	public ProjectResponse findResponseById(Long id);
 
 	public List<ProjectResponse> findByActive(Boolean active);
 
-	public List<ProjectResponse> findByCustomerEmailAndActive(String customerEmail,Boolean active);
-	
-	public List<ProjectResponse> findByProjectManagerIdAndActive(Long projectManagerId,Boolean active);
+	public List<ProjectResponse> findByCustomerEmailAndActive(String customerEmail, Boolean active);
 
-	public Boolean existsByCustomerContactNoAndActive(String customerContactNo,Boolean active);
+	public List<ProjectResponse> findByProjectManagerIdAndActive(Long projectManagerId, Boolean active);
+
+	public Boolean existsByCustomerContactNoAndActive(String customerContactNo, Boolean active);
 
 }

@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.DynamicInsert;
@@ -18,7 +17,10 @@ import com.nxtlife.efkon.license.enums.LicenseStatus;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "license", uniqueConstraints = { @UniqueConstraint(columnNames = { "code", "project_product_id" }) })
+@Table(name = "license"/*
+						 * , uniqueConstraints = { @UniqueConstraint(columnNames
+						 * = { "code", "project_product_id" }) }
+						 */)
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class License extends BaseEntity implements Serializable {
@@ -52,6 +54,22 @@ public class License extends BaseEntity implements Serializable {
 			this.projectProduct = new ProjectProduct();
 			this.projectProduct.setId(projectProductId);
 		}
+	}
+
+	public License(@NotNull(message = "code can't be null") String code,
+			@NotNull(message = "access_id can't be null") String accessId, String generatedKey, String name,
+			@NotNull(message = "status can't be null") LicenseStatus status, Long projectProductId) {
+		super();
+		this.code = code;
+		this.accessId = accessId;
+		this.generatedKey = generatedKey;
+		this.name = name;
+		this.status = status;
+		if (projectProductId != null) {
+			this.projectProduct = new ProjectProduct();
+			this.projectProduct.setId(projectProductId);
+		}
+
 	}
 
 	public License(@NotNull(message = "code can't be null") String code,

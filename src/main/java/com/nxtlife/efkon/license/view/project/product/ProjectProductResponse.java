@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
-import com.nxtlife.efkon.license.enums.LicenseType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.view.Response;
+import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
 
@@ -38,8 +38,14 @@ public class ProjectProductResponse implements Response {
 	@Schema(description = "No of license", example = "4")
 	private Integer licenseCount;
 
-	@Schema(description = "Type of license", example = "Demo")
-	private LicenseType licenseType;
+	@Schema(description = "Type id of license", example = "1")
+	private Long licenseTypeId;
+
+	@Schema(description = "Type name of license", example = "DEMO")
+	private String licenseTypeName;
+
+	@Schema(description = "Type code of license", example = "DE")
+	private String licenseTypeCode;
 
 	@Schema(description = "Type of expiration period", example = "Demo")
 	private ExpirationPeriodType expirationPeriodType;
@@ -59,16 +65,20 @@ public class ProjectProductResponse implements Response {
 	@JsonIgnore
 	private Long createdById;
 
+	private List<LicenseResponse> licenses;
+	
 	private List<ProjectProductCommentResponse> comments;
 
-	public ProjectProductResponse(Long id, Integer licenseCount, LicenseType licenseType,
-			ExpirationPeriodType expirationPeriodType, Integer expirationMonthCount, String startDate, String endDate,
-			ProjectProductStatus status, String createdAt, Date modifiedAt, Long projectId, Long productDetailId,
-			Long createdById) {
+	public ProjectProductResponse(Long id, Integer licenseCount, Long licenseTypeId, String licenseTypeName,
+			String licenseTypeCode, ExpirationPeriodType expirationPeriodType, Integer expirationMonthCount,
+			String startDate, String endDate, ProjectProductStatus status, String createdAt, Date modifiedAt,
+			Long projectId, Long productDetailId, Long createdById) {
 		super();
 		this.id = id;
 		this.licenseCount = licenseCount;
-		this.licenseType = licenseType;
+		this.licenseTypeId = licenseTypeId;
+		this.licenseTypeName = licenseTypeName;
+		this.licenseTypeCode = licenseTypeCode;
 		this.expirationPeriodType = expirationPeriodType;
 		this.expirationMonthCount = expirationMonthCount;
 		this.startDate = startDate;
@@ -97,12 +107,28 @@ public class ProjectProductResponse implements Response {
 		this.licenseCount = licenseCount;
 	}
 
-	public LicenseType getLicenseType() {
-		return licenseType;
+	public Long getLicenseTypeId() {
+		return mask(licenseTypeId);
 	}
 
-	public void setLicenseType(LicenseType licenseType) {
-		this.licenseType = licenseType;
+	public void setLicenseTypeId(Long licenseTypeId) {
+		this.licenseTypeId = licenseTypeId;
+	}
+
+	public String getLicenseTypeName() {
+		return licenseTypeName;
+	}
+
+	public void setLicenseTypeName(String licenseTypeName) {
+		this.licenseTypeName = licenseTypeName;
+	}
+
+	public String getLicenseTypeCode() {
+		return licenseTypeCode;
+	}
+
+	public void setLicenseTypeCode(String licenseTypeCode) {
+		this.licenseTypeCode = licenseTypeCode;
 	}
 
 	public ExpirationPeriodType getExpirationPeriodType() {
@@ -209,10 +235,19 @@ public class ProjectProductResponse implements Response {
 		this.comments = comments;
 	}
 
+	public List<LicenseResponse> getLicenses() {
+		return licenses;
+	}
+
+	public void setLicenses(List<LicenseResponse> licenses) {
+		this.licenses = licenses;
+	}
+
 	public static ProjectProductResponse get(ProjectProduct projectProduct) {
 		if (projectProduct != null) {
 			ProjectProductResponse response = new ProjectProductResponse(projectProduct.getId(),
-					projectProduct.getLicenseCount(), projectProduct.getLicenseType(),
+					projectProduct.getLicenseCount(), projectProduct.getLicenseType().getId(),
+					projectProduct.getLicenseType().getName(), projectProduct.getLicenseType().getCode(),
 					projectProduct.getExpirationPeriodType(), projectProduct.getExpirationMonthCount(),
 					projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus(),
 					projectProduct.getCreatedAt(), projectProduct.getModifiedAt(), null, null, null);

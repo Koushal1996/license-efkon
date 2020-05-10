@@ -17,10 +17,10 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import com.nxtlife.efkon.license.entity.common.BaseEntity;
 import com.nxtlife.efkon.license.entity.license.License;
+import com.nxtlife.efkon.license.entity.license.LicenseType;
 import com.nxtlife.efkon.license.entity.product.ProductDetail;
 import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
-import com.nxtlife.efkon.license.enums.LicenseType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 
 @SuppressWarnings("serial")
@@ -34,8 +34,11 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 	private Integer licenseCount;
 
 	@NotNull(message = "license_type can't be null")
-	@Enumerated(EnumType.STRING)
+	@ManyToOne
 	private LicenseType licenseType;
+
+	@Transient
+	private Long tLicenseTypeId;
 
 	@NotNull(message = "expiration_period_type can't be null")
 	@Enumerated(EnumType.STRING)
@@ -74,13 +77,15 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 		super();
 	}
 
-	public ProjectProduct(Integer licenseCount,
-			@NotNull(message = "license_type can't be null") LicenseType licenseType,
+	public ProjectProduct(Integer licenseCount, @NotNull(message = "license_type can't be null") Long licenseTypeId,
 			@NotNull(message = "expiration_period_type can't be null") ExpirationPeriodType expirationPeriodType,
 			Integer expirationMonthCount, @NotNull(message = "start_date can't be null") String startDate,
 			String endDate, @NotNull(message = "status can't be null") ProjectProductStatus status) {
 		this.licenseCount = licenseCount;
-		this.licenseType = licenseType;
+		if (licenseTypeId != null) {
+			this.licenseType = new LicenseType();
+			this.licenseType.setId(licenseTypeId);
+		}
 		this.expirationPeriodType = expirationPeriodType;
 		this.expirationMonthCount = expirationMonthCount;
 		this.startDate = startDate;
@@ -102,6 +107,18 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 
 	public void setLicenseType(LicenseType licenseType) {
 		this.licenseType = licenseType;
+	}
+
+	public Long gettLicenseTypeId() {
+		return tLicenseTypeId;
+	}
+
+	public void settLicenseTypeId(Long tLicenseTypeId) {
+		if (tLicenseTypeId != null) {
+			this.licenseType = new LicenseType();
+			this.licenseType.setId(tLicenseTypeId);
+		}
+		this.tLicenseTypeId = tLicenseTypeId;
 	}
 
 	public ExpirationPeriodType getExpirationPeriodType() {

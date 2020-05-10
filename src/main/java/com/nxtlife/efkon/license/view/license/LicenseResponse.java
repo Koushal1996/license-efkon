@@ -1,6 +1,7 @@
 package com.nxtlife.efkon.license.view.license;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -25,6 +26,14 @@ public class LicenseResponse implements Response {
 	private Long projectProductId;
 
 	private ProjectProductResponse projectProduct;
+
+	public LicenseResponse get(License license) {
+		if (license != null) {
+			return new LicenseResponse(license.getId(), license.getName(), license.getCode(), license.getAccessId(),
+					license.getGeneratedKey(), license.getProjectProduct().getId());
+		}
+		return null;
+	}
 
 	public LicenseResponse(Long id, String name, String code, String accessId, String generatedKey,
 			Long projectProductId) {

@@ -59,10 +59,14 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		validate(request);
 		ProductFamily productFamily = request.toEntity();
 		productFamily.setProductCodes(new HashSet<>());
+		Integer sequence = sequenceGenerator("PRODUCTCODE");
 		for (ProductCodeRequest codeRequest : request.getProductCodes()) {
-			productFamily.getProductCodes().add(new ProductCode(codeRequest.getName(),
-					String.format("%02d", sequenceGenerator("PRODUCTCODE")), productFamily));
+			if (codeRequest.getId() == null) {
+				productFamily.getProductCodes()
+						.add(new ProductCode(codeRequest.getName(), String.format("%02d", sequence++), productFamily));
+			}
 		}
+		updateSequenceGenerator("PRODUCTCODE", sequence);
 		productFamilyDao.save(productFamily);
 		ProductFamilyResponse response = productFamilyDao.findResponseById(productFamily.getId());
 		response.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(productFamily.getId(), true));
@@ -87,38 +91,46 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		if (productFamily == null) {
 			throw new NotFoundException("Product family not found");
 		}
-		if (!productFamily.getName().equals(request.getName())) {
-			if (productFamilyDao.existsByName(request.getName())) {
-				throw new ValidationException("This product family already exists");
+		if (request.getName() != null) {
+			if (!productFamily.getName().equals(request.getName())) {
+				if (productFamilyDao.existsByName(request.getName())) {
+					throw new ValidationException("This product family already exists");
+				}
 			}
 		}
 		if (request.getProductCodes() != null) {
 			request.getProductCodes().forEach(productCode -> {
 				Long productCodeId = productCodeDao.findIdByName(productCode.getName());
-				if (productCode.getId() != null && productCodeId != null && !productCode.getId().equals(productCodeId)) {
+				if (productCode.getId() != null && productCodeId != null
+						&& !productCode.getId().equals(productCodeId)) {
 					throw new ValidationException(
 							String.format("This product code(%s) already exist", productCode.getName()));
 				}
 			});
 		}
-		int rows = productFamilyDao.updateById(request.getName(), request.getCode(), unmaskId, getUserId(), new Date());
-		if (rows > 0) {
-			logger.info("Product family {} updated successfully", unmaskId);
+		if (request.getName() != null) {
+			int rows = productFamilyDao.updateById(request.getName(), request.getCode(), unmaskId, getUserId(),
+					new Date());
+			if (rows > 0) {
+				logger.info("Product family {} updated successfully", unmaskId);
+			}
 		}
 		List<Long> productFamilyCodeIds = productCodeDao.findAllIdsByProductFamilyIdAndActive(unmaskId, true);
 		ProductCode productcode;
+		Integer sequence = sequenceGenerator("PRODUCTCODE");
 		for (ProductCodeRequest codeRequest : request.getProductCodes()) {
 			if (codeRequest.getId() == null) {
-				productcode = new ProductCode(codeRequest.getName(),
-						String.format("%02d", sequenceGenerator("PRODUCTCODE")), unmaskId);
+				productcode = new ProductCode(codeRequest.getName(), String.format("%02d", sequence++), unmaskId);
 				productCodeDao.save(productcode);
 			} else {
 				productCodeDao.updateNameById(codeRequest.getName(), codeRequest.getId(), getUserId(), new Date());
 				productFamilyCodeIds.remove(codeRequest.getId());
 			}
 		}
+		updateSequenceGenerator("PRODUCTCODE", sequence);
 		if (!productFamilyCodeIds.isEmpty()) {
-			productCodeDao.deleteByIds(productFamilyCodeIds, getUserId(), new Date());
+			// productCodeDao.deleteByIds(productFamilyCodeIds, getUserId(), new
+			// Date());
 		}
 
 		ProductFamilyResponse response = productFamilyDao.findResponseById(unmaskId);

@@ -1,7 +1,7 @@
 package com.nxtlife.efkon.license.enums;
 
 public enum LicenseStatus {
-    EXPIRED, ACTIVE, RENEWED;
+    EXPIRED, ACTIVE, RENEWED, REPLACED;
 
     public static boolean matches(String status) {
         for (LicenseStatus licenseStatus : LicenseStatus.values()) {

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
-import com.nxtlife.efkon.license.enums.LicenseType;
 import com.nxtlife.efkon.license.view.Request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +26,7 @@ public class ProjectProductRequest implements Request {
 
 	@Schema(description = "Type of license", example = "Demo", required = true)
 	@NotNull(message = "License type can't be null")
-	private String licenseType;
+	private Long licenseTypeId;
 
 	@Schema(description = "Type of expiration period", example = "LIMITED", required = true, allowableValues = {
 			"LIMITED", "LIFETIME" })
@@ -48,7 +47,7 @@ public class ProjectProductRequest implements Request {
 	public ProjectProduct toEntity() {
 		ProjectProduct projectProduct = new ProjectProduct();
 		projectProduct.setLicenseCount(licenseCount);
-		projectProduct.setLicenseType(LicenseType.valueOf(licenseType));
+		projectProduct.settLicenseTypeId(unmask(licenseTypeId));
 		if (expirationMonthCount != null)
 			projectProduct.setExpirationMonthCount(expirationMonthCount);
 		projectProduct.setExpirationPeriodType(ExpirationPeriodType.valueOf(expirationPeriodType));
@@ -71,8 +70,8 @@ public class ProjectProductRequest implements Request {
 		return licenseCount;
 	}
 
-	public String getLicenseType() {
-		return licenseType;
+	public Long getLicenseTypeId() {
+		return unmask(licenseTypeId);
 	}
 
 	public String getExpirationPeriodType() {

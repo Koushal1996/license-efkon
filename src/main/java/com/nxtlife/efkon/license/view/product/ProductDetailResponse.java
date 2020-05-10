@@ -12,12 +12,17 @@ public class ProductDetailResponse implements Response {
 	@Schema(description = "Id of the product detail")
 	private Long id;
 
+	@Schema(description = "Description of the product detail")
+	private String description;
+
 	@Schema(description = "product family id", example = "1")
 	private Long productFamilyId;
 	@Schema(description = "product family name", example = "ATCS")
 	private String productFamilyName;
 	@Schema(description = "product family code", example = "AT")
 	private String productFamilyCode;
+	@Schema(description = "product family description", example = "AT")
+	private String productFamilyDescription;
 
 	@Schema(description = "product family of product detail")
 	private ProductFamilyResponse productFamily;
@@ -40,13 +45,16 @@ public class ProductDetailResponse implements Response {
 	@Schema(description = "version of product detail")
 	private VersionResponse version;
 
-	public ProductDetailResponse(Long id, Long productFamilyId, String productFamilyName, String productFamilyCode,
-			Long productCodeId, String productCodeName, String productCodeCode, Long versionId, String versionVersion) {
+	public ProductDetailResponse(Long id, String description, Long productFamilyId, String productFamilyName,
+			String productFamilyCode, String productFamilyDescription, Long productCodeId, String productCodeName,
+			String productCodeCode, Long versionId, String versionVersion) {
 		super();
 		this.id = id;
+		this.description = description;
 		this.productFamilyId = productFamilyId;
 		this.productFamilyName = productFamilyName;
 		this.productFamilyCode = productFamilyCode;
+		this.productFamilyDescription = productFamilyDescription;
 		this.productCodeId = productCodeId;
 		this.productCodeName = productCodeName;
 		this.productCodeCode = productCodeCode;
@@ -60,6 +68,14 @@ public class ProductDetailResponse implements Response {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public ProductFamilyResponse getProductFamily() {
@@ -108,6 +124,14 @@ public class ProductDetailResponse implements Response {
 
 	public void setProductFamilyCode(String productFamilyCode) {
 		this.productFamilyCode = productFamilyCode;
+	}
+
+	public String getProductFamilyDescription() {
+		return productFamilyDescription;
+	}
+
+	public void setProductFamilyDescription(String productFamilyDescription) {
+		this.productFamilyDescription = productFamilyDescription;
 	}
 
 	public Long getProductCodeId() {
