@@ -14,6 +14,7 @@ import { DetailComponent } from './product/detail/detail.component';
 import { AddProductComponent } from './project/add-product/add-product.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProjectProductComponent } from './project-product/project-product.component';
+import { CreateFamilyComponent } from './product/family/create-family/create-family.component';
 
 const routes: Routes = [
   {
@@ -37,11 +38,14 @@ const routes: Routes = [
         children:[
           {path: 'version', component: VersionComponent},
           {path: 'family', component: FamilyComponent},
+          {path:'family/create', component:CreateFamilyComponent},
+          {path:'family/:id', component:CreateFamilyComponent},
           {path: 'detail', component:DetailComponent }
         ]
       },
       {path:'profile', component:ProfileComponent},
-      {path:'projectproduct', component:ProjectProductComponent}
+      {path:'projectproduct', component:ProjectProductComponent},
+     
 
     ]
   }

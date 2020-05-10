@@ -22,6 +22,7 @@ export class DetailComponent implements OnInit {
   loaderbutton: boolean = false;
   Detail: any;
   formDetail: any;
+  productCodeId: any;
   constructor(private _productService: ProductService,
     private fb: FormBuilder,
     private _storageService: StorageService) { }
@@ -38,8 +39,6 @@ export class DetailComponent implements OnInit {
   }
   onchange(productFamilyId: number) {
     console.log(productFamilyId)
-    // this.productCodes = 
-    // this.Family.filter(res => res.id == productFamilyId).productCodes;
     const family = this.Family.find((item) => item.id == productFamilyId)
     this.productCodes = family.productCodes;
     console.log(this.productCodes)
@@ -106,7 +105,11 @@ export class DetailComponent implements OnInit {
       })
   }
 
-  editProductDetail(detail,code,version) {
+  editProductDetail(detail,code,version,description) {
+    console.log(detail.name)
+    console.log(code.name)
+    console.log(version.version)
+    console.log(description)
     this.isCreateDetail = true
     this.detailId = version.productDetailId
     this.formDetail = detail

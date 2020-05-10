@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api/api.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { ApiService } from '../api/api.service';
 export class ProductService {
 
   constructor(private api:ApiService ) {}
-
+  selecetedFamily : BehaviorSubject<any> = new BehaviorSubject<any>({})
     getVersions(){
       return this.api.get('api/versions');
     }
@@ -40,6 +41,14 @@ export class ProductService {
     getProductById(Id){
       return this.api.get(`api/project/product/${Id}`)
     }
-  
+    addProductFamily(data){
+      return this.api.post('api/product/family',data);
+    }
+    updateProductFamily(Id,data){
+      return this.api.put(`api/product/family/${Id}`, data);
+    }
+    deleteProductFamily(Id){
+      return this.api.delete(`api/product/family/${Id}`);
+    }
 }
 
