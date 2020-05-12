@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from './../../../../services/product/product.service';
+import swal from "sweetalert";
 
 @Component({
   selector: 'app-family',
@@ -8,7 +9,7 @@ import { ProductService } from './../../../../services/product/product.service';
   styleUrls: ['./family.component.scss']
 })
 export class FamilyComponent implements OnInit {
-  Family= []
+  family= []
   isloader:boolean= true
   constructor(private _productService :ProductService,
     private route:Router) { }
@@ -16,7 +17,7 @@ export class FamilyComponent implements OnInit {
   ngOnInit() {
     this._productService.getProductFamilies().subscribe(
       data=>{
-        this.Family= data
+        this.family= data
         console.log(data)
         this.isloader = false
       }
@@ -31,8 +32,22 @@ this.route.navigate(['products/family/create'])
     this.route.navigate(['products/family',family.id])
   }
   deleteFamilyDescription(family){
+    swal({
+      title: "You sure?",
+      text: "You want to go ahead with deletion?",
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+      } else {
     this._productService.deleteProductFamily(family.id).subscribe(data=>{
-       this.Family.splice(this.Family.findIndex(pd => pd.id == family.id))
+       this.family.splice(this.family.findIndex(pd => pd.id == family.id))
     })
+    swal("Product family delete successfully!");
   }
+});
+}
+
 }
