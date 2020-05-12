@@ -56,5 +56,7 @@ export class ProjectService {
  getLicenseType(){
    return this.api.get('api/license/types')
  }
-
+ generateLicenseKeyProduct(Id, data){
+​   return this.api.put(​`api/license​/${Id}​/generate-key`,data)
+ }
 }
