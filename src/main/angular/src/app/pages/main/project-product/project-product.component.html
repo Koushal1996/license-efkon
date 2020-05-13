@@ -5,7 +5,6 @@
         <th scope="col">#</th>
         <th scope="col">Product Detail</th>
         <th scope="col">No of License</th>
-        <!-- <th scope="col">Licenses</th> -->
         <th scope="col">License Type</th>
         <th scope="col">Expiry</th>
         <th scope="col">Expiry Period (in months)</th>
@@ -111,7 +110,7 @@
           </td>
         </tr>
         <tr>
-          <td colspan="12">
+          <td colspan="12" class="padding">
             <div
               [attr.id]="'collapse' + i"
               class="collapse"
@@ -130,7 +129,9 @@
                   <tr class="text-primary">
                     <th scope="col">Sr. No.</th>
                     <th scope="col">Code</th>
-                    <th scope="col">Unique Access ID.</th>
+                    <th scope="col">
+                      Unique Access ID.
+                    </th>
                     <th scope="col">License Key</th>
                   </tr>
                   <tr *ngFor="let license of project.licenses; index as i">
@@ -144,6 +145,8 @@
                         [(ngModel)]="license.accessId"
                       />
                     </td>
+
+                    <td *ngIf="license.generatedKey">NA</td>
                     <td *ngIf="license.generatedKey">
                       {{ license.generatedKey }}
                     </td>

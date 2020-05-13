@@ -39,7 +39,7 @@ export class AddProductComponent implements OnInit {
         this.productForm.controls["projectId"].patchValue(params.id);
     });
     this.getProductDetail();
-    this.patchavalue();
+    this.patchaValue();
     this.getLicenseType();
   }
 
@@ -65,7 +65,7 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  patchavalue() {
+  patchaValue() {
     if (this.productId) {
       this.projectservice.selecetedProduct.subscribe((data) => {
         if (Object.keys(data).length) {
@@ -201,7 +201,7 @@ export class AddProductComponent implements OnInit {
     this.productForm.controls["EndDate"].patchValue(convert(d));
   }
   Reset() {
-    this.patchavalue();
+    this.patchaValue();
   }
   close() {
     this.route.navigate(["/projects"]);

@@ -260,6 +260,7 @@ export class ProjectProductComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         license.generatedKey = data.generatedKey;
+        swal("License key generated successfully!");
       });
   }
 }
