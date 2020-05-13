@@ -1,5 +1,7 @@
 package com.nxtlife.efkon.license.service.impl;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -9,9 +11,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -35,8 +42,10 @@ import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
+import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.util.WorkBookUtil;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
@@ -65,7 +74,34 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	@Autowired
 	private LicenseTypeJpaDao licenseTypeJpaDao;
 
+	@Value("${file.upload-excel-dir}")
+	private String excelDirectory;
+
 	private static Logger logger = LoggerFactory.getLogger(ProjectProductServiceImpl.class);
+
+	private void createExcel(List<ProjectProductResponse> projectProductResponseList, String fileName, String heading) {
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
+		try {
+			Sheet sheet = workbook.createSheet(heading);
+			List<String> columnHeaders = ProjectProductResponse.projectProductsColumnHeaders();
+			CellStyle headerStyle = WorkBookUtil.getHeaderCellStyle(workbook);
+			WorkBookUtil.createRow(headerStyle, sheet, columnHeaders, 0);
+			Integer row = 1;
+
+			for (ProjectProductResponse iterate : projectProductResponseList) {
+				WorkBookUtil.createRow(sheet, iterate.columnValues(), row++);
+			}
+			FileOutputStream fout = new FileOutputStream(fileName);
+			workbook.write(fout);
+			workbook.close();
+			workbook.dispose();
+			fout.close();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
 	private void validate(String expirationPeriodType, String licenseType, Integer expirationMonthCount) {
 		if (expirationPeriodType != null && !ExpirationPeriodType.matches(expirationPeriodType)) {
@@ -106,12 +142,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration
-	 * month count
+	 * this method used to set end date according to start date and expiration month
+	 * count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater
-	 * than 12 then year will be incremented and month will be add result minus
-	 * 12.
+	 * if addition of month of start date and expiration month count greater than 12
+	 * then year will be incremented and month will be add result minus 12.
 	 *
 	 * @return String
 	 */
@@ -236,9 +271,19 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 			projectProduct.setProjectResponse(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
-			projectProduct.setLicenses(licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()), true));
+			projectProduct
+					.setLicenses(licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()), true));
 		});
 		return projectProductResponseList;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
+	public Resource findAllExcel() {
+		List<ProjectProductResponse> projectProductResponseList = findAll();
+		String fileName = excelDirectory + "Allproducts.xlsx";
+		createExcel(projectProductResponseList, fileName, "ProjectProducts");
+		return FileStorageService.fetchFile(fileName);
 	}
 
 	@Override
@@ -275,6 +320,15 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
 		});
 		return projectProductResponseList;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
+	public Resource findByProjectIdExcel(Long projectId) {
+		List<ProjectProductResponse> projectProductResponseList = findByProjectId(projectId);
+		String fileName = excelDirectory + "productsByProjectId.xlsx";
+		createExcel(projectProductResponseList, fileName, "ProjectProducts");
+		return FileStorageService.fetchFile(fileName);
 	}
 
 	@Override
@@ -373,27 +427,24 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
-						licenseDao.save(
-								new License(
-										String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
-												projectProductResponse.getProjectResponse().getCustomerCode(),
-												projectProductResponse.getProductDetailResponse()
-														.getProductFamilyCode(),
-												projectProductResponse.getProductDetailResponse().getProductCodeCode(),
-												getUser().getCode(), projectProductResponse.getLicenseTypeCode(),
-												(i + 1),
-												projectProductResponse.getExpirationMonthCount() == null ? 0
-														: projectProductResponse.getExpirationMonthCount(),
-												LocalDate
-														.parse(projectProductResponse.getStartDate(),
+						licenseDao.save(new License(
+								String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
+										projectProductResponse.getProjectResponse().getCustomerCode(),
+										projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
+										projectProductResponse.getProductDetailResponse().getProductCodeCode(),
+										getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (i + 1),
+										projectProductResponse.getExpirationMonthCount() == null ? 0
+												: projectProductResponse.getExpirationMonthCount(),
+										LocalDate
+												.parse(projectProductResponse.getStartDate(),
+														DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+												.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
+										projectProductResponse.getEndDate() == null ? "NA"
+												: LocalDate
+														.parse(projectProductResponse.getEndDate(),
 																DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-														.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
-												projectProductResponse.getEndDate() == null ? "NA"
-														: LocalDate
-																.parse(projectProductResponse.getEndDate(),
-																		DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-																.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
-										LicenseStatus.ACTIVE, unmaskId));
+														.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
+								LicenseStatus.ACTIVE, unmaskId));
 					}
 				}
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));

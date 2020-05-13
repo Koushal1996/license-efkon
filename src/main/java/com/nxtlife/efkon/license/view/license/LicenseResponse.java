@@ -1,6 +1,11 @@
 package com.nxtlife.efkon.license.view.license;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
@@ -102,4 +107,19 @@ public class LicenseResponse implements Response {
 		this.projectProductId = projectProductId;
 	}
 
+	public List<String> columnValues() {
+		List<String> columnValues = new ArrayList<>();
+		columnValues.add(name == null ? "NA" : name);
+		columnValues.add(generatedKey == null ? "NA" : generatedKey);
+		columnValues.add(accessId == null ? "NA" : accessId);
+//		columnValues.add(projectProduct.getLicenseTypeName() == null ? "NA" : projectProduct.getLicenseTypeCode());
+		columnValues.add(projectProductId == null ? "NA" : BaseService.unmask(projectProductId) + "");
+		return columnValues;
+
+	}
+
+	public static List<String> licenseColumnHeaders() {
+		List<String> columnHeaders = Arrays.asList("Name", "Generated Key", "Access Id", "Project Product Id");
+		return columnHeaders;
+	}
 }
