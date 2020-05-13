@@ -1,5 +1,7 @@
 package com.nxtlife.efkon.license.view.project.product;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
+import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
@@ -66,7 +69,7 @@ public class ProjectProductResponse implements Response {
 	private Long createdById;
 
 	private List<LicenseResponse> licenses;
-	
+
 	private List<ProjectProductCommentResponse> comments;
 
 	public ProjectProductResponse(Long id, Integer licenseCount, Long licenseTypeId, String licenseTypeName,
@@ -254,6 +257,29 @@ public class ProjectProductResponse implements Response {
 			return response;
 		}
 		return null;
+	}
+
+	public List<String> columnValues() {
+		List<String> columnValues = new ArrayList<>();
+		columnValues.add(id == null ? "NA" : BaseService.unmask(id) + "");
+		columnValues.add(createdAt == null ? "NA" : createdAt);
+		columnValues.add(projectId == null ? "NA" : BaseService.unmask(projectId) + "");
+		columnValues.add(productDetailId == null ? "NA" : BaseService.unmask(productDetailId) + "");
+		columnValues.add(licenseCount == null ? "NA" : licenseCount + "");
+		columnValues.add(licenseTypeName == null ? "NA" : licenseTypeName);
+		columnValues.add(expirationPeriodType == null ? "NA" : expirationPeriodType + "");
+		columnValues.add(expirationMonthCount == null ? "NA" : expirationMonthCount + "");
+		columnValues.add(startDate == null ? "NA" : startDate);
+		columnValues.add(endDate == null ? "NA" : endDate);
+		columnValues.add(status == null ? "NA" : status + "");
+		return columnValues;
+
+	}
+
+	public static List<String> projectProductsColumnHeaders() {
+		List<String> columnHeaders = Arrays.asList("Id", "CreatedAt", "Project Id", "Product Detail Id", "licenseCount",
+				"licenseTypeName", "expirationPeriodType", "expirationMonthCount", "startDate", "endDate", "status");
+		return columnHeaders;
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.nxtlife.efkon.license.entity.license.License;
+import com.nxtlife.efkon.license.enums.LicenseStatus;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 
 @Repository
@@ -25,7 +26,7 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 
 	public List<LicenseResponse> findByActive(Boolean active);
 
-	public List<LicenseResponse> findAllByActiveTrue();
+	public List<LicenseResponse> findAllByActive(Boolean active);
 
 	public LicenseResponse findByIdAndActiveTrue(Long unmaskId);
 
@@ -36,7 +37,19 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 	public int update(Long unmaskId, String generatedKey, String name, Long userId, Date date);
 
 	@Modifying
-	@Query(value = "update License set active=?2, modifiedBy.id=?3, modifiedAt=?4 where id =?1")
-	public int update(Long unmaskId, Boolean active, Long userId, Date date);
+	@Query(value = "update License set active=?2, status=?3 , modifiedBy.id=?4, modifiedAt=?5 where id =?1")
+	public int update(Long unmaskId, boolean b, LicenseStatus replaced, Long userId, Date date);
+
+	public List<LicenseResponse> findByProjectProductProjectIdAndActive(Long unmaskProjectId, Boolean active);
+
+	public List<LicenseResponse> findByProjectProductProjectIdAndProjectProductProjectCustomerEmailAndActive(
+			Long unmaskProjectId, String email, Boolean active);
+
+	public List<LicenseResponse> findByProjectProductProjectIdAndProjectProductProjectProjectManagerIdAndActive(
+			Long unmaskProjectId, Long userId, Boolean active);
+
+//	@Modifying
+//	@Query(value = "update License set active=?2, modifiedBy.id=?3, modifiedAt=?4 where id =?1")
+//	public int update(Long unmaskId, Boolean active, Long userId, Date date);
 
 }

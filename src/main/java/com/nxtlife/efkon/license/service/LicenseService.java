@@ -2,6 +2,8 @@ package com.nxtlife.efkon.license.service;
 
 import java.util.List;
 
+import org.springframework.core.io.Resource;
+
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 
@@ -18,6 +20,14 @@ public interface LicenseService {
 	 */
 
 	public List<LicenseResponse> findAll();
+	
+	/**
+	 * this method is used to create excel of all the license 
+	 * 
+	 * @return
+	 */
+	public Resource findAllExcel();
+
 
 	/**
 	 * this method is used to generate license key of product in a project
@@ -45,6 +55,33 @@ public interface LicenseService {
 	 * @param productId
 	 * @return {@link LicenseResponse}
 	 */
-
 	public List<LicenseResponse> findByProjectIdandProductId(Long projectId, Long productId);
+
+	/**
+	 * this method is used to find all the licenses of particular project
+	 * 
+	 * @param projectId
+	 * @return {@link LicenseResponse}
+	 */
+	public List<LicenseResponse> findByProjectId(Long projectId);
+
+	/**
+	 * this method is used to generate the excel file containing licenses of
+	 * particular product of particular project
+	 * 
+	 * @param projectId
+	 * @param productId
+	 * @return
+	 */
+	public Resource findLicensesByProjectIdandProductIdExcel(Long projectId, Long productId);
+
+	/**
+	 * this method is used to generate the excel file containing licenses of all the
+	 * products of particular project
+	 * 
+	 * @param projectId
+	 * @return
+	 */
+	public Resource findLicensesByProjectIdExcel(Long projectId);
+
 }

@@ -1,10 +1,13 @@
 package com.nxtlife.efkon.license.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductCommentRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
@@ -146,22 +150,45 @@ public class ProjectProductController {
 	}
 
 	@GetMapping(value = "project/product", produces = { "application/json" })
-	@Operation(summary = "Find all projects", description = "return a list of projects", tags = { "Project" })
+	@Operation(summary = "Find all projects products", description = "return a list of projects", tags = { "Project" })
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Project product  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductResponse> findAll() {
 		return projectProductService.findAll();
+	}
+
+	@GetMapping(value = "project/product/excel", produces = { "application/json" })
+	@Operation(summary = "Find all projects products and create excel", description = "return excel file of all the products of all the projects", tags = {
+			"Projects products" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Project products excel successfully created", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findAllProductsExcel(HttpServletResponse response) throws IOException {
+		Resource resource = projectProductService.findAllExcel();
+		Response.setFileResponseHeader(resource, "application/octet-stream", response);
 
 	}
 
 	@GetMapping(value = "project/{projectId}/product", produces = { "application/json" })
-	@Operation(summary = "Find all project types", description = "return a list of project types", tags = { "Project" })
+	@Operation(summary = "Find all product types", description = "return a list of product types", tags = { "Project" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Project product  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+
+			@ApiResponse(responseCode = "200", description = "Project products  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductResponse> findByProjectId(@PathVariable Long projectId) {
 		return projectProductService.findByProjectId(projectId);
+	}
+
+	@GetMapping(value = "project/{projectId}/product/excel", produces = { "application/json" })
+	@Operation(summary = "Find all product types of a project and create excel", description = "return a excel file of product types", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Project product excel successfully created", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findByProjectIdExcel(@PathVariable Long projectId, HttpServletResponse response) throws IOException {
+		Resource resource = projectProductService.findByProjectIdExcel(projectId);
+		Response.setFileResponseHeader(resource, "application/octet-stream", response);
 
 	}
 

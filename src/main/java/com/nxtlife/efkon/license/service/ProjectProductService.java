@@ -2,6 +2,8 @@ package com.nxtlife.efkon.license.service;
 
 import java.util.List;
 
+import org.springframework.core.io.Resource;
+
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
@@ -16,27 +18,25 @@ public interface ProjectProductService {
 	 *
 	 * @param
 	 * @param request
-	 * @return {@link ProjectProductResponse} after saving product information
-	 *         in project
-	 * @throws ValidationException
-	 *             if project or product not exist or project and product ids
-	 *             already exist in project product
+	 * @return {@link ProjectProductResponse} after saving product information in
+	 *         project
+	 * @throws ValidationException if project or product not exist or project and
+	 *                             product ids already exist in project product
 	 */
 	public ProjectProductResponse save(ProjectProductRequest request);
 
 	/**
-	 * this method used to update product detail and license detail in a
-	 * particular project.
+	 * this method used to update product detail and license detail in a particular
+	 * project.
 	 *
 	 * @param id
 	 * @param request
-	 * @return {@link ProjectProductResponse} after updating product information
-	 *         in project
-	 * @throws ValidationException
-	 *             if project or product not exist and product ids already exist
-	 *             in project product
-	 * @throws com.nxtlife.efkon.license.ex.NotFoundException
-	 *             if project product id is not found
+	 * @return {@link ProjectProductResponse} after updating product information in
+	 *         project
+	 * @throws ValidationException if project or product not exist and product ids
+	 *                             already exist in project product
+	 * @throws                     com.nxtlife.efkon.license.ex.NotFoundException if
+	 *                             project product id is not found
 	 */
 	public ProjectProductResponse update(Long id, ProjectProductRequest request);
 
@@ -48,12 +48,27 @@ public interface ProjectProductService {
 	public List<ProjectProductResponse> findAll();
 
 	/**
-	 * fetch project product by project id
+	 * this method is used to generate excel of all the products of all the projects
+	 * 
+	 * @return
+	 */
+	public Resource findAllExcel();
+
+	/**
+	 * fetch products of the project by project id
 	 * 
 	 * @param projectId
 	 * @return list of {@link ProjectProductResponse}
 	 */
 	public List<ProjectProductResponse> findByProjectId(Long projectId);
+
+	/**
+	 * generate excel file of products of the project by project Id
+	 * 
+	 * @param productId
+	 * @return
+	 */
+	public Resource findByProjectIdExcel(Long projectId);
 
 	/**
 	 * this method used to fetch project product response
@@ -75,13 +90,12 @@ public interface ProjectProductService {
 	public ProjectProductResponse renew(Long id, ProjectProductRequest request);
 
 	/**
-	 * this method used to delete product in project. It throws exception if
-	 * project product id not found
+	 * this method used to delete product in project. It throws exception if project
+	 * product id not found
 	 *
 	 * @param id
 	 * @return {@link SuccessResponse} if product deleted successfully
-	 * @throws NotFoundException
-	 *             if project product not found
+	 * @throws NotFoundException if project product not found
 	 */
 	public SuccessResponse delete(Long id);
 
