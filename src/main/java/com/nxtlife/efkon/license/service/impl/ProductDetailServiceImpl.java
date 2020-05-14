@@ -90,6 +90,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 						productDetail.getProductCodeName());
 				version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
 				version.setProductDetailId(unmask(productDetail.getId()));
+				version.setDescription(productDetail.getDescription());
 				productCode.setVersions(new ArrayList<>());
 				productCode.getVersions().add(version);
 				productFamily.setProductCodes(new ArrayList<>());
@@ -101,12 +102,14 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 							productDetail.getProductCodeName());
 					version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
 					version.setProductDetailId(unmask(productDetail.getId()));
+					version.setDescription(productDetail.getDescription());
 					productCode.setVersions(new ArrayList<>());
 					productCode.getVersions().add(version);
 					productFamily.getProductCodes().add(productCode);
 				} else {
 					version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
 					version.setProductDetailId(unmask(productDetail.getId()));
+					version.setDescription(productDetail.getDescription());
 					productCode.getVersions().add(version);
 				}
 			}
@@ -141,7 +144,8 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
 		}
 		Long versionId = versionDao.findIdByNameAndActive(request.getVersion(), true);
-		validate(request, versionId);
+		validate(request, versionId != null ? (productDetail.getVersion().getId().equals(versionId) ? null : versionId)
+				: versionId);
 		if (!request.getProductFamilyId().equals(productDetail.getProductFamily().getId())) {
 			throw new ValidationException("Product family can't be update");
 		}
@@ -156,7 +160,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		if (request.getDescription() != null) {
 			productDetail.setDescription(request.getDescription());
 		}
-		if (!versionId.equals(productDetail.getVersion().getId()))
+		if (!productDetail.getVersion().getId().equals(versionId))
 			productDetail.settVersionId(versionId);
 		productDetailDao.save(productDetail);
 		ProductDetailResponse response = productDetailDao.findResponseById(unmaskId);

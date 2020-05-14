@@ -277,8 +277,9 @@ public class ProjectProductResponse implements Response {
 	}
 
 	public static List<String> projectProductsColumnHeaders() {
-		List<String> columnHeaders = Arrays.asList("Id", "CreatedAt", "Project Id", "Product Detail Id", "licenseCount",
-				"licenseTypeName", "expirationPeriodType", "expirationMonthCount", "startDate", "endDate", "status");
+		List<String> columnHeaders = Arrays.asList("Id", "CreatedAt", "Project Id", "Product Detail Id",
+				"License Count", "License Type", "Expiration Period", "Expiration Months", "Start Date", "End Date",
+				"Status");
 		return columnHeaders;
 	}
 

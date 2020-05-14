@@ -22,6 +22,7 @@ public class ProjectProductRequest implements Request {
 
 	@Schema(description = "No of license", example = "4", required = true)
 	@NotNull(message = "License count can't be null")
+	@Min(message = "license count can't be less than 1", value = 1)
 	private Integer licenseCount;
 
 	@Schema(description = "Type of license", example = "Demo", required = true)
