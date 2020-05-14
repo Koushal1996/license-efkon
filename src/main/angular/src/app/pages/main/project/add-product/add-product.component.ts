@@ -23,6 +23,8 @@ export class AddProductComponent implements OnInit {
   todayDate: string;
   versions: any[];
   licenseType: any;
+  selectedProjectId;
+  selectedProductDetail;
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -38,9 +40,32 @@ export class AddProductComponent implements OnInit {
       if (params.id)
         this.productForm.controls["projectId"].patchValue(params.id);
     });
+
+    this.activate.params.subscribe((params) => {
+      this.selectedProjectId = params["id"];
+    });
     this.getProductDetail();
     this.patchaValue();
     this.getLicenseType();
+    console.log("getprojetcd");
+    this.getProjects();
+  }
+
+  getProjects() {
+    this.projectservice.getProjects().subscribe(
+      (data) => {
+        this.projects = data;
+        console.log(data);
+        console.log(this.projects);
+        console.log("this.selectedProjectId");
+        console.log(this.selectedProjectId);
+        this.selectedProductDetail = this.projects.find(
+          (item) => item.id == this.selectedProjectId
+        );
+        console.log(this.selectedProductDetail);
+      },
+      (error) => {}
+    );
   }
 
   getVersions(c) {

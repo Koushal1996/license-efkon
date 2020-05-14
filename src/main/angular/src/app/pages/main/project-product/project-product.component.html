@@ -52,7 +52,7 @@
             <a
               class="cursor text-danger"
               *ngIf="project.status !== 'DRAFT'"
-              (click)="showComments(project)"
+              (click)="showComments(project); $event.stopPropagation()"
               >comments
             </a>
           </td>
@@ -110,17 +110,17 @@
           </td>
         </tr>
         <tr>
-          <td colspan="12" class="padding">
+          <td colspan="12" class="padding" *ngIf="project.licenses.length">
             <div
               [attr.id]="'collapse' + i"
               class="collapse"
               data-parent="#accordion"
             >
-              <div *ngIf="project.status !== 'APPROVED'">
+              <!-- <div *ngIf="project.status !== 'APPROVED'">
                 <p class="text-black-50 text-center pt-3">
                   No License Available Now
                 </p>
-              </div>
+              </div> -->
               <div class="col-12 mt-3">
                 <table
                   class="table table-bordered innertable"
@@ -152,6 +152,7 @@
                     </td>
                     <td *ngIf="!license.generatedKey">
                       <button
+                        *ngIf="hasAuthority('LICENSE_UPDATE')"
                         type="button"
                         (click)="generateLicensekey(license)"
                       >

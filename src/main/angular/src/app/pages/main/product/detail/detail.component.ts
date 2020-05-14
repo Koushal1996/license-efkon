@@ -138,7 +138,7 @@ export class DetailComponent implements OnInit {
       productFamilyId: detail.id,
       productCodeId: code.id,
       version: version.version,
-      description: detail.description,
+      description: version.description,
     });
   }
   deleteProductDetail(detail, code, productDetailId) {

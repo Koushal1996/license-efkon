@@ -79,6 +79,7 @@ export class ProjectComponent implements OnInit {
   }
 
   addProduct(project) {
+    console.log(project)
     this.route.navigate([`projects/${project.id}/product`]);
   }
   deleteProduct(pro) {

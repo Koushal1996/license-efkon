@@ -10,7 +10,7 @@ import {
   Validators,
 } from "@angular/forms";
 import swal from "sweetalert";
-
+declare let $: any;
 @Component({
   selector: "app-project-product",
   templateUrl: "./project-product.component.html",
@@ -51,6 +51,7 @@ export class ProjectProductComponent implements OnInit {
       this.isloader = false;
     });
   }
+
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
       .getData("userAuthorities")
@@ -233,6 +234,7 @@ export class ProjectProductComponent implements OnInit {
     this.showCommentModal = false;
   }
   showComments(project) {
+    //.preventDefault();
     this.comments = project.comments;
     console.log(this.comments);
     if (this.comments.length > 0) {
