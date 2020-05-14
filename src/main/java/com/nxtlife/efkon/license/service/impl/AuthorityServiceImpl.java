@@ -4,12 +4,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import com.nxtlife.efkon.license.dao.jpa.AuthorityJpaDao;
-import com.nxtlife.efkon.license.dao.jpa.RoleJpaDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.nxtlife.efkon.license.dao.jpa.AuthorityJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.RoleAuthorityJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.RoleJpaDao;
 import com.nxtlife.efkon.license.entity.user.Authority;
+import com.nxtlife.efkon.license.entity.user.RoleAuthority;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.service.AuthorityService;
 import com.nxtlife.efkon.license.service.BaseService;
@@ -36,6 +38,9 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 
 	@Autowired
 	private RoleJpaDao roleDao;
+	
+	@Autowired
+	private RoleAuthorityJpaDao roleAuthorityDao;
 
 	/**
 	 * 
@@ -55,6 +60,11 @@ public class AuthorityServiceImpl extends BaseService implements AuthorityServic
 					authority.setName(f.getName());
 					authorityDao.save(authority);
 					logger.info("Not in db, saved {}", f.getName());
+					Set<Long> roleIds = roleDao.findIdsByName("SuperAdmin");
+					for (Long roleId : roleIds) {
+						roleAuthorityDao.save(new RoleAuthority(roleId, authority.getId()));
+					}
+
 				}
 			}
 		}

@@ -15,6 +15,9 @@ public class VersionResponse implements Response {
 	@Schema(description = "Version of the product", example = "2.2")
 	private String version;
 
+	@Schema(description = "Description for that product version")
+	private String description;
+
 	private Long productDetailId;
 
 	public VersionResponse(Long id, String version) {
@@ -37,6 +40,14 @@ public class VersionResponse implements Response {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Long getProductDetailId() {
