@@ -1,7 +1,13 @@
 import { StorageService } from "./../../../../services/storage/storage.service";
 import { Component, OnInit } from "@angular/core";
 import { ProductService } from "./../../../../services/product/product.service";
-import {FormControl,FormGroup,FormBuilder,Validators,FormArray} from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormArray,
+} from "@angular/forms";
 import swal from "sweetalert";
 
 @Component({
@@ -21,6 +27,10 @@ export class DetailComponent implements OnInit {
   Detail: any;
   formDetail: any;
   productCodeId: any;
+  prodCode: any;
+  productVersion: any;
+  currentProductFamilyData: any;
+  currentProductVersion: any;
   constructor(
     private _productService: ProductService,
     private fb: FormBuilder,
@@ -33,15 +43,32 @@ export class DetailComponent implements OnInit {
     this.getProductDetail();
   }
   hasAuthority(authority) {
-    const authorities: any[] = this._storageService.getData("userAuthorities").map((a) => a.name);
+    const authorities: any[] = this._storageService
+      .getData("userAuthorities")
+      .map((a) => a.name);
     return authorities.includes(authority);
   }
   onProductFamilySelect(productFamilyId: number) {
     console.log(productFamilyId);
     const family = this.Family.find((item) => item.id == productFamilyId);
     this.productCodes = family.productCodes;
-    console.log(family)
-    console.log(this.productCodes)
+    //console.log(this.productDetail);
+    this.currentProductFamilyData = this.productDetail.find(
+      (item) => item.id == productFamilyId
+    );
+    // console.log(family);
+    // console.log(this.productCodes);
+  }
+
+  onProductCodeSelect(productCodeId) {
+    console.log(productCodeId);
+    console.log(this.currentProductFamilyData.productCodes);
+    this.currentProductVersion = this.currentProductFamilyData.productCodes.find(
+      (item) => item.id == productCodeId
+    );
+    this.productVersion = this.currentProductVersion.versions;
+
+    console.log(this.productVersion);
   }
 
   initProductDetailForm() {
@@ -129,10 +156,16 @@ export class DetailComponent implements OnInit {
           (data) => {
             if (code.versions.length > 1) {
               code.versions.splice(
-                code.versions.findIndex((v) => v.productDetailId == productDetailId),1);
+                code.versions.findIndex(
+                  (v) => v.productDetailId == productDetailId
+                ),
+                1
+              );
             } else if (detail.productCodes.length > 1) {
               detail.productCodes.splice(
-                detail.productCodes.findIndex((c) => c.id == code.id),1);
+                detail.productCodes.findIndex((c) => c.id == code.id),
+                1
+              );
             } else {
               this.productDetail.splice(
                 this.productDetail.findIndex((pd) => pd.id == detail.id)
