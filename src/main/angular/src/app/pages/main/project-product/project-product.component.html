@@ -52,7 +52,7 @@
             <a
               class="cursor text-danger"
               *ngIf="project.status !== 'DRAFT'"
-              (click)="showComments(project)"
+              (click)="showComments(project); $event.stopPropagation()"
               >comments
             </a>
           </td>
@@ -103,24 +103,30 @@
               Reject
             </button>
           </td>
-          <td
-            *ngIf="project.status == 'APPROVED' || project.status == 'REJECTED'"
-          >
+          <td *ngIf="project.status == 'APPROVED'">
+            <button
+              type="button"
+              (click)="renewProductStatus(project); $event.stopPropagation()"
+            >
+              Renew
+            </button>
+          </td>
+          <td *ngIf="project.status == 'REJECTED'">
             NA
           </td>
         </tr>
         <tr>
-          <td colspan="12" class="padding">
+          <td colspan="12" class="padding" *ngIf="project.licenses.length">
             <div
               [attr.id]="'collapse' + i"
               class="collapse"
               data-parent="#accordion"
             >
-              <div *ngIf="project.status !== 'APPROVED'">
+              <!-- <div *ngIf="project.status !== 'APPROVED'">
                 <p class="text-black-50 text-center pt-3">
                   No License Available Now
                 </p>
-              </div>
+              </div> -->
               <div class="col-12 mt-3">
                 <table
                   class="table table-bordered innertable"
@@ -146,12 +152,21 @@
                       />
                     </td>
 
-                    <td *ngIf="license.generatedKey">NA</td>
                     <td *ngIf="license.generatedKey">
                       {{ license.generatedKey }}
                     </td>
+                    <td *ngIf="license.generatedKey">
+                      <button
+                        *ngIf="hasAuthority('LICENSE_UPDATE')"
+                        type="button"
+                        (click)="updateLicensekey(license)"
+                      >
+                        Update License Key
+                      </button>
+                    </td>
                     <td *ngIf="!license.generatedKey">
                       <button
+                        *ngIf="hasAuthority('LICENSE_UPDATE')"
                         type="button"
                         (click)="generateLicensekey(license)"
                       >
@@ -248,6 +263,87 @@
             TIME:{{ c.createdAt | date: "medium" }}
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal"
+  id="myModal"
+  [style.display]="showRenewModal ? 'block' : 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Enter Start Date</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="hideRenewModel()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmitStartDate()" [formGroup]="popUpStartDateForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="startDate"
+                name="startDate"
+              />
+              <span
+                *ngIf="
+                  popUpStartDateForm.get('startDate').errors &&
+                  (popUpStartDateForm.get('startDate').touched ||
+                    popUpStartDateForm.get('startDate').dirty)
+                "
+              >
+                <span
+                  *ngIf="popUpStartDateForm.get('startDate').errors.required"
+                  class="field_error"
+                >
+                  Start Date is required</span
+                >
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Expiry Period (in months) </label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="expirationMonthCount"
+                name="expirationMonthCount"
+              />
+              <span
+                *ngIf="
+                  popUpStartDateForm.get('expirationMonthCount').errors &&
+                  (popUpStartDateForm.get('expirationMonthCount').touched ||
+                    popUpStartDateForm.get('expirationMonthCount').dirty)
+                "
+              >
+                <span
+                  *ngIf="
+                    popUpStartDateForm.get('expirationMonthCount').errors.min
+                  "
+                  class="field_error"
+                >
+                  minimun 1 is required</span
+                >
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" [disabled]="!popUpForm.valid">
+              Renew
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

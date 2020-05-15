@@ -19,9 +19,10 @@
           <tr>
             <th scope="col">#</th>
             <th scope="col">Product Family</th>
-            <th scope="col">Description</th>
+
             <th scope="col">Product Code</th>
             <th scope="col">Version</th>
+            <th scope="col">Description</th>
             <th
               scope="col"
               class="action_width"
@@ -41,18 +42,6 @@
               <td [attr.rowspan]="getDetailRowspan(detail)">
                 {{ detail.name }}
               </td>
-              <td
-                [attr.rowspan]="getDetailRowspan(detail)"
-                *ngIf="detail.description"
-              >
-                {{ detail.description }}
-              </td>
-              <td
-                [attr.rowspan]="getDetailRowspan(detail)"
-                *ngIf="!detail.description"
-              >
-                NA
-              </td>
             </tr>
             <ng-container *ngFor="let code of detail.productCodes">
               <tr>
@@ -63,6 +52,8 @@
               <ng-container *ngFor="let version of code.versions">
                 <tr>
                   <td>{{ version.version }}</td>
+                  <td *ngIf="version.description">{{ version.description }}</td>
+                  <td *ngIf="!version.description">NA</td>
                   <td
                     *ngIf="
                       hasAuthority('PRODUCT_DETAIL_UPDATE') ||
@@ -99,7 +90,7 @@
       <!-- </div> -->
     </div>
     <div class="col-md-6" *ngIf="isCreateDetail">
-      <h2 class="text-center">Product Detail</h2>
+      <!-- <h2 class="text-center">Product Detail</h2> -->
       <form (ngSubmit)="onSubmit()" [formGroup]="createDetailForm">
         <div class="form-group">
           <label>Product Family</label>
