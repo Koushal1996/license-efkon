@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table table-bordered mt-4">
+  <table>
     <thead>
       <tr>
         <th scope="col">Name</th>
@@ -13,7 +13,7 @@
          <td>{{Name}}</td>
         <td>{{UserName}}</td>
         <td>
-          <span class="badge p-2 mr-2 mb-2 cursor"
+          <span class="badge badge-pill badge-info custom_badge"
           *ngFor ="let authorities of UserAuthorities">
           {{authorities.name}}
 
@@ -25,3 +25,6 @@
             </span>
         </td>
       </tr>
+</tbody>
+</table>
+</div>
