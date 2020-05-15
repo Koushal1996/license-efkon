@@ -18,16 +18,13 @@ import swal from "sweetalert";
 export class DetailComponent implements OnInit {
   Family = [];
   productCodes = [];
-  Versions;
   productDetail = [];
   detailId;
   isCreateDetail: boolean = false;
   isloader: boolean = true;
   loaderbutton: boolean = false;
-  Detail: any;
   formDetail: any;
   productCodeId: any;
-  prodCode: any;
   productVersion: any;
   currentProductFamilyData: any;
   currentProductVersion: any;
@@ -52,23 +49,17 @@ export class DetailComponent implements OnInit {
     console.log(productFamilyId);
     const family = this.Family.find((item) => item.id == productFamilyId);
     this.productCodes = family.productCodes;
-    //console.log(this.productDetail);
     this.currentProductFamilyData = this.productDetail.find(
       (item) => item.id == productFamilyId
     );
-    // console.log(family);
-    // console.log(this.productCodes);
   }
 
   onProductCodeSelect(productCodeId) {
-    console.log(productCodeId);
-    console.log(this.currentProductFamilyData.productCodes);
+    // console.log(this.currentProductFamilyData.productCodes);
     this.currentProductVersion = this.currentProductFamilyData.productCodes.find(
       (item) => item.id == productCodeId
     );
     this.productVersion = this.currentProductVersion.versions;
-
-    console.log(this.productVersion);
   }
 
   initProductDetailForm() {
@@ -82,7 +73,6 @@ export class DetailComponent implements OnInit {
   getProductFamilies() {
     this._productService.getProductFamilies().subscribe((data) => {
       this.Family = data;
-      console.log(this.Family);
     });
   }
 
@@ -93,12 +83,12 @@ export class DetailComponent implements OnInit {
         .updateProductDetail(this.detailId, this.createDetailForm.value)
         .subscribe(
           (data) => {
-            console.log(data);
             this.getProductDetail();
             this.isCreateDetail = false;
             this.detailId = "";
             this.loaderbutton = false;
             swal("Product’s details updated successfully!");
+            this.createDetailForm.reset();
           },
           (error) => {
             this.loaderbutton = false;
@@ -113,6 +103,7 @@ export class DetailComponent implements OnInit {
             this.getProductDetail();
             this.isCreateDetail = false;
             this.loaderbutton = false;
+            this.createDetailForm.reset();
           },
           (error) => {
             this.loaderbutton = false;
@@ -122,9 +113,7 @@ export class DetailComponent implements OnInit {
   }
   getProductDetail() {
     this._productService.getProductDetails().subscribe((data) => {
-      console.log(data);
       this.productDetail = data;
-      console.log(this.productDetail);
       this.isloader = false;
     });
   }
@@ -186,6 +175,7 @@ export class DetailComponent implements OnInit {
   }
   close() {
     this.isCreateDetail = false;
+    this.createDetailForm.reset();
   }
 
   getDetailRowspan(detail) {
