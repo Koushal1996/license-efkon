@@ -50,6 +50,7 @@ export class ProjectProductComponent implements OnInit {
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe((data) => {
       this.projectProduct = data;
+      console.log(data);
       this.isloader = false;
     });
   }
