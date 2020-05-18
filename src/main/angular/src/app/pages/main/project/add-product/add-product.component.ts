@@ -24,7 +24,7 @@ export class AddProductComponent implements OnInit {
   versions: any[];
   licenseType: any;
   selectedProjectId;
-  selectedProductDetail;
+  selectedProductDetail: any = {};
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -50,19 +50,6 @@ export class AddProductComponent implements OnInit {
     this.getProjects();
   }
 
-  getProjects() {
-    this.projectservice.getProjects().subscribe(
-      (data) => {
-        this.projects = data;
-        this.selectedProductDetail = this.projects.find(
-          (item) => item.id == this.selectedProjectId
-        );
-        console.log(this.selectedProductDetail);
-      },
-      (error) => {}
-    );
-  }
-
   getVersions(c) {
     this.versions = c.versions;
   }
@@ -73,6 +60,8 @@ export class AddProductComponent implements OnInit {
   }
   initProductForm() {
     return this.fb.group({
+      productFamily: [""],
+      productCode: [""],
       projectId: ["", [Validators.required]],
       productDetailId: ["", [Validators.required]],
       licenseCount: ["", [Validators.required]],
@@ -88,12 +77,27 @@ export class AddProductComponent implements OnInit {
     if (this.productId) {
       this.projectservice.selecetedProduct.subscribe((data) => {
         if (Object.keys(data).length) {
+          console.log(data);
+          console.log(data.productDetailResponse.productCodeId);
           this.productForm.patchValue(data);
+          this.productForm.patchValue({
+            productFamily: data.productDetailResponse.productFamilyId,
+            productCode: data.productDetailResponse.productCodeId,
+            productDetailId: data.productDetailResponse.versionId,
+          });
         } else {
           this._productService
             .getProductById(this.productId)
             .subscribe((data) => {
+              //console.log(data);
               this.productForm.patchValue(data);
+              console.log(data.productDetailResponse.productFamilyId);
+              console.log(data.productDetailResponse.productCodeName);
+              this.productForm.patchValue({
+                productFamily: data.productDetailResponse.productFamilyName,
+                productCode: data.productDetailResponse.productCodeName,
+                productDetailId: data.productDetailResponse.versionName,
+              });
             });
         }
       });
@@ -139,11 +143,12 @@ export class AddProductComponent implements OnInit {
             dangerMode: true,
           }).then((willDelete) => {
             if (willDelete) {
+              console.log(data);
               swal("New Product Added successfully!");
               this.route.navigate(["projects"]);
             } else {
               this.loaderbutton = false;
-
+              console.log(data);
               this.ngOnInit();
               swal("New Product Added successfully!");
             }
@@ -211,5 +216,17 @@ export class AddProductComponent implements OnInit {
   }
   close() {
     this.route.navigate(["/projects"]);
+  }
+  getProjects() {
+    this.projectservice.getProjects().subscribe(
+      (data) => {
+        this.projects = data;
+        this.selectedProductDetail = this.projects.find(
+          (item) => item.id == this.selectedProjectId
+        );
+        console.log(this.selectedProductDetail);
+      },
+      (error) => {}
+    );
   }
 }
