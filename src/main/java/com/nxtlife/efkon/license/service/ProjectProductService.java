@@ -8,6 +8,7 @@ import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.view.SuccessResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -98,5 +99,12 @@ public interface ProjectProductService {
 	 * @throws NotFoundException if project product not found
 	 */
 	public SuccessResponse delete(Long id);
+
+	/**
+	 * this method is used to find the count of products by their status
+	 * 
+	 * @return {@link ProjectProductGraphResponse}
+	 */
+	public List<ProjectProductGraphResponse> findCountByStatus();
 
 }

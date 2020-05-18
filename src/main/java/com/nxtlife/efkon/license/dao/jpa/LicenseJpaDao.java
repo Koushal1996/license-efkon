@@ -22,13 +22,13 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 
 	public List<LicenseResponse> findByProjectProductIdAndActive(Long projectProductId, Boolean active);
 
-	public LicenseResponse findResponseByIdAndActiveTrue(Long id);
+	public LicenseResponse findResponseByIdAndActive(Long id, Boolean active);
 
 	public List<LicenseResponse> findByActive(Boolean active);
 
 	public List<LicenseResponse> findAllByActive(Boolean active);
 
-	public LicenseResponse findByIdAndActiveTrue(Long unmaskId);
+	public LicenseResponse findByIdAndActive(Long unmaskId, Boolean active);
 
 	public List<LicenseResponse> findByProjectProductIdAndActiveTrue(Long id);
 
@@ -47,6 +47,21 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 
 	public List<LicenseResponse> findByProjectProductProjectIdAndProjectProductProjectProjectManagerIdAndActive(
 			Long unmaskProjectId, Long userId, Boolean active);
+
+	public List<LicenseResponse> findByProjectProductIdAndProjectProductProjectIdAndProjectProductProjectProjectManagerIdAndActive(
+			Long unmaskProjectProductId, Long unmaskProjectId, Long userId, Boolean active);
+
+	public List<LicenseResponse> findByProjectProductIdAndProjectProductProjectIdAndProjectProductProjectCustomerEmailAndActive(
+			Long unmask, Long unmaskProjectId, String email, Boolean active);
+
+	public List<LicenseResponse> findByProjectProductIdAndProjectProductProjectIdAndActive(Long unmask,
+			Long unmaskProjectId, Boolean active);
+
+	public LicenseResponse findByIdAndProjectProductProjectCustomerEmailAndActive(Long unmaskId, String email,
+			Boolean active);
+
+	public LicenseResponse findByIdAndProjectProductProjectProjectManagerIdAndActive(Long unmaskId, Long userId,
+			Boolean active);
 
 //	@Modifying
 //	@Query(value = "update License set active=?2, modifiedBy.id=?3, modifiedAt=?4 where id =?1")
