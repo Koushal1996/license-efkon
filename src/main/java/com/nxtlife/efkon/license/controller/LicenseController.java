@@ -46,8 +46,8 @@ public class LicenseController {
 			@ApiResponse(description = "If user doesn't have access to replace license key of product in project", responseCode = "403", content = @Content(schema = @Schema(implementation = LicenseResponse.class))),
 			@ApiResponse(description = "if license id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = LicenseResponse.class))),
 			@ApiResponse(description = "if required fileds are not filled properly or license doesn't exist", responseCode = "404", content = @Content(schema = @Schema(implementation = LicenseResponse.class))) })
-	public LicenseResponse replaceGenerateKey(@PathVariable Long id) {
-		return licenseService.replaceGenerateKey(id);
+	public LicenseResponse replaceGenerateKey(@PathVariable Long id, @Valid @RequestBody LicenseRequest request) {
+		return licenseService.replaceGenerateKey(id, request);
 
 	}
 
@@ -95,7 +95,7 @@ public class LicenseController {
 			@ApiResponse(description = "If project id or product detail id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<LicenseResponse> findLicensesByProjectIdandProductId(@PathVariable Long projectId,
 			@PathVariable Long productId) {
-		return licenseService.findByProjectIdandProductId(projectId, productId);
+		return licenseService.findByProjectIdAndProductId(projectId, productId);
 	}
 
 	@GetMapping(value = "project/{projectId}/product/{productId}/licenses/excel", produces = { "application/json" })
@@ -107,7 +107,7 @@ public class LicenseController {
 			@ApiResponse(description = "If project id or product detail id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public void findLicensesByProjectIdandProductIdExcel(@PathVariable Long projectId, @PathVariable Long productId,
 			HttpServletResponse response) throws IOException {
-		Resource resource = licenseService.findLicensesByProjectIdandProductIdExcel(projectId, productId);
+		Resource resource = licenseService.findLicensesByProjectIdAndProductIdExcel(projectId, productId);
 		Response.setFileResponseHeader(resource, "application/octet-stream", response);
 
 	}

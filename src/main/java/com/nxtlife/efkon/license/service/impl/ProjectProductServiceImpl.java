@@ -500,13 +500,13 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (projectProduct.getExpirationPeriodType().equals(ExpirationPeriodType.LIFETIME)) {
 				throw new ValidationException("You can't renew this product because it's already for lifetime");
 			}
-			if (projectProduct.getEndDate().compareTo(request.getStartDate())>1) {
+			if (projectProduct.getEndDate().compareTo(request.getStartDate()) > 1) {
 				throw new ValidationException(
 						"Start date of renewal license should be greater than end date of previous");
 			}
 			ProjectProduct renewedProjectProduct = new ProjectProduct(projectProduct.getLicenseCount(),
 					unmask(projectProduct.getLicenseTypeId()), projectProduct.getExpirationPeriodType(),
-					projectProduct.getExpirationMonthCount(), request.getStartDate(),
+					request.getExpirationMonthCount(), request.getStartDate(),
 					setEndDate(request.getStartDate(), request.getExpirationMonthCount()),
 					ProjectProductStatus.RENEWED);
 			renewedProjectProduct.settProductDetailId(unmask(projectProduct.getProductDetailId()));
@@ -531,7 +531,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 								projectProductResponse.getProjectResponse().getCustomerCode(),
 								projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
 								projectProductResponse.getProductDetailResponse().getProductCodeCode(),
-								getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (++i),
+								getUser().getCode() == null ? "00000" : getUser().getCode(),
+								projectProductResponse.getLicenseTypeCode(), (++i),
 								projectProductResponse.getExpirationMonthCount() == null ? 0
 										: projectProductResponse.getExpirationMonthCount(),
 								LocalDate

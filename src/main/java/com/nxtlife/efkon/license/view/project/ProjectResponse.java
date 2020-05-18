@@ -49,6 +49,8 @@ public class ProjectResponse implements Response {
 
 	private List<ProjectProductResponse> products;
 
+	private Long productsCount;
+
 	public ProjectResponse(Long id, String createdAt, String customerCode, String customerName, String customerEmail,
 			Boolean isEmailSend, String customerContactNo, Long projectTypeId, String projectTypeName,
 			Long projectManagerId, String projectManagerName) {
@@ -168,6 +170,14 @@ public class ProjectResponse implements Response {
 
 	public void setProjectManagerName(String projectManagerName) {
 		this.projectManagerName = projectManagerName;
+	}
+
+	public Long getProductsCount() {
+		return productsCount;
+	}
+
+	public void setProductsCount(Long productsCount) {
+		this.productsCount = productsCount;
 	}
 
 	public static ProjectResponse get(Project project) {

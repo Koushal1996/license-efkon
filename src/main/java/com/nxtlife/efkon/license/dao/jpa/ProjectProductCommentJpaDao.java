@@ -18,7 +18,7 @@ public interface ProjectProductCommentJpaDao extends JpaRepository<ProjectProduc
 	List<Long> findAllIdsByProjectProductIdAndActive(Long projectProductId, Boolean active);
 
 	@Modifying
-	@Query("update ProjectProductComment set active = false ,modified_by =?2, modified_at =?3 where id in ?1 ")
-	List<Long> delete(List<Long> ids, Long userId, Date date);
+	@Query("update ProjectProductComment set active = false, modifiedBy.id =?2, modifiedAt =?3 where id in ?1")
+	int delete(List<Long> ids, Long userId, Date date);
 
 }
