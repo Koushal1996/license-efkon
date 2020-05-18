@@ -1,3 +1,11 @@
-button.btn.btn-danger {
-    margin: 5px 15px 5px 15px;
+
+.table_scroll {
+    width: 100%;
+    display: inline-block;
+    height: calc(100vh - 153px) !important;
+    overflow: auto;
+}
+.description {
+    max-width: 360px;
+    word-break: break-all;
 }

@@ -1,9 +1,21 @@
-ul.nav.nav-tabs {
-    border: none;
-    background: #ef4000;
-    border-radius: 0;
-    color: white;
+.tab_main {
+    width: 100%;
+    display: inline-block;
+    background: #364150;
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        li {
+            display: inline-block;
+            a {
+                color: #b4bcc8;
+                &.active {
+                    background: #29aba4;
+                    color: white;
+                }
+            }
+        }
+    }
 }
-a.nav-link {
-    color: #fff;
-}
+

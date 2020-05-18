@@ -1,214 +1,170 @@
-<div class="container-fluid">
+<div class="container-fluid p-0">
   <div class="row">
-    <div class="col-md-6">
-      <!-- <div class="text-center">
-        <div *ngIf="isloader" class="spinner-border text-danger" style="width: 6rem; height: 6rem;"></div>
-      </div> -->
+    <div class="col-12">
+      
       <!-- <div class="table-responsive"> -->
       <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')">
-        <button
-          class="btn btn-success mb-3 mt-1"
-          *ngIf="!isCreateDetail"
-          (click)="showDetailForm()"
-        >
+        <button class="createBtn" *ngIf="!isCreateDetail" (click)="showDetailForm()">
           Add Product Detail
         </button>
       </ng-container>
-      <table class="table table-bordered mt-4">
-        <thead class="users_table_hader">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Product Family</th>
+      <div class="table_scroll">
+        <table>
+          <thead class="users_table_hader">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Product Family</th>
 
-            <th scope="col">Product Code</th>
-            <th scope="col">Version</th>
-            <th scope="col">Description</th>
-            <th
-              scope="col"
-              class="action_width"
-              *ngIf="
+              <th scope="col">Product Code</th>
+              <th scope="col">Version</th>
+              <th scope="col">Description</th>
+              <th scope="col" class="action_width" *ngIf="
                 hasAuthority('PRODUCT_DETAIL_UPDATE') ||
                 hasAuthority('PRODUCT_DETAIL_DELETE')
-              "
-            >
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let detail of productDetail; index as i">
-            <tr>
-              <td [attr.rowspan]="getDetailRowspan(detail)">{{ i }}</td>
-              <td [attr.rowspan]="getDetailRowspan(detail)">
-                {{ detail.name }}
-              </td>
+              ">
+                Action
+              </th>
             </tr>
-            <ng-container *ngFor="let code of detail.productCodes">
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let detail of productDetail; index as i">
               <tr>
-                <td [attr.rowspan]="code.versions.length + 1">
-                  {{ code.name }}
+                <td [attr.rowspan]="getDetailRowspan(detail)">{{ i }}</td>
+                <td [attr.rowspan]="getDetailRowspan(detail)">
+                  {{ detail.name }}
                 </td>
               </tr>
-              <ng-container *ngFor="let version of code.versions">
+              <ng-container *ngFor="let code of detail.productCodes">
                 <tr>
-                  <td>{{ version.version }}</td>
-                  <td *ngIf="version.description">{{ version.description }}</td>
-                  <td *ngIf="!version.description">NA</td>
-                  <td
-                    *ngIf="
+                  <td [attr.rowspan]="code.versions.length + 1">
+                    {{ code.name }}
+                  </td>
+                </tr>
+                <ng-container *ngFor="let version of code.versions">
+                  <tr>
+                    <td>{{ version.version }}</td>
+                    <td *ngIf="version.description"> <div class="description">
+                      {{ version.description }}
+                    </div></td>
+                    <td *ngIf="!version.description">NA</td>
+                    <td *ngIf="
                       hasAuthority('PRODUCT_DETAIL_UPDATE') ||
                       hasAuthority('PRODUCT_DETAIL_DELETE')
-                    "
-                  >
-                    <a
-                      class="text-primary pr-2 cursor"
-                      *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
-                      (click)="editProductDetail(detail, code, version)"
-                    >
-                      <i class="fa fa-edit"></i>
-                    </a>
-                    <a
-                      class="text-danger pl-2 cursor"
-                      *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
-                      (click)="
+                    ">
+                      <button class="edit_button top_tooltip" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
+                        (click)="editProductDetail(detail, code, version)">
+                        <i class="fa fa-edit"></i>
+                        <span>Edit </span>
+                  </button>
+                      <button class="delete_button top_tooltip" *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')" (click)="
                         deleteProductDetail(
                           detail,
                           code,
                           version.productDetailId
                         )
-                      "
-                    >
-                      <i class="fa fa-trash"></i>
-                    </a>
-                  </td>
-                </tr>
+                      ">
+                        <i class="fa fa-trash"></i>
+                        <span>Delete</span>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
               </ng-container>
             </ng-container>
-          </ng-container>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+        <div *ngIf="isloader" class="loader">
+          <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
+      </div>
       <!-- </div> -->
     </div>
-    <div class="col-md-6" *ngIf="isCreateDetail">
-      <!-- <h2 class="text-center">Product Detail</h2> -->
+  </div>
+</div>
+
+<div class="custom_modal_main" *ngIf="isCreateDetail">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h4 class="modal-title">Products detail edit</h4>
+        <button class="close"  type="button" (click)="close()"> × </button>
+    </div>
+    <div class="modal-body">
       <form (ngSubmit)="onSubmit()" [formGroup]="createDetailForm">
         <div class="form-group">
           <label>Product Family</label>
-          <select
-            class="form-control"
-            (ngModelChange)="onProductFamilySelect($event)"
-            formControlName="productFamilyId"
-          >
+          <select class="form-control" (ngModelChange)="onProductFamilySelect($event)"
+            formControlName="productFamilyId">
             <option value="{{ name.id }}" *ngFor="let name of Family">{{
               name.name
             }}</option>
           </select>
-          <span
-            *ngIf="
+          <span *ngIf="
               createDetailForm.get('productFamilyId').errors &&
               (createDetailForm.get('productFamilyId').touched ||
                 createDetailForm.get('productFamilyId').dirty)
-            "
-          >
-            <span
-              *ngIf="createDetailForm.get('productFamilyId').errors.required"
-              class="text-danger"
-              >project Family is required</span
-            >
+            ">
+            <span *ngIf="createDetailForm.get('productFamilyId').errors.required" class="error">project Family is
+              required</span>
           </span>
         </div>
-
+    
         <div class="form-group">
           <label>Product Code </label>
-          <select
-            class="form-control"
-            formControlName="productCodeId"
-            (ngModelChange)="onProductCodeSelect($event)"
-          >
-            <option
-              *ngFor="let productCode of productCodes"
-              value="{{ productCode.id }}"
-            >
+          <select class="form-control" formControlName="productCodeId" (ngModelChange)="onProductCodeSelect($event)">
+            <option *ngFor="let productCode of productCodes" value="{{ productCode.id }}">
               {{ productCode.name }}
             </option>
           </select>
-          <span
-            *ngIf="
+          <span *ngIf="
               createDetailForm.get('productCodeId').errors &&
               (createDetailForm.get('productCodeId').touched ||
                 createDetailForm.get('productCodeId').dirty)
-            "
-          >
-            <span
-              *ngIf="createDetailForm.get('productCodeId').errors.required"
-              class="text-danger"
-              >project Code is required</span
-            >
+            ">
+            <span *ngIf="createDetailForm.get('productCodeId').errors.required" class="error">project Code is
+              required</span>
           </span>
         </div>
-
+    
         <div class="form-group">
           <label>
             Version
-            <span
-              class="m-1 badge badge-success"
-              *ngFor="let version of productVersion"
-            >
+            <span class="m-1 badge badge-success" *ngFor="let version of productVersion">
               {{ version.version }}
             </span>
           </label>
           <input type="text" class="form-control" formControlName="version" />
-          <span
-            *ngIf="
+          <span *ngIf="
               createDetailForm.get('version').errors &&
               (createDetailForm.get('version').touched ||
                 createDetailForm.get('version').dirty)
-            "
-          >
-            <span
-              *ngIf="createDetailForm.get('version').errors.required"
-              class="text-danger"
-              >Version is required</span
-            >
+            ">
+            <span *ngIf="createDetailForm.get('version').errors.required" class="error">Version is required</span>
           </span>
         </div>
         <div class="form-group">
           <label>Description</label>
-          <textarea
-            name="description"
-            class="form-control"
-            formControlName="description"
-          ></textarea>
-          <span
-            *ngIf="
+          <textarea name="description" class="form-control" formControlName="description"></textarea>
+          <span *ngIf="
               createDetailForm.get('description').errors &&
               (createDetailForm.get('description').touched ||
                 createDetailForm.get('description').dirty)
-            "
-          >
-            <span
-              *ngIf="createDetailForm.get('description').errors.required"
-              class="text-danger"
-              >Description is required</span
-            >
+            ">
+            <span *ngIf="createDetailForm.get('description').errors.required" class="error">Description is
+              required</span>
           </span>
         </div>
-
-        <button
-          type="submit"
-          *ngIf="!loaderbutton"
-          [disabled]="!createDetailForm.valid"
-        >
-          {{ detailId ? "Update" : "Submit" }}
-        </button>
-        <button class="buttonload" *ngIf="loaderbutton">
-          <i class="fa fa-refresh fa-spin"></i> Loading
-        </button>
-        <button type="button" (click)="Reset()">
-          <i class="fa fa-times"></i> Reset
-        </button>
-        <button type="button" (click)="close()">Close</button>
+        <div class="modal-footer">
+          <button type="submit" class="saveBtn" *ngIf="!loaderbutton" [disabled]="!createDetailForm.valid">
+            {{ detailId ? "Update" : "Submit" }}
+          </button>
+          <button class="buttonload saveBtn" *ngIf="loaderbutton">
+            <i class="fa fa-refresh fa-spin"></i> Loading
+          </button>
+          <button type="button" class="cancelBtn" (click)="Reset()"> Reset
+          </button>
+        </div>
       </form>
     </div>
+  
   </div>
+ </div>
 </div>

@@ -1,19 +1,15 @@
-<div class="container-fluid">
-  <div class="col-md-12">
-    <div class="text-center">
-      <div *ngIf="isloader" class="spinner-border text-danger" style="width: 4rem; height: 4rem;"></div>
-    </div>
-    <div>
-      <button (click)="addProductFamily()">Add Product family</button>
-    </div>
-    <table class="table table-bordered">
+<div class="container-fluid p-0">
+  <div class="col-12 p-0">
+      <button class="createBtn" (click)="addProductFamily()">Add Product family</button>
+    <div class="table_scroll">
+    <table>
       <thead class="users_table_hader">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Name</th>
           <th scope="col">Code</th>
           <th scope="col">Product Codes</th>
-          <th scope="col">Description</th>
+          <th  scope="col">Description</th>
           <th scope="col">Action</th>
         </tr>
       </thead>
@@ -26,19 +22,26 @@
               <span class="badge mr-2  custom_badge">{{fam.name}}</span>
             </span>
           </td>
-          <td *ngIf="family.description">{{family.description}}</td>
+          <td *ngIf="family.description">
+            <div class="description">{{family.description}}</div>
+          </td>
           <td *ngIf="!family.description">NA</td>
           <td>
-            <a class="text-primary pr-2 cursor" (click)="editFamilyDescription(family)">
+            <button class="edit_button top_tooltip" (click)="editFamilyDescription(family)">
               <i class="fa fa-edit"></i>
-            </a>
-            <a class="text-primary pr-2 cursor" (click)="deleteFamilyDescription(family)">
+              <span>Edit</span>
+            </button>
+            <button class="delete_button top_tooltip" (click)="deleteFamilyDescription(family)">
               <i class="fa fa-trash"></i>
-            </a>
+              <span>Delete</span>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
+    <div *ngIf="isloader" class="loader">
+      <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
   </div>
+</div>
 </div>
