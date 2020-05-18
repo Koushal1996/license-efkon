@@ -49,6 +49,9 @@ public class ProjectResponse implements Response {
 
 	private List<ProjectProductResponse> products;
 
+	@Schema(description = "count of all the products in a project", example = "1")
+	private Integer projectProductCount;
+
 	public ProjectResponse(Long id, String createdAt, String customerCode, String customerName, String customerEmail,
 			Boolean isEmailSend, String customerContactNo, Long projectTypeId, String projectTypeName,
 			Long projectManagerId, String projectManagerName) {
@@ -168,6 +171,14 @@ public class ProjectResponse implements Response {
 
 	public void setProjectManagerName(String projectManagerName) {
 		this.projectManagerName = projectManagerName;
+	}
+
+	public Integer getProjectProductCount() {
+		return projectProductCount;
+	}
+
+	public void setProjectProductCount(Integer projectProductCount) {
+		this.projectProductCount = projectProductCount;
 	}
 
 	public static ProjectResponse get(Project project) {
