@@ -20,7 +20,7 @@
 
 }
 div#wrapper {
-  padding-top: 47px;
+  // padding-top: 47px;
   width: 100%;
   float: left;
   background: #f2f2f3;
@@ -87,11 +87,13 @@ a.list-group-item i {
 .header_main {
     border-bottom: 1px solid #2b3643;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 2px 3px -2px rgba(0, 0, 0, 0.12), 0 1px 8px 0 rgba(0, 0, 0, 0.2);
-    position: fixed;
+    position: sticky;
     background: #2b3643;
     z-index: 999;
     width: 100%;
     padding: 10px 15px;
+    top: 0;
+
     .logo {
       width: auto;
       display: inline-block;
