@@ -1,8 +1,8 @@
-<div class="container-fluid">
-    <button class="btn btn-danger"   *ngIf="hasAuthority('USER_CREATE')"
+<div class="container-fluid p-0">
+    <button class="createBtn"   *ngIf="hasAuthority('USER_CREATE')"
      (click)="createuser()">Create User</button>
-  <table class="table table-bordered">
-    <thead class="users_table_hader">
+  <table>
+    <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
@@ -28,13 +28,15 @@
         </td>
         <ng-container *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')">
         <td *ngIf="item.active">
-          <button class="edit_button"
+          <button class="edit_button top_tooltip"
           *ngIf="hasAuthority('USER_DELETE')" >
             <i class="fa fa-edit" (click)="edituser(item)"></i>
+            <span>Edit User</span>
           </button>
-          <button class="delete_button"
+          <button class="delete_button top_tooltip"
           *ngIf="hasAuthority('USER_DELETE')">
             <i class="fa fa-trash" (click)="deleteuser(item)"></i>
+            <span>Edit User</span>
           </button>
         </td>
         <td *ngIf="!item.active">

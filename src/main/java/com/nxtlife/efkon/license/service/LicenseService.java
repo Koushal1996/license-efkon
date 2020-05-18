@@ -6,12 +6,19 @@ import org.springframework.core.io.Resource;
 
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 
 public interface LicenseService {
 
 	// public LicenseResponse update(Long id, LicenseRequest request);
 
-	public LicenseResponse findByLicenseId(Long licenseId);
+	/**
+	 * this method is used to find the single license of a product
+	 * 
+	 * @param licenseId
+	 * @return {@link LicenseResponse}
+	 */
+	public LicenseResponse findById(Long licenseId);
 
 	/**
 	 * this method is used to fetch all the license details
@@ -20,14 +27,13 @@ public interface LicenseService {
 	 */
 
 	public List<LicenseResponse> findAll();
-	
+
 	/**
-	 * this method is used to create excel of all the license 
+	 * this method is used to create excel of all the license
 	 * 
 	 * @return
 	 */
 	public Resource findAllExcel();
-
 
 	/**
 	 * this method is used to generate license key of product in a project
@@ -83,5 +89,19 @@ public interface LicenseService {
 	 * @return
 	 */
 	public Resource findLicensesByProjectIdExcel(Long projectId);
+
+	/**
+	 * this method is used to find all the active licenses
+	 * 
+	 * @return {@link ProjectProductGraphResponse}
+	 */
+	public ProjectProductGraphResponse findActiveLicenses();
+
+	/**
+	 * this method is used to find all the expired licenses
+	 * 
+	 * @return {@link ProjectProductGraphResponse}
+	 */
+	public ProjectProductGraphResponse findExpiredLicenses();
 
 }
