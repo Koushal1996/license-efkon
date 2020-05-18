@@ -32,6 +32,8 @@ export class ProjectComponent implements OnInit {
   comments = [];
   userId;
   commentID: any[];
+  popUpStartDateForm: FormGroup;
+  showRenewModal: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -43,8 +45,8 @@ export class ProjectComponent implements OnInit {
   ngOnInit() {
     this.getProjects();
     this.popUpForm = this.initpopUpForm();
+    this.popUpStartDateForm = this.initpopUpStartDateForm();
     this.mainService.getLoginUser().subscribe((data) => {
-      console.log(data);
       this.userId = data.id;
     });
   }
@@ -61,17 +63,19 @@ export class ProjectComponent implements OnInit {
       comment: [""],
     });
   }
-
+  initpopUpStartDateForm() {
+    return this.fb.group({
+      startDate: [""],
+      expirationMonthCount: ["", [Validators.min(1)]],
+    });
+  }
   getProjects() {
     this.projectservice.getProjects().subscribe(
       (data) => {
         this.projects = data;
         this.isloader = false;
-        console.log(data);
       },
-      (error) => {
-        console.log(error);
-      }
+      (error) => {}
     );
   }
   createpProject() {
@@ -79,7 +83,6 @@ export class ProjectComponent implements OnInit {
   }
 
   addProduct(project) {
-    console.log(project)
     this.route.navigate([`projects/${project.id}/product`]);
   }
   deleteProduct(pro) {
@@ -95,13 +98,10 @@ export class ProjectComponent implements OnInit {
       } else {
         this.projectservice.deleteProduct(pro.id).subscribe(
           (data) => {
-            console.log(data);
             swal("Delete Successfully!");
             this.getProjects();
           },
-          (error) => {
-            console.log("error");
-          }
+          (error) => {}
         );
       }
     });
@@ -115,7 +115,6 @@ export class ProjectComponent implements OnInit {
       project.productLoader = true;
       this.projectservice.getProductsByProjectId(project.id).subscribe(
         (data) => {
-          console.log(data);
           project.products = data;
           project.productLoader = false;
         },
@@ -145,11 +144,9 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log(data);
-                console.log("submit");
                 this.selectedProduct.status = "SUBMIT";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Submit successfully!");
+                swal("Project Submitted successfully!");
               });
           }
         });
@@ -171,10 +168,9 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log("rejected");
-                this.selectedProduct.status = "REJECTED";
+                this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
-                swal("Project Reject successfully!");
+                swal("Project Rejected successfully!");
               });
           }
         });
@@ -196,10 +192,9 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log("review");
                 this.selectedProduct.status = "REVIEWED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Review successfully!");
+                swal("Project Reviewed successfully!");
               });
           }
         });
@@ -221,10 +216,9 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log("approved");
                 this.selectedProduct.status = "APPROVED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Approve successfully!");
+                swal("Project Approved successfully!");
               });
           }
         });
@@ -264,7 +258,6 @@ export class ProjectComponent implements OnInit {
   }
   showComments(pro) {
     this.comments = pro.comments;
-    console.log(this.comments);
     if (this.comments.length > 0) {
       this.showCommentModal = true;
     } else {
@@ -278,5 +271,34 @@ export class ProjectComponent implements OnInit {
     } else {
       return false;
     }
+  }
+  renewProductStatus(pro) {
+    this.selectedProduct = pro;
+    this.showRenewModal = true;
+  }
+  hideRenewModel() {
+    this.showRenewModal = false;
+  }
+  onSubmitStartDate() {
+    console.log(this.popUpStartDateForm.value);
+    this.projectservice
+      .renewProjectProduct(
+        this.selectedProduct.id,
+        this.popUpStartDateForm.value
+      )
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.selectedProduct.status = data.status;
+          this.selectedProduct.endDate = data.endDate;
+          this.selectedProduct.startDate = data.startDate;
+          this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
+          this.showRenewModal = false;
+          this.popUpStartDateForm.reset();
+        },
+        (error) => {
+          this.showRenewModal = false;
+        }
+      );
   }
 }

@@ -47,7 +47,6 @@ export class AddProductComponent implements OnInit {
     this.getProductDetail();
     this.patchaValue();
     this.getLicenseType();
-    console.log("getprojetcd");
     this.getProjects();
   }
 
@@ -55,10 +54,6 @@ export class AddProductComponent implements OnInit {
     this.projectservice.getProjects().subscribe(
       (data) => {
         this.projects = data;
-        console.log(data);
-        console.log(this.projects);
-        console.log("this.selectedProjectId");
-        console.log(this.selectedProjectId);
         this.selectedProductDetail = this.projects.find(
           (item) => item.id == this.selectedProjectId
         );
@@ -73,7 +68,6 @@ export class AddProductComponent implements OnInit {
   }
   getLicenseType() {
     this.projectservice.getLicenseType().subscribe((data) => {
-      console.log(data);
       this.licenseType = data;
     });
   }
@@ -99,7 +93,6 @@ export class AddProductComponent implements OnInit {
           this._productService
             .getProductById(this.productId)
             .subscribe((data) => {
-              console.log(data);
               this.productForm.patchValue(data);
             });
         }
@@ -139,7 +132,6 @@ export class AddProductComponent implements OnInit {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
-          console.log(data);
           swal({
             text: "You want to add add more products?",
             closeOnClickOutside: false,
@@ -150,8 +142,8 @@ export class AddProductComponent implements OnInit {
               swal("New Product Added successfully!");
               this.route.navigate(["projects"]);
             } else {
-              //this.productForm.reset()
               this.loaderbutton = false;
+
               this.ngOnInit();
               swal("New Product Added successfully!");
             }
@@ -164,11 +156,9 @@ export class AddProductComponent implements OnInit {
     }
   }
   onLicenseChange(licenseTypeId) {
-    console.log(licenseTypeId);
     const foundItem = this.licenseType.find((item) => {
       return item.id == licenseTypeId;
     });
-    console.log(foundItem);
     if (foundItem.name == "DEMO") {
       this.productForm.controls["expirationPeriodType"].patchValue("LIMITED");
       this.productForm.controls["expirationMonthCount"].patchValue(
@@ -183,7 +173,6 @@ export class AddProductComponent implements OnInit {
     }
   }
   onExpirationChange(expirationPeriodType) {
-    console.log(expirationPeriodType);
     if (expirationPeriodType == "LIFETIME") {
       this.productForm.controls["expirationMonthCount"].disable();
       this.productForm.controls["EndDate"].disable();
@@ -194,35 +183,27 @@ export class AddProductComponent implements OnInit {
   }
 
   onExpirationMonthCount(expirationMonthCount) {
-    console.log(expirationMonthCount);
     this.expirationMonthNo = expirationMonthCount;
     if (this.todayDate) var d = new Date(this.todayDate);
-    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
-    console.log(d);
     function convert(d) {
       var date = new Date(d),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     }
-    console.log(convert(d));
     this.productForm.controls["EndDate"].patchValue(convert(d));
   }
   onStartDate(startDate) {
-    console.log(startDate); //2020-05-21
     this.sDate = startDate;
     var d = new Date(this.sDate);
-    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
-    console.log(d);
     function convert(d) {
       var date = new Date(d),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     }
-    console.log(convert(d));
     this.productForm.controls["EndDate"].patchValue(convert(d));
   }
   Reset() {

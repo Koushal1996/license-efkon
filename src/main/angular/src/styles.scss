@@ -1,7 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./app/app.component.scss";
 body {
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'Oxygen', sans-serif !important;
   margin: 0;
   overflow-y:scroll;
 }
@@ -86,9 +86,10 @@ table.table.table-bordered {
 
 .middle-content {
   margin: 15px 0;
-  box-shadow: 0 0 5px #ddd;
   padding: 5px 0;
-  // height: calc(100vh - 95px);
+  background: white;
+  border: 1px solid #e7eaec;
+  padding: 15px;
 }
 
 table.table.table-bordered {
@@ -123,13 +124,7 @@ h2.text-center {
   color: #333;
   margin: 10px 0;
 }
-span.badge {
-  background-color: #ef4000;
-    color: #fff;
-    padding: 5px;
-    font-size: 12px;
-    border-radius: 3px;
-}
+
 .btn-danger:focus {
   color: #fff;
   background-color: #c82333;
@@ -137,10 +132,14 @@ span.badge {
   box-shadow: none;
 }
 .custom_badge{
-  background: rgba(0,0,0,0.6) !important;
-  // letter-spacing: 1px !important;
-  font-weight: 100 !important;
-  font-size: 11px !important;
+    border-radius: 4px !important;
+    padding: 5px 10px !important;
+    margin: 4px !important;
+    font-weight: normal !important;
+    font-size: 10px !important;
+    border: 1px solid #29aba4;
+    background: transparent !important;
+    color: #364150 !important;
 }
 
 .edit_button{
@@ -162,14 +161,19 @@ span.badge {
     border-radius: 3px;
 }
 .roleactive{
-  color: white;
-  background: #28a745;
+  color: #ffffff;
+  background: #29aba4;
   border: none;
   border-radius: 4px;
+  transition: 0.4s;
   text-transform: capitalize;
   letter-spacing: 1px;
   padding: 3px 8px;
   font-size: 11px;
+  // border: 1px solid #29aba4;
+  &:hover{
+    background: #2b3643;
+  }
 }
 .action_width{
   min-width: 100px;
@@ -313,5 +317,91 @@ span.selected-item {
       padding: 5px 10px!important;
   }
   }
+
+}
+
+// table design css
+table {
+  border: 1px solid #ddd;
+}
+table {
+  width: 100%;
+  tr{
+    th{
+      // background: #f5f5f5;
+      border: 1px solid #ddd;
+      padding: 8px 10px;
+      font-size: 14px;
+      color: #676a6c;
+     }
+  }
+  tr{
+    td{
+      border: 1px solid #ddd;
+      padding: 8px 10px;
+      color: #676a6c;
+      font-size: 13px;
+      // vertical-align: top;
+     }
+  }
+}
+
+.createBtn {
+  background: #2b3643;
+  border: none;
+  padding: 0.4375rem 1.25rem;
+  color: #ffffff;
+  font-size: 13px;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  transition: 0.4s;
+  z-index: 99;
+  &:hover{
+      background: #1f7571;
+      transform: translateY(-3px);
+  }
+}
+
+// custom tooltip
+
+.top_tooltip{
+  position: relative;
+ span{
+  position: absolute;
+  top: -36px;
+  left: -10px;
+  background: #29aba4;
+  padding: 2px 4px;
+  color: white;
+  border-radius: 4px;
+  font-size: 13px;
+  min-width: 80px;
+  display: none;
+  &:after{
+    content: "";
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #29aba4;
+    bottom: -9px;
+    left: 10px;
+    position: absolute;
+  }
+ }
+ &:hover{
+  span{
+    display: block;
+    animation: top .5s;
+  }
+}
+}
+
+@keyframes top{
+  0% {top: -26px;}
+  100% {top: -36px;}
 
 }

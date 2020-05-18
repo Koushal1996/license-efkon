@@ -22,12 +22,15 @@ export class ProjectProductComponent implements OnInit {
   showModal: boolean = false;
   showCommentModal: boolean = false;
   popUpForm: FormGroup;
+  popUpStartDateForm: FormGroup;
   commentValue: any;
   commentSubmitButton: string;
   selectedProduct: any;
   comments: any;
   userId: any;
   accessId: string;
+  showRenewModal: any;
+  selectProductId: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -39,14 +42,13 @@ export class ProjectProductComponent implements OnInit {
   ngOnInit() {
     this.getProjectProducts();
     this.mainService.getLoginUser().subscribe((data) => {
-      console.log(data);
       this.userId = data.id;
     });
     this.popUpForm = this.initpopUpForm();
+    this.popUpStartDateForm = this.initpopUpStartDateForm();
   }
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe((data) => {
-      console.log(data);
       this.projectProduct = data;
       this.isloader = false;
     });
@@ -63,6 +65,12 @@ export class ProjectProductComponent implements OnInit {
       comment: [""],
     });
   }
+  initpopUpStartDateForm() {
+    return this.fb.group({
+      startDate: [""],
+      expirationMonthCount: ["", [Validators.min(1)]],
+    });
+  }
   deleteProduct(project) {
     swal({
       title: "You sure?",
@@ -76,13 +84,14 @@ export class ProjectProductComponent implements OnInit {
       } else {
         this._projectService.deleteProduct(project.id).subscribe(
           (data) => {
-            console.log(data);
             swal("Delete Successfully!");
             // this.getProjectProducts();
+            this.projectProduct.splice(
+              this.projectProduct.findIndex((pd) => pd.id == project.id),
+              1
+            );
           },
-          (error) => {
-            console.log("error");
-          }
+          (error) => {}
         );
       }
     });
@@ -115,11 +124,9 @@ export class ProjectProductComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log(data);
-                console.log("submit");
                 this.selectedProduct.status = "SUBMIT";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Submit successfully!");
+                swal("Project Submitted successfully!");
               });
           }
         });
@@ -141,10 +148,9 @@ export class ProjectProductComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log("rejected");
-                this.selectedProduct.status = "REJECTED";
+                this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
-                swal("Project Reject successfully!");
+                swal("Project Rejected successfully!");
               });
           }
         });
@@ -166,10 +172,9 @@ export class ProjectProductComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log("review");
                 this.selectedProduct.status = "REVIEWED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Review successfully!");
+                swal("Project Reviewed successfully!");
               });
           }
         });
@@ -191,10 +196,9 @@ export class ProjectProductComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                console.log("approved");
                 this.selectedProduct.status = "APPROVED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Approve successfully!");
+                swal("Project Approved successfully!");
               });
           }
         });
@@ -226,6 +230,7 @@ export class ProjectProductComponent implements OnInit {
     this.selectedProduct = project;
     this.popUpForm.reset();
   }
+
   hide() {
     this.showModal = false;
   }
@@ -234,13 +239,11 @@ export class ProjectProductComponent implements OnInit {
     this.showCommentModal = false;
   }
   showComments(project) {
-    //.preventDefault();
     this.comments = project.comments;
-    console.log(this.comments);
     if (this.comments.length > 0) {
       this.showCommentModal = true;
     } else {
-      swal("No Comments Found");
+      swal("No Comment Found");
     }
   }
 
@@ -260,9 +263,48 @@ export class ProjectProductComponent implements OnInit {
     this._projectService
       .generateLicenseKeyProduct(license.id, object)
       .subscribe((data) => {
+        license.generatedKey = data.generatedKey;
+        swal("License key generate successfully!");
+      });
+  }
+  updateLicensekey(license) {
+    console.log(license);
+    console.log(typeof license.id);
+    this._projectService
+      .updateLicenseKeyProduct(license.id)
+      .subscribe((data) => {
         console.log(data);
         license.generatedKey = data.generatedKey;
-        swal("License key generated successfully!");
+        swal("License key update successfully!");
       });
+  }
+  renewProductStatus(project) {
+    this.selectedProduct = project;
+    this.showRenewModal = true;
+  }
+  hideRenewModel() {
+    this.showRenewModal = false;
+  }
+  onSubmitStartDate() {
+    console.log(this.popUpStartDateForm.value);
+    this._projectService
+      .renewProjectProduct(
+        this.selectedProduct.id,
+        this.popUpStartDateForm.value
+      )
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.selectedProduct.status = data.status;
+          this.selectedProduct.endDate = data.endDate;
+          this.selectedProduct.startDate = data.startDate;
+          this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
+          this.showRenewModal = false;
+          this.popUpStartDateForm.reset();
+        },
+        (error) => {
+          this.showRenewModal = false;
+        }
+      );
   }
 }

@@ -1,7 +1,13 @@
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProductService } from "./../../../../../services/product/product.service";
 import { Component, OnInit } from "@angular/core";
-import { FormGroup, Validators, FormBuilder,FormControl, FormArray} from "@angular/forms";
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  FormControl,
+  FormArray,
+} from "@angular/forms";
 import swal from "sweetalert";
 
 @Component({
@@ -48,19 +54,16 @@ export class CreateFamilyComponent implements OnInit {
 
   onSubmit() {
     if (this.familyId) {
-      console.log(this.createFamilyForm.value);
       this._productService
         .updateProductFamily(this.familyId, this.createFamilyForm.value)
         .subscribe((data) => {
           this.route.navigate(["products/family"]);
-           swal("Product family updated successfully!");
+          swal("Product family updated successfully!");
         });
     } else {
-      console.log(this.createFamilyForm.value);
       this._productService
         .addProductFamily(this.createFamilyForm.value)
         .subscribe((data) => {
-          console.log();
           this.route.navigate(["products/family"]);
           swal("New Product family added successfully!");
         });
@@ -77,7 +80,9 @@ export class CreateFamilyComponent implements OnInit {
         );
         if (data.productCodes)
           data.productCodes.forEach((productCode) => {
-            productCodeIds.push(this.productCode(productCode.id, productCode.name));
+            productCodeIds.push(
+              this.productCode(productCode.id, productCode.name)
+            );
           });
       });
     } else {
