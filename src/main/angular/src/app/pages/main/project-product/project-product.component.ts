@@ -98,6 +98,7 @@ export class ProjectProductComponent implements OnInit {
   }
 
   editProduct(product) {
+    console.log(product);
     this._projectService.selecetedProduct.next(product);
     this.route.navigate([
       `projects/${product.projectId}/product/${product.id}`,

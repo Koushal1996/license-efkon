@@ -111,6 +111,14 @@
               Renew
             </button>
           </td>
+          <td *ngIf="project.status == 'RENEWED'">
+            <button
+              type="button"
+              (click)="renewProductStatus(project); $event.stopPropagation()"
+            >
+              Renew
+            </button>
+          </td>
           <td *ngIf="project.status == 'REJECTED'">
             NA
           </td>

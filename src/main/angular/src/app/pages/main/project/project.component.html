@@ -172,6 +172,11 @@
                         Renew
                       </button>
                     </td>
+                    <td *ngIf="pro.status == 'RENEWED'">
+                      <button type="button" (click)="renewProductStatus(pro)">
+                        Renew
+                      </button>
+                    </td>
                     <td *ngIf="pro.status == 'REJECTED'">
                       NA
                     </td>
