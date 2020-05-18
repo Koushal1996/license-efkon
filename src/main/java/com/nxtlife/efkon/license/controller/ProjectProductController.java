@@ -25,6 +25,7 @@ import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductCommentRequest;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -190,6 +191,16 @@ public class ProjectProductController {
 		Resource resource = projectProductService.findByProjectIdExcel(projectId);
 		Response.setFileResponseHeader(resource, "application/octet-stream", response);
 
+	}
+
+	@GetMapping(value = "project/product/status", produces = { "application/json" })
+	@Operation(summary = "Find count of products by status", description = "return a list of product status and their count", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "count successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch count of products by status", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<ProjectProductGraphResponse> findCountByStatus() {
+		return projectProductService.findCountByStatus();
 	}
 
 	@DeleteMapping(value = "project/product/{id}", produces = { "application/json" })

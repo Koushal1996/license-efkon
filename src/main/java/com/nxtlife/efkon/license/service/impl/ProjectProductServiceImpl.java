@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -49,6 +50,7 @@ import com.nxtlife.efkon.license.util.WorkBookUtil;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -578,6 +580,49 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		}
 		return new SuccessResponse(HttpStatus.OK.value(), "Project product successfully deleted");
 
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
+	public List<ProjectProductGraphResponse> findCountByStatus() {
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		List<ProjectProductGraphResponse> projectProductGraphResponse = null;
+		if (roles.contains("Customer")) {
+			projectProductGraphResponse = projectProductDao
+					.countProductByStatusAndProjectCustomerEmailAndActive(user.getEmail(), true);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				projectProductGraphResponse = projectProductDao
+						.countProductByStatusAndProjectProjectManagerIdAndActive(user.getUserId(), true);
+			} else {
+				projectProductGraphResponse = projectProductDao.countTotalProductsByStatusAndActive(true);
+
+			}
+		}
+
+		ProjectProductStatus pps[] = ProjectProductStatus.values();
+		List<String> ppsList = new LinkedList<String>();
+		for (ProjectProductStatus iterate : pps) {
+			ppsList.add(iterate.toString());
+		}
+
+		for (ProjectProductGraphResponse iterate : projectProductGraphResponse) {
+			if (ppsList.contains(iterate.getStatus())) {
+				ppsList.remove(iterate.getStatus());
+			}
+		}
+
+		for (String iterate : ppsList) {
+			projectProductGraphResponse.add(new ProjectProductGraphResponse(iterate, 0));
+		}
+
+		return projectProductGraphResponse;
 	}
 
 }

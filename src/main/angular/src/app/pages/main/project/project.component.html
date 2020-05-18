@@ -1,14 +1,14 @@
-<div class="container-fluid">
+<div class="container-fluid p-0">
   <button
-    class="btn btn-danger"
+    class="createBtn"
     *ngIf="hasAuthority('PROJECT_CREATE')"
     (click)="createpProject()"
   >
     Create Project
   </button>
 
-  <table class="table table-bordered">
-    <thead class="users_table_hader">
+  <table>
+    <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Customer Name</th>
@@ -38,7 +38,7 @@
           <td>{{ project.projectTypeName }}</td>
           <td>{{ project.projectManagerName }}</td>
           <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
-            <button class="btn add_product" (click)="addProduct(project)">
+            <button class="roleactive" (click)="addProduct(project)">
               Add Product
             </button>
           </td>
@@ -84,7 +84,11 @@
                       {{ pro.productDetailResponse.versionName }}
                     </td>
                     <td>{{ pro.licenseCount }}</td>
-                    <td>{{ pro.licenseTypeName }}</td>
+                    <!-- <td>{{ pro.licenseTypeName }}</td> -->
+                    <td *ngIf="pro.licenseTypeName">
+                      {{ pro.licenseTypeName }}
+                    </td>
+                    <td *ngIf="!pro.licenseTypeName">NA</td>
                     <td>{{ pro.expirationPeriodType }}</td>
                     <td *ngIf="pro.expirationPeriodType == 'LIMITED'">
                       {{ pro.expirationMonthCount }}
@@ -163,11 +167,12 @@
                         Reject
                       </button>
                     </td>
-                    <td
-                      *ngIf="
-                        pro.status == 'APPROVED' || pro.status == 'REJECTED'
-                      "
-                    >
+                    <td *ngIf="pro.status == 'APPROVED'">
+                      <button type="button" (click)="renewProductStatus(pro)">
+                        Renew
+                      </button>
+                    </td>
+                    <td *ngIf="pro.status == 'REJECTED'">
                       NA
                     </td>
                   </tr>
@@ -262,6 +267,86 @@
             TIME:{{ c.createdAt | date: "medium" }}
           </li>
         </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="modal"
+  id="myModal"
+  [style.display]="showRenewModal ? 'block' : 'none'"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Enter Start Date</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="hideRenewModel()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="onSubmitStartDate()" [formGroup]="popUpStartDateForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="startDate"
+                name="startDate"
+              />
+              <span
+                *ngIf="
+                  popUpStartDateForm.get('startDate').errors &&
+                  (popUpStartDateForm.get('startDate').touched ||
+                    popUpStartDateForm.get('startDate').dirty)
+                "
+              >
+                <span
+                  *ngIf="popUpStartDateForm.get('startDate').errors.required"
+                  class="field_error"
+                >
+                  Start Date is required</span
+                >
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Expiry Period (in months) </label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="expirationMonthCount"
+                name="expirationMonthCount"
+              />
+              <span
+                *ngIf="
+                  popUpStartDateForm.get('expirationMonthCount').errors &&
+                  (popUpStartDateForm.get('expirationMonthCount').touched ||
+                    popUpStartDateForm.get('expirationMonthCount').dirty)
+                "
+              >
+                <span
+                  *ngIf="
+                    popUpStartDateForm.get('expirationMonthCount').errors.min
+                  "
+                  class="field_error"
+                >
+                  minimun 1 is required</span
+                >
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" [disabled]="!popUpForm.valid">
+              Renew
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

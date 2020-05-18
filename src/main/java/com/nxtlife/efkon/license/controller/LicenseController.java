@@ -20,6 +20,7 @@ import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -135,4 +136,34 @@ public class LicenseController {
 		Response.setFileResponseHeader(resource, "application/octet-stream", response);
 
 	}
+
+	@GetMapping(value = "license/{licenseId}", produces = { "application/json" })
+	@Operation(summary = "Find license of a product", description = "return a license", tags = { "License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "single license", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If license id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public LicenseResponse findById(@PathVariable Long licenseId) {
+		return licenseService.findById(licenseId);
+	}
+
+	@GetMapping(value = "license/active", produces = { "application/json" })
+	@Operation(summary = "Find all active licenses", description = "return active license count", tags = { "License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "active license count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public ProjectProductGraphResponse findActiveLicenses() {
+		return licenseService.findActiveLicenses();
+	}
+
+	@GetMapping(value = "license/expired", produces = { "application/json" })
+	@Operation(summary = "Find all expired licenses", description = "return expired license count", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "expired license count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public ProjectProductGraphResponse findExpiredLicenses() {
+		return licenseService.findExpiredLicenses();
+	}
+
 }
