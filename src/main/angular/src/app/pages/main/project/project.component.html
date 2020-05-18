@@ -1,14 +1,14 @@
-<div class="container-fluid p-0">
+<div class="container-fluid">
   <button
-    class="createBtn"
+    class="btn btn-danger"
     *ngIf="hasAuthority('PROJECT_CREATE')"
     (click)="createpProject()"
   >
     Create Project
   </button>
 
-  <table>
-    <thead>
+  <table class="table table-bordered">
+    <thead class="users_table_hader">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Customer Name</th>
@@ -38,7 +38,7 @@
           <td>{{ project.projectTypeName }}</td>
           <td>{{ project.projectManagerName }}</td>
           <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
-            <button class="roleactive" (click)="addProduct(project)">
+            <button class="btn add_product" (click)="addProduct(project)">
               Add Product
             </button>
           </td>
@@ -70,8 +70,6 @@
                     <th scope="col">Product Detail</th>
                     <th scope="col">No of License</th>
                     <th scope="col">License Type</th>
-                    <th scope="col">Expiry</th>
-                    <th scope="col">Expiry Period (in months)</th>
                     <th scope="col">Start Date</th>
                     <th scope="col">End Date</th>
                     <th scope="col">Status</th>
@@ -89,11 +87,6 @@
                       {{ pro.licenseTypeName }}
                     </td>
                     <td *ngIf="!pro.licenseTypeName">NA</td>
-                    <td>{{ pro.expirationPeriodType }}</td>
-                    <td *ngIf="pro.expirationPeriodType == 'LIMITED'">
-                      {{ pro.expirationMonthCount }}
-                    </td>
-                    <td *ngIf="pro.expirationPeriodType == 'LIFETIME'">NA</td>
                     <td>{{ pro.startDate }}</td>
                     <td *ngIf="pro.expirationPeriodType == 'LIMITED'">
                       {{ pro.endDate }}
