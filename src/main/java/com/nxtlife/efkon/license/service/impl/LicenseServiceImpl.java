@@ -30,14 +30,15 @@ import com.nxtlife.efkon.license.enums.LicenseStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
+import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
-import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
 @Service("licenseServiceImpl")
@@ -87,13 +88,33 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 
 	@Override
 	@Secured(AuthorityUtils.LICENSE_FETCH)
-	public LicenseResponse findByLicenseId(Long id) {
+	public LicenseResponse findById(Long id) {
+		User user = getUser();
 		Long unmaskId = unmask(id);
-		LicenseResponse response = licenseDao.findResponseByIdAndActiveTrue(unmaskId);
-		if (response == null) {
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		LicenseResponse response;
+		if (roles.contains("Customer")) {
+			response = licenseDao.findByIdAndProjectProductProjectCustomerEmailAndActive(unmaskId, user.getEmail(),
+					true);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				response = licenseDao.findByIdAndProjectProductProjectProjectManagerIdAndActive(unmaskId,
+						user.getUserId(), true);
+			} else {
+				response = licenseDao.findByIdAndActive(unmaskId, true);
+			}
+		}
+
+		if (response != null) {
+			response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
+		} else {
 			throw new NotFoundException(String.format("License didn't exist having id [%s]", id));
 		}
-		response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
 		return response;
 	}
 
@@ -132,7 +153,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	@Secured(AuthorityUtils.LICENSE_UPDATE)
 	public LicenseResponse generateKey(Long id, LicenseRequest request) {
 		Long unmaskId = unmask(id);
-		LicenseResponse license = licenseDao.findByIdAndActiveTrue(unmaskId);
+		LicenseResponse license = licenseDao.findByIdAndActive(unmaskId, true);
 		if (license == null)
 			throw new NotFoundException(String.format("license having id [%s] doesn't exist", id));
 		if (license.getGeneratedKey() != null) {
@@ -148,7 +169,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		if (rows > 0) {
 			logger.info(" License {} updated successfully", unmaskId);
 		}
-		LicenseResponse response = licenseDao.findResponseByIdAndActiveTrue(unmaskId);
+		LicenseResponse response = licenseDao.findResponseByIdAndActive(unmaskId, true);
 		response.setProjectProduct(projectProductDao.findResponseById(unmask(response.getProjectProductId())));
 		return response;
 	}
@@ -159,31 +180,66 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	 * @param projectId
 	 * @param productDetailIdproductId
 	 */
-	private void validate(Long projectId, Long productDetailId) {
-		if (projectId == null || productDetailId == null) {
+	private void validate(Long unmaskProjectId, Long unmaskProductId) {
+		if (unmaskProjectId == null || unmaskProductId == null) {
 			throw new ValidationException("projectId or productId can't be null");
 		}
-		Long unmaskProjectId = unmask(projectId);
-		Long unmaskProductId = unmask(productDetailId);
+
 		if (!projectDao.existsByIdAndActive(unmaskProjectId, true)) {
-			throw new NotFoundException(String.format("No project is found having id [%s] ", projectId));
+			throw new NotFoundException(String.format("No project is found having id [%s] ", unmask(unmaskProjectId)));
 		}
 		if (!projectProductDao.existsByProjectIdAndProductDetailIdAndActiveTrue(unmaskProjectId, unmaskProductId)) {
 			throw new NotFoundException(String.format("No product is found having id [%s] in project having id [%s]",
-					productDetailId, projectId));
+					unmask(unmaskProductId), unmask(unmaskProjectId)));
 		}
 	}
 
 	@Override
 	@Secured(AuthorityUtils.LICENSE_FETCH)
 	public List<LicenseResponse> findByProjectIdandProductId(Long projectId, Long productDetailId) {
-		validate(projectId, productDetailId);
-		List<ProjectProductResponse> projectProductResponseList = projectProductDao
-				.findByProjectIdAndProductDetailIdAndActiveTrue(unmask(projectId), unmask(productDetailId));
+		User user = getUser();
+		Long unmaskProjectId = unmask(projectId);
+		Long unmaskedProductId = unmask(productDetailId);
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		validate(unmaskProjectId, unmaskedProductId);
+
 		List<LicenseResponse> responseList = new ArrayList<LicenseResponse>();
-		for (ProjectProductResponse iterate : projectProductResponseList) {
-			responseList.addAll(licenseDao.findByProjectProductIdAndActiveTrue(unmask(iterate.getId())));
+		if (roles.contains("Customer")) {
+			List<ProjectProductResponse> projectProductResponseList = projectProductDao
+					.findByProductDetailIdAndProjectIdAndProjectCustomerEmailAndActive(unmaskedProductId,
+							unmaskProjectId, user.getEmail(), true);
+			for (ProjectProductResponse iterate : projectProductResponseList) {
+
+				responseList.addAll(licenseDao
+						.findByProjectProductIdAndProjectProductProjectIdAndProjectProductProjectCustomerEmailAndActive(
+								unmask(iterate.getId()), unmaskProjectId, user.getEmail(), true));
+			}
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				List<ProjectProductResponse> projectProductResponseList = projectProductDao
+						.findByProductDetailIdAndProjectIdAndProjectProjectManagerIdAndActive(unmaskedProductId,
+								unmaskProjectId, user.getUserId(), true);
+				for (ProjectProductResponse iterate : projectProductResponseList) {
+					responseList.addAll(licenseDao
+							.findByProjectProductIdAndProjectProductProjectIdAndProjectProductProjectProjectManagerIdAndActive(
+									unmask(iterate.getId()), unmaskProjectId, user.getUserId(), true));
+				}
+			} else {
+				List<ProjectProductResponse> projectProductResponseList = projectProductDao
+						.findByProjectIdAndProductDetailIdAndActiveTrue(unmask(projectId), unmask(productDetailId));
+				for (ProjectProductResponse iterate : projectProductResponseList) {
+
+					responseList.addAll(licenseDao.findByProjectProductIdAndProjectProductProjectIdAndActive(
+							unmask(iterate.getId()), unmaskProjectId, true));
+				}
+			}
 		}
+
 		return responseList;
 	}
 
@@ -200,7 +256,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	@Secured(AuthorityUtils.LICENSE_UPDATE)
 	public LicenseResponse replaceGenerateKey(Long id) {
 		Long unmaskId = unmask(id);
-		LicenseResponse license = licenseDao.findByIdAndActiveTrue(unmaskId);
+		LicenseResponse license = licenseDao.findByIdAndActive(unmaskId, true);
 		if (license == null) {
 			throw new NotFoundException(String.format("License not exist having id [%s]", id));
 		}
@@ -215,7 +271,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		License newLicense = licenseDao
 				.save(new License(license.getCode(), license.getAccessId(), license.getGeneratedKey(),
 						license.getName(), LicenseStatus.ACTIVE, unmask(license.getProjectProductId())));
-		LicenseResponse response = licenseDao.findResponseByIdAndActiveTrue(newLicense.getId());
+		LicenseResponse response = licenseDao.findResponseByIdAndActive(newLicense.getId(), true);
 		response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
 		return response;
 	}
@@ -271,6 +327,65 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		String fileName = excelDirectory + "LicensesByProjectId.xlsx";
 		createExcel(licenseResponseList, fileName, "licenses");
 		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public ProjectProductGraphResponse findActiveLicenses() {
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		ProjectProductGraphResponse response = null;
+
+		if (roles.contains("Customer")) {
+			response = projectProductDao.findActiveLicensesByCustomerEmail(user.getEmail());
+			response.setStatus("Active Licenses");
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				response = projectProductDao.findActiveLicensesByProjectManagerId(user.getUserId());
+				response.setStatus("Active Licenses");
+
+			} else {
+				response = projectProductDao.findActiveLicenses();
+				response.setStatus("Active Licenses");
+			}
+		}
+		return response;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public ProjectProductGraphResponse findExpiredLicenses() {
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		ProjectProductGraphResponse response;
+
+		if (roles.contains("Customer")) {
+			if (user.getEmail() == null) {
+				throw new ValidationException(String.format("Email having id [%d] doesn't have email", user.getId()));
+			}
+			response = projectProductDao.findExpiredLicensesByCustomerEmail(user.getEmail());
+			response.setStatus("Expired Licenses");
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				response = projectProductDao.findExpiredLicensesByProjectManagerId(user.getUserId());
+				response.setStatus("Expired Licenses");
+
+			} else {
+				response = projectProductDao.findExpiredLicenses();
+				response.setStatus("Expired Licenses");
+			}
+		}
+		return response;
 	}
 
 }
