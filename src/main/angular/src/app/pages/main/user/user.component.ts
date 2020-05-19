@@ -145,5 +145,6 @@ export class UserComponent implements OnInit {
   hideModel() {
     this.showModal = false;
     console.log("hide");
+    console.log(this.showModal);
   }
 }

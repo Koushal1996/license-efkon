@@ -62,7 +62,7 @@ export class ProjectService {
   generateLicenseKeyProduct(Id, data) {
     return this.api.put(`api/license​/${Id}​/generate-key`, data);
   }
-  updateLicenseKeyProduct(Id) {
-    return this.api.put(`api/license​/${Id}​/replace`, {});
+  updateLicenseKeyProduct(Id, data) {
+    return this.api.put(`api/license​/${Id}​/replace`, data);
   }
 }
