@@ -1,9 +1,6 @@
 <div class="container-fluid p-0">
-  <button
-    class="createBtn"
-    *ngIf="hasAuthority('PROJECT_CREATE')"
-    (click)="createpProject()"
-  >
+  <div class="col-12 p-0">
+  <button class="createBtn" *ngIf="hasAuthority('PROJECT_CREATE')" (click)="createpProject()">
     Create Project
   </button>
 
@@ -209,7 +206,10 @@
         </ng-container>
       </tbody>
     </table>
+    <div *ngIf="isloader" class="loader">
+      <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
   </div>
+</div>
 </div>
 
 <div

@@ -3,3 +3,14 @@ span.badge {
     color:#fff
 }
 .cursor{ cursor: pointer;}
+
+.table_scroll {
+    width: 100%;
+    display: inline-block;
+    height: calc(100vh - 153px) !important;
+    overflow: auto;
+}
+.description {
+    max-width: 360px;
+    word-break: break-all;
+}
