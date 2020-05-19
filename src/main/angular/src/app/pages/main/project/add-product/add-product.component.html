@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table>
   <thead class="users_table_hader">
     <tr>
       <th scope="col">Customer Name</th>
@@ -29,9 +29,8 @@
             <select
               class="form-control"
               name="productFamily"
+              formControlName="productFamily"
               (ngModelChange)="productCodes = $event.productCodes"
-              [ngModelOptions]="{ standalone: true }"
-              ngModel
             >
               <option value="" disabled>Select Product Family</option>
               <option *ngFor="let product of productDetail" [ngValue]="product">
@@ -44,9 +43,8 @@
             <select
               class="form-control"
               name="productCode"
+              formControlName="productCode"
               (ngModelChange)="getVersions($event)"
-              [ngModelOptions]="{ standalone: true }"
-              ngModel
             >
               <option value="" disabled>Product Code</option>
               <option *ngFor="let code of productCodes" [ngValue]="code">

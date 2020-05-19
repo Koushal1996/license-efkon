@@ -50,6 +50,7 @@ export class ProjectProductComponent implements OnInit {
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe((data) => {
       this.projectProduct = data;
+      console.log(data);
       this.isloader = false;
     });
   }
@@ -98,6 +99,7 @@ export class ProjectProductComponent implements OnInit {
   }
 
   editProduct(product) {
+    console.log(product);
     this._projectService.selecetedProduct.next(product);
     this.route.navigate([
       `projects/${product.projectId}/product/${product.id}`,

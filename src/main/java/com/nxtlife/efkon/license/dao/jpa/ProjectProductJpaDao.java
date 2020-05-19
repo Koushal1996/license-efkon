@@ -131,4 +131,6 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 			+ "where pp.endDate < curdate() and pp.active = true and p.projectManager.id=?1")
 	public ProjectProductGraphResponse findExpiredLicensesByProjectManagerId(Long userId);
 
+	public Integer countByProjectIdAndActive(Long unmask, boolean b);
+
 }

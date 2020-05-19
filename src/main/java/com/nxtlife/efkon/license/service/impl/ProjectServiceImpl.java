@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectTypeJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.RoleJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.UserJpaDao;
@@ -40,6 +41,9 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 	private ProjectTypeJpaDao projectTypeDao;
 
 	@Autowired
+	private ProjectProductJpaDao projectProductDao;
+
+	@Autowired
 	private RoleJpaDao roleDao;
 
 	@Autowired
@@ -49,8 +53,8 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 	private UserRoleJpaDao userRoleDao;
 
 	/**
-	 * this method used to validate request. In this we are validating that
-	 * project type and project manager are valid
+	 * this method used to validate request. In this we are validating that project
+	 * type and project manager are valid
 	 * 
 	 * @param request
 	 */
@@ -123,6 +127,11 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 				projects = projectDao.findByActive(true);
 			}
 		}
+
+		for (ProjectResponse iterate : projects) {
+			iterate.setProjectProductCount(projectProductDao.countByProjectIdAndActive(unmask(iterate.getId()), true));
+		}
+
 		return projects;
 	}
 

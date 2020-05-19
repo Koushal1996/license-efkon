@@ -49,6 +49,7 @@ public class ProjectResponse implements Response {
 
 	private List<ProjectProductResponse> products;
 
+	@Schema(description = "count of all the products in a project", example = "1")
 	private Long productsCount;
 
 	public ProjectResponse(Long id, String createdAt, String customerCode, String customerName, String customerEmail,

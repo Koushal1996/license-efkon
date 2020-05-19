@@ -34,6 +34,7 @@ export class ProjectComponent implements OnInit {
   commentID: any[];
   popUpStartDateForm: FormGroup;
   showRenewModal: any;
+  projectProductCount: string;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -72,6 +73,7 @@ export class ProjectComponent implements OnInit {
   getProjects() {
     this.projectservice.getProjects().subscribe(
       (data) => {
+        console.log(data);
         this.projects = data;
         this.isloader = false;
       },
@@ -107,6 +109,7 @@ export class ProjectComponent implements OnInit {
     });
   }
   editProduct(project, product) {
+    console.log(product);
     this.projectservice.selecetedProduct.next(product);
     this.route.navigate([`projects/${project.id}/product/${product.id}`]);
   }
@@ -116,6 +119,11 @@ export class ProjectComponent implements OnInit {
       this.projectservice.getProductsByProjectId(project.id).subscribe(
         (data) => {
           project.products = data;
+          // let count = 0;
+          // for (var c in project.products) {
+          //   count = count + 1;
+          // }
+          // this.projectProductCount = c;
           project.productLoader = false;
         },
         (error) => {

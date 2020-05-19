@@ -6,8 +6,6 @@
         <th scope="col">Product Detail</th>
         <th scope="col">No of License</th>
         <th scope="col">License Type</th>
-        <th scope="col">Expiry</th>
-        <th scope="col">Expiry Period (in months)</th>
         <th scope="col">Start Date</th>
         <th scope="col">End Date</th>
         <th scope="col">Customer Name (Email)</th>
@@ -29,11 +27,11 @@
 
           <td *ngIf="project.licenseTypeName">{{ project.licenseTypeName }}</td>
           <td *ngIf="!project.licenseTypeName">NA</td>
-          <td>{{ project.expirationPeriodType }}</td>
+          <!-- <td>{{ project.expirationPeriodType }}</td>
           <td *ngIf="project.expirationPeriodType == 'LIMITED'">
             {{ project.expirationMonthCount }}
-          </td>
-          <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
+          </td> -->
+          <!-- <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td> -->
           <td>{{ project.startDate }}</td>
           <td *ngIf="project.expirationPeriodType == 'LIMITED'">
             {{ project.endDate }}
@@ -51,7 +49,7 @@
             <br />
             <a
               class="cursor text-danger"
-              *ngIf="project.status !== 'DRAFT'"
+              *ngIf="project.comments.length"
               (click)="showComments(project); $event.stopPropagation()"
               >comments
             </a>
@@ -104,6 +102,14 @@
             </button>
           </td>
           <td *ngIf="project.status == 'APPROVED'">
+            <button
+              type="button"
+              (click)="renewProductStatus(project); $event.stopPropagation()"
+            >
+              Renew
+            </button>
+          </td>
+          <td *ngIf="project.status == 'RENEWED'">
             <button
               type="button"
               (click)="renewProductStatus(project); $event.stopPropagation()"
