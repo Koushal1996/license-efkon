@@ -14,11 +14,11 @@ public interface ProjectProductCommentJpaDao extends JpaRepository<ProjectProduc
 
 	public List<ProjectProductCommentResponse> findByProjectProductId(Long projectProductId);
 
-	@Query("select id from ProjectProductComment where project_product_id=?1 and active=?2")
+	@Query("select id from ProjectProductComment where projectProduct.id=?1 and active=?2")
 	List<Long> findAllIdsByProjectProductIdAndActive(Long projectProductId, Boolean active);
 
 	@Modifying
-	@Query("update ProjectProductComment set active = false ,modified_by =?2, modified_at =?3 where id in ?1 ")
-	List<Long> delete(List<Long> ids, Long userId, Date date);
+	@Query("update ProjectProductComment set active = false, modifiedBy.id =?2, modifiedAt =?3 where id in ?1")
+	int delete(List<Long> ids, Long userId, Date date);
 
 }
