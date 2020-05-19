@@ -1,101 +1,149 @@
-import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from './../../../services/admin/admin.service';
-import swal from 'sweetalert';
-import { StorageService } from 'src/app/services/storage/storage.service';
-
+import { Router } from "@angular/router";
+import { Component, OnInit } from "@angular/core";
+import { AdminService } from "./../../../services/admin/admin.service";
+import swal from "sweetalert";
+import { StorageService } from "src/app/services/storage/storage.service";
+import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
 @Component({
-  selector: 'app-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  selector: "app-user",
+  templateUrl: "./user.component.html",
+  styleUrls: ["./user.component.scss"],
 })
 export class UserComponent implements OnInit {
-
-  constructor(private _admin: AdminService,
+  public users = [];
+  isloader: boolean = true;
+  serachUserForm: FormGroup;
+  filter: any[];
+  usersCopy: any[] = [];
+  showModal: boolean = false;
+  constructor(
+    private _admin: AdminService,
     private route: Router,
-    private _storageService:StorageService) { }
-  public users = []
-  isloader:boolean=true
-  ngOnInit() {
-    this._admin.getUsers().subscribe
-      (data => {
-        this.users = data
-        this.isloader=false
-      },
-        error => {
-        }
-      )
+    private _storageService: StorageService,
+    private fb: FormBuilder
+  ) {}
 
-    
+  ngOnInit() {
+    this._admin.getUsers().subscribe(
+      (data) => {
+        this.users = data;
+        console.log(this.users);
+        this.usersCopy = JSON.parse(JSON.stringify(data));
+        this.isloader = false;
+      },
+      (error) => {}
+    );
+    this.serachUserForm = this.fb.group({
+      name: [""],
+    });
   }
-  hasAuthority(authority){
-    const authorities:any[] = this._storageService.getData('userAuthorities').map(a=>a.name);
+  hasAuthority(authority) {
+    const authorities: any[] = this._storageService
+      .getData("userAuthorities")
+      .map((a) => a.name);
     return authorities.includes(authority);
   }
-
 
   deleteuser(item) {
     swal({
       title: "You sure?",
       text: "You want to go ahead with deletion?",
       icon: "warning",
-      closeOnClickOutside:false,
-      buttons:["Yes","No"],
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
       dangerMode: true,
-    })
-    .then(willDelete => {
-      if (willDelete) {    
-      }
-      else {
-    this._admin.deleteUser(item.id).subscribe
-      (data => {
-        item.active = false
-        swal("Delete successfully!");
-      },
-        error => {
-        })
-        
+    }).then((willDelete) => {
+      if (willDelete) {
+      } else {
+        this._admin.deleteUser(item.id).subscribe(
+          (data) => {
+            item.active = false;
+            swal("Delete successfully!");
+          },
+          (error) => {}
+        );
       }
     });
   }
 
   createuser() {
-    console.log("data")
-    this._admin.selecetedUser.subscribe(data =>{
-      console.log(data)
-    })
-   
-    this.route.navigate(['users/create'])
+    console.log("data");
+    this._admin.selecetedUser.subscribe((data) => {
+      console.log(data);
+    });
 
+    this.route.navigate(["users/create"]);
   }
   edituser(item) {
     this._admin.selecetedUser.next(item);
-    this.route.navigate(['users', item.id])
+    this.route.navigate(["users", item.id]);
   }
 
-
-
-  activateuser(item){
+  activateuser(item) {
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to activate this?",
       icon: "warning",
-      closeOnClickOutside:false,
-      buttons:["Yes","No"],
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
       dangerMode: true,
-    })
-    .then(willDelete => {
-      if (willDelete) {    
+    }).then((willDelete) => {
+      if (willDelete) {
+      } else {
+        this._admin.activateUser(item.id).subscribe(
+          (data) => {
+            item.active = true;
+            swal("Activate successfully!");
+          },
+          (error) => {}
+        );
       }
-      else {
-    this._admin.activateUser(item.id).subscribe(data => {
-      item.active = true
-      swal("Activate successfully!");
-    },
-      error => {
-      })
-      
+    });
+  }
+  onSearchUser(key) {
+    console.log(key);
+    if (key) {
+      this.users = this.users.filter(
+        (item) =>
+          item.name.toLowerCase().startsWith(key) ||
+          item.username.toLowerCase().startsWith(key) ||
+          item.email.toLowerCase().startsWith(key) ||
+          item.contactNo.toLowerCase().startsWith(key)
+      );
+    } else {
+      this.users = this.usersCopy;
     }
-    })
+  }
+  sortAphabetically() {
+    console.log(this.users);
+    this.users.sort(function (a, b) {
+      var nameA = a.name.toLowerCase(),
+        nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+  }
+  reverseAphabetically() {
+    this.users.reverse();
+  }
+  sortUserNameAphabetically() {
+    this.users.sort(function (a, b) {
+      var nameA = a.username.toLowerCase(),
+        nameB = b.username.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+  }
+  reverseUserNameAphabetically() {
+    this.users.reverse();
+  }
+  showRoleAuthoities() {
+    this.showModal = true;
+  }
+  hideModel() {
+    this.showModal = false;
+    console.log("hide");
   }
 }

@@ -80,6 +80,7 @@ export class AddProductComponent implements OnInit {
           console.log(data);
           console.log(data.productDetailResponse.productCodeId);
           this.productForm.patchValue(data);
+          //debugger;
           this.productForm.patchValue({
             productFamily: data.productDetailResponse.productFamilyId,
             productCode: data.productDetailResponse.productCodeId,
@@ -91,13 +92,6 @@ export class AddProductComponent implements OnInit {
             .subscribe((data) => {
               //console.log(data);
               this.productForm.patchValue(data);
-              console.log(data.productDetailResponse.productFamilyId);
-              console.log(data.productDetailResponse.productCodeName);
-              this.productForm.patchValue({
-                productFamily: data.productDetailResponse.productFamilyName,
-                productCode: data.productDetailResponse.productCodeName,
-                productDetailId: data.productDetailResponse.versionName,
-              });
             });
         }
       });
