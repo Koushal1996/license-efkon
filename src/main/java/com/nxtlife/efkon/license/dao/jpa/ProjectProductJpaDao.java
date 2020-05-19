@@ -86,16 +86,16 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public int delete(Long id, Long userId, Date date);
 
 	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(pp.status, COUNT(pp.id))"
-			+ "FROM ProjectProduct AS pp where pp.active =?1 GROUP BY pp.status")
+			+ "FROM ProjectProduct AS pp where pp.active =?1 GROUP BY pp.status ORDER BY pp.status ASC")
 	public List<ProjectProductGraphResponse> countTotalProductsByStatusAndActive(Boolean active);
 
 	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(projectProduct.status, COUNT(projectProduct.id))"
-			+ "FROM ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where project.customerEmail=?1 and projectProduct.active =?2 GROUP BY projectProduct.status")
+			+ "FROM ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where project.customerEmail=?1 and projectProduct.active =?2 GROUP BY projectProduct.status ORDER BY projectProduct.status ASC")
 	public List<ProjectProductGraphResponse> countProductByStatusAndProjectCustomerEmailAndActive(String email,
 			Boolean active);
 
 	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(projectProduct.status, COUNT(projectProduct.id))"
-			+ "FROM ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where project.projectManager.id=?1 and projectProduct.active =?2 GROUP BY projectProduct.status")
+			+ "FROM ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where project.projectManager.id=?1 and projectProduct.active =?2 GROUP BY projectProduct.status ORDER BY projectProduct.status ASC")
 	public List<ProjectProductGraphResponse> countProductByStatusAndProjectProjectManagerIdAndActive(Long userId,
 			Boolean active);
 
