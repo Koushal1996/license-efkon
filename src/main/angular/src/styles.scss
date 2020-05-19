@@ -105,10 +105,10 @@ table.table.table-bordered {
 
 .middle-content {
   margin: 15px 0;
-  padding: 5px 0;
-  background: white;
-  border: 1px solid #e7eaec;
-  padding: 15px;
+  // padding: 5px 0;
+  // background: white;
+  // border: 1px solid #e7eaec;
+  // padding: 15px;
 }
 
 table.table.table-bordered {
@@ -210,44 +210,61 @@ h2.text-center {
   text-transform: capitalize;
 }
 .form_main{
-  max-width: 450px;
-  margin: auto;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 10px #b9b3b3;
-  margin: 20px auto;
-  background: white;
-  border-radius: 5px;
-    // overflow: hidden;
+  border: 1px solid #dadcde;
+    background: white;
+    // margin-top: 20px;
+    // padding: 15px;
+    float: left;
   h3{
-    font-size: 20px;
-    text-align: center;
-    background: #29aba4;
-    padding: 10px;
-    color: #ffffff;
     border-bottom: 1px solid #ddd;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 600;
+    color: #676a6c;
+    padding: 10px 15px;
   }
   .input_feild{
     padding: 15px;
+    .category_col{
+      h4 {
+        font-size: 15px;
+        font-weight: bold;
+        color: #29aba4;
+        // border-bottom: 1px solid;
+    }
   label{
-      font-size: 16px !important;
+      font-size: 13px !important;
+      font-weight: bold;
+      margin-bottom: 5px;
   }
   input{
       border-radius: 0;
+      font-size: 13px !important;
 
       &:focus{
-          border: 1px solid #ddd;
+          border: 1px solid #29aba4;
           box-shadow: none;
           font-size: 14px;
       }
   }
   select{
       border-radius: 0;
-      font-size: 14px;
+      font-size: 13px !important;
       &:focus{
-          border: 1px solid #ddd;
+          border: 1px solid #29aba4;
           box-shadow: none;
       }
+  }
+}
+}
+.form_footer{
+  width: 100%;
+  float: right;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  padding: 13px 0;
+  margin-top: 5px;
+  button{
+    margin-left: 10px;
   }
 }
 }
@@ -506,8 +523,12 @@ table {
 .table_scroll {
   width: 100%;
   display: inline-block;
-  height: calc(100vh - 115px);
+  height: calc(100vh - 81px);
   overflow: auto;
+}
+
+.site_main {
+  background: white;
 }
 
 .t_save_btn{

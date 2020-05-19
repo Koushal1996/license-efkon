@@ -1,0 +1,32 @@
+.product_main {
+    background: white;
+    border: 1px solid #dadcde;
+    h3{
+        border-bottom: 1px solid #ddd;
+        font-size: 16px;
+        font-weight: 600;
+        color: #676a6c;
+        padding: 10px 15px;
+    }
+    .product_details {
+        width: 100%;
+        display: inline-block;
+        padding: 0 15px;
+        /* border-bottom: 1px solid #ddd; */
+        label {
+            font-size: 13px;
+            font-weight: bold;
+            margin: 0;
+        }
+        span {
+            color: #676a6c;
+            font-size: 14px;
+            /* margin-left: 4px; */
+            display: block;
+            border-bottom: 1px solid #efefef;
+            padding-bottom: 5px;
+        }
+    }
+
+    
+}
