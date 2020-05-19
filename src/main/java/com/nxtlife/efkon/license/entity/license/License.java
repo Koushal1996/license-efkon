@@ -17,10 +17,7 @@ import com.nxtlife.efkon.license.enums.LicenseStatus;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "license"/*
-						 * , uniqueConstraints = { @UniqueConstraint(columnNames
-						 * = { "code", "project_product_id" }) }
-						 */)
+@Table(name = "license")
 @DynamicInsert(value = true)
 @DynamicUpdate(value = true)
 public class License extends BaseEntity implements Serializable {

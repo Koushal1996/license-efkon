@@ -51,7 +51,7 @@ public interface LicenseService {
 	 * @param id
 	 * @return {@link LicenseResponse}}
 	 */
-	public LicenseResponse replaceGenerateKey(Long id);
+	public LicenseResponse replaceGenerateKey(Long id, LicenseRequest request);
 
 	/**
 	 * this method is used to find all the licenses of particular product in a
@@ -61,7 +61,7 @@ public interface LicenseService {
 	 * @param productId
 	 * @return {@link LicenseResponse}
 	 */
-	public List<LicenseResponse> findByProjectIdandProductId(Long projectId, Long productId);
+	public List<LicenseResponse> findByProjectIdAndProductId(Long projectId, Long productId);
 
 	/**
 	 * this method is used to find all the licenses of particular project
@@ -79,7 +79,7 @@ public interface LicenseService {
 	 * @param productId
 	 * @return
 	 */
-	public Resource findLicensesByProjectIdandProductIdExcel(Long projectId, Long productId);
+	public Resource findLicensesByProjectIdAndProductIdExcel(Long projectId, Long productId);
 
 	/**
 	 * this method is used to generate the excel file containing licenses of all the

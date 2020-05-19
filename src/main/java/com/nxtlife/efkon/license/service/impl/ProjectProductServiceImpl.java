@@ -144,11 +144,12 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration month
-	 * count
+	 * this method used to set end date according to start date and expiration
+	 * month count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater than 12
-	 * then year will be incremented and month will be add result minus 12.
+	 * if addition of month of start date and expiration month count greater
+	 * than 12 then year will be incremented and month will be add result minus
+	 * 12.
 	 *
 	 * @return String
 	 */
@@ -429,24 +430,27 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
-						licenseDao.save(new License(
-								String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
-										projectProductResponse.getProjectResponse().getCustomerCode(),
-										projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
-										projectProductResponse.getProductDetailResponse().getProductCodeCode(),
-										getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (i + 1),
-										projectProductResponse.getExpirationMonthCount() == null ? 0
-												: projectProductResponse.getExpirationMonthCount(),
-										LocalDate
-												.parse(projectProductResponse.getStartDate(),
-														DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-												.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
-										projectProductResponse.getEndDate() == null ? "NA"
-												: LocalDate
-														.parse(projectProductResponse.getEndDate(),
+						licenseDao.save(
+								new License(
+										String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
+												projectProductResponse.getProjectResponse().getCustomerCode(),
+												projectProductResponse.getProductDetailResponse()
+														.getProductFamilyCode(),
+												projectProductResponse.getProductDetailResponse().getProductCodeCode(),
+												getUser().getCode(), projectProductResponse.getLicenseTypeCode(),
+												(i + 1),
+												projectProductResponse.getExpirationMonthCount() == null ? 0
+														: projectProductResponse.getExpirationMonthCount(),
+												LocalDate
+														.parse(projectProductResponse.getStartDate(),
 																DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-														.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
-								LicenseStatus.ACTIVE, unmaskId));
+														.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
+												projectProductResponse.getEndDate() == null ? "NA"
+														: LocalDate
+																.parse(projectProductResponse.getEndDate(),
+																		DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+																.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
+										LicenseStatus.ACTIVE, unmaskId));
 					}
 				}
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
@@ -496,9 +500,13 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (projectProduct.getExpirationPeriodType().equals(ExpirationPeriodType.LIFETIME)) {
 				throw new ValidationException("You can't renew this product because it's already for lifetime");
 			}
+			if (projectProduct.getEndDate().compareTo(request.getStartDate()) > 1) {
+				throw new ValidationException(
+						"Start date of renewal license should be greater than end date of previous");
+			}
 			ProjectProduct renewedProjectProduct = new ProjectProduct(projectProduct.getLicenseCount(),
 					unmask(projectProduct.getLicenseTypeId()), projectProduct.getExpirationPeriodType(),
-					projectProduct.getExpirationMonthCount(), request.getStartDate(),
+					request.getExpirationMonthCount(), request.getStartDate(),
 					setEndDate(request.getStartDate(), request.getExpirationMonthCount()),
 					ProjectProductStatus.RENEWED);
 			renewedProjectProduct.settProductDetailId(unmask(projectProduct.getProductDetailId()));
@@ -523,7 +531,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 								projectProductResponse.getProjectResponse().getCustomerCode(),
 								projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
 								projectProductResponse.getProductDetailResponse().getProductCodeCode(),
-								getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (++i),
+								getUser().getCode() == null ? "00000" : getUser().getCode(),
+								projectProductResponse.getLicenseTypeCode(), (++i),
 								projectProductResponse.getExpirationMonthCount() == null ? 0
 										: projectProductResponse.getExpirationMonthCount(),
 								LocalDate

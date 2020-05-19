@@ -309,4 +309,17 @@ export class ProjectComponent implements OnInit {
         }
       );
   }
+  sortAphabetically() {
+    console.log(this.projects);
+    this.projects.sort(function (a, b) {
+      var nameA = a.customerName.toLowerCase(),
+        nameB = b.customerName.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+  }
+  reverseAphabetically() {
+    this.projects.reverse();
+  }
 }

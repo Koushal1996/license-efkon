@@ -33,8 +33,8 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 	public List<LicenseResponse> findByProjectProductIdAndActiveTrue(Long id);
 
 	@Modifying
-	@Query(value = "update License set generatedKey=?2, name=?3, modifiedBy.id=?4, modifiedAt=?5 where id =?1")
-	public int update(Long unmaskId, String generatedKey, String name, Long userId, Date date);
+	@Query(value = "update License set accessId=?2, generatedKey=?3, name=?4, modifiedBy.id=?5, modifiedAt=?6 where id =?1")
+	public int update(Long unmaskId, String uniqueAccessId, String generatedKey, String name, Long userId, Date date);
 
 	@Modifying
 	@Query(value = "update License set active=?2, status=?3 , modifiedBy.id=?4, modifiedAt=?5 where id =?1")
