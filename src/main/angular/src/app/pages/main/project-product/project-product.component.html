@@ -141,15 +141,22 @@
                   <tr class="text-primary">
                     <th scope="col">Sr. No.</th>
                     <th scope="col">Code</th>
-                    <th scope="col">
-                      Unique Access ID.
-                    </th>
-                    <th scope="col">License Key</th>
+                    <th scope="col">NAME</th>
+                    <th scope="col">Unique Access ID.</th>
+                    <th scope="col">Action</th>
                   </tr>
                   <tr *ngFor="let license of project.licenses; index as i">
                     <td>{{ i + 1 }}</td>
                     <td>{{ license.code }}</td>
-                    <td *ngIf="!license.generatedKey">
+                    <td *ngIf="!license.generatedKey || license.edit">
+                      <input
+                        type="text"
+                        placeholder="name"
+                        name="name"
+                        [(ngModel)]="license.name"
+                      />
+                    </td>
+                    <td *ngIf="!license.generatedKey || license.edit">
                       <input
                         type="text"
                         placeholder="Access ID"
@@ -157,17 +164,29 @@
                         [(ngModel)]="license.accessId"
                       />
                     </td>
-
-                    <td *ngIf="license.generatedKey">
-                      {{ license.generatedKey }}
+                    <td *ngIf="license.generatedKey && !license.edit">
+                      {{ license.name }}
                     </td>
-                    <td *ngIf="license.generatedKey">
+                    <td *ngIf="license.generatedKey && !license.edit">
+                      {{ license.accessId }}
+                    </td>
+                    <td *ngIf="license.edit">
                       <button
                         *ngIf="hasAuthority('LICENSE_UPDATE')"
                         type="button"
                         (click)="updateLicensekey(license)"
                       >
                         Update License Key
+                      </button>
+                    </td>
+                    <td
+                      *ngIf="
+                        (license.generatedKey || license.update) &&
+                        !license.edit
+                      "
+                    >
+                      <button type="button" (click)="editLicensekey(license)">
+                        edit
                       </button>
                     </td>
                     <td *ngIf="!license.generatedKey">
@@ -179,6 +198,7 @@
                         Generate License Key
                       </button>
                     </td>
+
                     <!-- <td> <input type="text" placeholder="Access ID" name="accessId" #accessId></td>
               <td><button type="button" (click)="generateLicensekey(licenses)"> Generate License Key</button></td> -->
                   </tr>

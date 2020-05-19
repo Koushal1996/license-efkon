@@ -59,32 +59,6 @@
             *ngFor="let role of item.roles; index as index"
           >
             {{ role.name }}
-            <div
-              class="modal modelheight"
-              id="myModal"
-              [style.display]="showModal ? 'block' : 'none'"
-            >
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Authorities</h4>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      (click)="hideModel()"
-                    >
-                      &times;
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p *ngFor="let auth of role.authorities">
-                      {{ auth.name }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </span>
         </td>
         <ng-container
@@ -119,4 +93,33 @@
       </tr>
     </tbody>
   </table>
+</div>
+<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Authorities</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="hideModel()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngFor="let item of users">
+          <span
+            (click)="showRoleAuthoities()"
+            *ngFor="let role of item.roles; index as index"
+          >
+            <p *ngFor="let auth of role.authorities">
+              {{ auth.name }}
+            </p>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
