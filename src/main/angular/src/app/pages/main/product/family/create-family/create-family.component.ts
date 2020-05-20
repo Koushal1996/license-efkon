@@ -51,6 +51,11 @@ export class CreateFamilyComponent implements OnInit {
     this.productCodes = this.createFamilyForm.get("productCodes") as FormArray;
     this.productCodes.push(this.productCode(arId, name));
   }
+  onDeleteName(i) {
+    console.log(i);
+    this.productCodes = this.createFamilyForm.get("productCodes") as FormArray;
+    this.productCodes.removeAt(i);
+  }
 
   onSubmit() {
     if (this.familyId) {
