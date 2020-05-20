@@ -3,6 +3,7 @@
 body {
   font-family: 'Oxygen', sans-serif !important;
   margin: 0;
+  background: #f2f2f3 !important;
 }
 // html, body { height: 100%; }
 // body { margin: 0; font-family: 'Roboto', sans-serif; }
@@ -35,7 +36,7 @@ i{
   .users_table_hader {
     width: 100%;
     th {
-      background: #e2dddd;
+      background: #e8e8e8;
       color: #333;
       font-size: 13px;
       border: solid 1px #cec6c6;
@@ -390,6 +391,13 @@ table {
           color: #2b3643;
           cursor: pointer;
         }
+        .custom_badge {
+          background: #2b3643 !important;
+          color: white !important;
+          margin-right: 0 !important;
+          border: none;
+          cursor: pointer;
+      }
       }
      }
   }
@@ -674,4 +682,58 @@ table {
 .error{
   font-size: 13px;
   color: #dc3545;
+}
+.shorting {
+  display: inline-block;
+  float: right;
+  button {
+    background: transparent;
+    border: transparent;
+    padding: 0;
+    margin: 0;
+    color: #29aba4;
+    span {
+      font-size: 18px;
+      position: relative;
+      top: 2px;
+  }
+  &:focus{
+    border: none;
+    box-shadow: none;
+    outline: none;
+  }
+  }
+}
+.check_main {
+  position: relative;
+}
+.check_main label:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 21px;
+  height: 21px;
+  content: "";
+  border: 2px solid #29aba4;
+}
+
+.form_main .input_feild .category_col input {
+    border-radius: 0;
+    font-size: 13px !important;
+}
+.check_main input {
+    position: absolute;
+    z-index: 3;
+    width: 21px;
+    height: 21px;
+    top: -5px;
+    opacity: 0;
+}
+.check_main input:checked + label:after{
+  background-image :url('/assets/images/check.png');
+  background-size: 100% 100%;
+}
+.check_main label {
+  margin-left: 13px;
+  vertical-align: text-top;
 }
