@@ -279,12 +279,17 @@ export class ProjectProductComponent implements OnInit {
     if (object) {
       this._projectService
         .updateLicenseKeyProduct(license.id, object)
-        .subscribe((data) => {
-          license.edit = false;
-          console.log(data);
-          license.generatedKey = data.generatedKey;
-          swal("License key update successfully!");
-        });
+        .subscribe(
+          (data) => {
+            license.edit = false;
+            console.log(data);
+            license.generatedKey = data.generatedKey;
+            swal("License key update successfully!");
+          },
+          (error) => {
+            license.edit = false;
+          }
+        );
     }
   }
   editLicensekey(license) {
@@ -318,5 +323,18 @@ export class ProjectProductComponent implements OnInit {
           this.showRenewModal = false;
         }
       );
+  }
+  sortAphabetically() {
+    console.log(this.projectProduct);
+    this.projectProduct.sort(function (a, b) {
+      var statusA = a.status.toLowerCase(),
+        statusB = b.status.toLowerCase();
+      if (statusA < statusB) return -1;
+      if (statusA > statusB) return 1;
+      return 0;
+    });
+  }
+  reverseAphabetically() {
+    this.projectProduct.reverse();
   }
 }
