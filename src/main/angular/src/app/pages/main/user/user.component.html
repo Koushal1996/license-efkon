@@ -1,126 +1,117 @@
-<div class="site_main">
-  <div class="container-fluid p-0">
-    <button
-      class="createBtn"
-      *ngIf="hasAuthority('USER_CREATE')"
-      (click)="createuser()"
-    >
-      Create User
-    </button>
-  
-    <form [formGroup]="serachUserForm">
-      <div class="form-group">
-        <input
-          type="text"
-          formControlName="name"
-          class="form-control"
-          placeholder="Search"
-          (ngModelChange)="onSearchUser($event)"
-        />
-      </div>
-    </form>
-  
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">
-            Name
-            <button (click)="sortAphabetically()">up</button>
-            <button (click)="reverseAphabetically()">down</button>
-          </th>
-          <th scope="col">
-            UserName
-            <button (click)="sortUserNameAphabetically()">up</button>
-            <button (click)="reverseUserNameAphabetically()">down</button>
-          </th>
-          <th scope="col">Email</th>
-          <th scope="col">Contact No.</th>
-          <th scope="col">Roles</th>
-          <th
-            scope="col"
-            class="action_width"
-            *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')"
+<div class="container-fluid p-0">
+  <button
+    class="createBtn"
+    *ngIf="hasAuthority('USER_CREATE')"
+    (click)="createuser()"
+  >
+    Create User
+  </button>
+
+  <form [formGroup]="serachUserForm">
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="name"
+        class="form-control"
+        placeholder="Search"
+        (ngModelChange)="onSearchUser($event)"
+      />
+    </div>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">
+          Name
+          <button (click)="sortAphabetically()">up</button>
+          <button (click)="reverseAphabetically()">down</button>
+        </th>
+        <th scope="col">
+          UserName
+          <button (click)="sortUserNameAphabetically()">up</button>
+          <button (click)="reverseUserNameAphabetically()">down</button>
+        </th>
+        <th scope="col">Email</th>
+        <th scope="col">Contact No.</th>
+        <th scope="col">Roles</th>
+        <th
+          scope="col"
+          class="action_width"
+          *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')"
+        >
+          Action
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of users; index as index">
+        <td>{{ index + 1 }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.username }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.contactNo }}</td>
+        <td>
+          <span
+            (click)="showRoleAuthoities(role)"
+            class="badge custom_badge"
+            *ngFor="let role of item.roles; index as index"
           >
-            Action
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of users; index as index">
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.name }}</td>
-          <td>{{ item.username }}</td>
-          <td>{{ item.email }}</td>
-          <td>{{ item.contactNo }}</td>
-          <td>
-            <span
-              (click)="showRoleAuthoities()"
-              class="badge custom_badge"
-              *ngFor="let role of item.roles; index as index"
+            {{ role.name }}
+          </span>
+        </td>
+        <ng-container
+          *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')"
+        >
+          <td *ngIf="item.active">
+            <button
+              class="edit_button top_tooltip"
+              *ngIf="hasAuthority('USER_DELETE')"
             >
-              {{ role.name }}
-            </span>
+              <i class="fa fa-edit" (click)="edituser(item)"></i>
+              <span>Edit User</span>
+            </button>
+            <button
+              class="delete_button top_tooltip"
+              *ngIf="hasAuthority('USER_DELETE')"
+            >
+              <i class="fa fa-trash" (click)="deleteuser(item)"></i>
+              <span>Edit User</span>
+            </button>
           </td>
-          <ng-container
-            *ngIf="hasAuthority('USER_UPDATE') || hasAuthority('USER_DELETE')"
-          >
-            <td *ngIf="item.active">
-              <button
-                class="edit_button top_tooltip"
-                *ngIf="hasAuthority('USER_DELETE')"
-              >
-                <i class="fa fa-edit" (click)="edituser(item)"></i>
-                <span>Edit User</span>
-              </button>
-              <button
-                class="delete_button top_tooltip"
-                *ngIf="hasAuthority('USER_DELETE')"
-              >
-                <i class="fa fa-trash" (click)="deleteuser(item)"></i>
-                <span>Edit User</span>
-              </button>
-            </td>
-            <td *ngIf="!item.active">
-              <button
-                class="roleactive"
-                *ngIf="hasAuthority('USER_DELETE')"
-                (click)="activateuser(item)"
-              >
-                activate
-              </button>
-            </td>
-          </ng-container>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Authorities</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            (click)="hideModel()"
-          >
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <div *ngFor="let item of users">
-            <span
-              (click)="showRoleAuthoities()"
-              *ngFor="let role of item.roles; index as index"
+          <td *ngIf="!item.active">
+            <button
+              class="roleactive"
+              *ngIf="hasAuthority('USER_DELETE')"
+              (click)="activateuser(item)"
             >
-              <p *ngFor="let auth of role.authorities">
-                {{ auth.name }}
-              </p>
-            </span>
-          </div>
-        </div>
+              activate
+            </button>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Authorities</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="hideModel()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <p *ngFor="let auth of selectedAuthorites">
+          {{ auth.name }}
+        </p>
       </div>
     </div>
   </div>

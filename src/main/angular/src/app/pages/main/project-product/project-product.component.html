@@ -11,22 +11,30 @@
           <th scope="col">End Date</th>
           <th scope="col">Customer Details</th>
           <th scope="col">Project Type</th>
-          <th scope="col">Status</th>
+          <th scope="col">
+            Status
+            <button (click)="sortAphabetically()">up</button>
+            <button (click)="reverseAphabetically()">down</button>
+          </th>
           <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody id="accordion">
         <ng-container *ngFor="let project of projectProduct; index as i">
-          <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i" #c>
+          <tr>
             <td>{{ i + 1 }}</td>
             <td>
               {{ project.productDetailResponse.productCodeName }}
               {{ project.productDetailResponse.productFamilyName }}
               {{ project.productDetailResponse.versionName }}
             </td>
-            <td>{{ project.licenseCount }}</td>
-  
-            <td *ngIf="project.licenseTypeName">{{ project.licenseTypeName }}</td>
+            <td>
+              {{ project.licenseCount }}
+            </td>
+
+            <td *ngIf="project.licenseTypeName">
+              {{ project.licenseTypeName }}
+            </td>
             <td *ngIf="!project.licenseTypeName">NA</td>
             <!-- <td>{{ project.expirationPeriodType }}</td>
             <td *ngIf="project.expirationPeriodType == 'LIMITED'">
@@ -38,11 +46,11 @@
               {{ project.endDate }}
             </td>
             <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
-  
+
             <td>
-              {{ project.projectResponse.customerName }} ({{
-                project.projectResponse.customerEmail
-              }})
+              {{ project.projectResponse.customerName }}
+              <br />
+              ({{ project.projectResponse.customerEmail }})
             </td>
             <td>{{ project.projectResponse.projectTypeName }}</td>
             <td>
@@ -109,6 +117,14 @@
               >
                 Renew
               </button>
+              <button
+                type="button"
+                data-toggle="collapse"
+                [attr.data-target]="'#collapse' + i"
+                #c
+              >
+                View License
+              </button>
             </td>
             <td *ngIf="project.status == 'RENEWED'">
               <button
@@ -116,6 +132,14 @@
                 (click)="renewProductStatus(project); $event.stopPropagation()"
               >
                 Renew
+              </button>
+              <button
+                type="button"
+                data-toggle="collapse"
+                [attr.data-target]="'#collapse' + i"
+                #c
+              >
+                View License
               </button>
             </td>
             <td *ngIf="project.status == 'REJECTED'">
@@ -135,20 +159,30 @@
                   </p>
                 </div> -->
                 <div class="col-12 mt-3">
+                  <h4>License Detail</h4>
                   <table
                     class="table table-bordered innertable"
-                    *ngIf="project.status == 'APPROVED'"
+                    *ngIf="
+                      project.status == 'APPROVED' ||
+                      project.status == 'RENEWED'
+                    "
                   >
                     <tr class="text-primary">
                       <th scope="col">Sr. No.</th>
                       <th scope="col">Code</th>
+                      <th scope="col">Generate License Key</th>
                       <th scope="col">NAME</th>
                       <th scope="col">Unique Access ID.</th>
+
                       <th scope="col">Action</th>
                     </tr>
                     <tr *ngFor="let license of project.licenses; index as i">
                       <td>{{ i + 1 }}</td>
                       <td>{{ license.code }}</td>
+                      <td *ngIf="license.generatedKey">
+                        {{ license.generatedKey }}
+                      </td>
+                      <td *ngIf="!license.generatedKey">NA</td>
                       <td *ngIf="!license.generatedKey || license.edit">
                         <input
                           type="text"
@@ -199,7 +233,7 @@
                           Generate License Key
                         </button>
                       </td>
-  
+
                       <!-- <td> <input type="text" placeholder="Access ID" name="accessId" #accessId></td>
                 <td><button type="button" (click)="generateLicensekey(licenses)"> Generate License Key</button></td> -->
                     </tr>

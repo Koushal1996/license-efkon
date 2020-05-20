@@ -16,6 +16,7 @@ export class UserComponent implements OnInit {
   filter: any[];
   usersCopy: any[] = [];
   showModal: boolean = false;
+  selectedAuthorites: any;
   constructor(
     private _admin: AdminService,
     private route: Router,
@@ -139,7 +140,10 @@ export class UserComponent implements OnInit {
   reverseUserNameAphabetically() {
     this.users.reverse();
   }
-  showRoleAuthoities() {
+  showRoleAuthoities(role) {
+    console.log(role.id);
+    console.log(role.authorities);
+    this.selectedAuthorites = role.authorities;
     this.showModal = true;
   }
   hideModel() {
