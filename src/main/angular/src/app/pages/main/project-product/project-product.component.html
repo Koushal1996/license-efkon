@@ -1,8 +1,8 @@
 <div class="site_main">
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      <thead class="users_table_hader">
-        <tr class="text-primary">
+  <div class="table_scroll">
+    <table>
+      <thead>
+        <tr>
           <th scope="col">#</th>
           <th scope="col">Product Detail</th>
           <th scope="col">No of License</th>
@@ -11,10 +11,18 @@
           <th scope="col">End Date</th>
           <th scope="col">Customer Details</th>
           <th scope="col">Project Type</th>
-          <th scope="col">
+          <th scope="col" style="min-width: 110px;">
             Status
-            <button (click)="sortAphabetically()">up</button>
-            <button (click)="reverseAphabetically()">down</button>
+            <div class="shorting">
+              <button (click)="sortAphabetically()"><span class="material-icons">
+                arrow_upward
+                </span></button>
+              <button (click)="reverseAphabetically()"><span class="material-icons">
+                arrow_downward
+                </span></button>
+              </div>
+            <!-- <button (click)="sortAphabetically()">up</button>
+            <button (click)="reverseAphabetically()">down</button> -->
           </th>
           <th scope="col">Action</th>
         </tr>
@@ -65,21 +73,21 @@
             </td>
             <td *ngIf="project.status == 'DRAFT'">
               <a
-                class="text-primary pr-2 cursor"
+                class="edit_button text-success"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
                 (click)="editProduct(project)"
               >
                 <i class="fa fa-edit"></i>
               </a>
               <a
-                class="text-danger pl-2 cursor"
+                class="delete_button text-danger"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_DELETE')"
                 (click)="deleteProduct(project)"
               >
                 <i class="fa fa-trash"></i>
               </a>
               <button
-                type="button"
+                type="button" class="t_save_btn mt-2"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                 (click)="submitProductStatus(project)"
               >
@@ -94,31 +102,31 @@
               >
                 Review
               </button>
-              <button type="button" (click)="rejectProductStatus(project)">
+              <button type="button" class="t_save_btn bg-danger" (click)="rejectProductStatus(project)">
                 Reject
               </button>
             </td>
             <td *ngIf="project.status == 'REVIEWED'">
-              <button
+              <button class="t_save_btn"
                 type="button"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_APPROVE')"
                 (click)="approveProductStatus(project)"
               >
                 Approve
               </button>
-              <button type="button" (click)="rejectProductStatus(project)">
+              <button type="button" class="t_save_btn bg-danger mt-2" (click)="rejectProductStatus(project)">
                 Reject
               </button>
             </td>
             <td *ngIf="project.status == 'APPROVED'">
               <button
-                type="button"
+                type="button" class="roleactive mb-2"
                 (click)="renewProductStatus(project); $event.stopPropagation()"
               >
                 Renew
               </button>
               <button
-                type="button"
+                type="button" class="t_save_btn"
                 data-toggle="collapse"
                 [attr.data-target]="'#collapse' + i"
                 #c
@@ -128,13 +136,13 @@
             </td>
             <td *ngIf="project.status == 'RENEWED'">
               <button
-                type="button"
+                type="button"class="roleactive mb-2"
                 (click)="renewProductStatus(project); $event.stopPropagation()"
               >
                 Renew
               </button>
               <button
-                type="button"
+                type="button" class="t_save_btn"
                 data-toggle="collapse"
                 [attr.data-target]="'#collapse' + i"
                 #c
@@ -220,7 +228,7 @@
                           !license.edit
                         "
                       >
-                        <button type="button" (click)="editLicensekey(license)">
+                        <button type="button" class="edit_button" (click)="editLicensekey(license)">
                           edit
                         </button>
                       </td>
