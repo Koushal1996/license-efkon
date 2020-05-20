@@ -54,7 +54,7 @@
         <td>{{ item.contactNo }}</td>
         <td>
           <span
-            (click)="showRoleAuthoities()"
+            (click)="showRoleAuthoities(role)"
             class="badge custom_badge"
             *ngFor="let role of item.roles; index as index"
           >
@@ -109,16 +109,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <div *ngFor="let item of users">
-          <span
-            (click)="showRoleAuthoities()"
-            *ngFor="let role of item.roles; index as index"
-          >
-            <p *ngFor="let auth of role.authorities">
-              {{ auth.name }}
-            </p>
-          </span>
-        </div>
+        <p *ngFor="let auth of selectedAuthorites">
+          {{ auth.name }}
+        </p>
       </div>
     </div>
   </div>
