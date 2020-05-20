@@ -1,215 +1,217 @@
-<div class="table-responsive">
-  <table class="table table-bordered">
-    <thead class="users_table_hader">
-      <tr class="text-primary">
-        <th scope="col">#</th>
-        <th scope="col">Product Detail</th>
-        <th scope="col">No of License</th>
-        <th scope="col">License Type</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Customer Details</th>
-        <th scope="col">Project Type</th>
-        <th scope="col">Status</th>
-        <th scope="col">Action</th>
-      </tr>
-    </thead>
-    <tbody id="accordion">
-      <ng-container *ngFor="let project of projectProduct; index as i">
-        <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i" #c>
-          <td>{{ i + 1 }}</td>
-          <td>
-            {{ project.productDetailResponse.productCodeName }}
-            {{ project.productDetailResponse.productFamilyName }}
-            {{ project.productDetailResponse.versionName }}
-          </td>
-          <td>{{ project.licenseCount }}</td>
-
-          <td *ngIf="project.licenseTypeName">{{ project.licenseTypeName }}</td>
-          <td *ngIf="!project.licenseTypeName">NA</td>
-          <!-- <td>{{ project.expirationPeriodType }}</td>
-          <td *ngIf="project.expirationPeriodType == 'LIMITED'">
-            {{ project.expirationMonthCount }}
-          </td> -->
-          <!-- <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td> -->
-          <td>{{ project.startDate }}</td>
-          <td *ngIf="project.expirationPeriodType == 'LIMITED'">
-            {{ project.endDate }}
-          </td>
-          <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
-
-          <td>
-            {{ project.projectResponse.customerName }} ({{
-              project.projectResponse.customerEmail
-            }})
-          </td>
-          <td>{{ project.projectResponse.projectTypeName }}</td>
-          <td>
-            {{ project.status }}
-            <br />
-            <a
-              class="cursor text-danger"
-              *ngIf="project.comments.length"
-              (click)="showComments(project); $event.stopPropagation()"
-              >comments
-            </a>
-          </td>
-          <td *ngIf="project.status == 'DRAFT'">
-            <a
-              class="text-primary pr-2 cursor"
-              *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
-              (click)="editProduct(project)"
-            >
-              <i class="fa fa-edit"></i>
-            </a>
-            <a
-              class="text-danger pl-2 cursor"
-              *ngIf="hasAuthority('PROJECT_PRODUCT_DELETE')"
-              (click)="deleteProduct(project)"
-            >
-              <i class="fa fa-trash"></i>
-            </a>
-            <button
-              type="button"
-              *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
-              (click)="submitProductStatus(project)"
-            >
-              Submit
-            </button>
-          </td>
-          <td *ngIf="project.status == 'SUBMIT'">
-            <button
-              type="button"
-              *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
-              (click)="reviewProductStatus(project)"
-            >
-              Review
-            </button>
-            <button type="button" (click)="rejectProductStatus(project)">
-              Reject
-            </button>
-          </td>
-          <td *ngIf="project.status == 'REVIEWED'">
-            <button
-              type="button"
-              *ngIf="hasAuthority('PROJECT_PRODUCT_APPROVE')"
-              (click)="approveProductStatus(project)"
-            >
-              Approve
-            </button>
-            <button type="button" (click)="rejectProductStatus(project)">
-              Reject
-            </button>
-          </td>
-          <td *ngIf="project.status == 'APPROVED'">
-            <button
-              type="button"
-              (click)="renewProductStatus(project); $event.stopPropagation()"
-            >
-              Renew
-            </button>
-          </td>
-          <td *ngIf="project.status == 'RENEWED'">
-            <button
-              type="button"
-              (click)="renewProductStatus(project); $event.stopPropagation()"
-            >
-              Renew
-            </button>
-          </td>
-          <td *ngIf="project.status == 'REJECTED'">
-            NA
-          </td>
+<div class="site_main">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead class="users_table_hader">
+        <tr class="text-primary">
+          <th scope="col">#</th>
+          <th scope="col">Product Detail</th>
+          <th scope="col">No of License</th>
+          <th scope="col">License Type</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col">Customer Details</th>
+          <th scope="col">Project Type</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
         </tr>
-        <tr>
-          <td colspan="12" class="padding" *ngIf="project.licenses.length">
-            <div
-              [attr.id]="'collapse' + i"
-              class="collapse"
-              data-parent="#accordion"
-            >
-              <!-- <div *ngIf="project.status !== 'APPROVED'">
-                <p class="text-black-50 text-center pt-3">
-                  No License Available Now
-                </p>
-              </div> -->
-              <div class="col-12 mt-3">
-                <table
-                  class="table table-bordered innertable"
-                  *ngIf="project.status == 'APPROVED'"
-                >
-                  <tr class="text-primary">
-                    <th scope="col">Sr. No.</th>
-                    <th scope="col">Code</th>
-                    <th scope="col">NAME</th>
-                    <th scope="col">Unique Access ID.</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                  <tr *ngFor="let license of project.licenses; index as i">
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ license.code }}</td>
-                    <td *ngIf="!license.generatedKey || license.edit">
-                      <input
-                        type="text"
-                        placeholder="name"
-                        name="name"
-                        [(ngModel)]="license.name"
-                      />
-                    </td>
-                    <td *ngIf="!license.generatedKey || license.edit">
-                      <input
-                        type="text"
-                        placeholder="Access ID"
-                        name="accessId"
-                        [(ngModel)]="license.accessId"
-                      />
-                    </td>
-                    <td *ngIf="license.generatedKey && !license.edit">
-                      {{ license.name }}
-                    </td>
-                    <td *ngIf="license.generatedKey && !license.edit">
-                      {{ license.accessId }}
-                    </td>
-                    <td *ngIf="license.edit">
-                      <button
-                        *ngIf="hasAuthority('LICENSE_UPDATE')"
-                        type="button"
-                        (click)="updateLicensekey(license)"
+      </thead>
+      <tbody id="accordion">
+        <ng-container *ngFor="let project of projectProduct; index as i">
+          <tr data-toggle="collapse" [attr.data-target]="'#collapse' + i" #c>
+            <td>{{ i + 1 }}</td>
+            <td>
+              {{ project.productDetailResponse.productCodeName }}
+              {{ project.productDetailResponse.productFamilyName }}
+              {{ project.productDetailResponse.versionName }}
+            </td>
+            <td>{{ project.licenseCount }}</td>
+  
+            <td *ngIf="project.licenseTypeName">{{ project.licenseTypeName }}</td>
+            <td *ngIf="!project.licenseTypeName">NA</td>
+            <!-- <td>{{ project.expirationPeriodType }}</td>
+            <td *ngIf="project.expirationPeriodType == 'LIMITED'">
+              {{ project.expirationMonthCount }}
+            </td> -->
+            <!-- <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td> -->
+            <td>{{ project.startDate }}</td>
+            <td *ngIf="project.expirationPeriodType == 'LIMITED'">
+              {{ project.endDate }}
+            </td>
+            <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
+  
+            <td>
+              {{ project.projectResponse.customerName }} ({{
+                project.projectResponse.customerEmail
+              }})
+            </td>
+            <td>{{ project.projectResponse.projectTypeName }}</td>
+            <td>
+              {{ project.status }}
+              <br />
+              <a
+                class="cursor text-danger"
+                *ngIf="project.comments.length"
+                (click)="showComments(project); $event.stopPropagation()"
+                >comments
+              </a>
+            </td>
+            <td *ngIf="project.status == 'DRAFT'">
+              <a
+                class="text-primary pr-2 cursor"
+                *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
+                (click)="editProduct(project)"
+              >
+                <i class="fa fa-edit"></i>
+              </a>
+              <a
+                class="text-danger pl-2 cursor"
+                *ngIf="hasAuthority('PROJECT_PRODUCT_DELETE')"
+                (click)="deleteProduct(project)"
+              >
+                <i class="fa fa-trash"></i>
+              </a>
+              <button
+                type="button"
+                *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
+                (click)="submitProductStatus(project)"
+              >
+                Submit
+              </button>
+            </td>
+            <td *ngIf="project.status == 'SUBMIT'">
+              <button
+                type="button"
+                *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
+                (click)="reviewProductStatus(project)"
+              >
+                Review
+              </button>
+              <button type="button" (click)="rejectProductStatus(project)">
+                Reject
+              </button>
+            </td>
+            <td *ngIf="project.status == 'REVIEWED'">
+              <button
+                type="button"
+                *ngIf="hasAuthority('PROJECT_PRODUCT_APPROVE')"
+                (click)="approveProductStatus(project)"
+              >
+                Approve
+              </button>
+              <button type="button" (click)="rejectProductStatus(project)">
+                Reject
+              </button>
+            </td>
+            <td *ngIf="project.status == 'APPROVED'">
+              <button
+                type="button"
+                (click)="renewProductStatus(project); $event.stopPropagation()"
+              >
+                Renew
+              </button>
+            </td>
+            <td *ngIf="project.status == 'RENEWED'">
+              <button
+                type="button"
+                (click)="renewProductStatus(project); $event.stopPropagation()"
+              >
+                Renew
+              </button>
+            </td>
+            <td *ngIf="project.status == 'REJECTED'">
+              NA
+            </td>
+          </tr>
+          <tr>
+            <td colspan="12" class="padding" *ngIf="project.licenses.length">
+              <div
+                [attr.id]="'collapse' + i"
+                class="collapse"
+                data-parent="#accordion"
+              >
+                <!-- <div *ngIf="project.status !== 'APPROVED'">
+                  <p class="text-black-50 text-center pt-3">
+                    No License Available Now
+                  </p>
+                </div> -->
+                <div class="col-12 mt-3">
+                  <table
+                    class="table table-bordered innertable"
+                    *ngIf="project.status == 'APPROVED'"
+                  >
+                    <tr class="text-primary">
+                      <th scope="col">Sr. No.</th>
+                      <th scope="col">Code</th>
+                      <th scope="col">NAME</th>
+                      <th scope="col">Unique Access ID.</th>
+                      <th scope="col">Action</th>
+                    </tr>
+                    <tr *ngFor="let license of project.licenses; index as i">
+                      <td>{{ i + 1 }}</td>
+                      <td>{{ license.code }}</td>
+                      <td *ngIf="!license.generatedKey || license.edit">
+                        <input
+                          type="text"
+                          placeholder="name"
+                          name="name"
+                          [(ngModel)]="license.name"
+                        />
+                      </td>
+                      <td *ngIf="!license.generatedKey || license.edit">
+                        <input
+                          type="text"
+                          placeholder="Access ID"
+                          name="accessId"
+                          [(ngModel)]="license.accessId"
+                        />
+                      </td>
+                      <td *ngIf="license.generatedKey && !license.edit">
+                        {{ license.name }}
+                      </td>
+                      <td *ngIf="license.generatedKey && !license.edit">
+                        {{ license.accessId }}
+                      </td>
+                      <td *ngIf="license.edit">
+                        <button
+                          *ngIf="hasAuthority('LICENSE_UPDATE')"
+                          type="button"
+                          (click)="updateLicensekey(license)"
+                        >
+                          Update License Key
+                        </button>
+                      </td>
+                      <td
+                        *ngIf="
+                          (license.generatedKey || license.update) &&
+                          !license.edit
+                        "
                       >
-                        Update License Key
-                      </button>
-                    </td>
-                    <td
-                      *ngIf="
-                        (license.generatedKey || license.update) &&
-                        !license.edit
-                      "
-                    >
-                      <button type="button" (click)="editLicensekey(license)">
-                        edit
-                      </button>
-                    </td>
-                    <td *ngIf="!license.generatedKey">
-                      <button
-                        *ngIf="hasAuthority('LICENSE_UPDATE')"
-                        type="button"
-                        (click)="generateLicensekey(license)"
-                      >
-                        Generate License Key
-                      </button>
-                    </td>
-
-                    <!-- <td> <input type="text" placeholder="Access ID" name="accessId" #accessId></td>
-              <td><button type="button" (click)="generateLicensekey(licenses)"> Generate License Key</button></td> -->
-                  </tr>
-                </table>
+                        <button type="button" (click)="editLicensekey(license)">
+                          edit
+                        </button>
+                      </td>
+                      <td *ngIf="!license.generatedKey">
+                        <button
+                          *ngIf="hasAuthority('LICENSE_UPDATE')"
+                          type="button"
+                          (click)="generateLicensekey(license)"
+                        >
+                          Generate License Key
+                        </button>
+                      </td>
+  
+                      <!-- <td> <input type="text" placeholder="Access ID" name="accessId" #accessId></td>
+                <td><button type="button" (click)="generateLicensekey(licenses)"> Generate License Key</button></td> -->
+                    </tr>
+                  </table>
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      </ng-container>
-    </tbody>
-  </table>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">

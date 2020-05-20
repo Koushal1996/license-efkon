@@ -1,82 +1,84 @@
-<div class="container-fluid p-0">
-  <div class="row">
-    <div class="col-12">
-      
-      <!-- <div class="table-responsive"> -->
-      <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')">
-        <button class="createBtn" *ngIf="!isCreateDetail" (click)="showDetailForm()">
-          Add Product Detail
-        </button>
-      </ng-container>
-      <div class="table_scroll">
-        <table>
-          <thead class="users_table_hader">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Product Family</th>
-
-              <th scope="col">Product Code</th>
-              <th scope="col">Version</th>
-              <th scope="col">Description</th>
-              <th scope="col" class="action_width" *ngIf="
-                hasAuthority('PRODUCT_DETAIL_UPDATE') ||
-                hasAuthority('PRODUCT_DETAIL_DELETE')
-              ">
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let detail of productDetail; index as i">
+<div class="site_main">
+  <div class="container-fluid p-0">
+    <div class="row">
+      <div class="col-12">
+        
+        <!-- <div class="table-responsive"> -->
+        <ng-container *ngIf="hasAuthority('PRODUCT_DETAIL_CREATE')">
+          <button class="createBtn" *ngIf="!isCreateDetail" (click)="showDetailForm()">
+            Add Product Detail
+          </button>
+        </ng-container>
+        <div class="table_scroll">
+          <table>
+            <thead class="users_table_hader">
               <tr>
-                <td [attr.rowspan]="getDetailRowspan(detail)">{{ i }}</td>
-                <td [attr.rowspan]="getDetailRowspan(detail)">
-                  {{ detail.name }}
-                </td>
+                <th scope="col">#</th>
+                <th scope="col">Product Family</th>
+  
+                <th scope="col">Product Code</th>
+                <th scope="col">Version</th>
+                <th scope="col">Description</th>
+                <th scope="col" class="action_width" *ngIf="
+                  hasAuthority('PRODUCT_DETAIL_UPDATE') ||
+                  hasAuthority('PRODUCT_DETAIL_DELETE')
+                ">
+                  Action
+                </th>
               </tr>
-              <ng-container *ngFor="let code of detail.productCodes">
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let detail of productDetail; index as i">
                 <tr>
-                  <td [attr.rowspan]="code.versions.length + 1">
-                    {{ code.name }}
+                  <td [attr.rowspan]="getDetailRowspan(detail)">{{ i }}</td>
+                  <td [attr.rowspan]="getDetailRowspan(detail)">
+                    {{ detail.name }}
                   </td>
                 </tr>
-                <ng-container *ngFor="let version of code.versions">
+                <ng-container *ngFor="let code of detail.productCodes">
                   <tr>
-                    <td>{{ version.version }}</td>
-                    <td *ngIf="version.description"> <div class="description">
-                      {{ version.description }}
-                    </div></td>
-                    <td *ngIf="!version.description">NA</td>
-                    <td *ngIf="
-                      hasAuthority('PRODUCT_DETAIL_UPDATE') ||
-                      hasAuthority('PRODUCT_DETAIL_DELETE')
-                    ">
-                      <button class="edit_button top_tooltip" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
-                        (click)="editProductDetail(detail, code, version)">
-                        <i class="fa fa-edit"></i>
-                        <span>Edit </span>
-                  </button>
-                      <button class="delete_button top_tooltip" *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')" (click)="
-                        deleteProductDetail(
-                          detail,
-                          code,
-                          version.productDetailId
-                        )
-                      ">
-                        <i class="fa fa-trash"></i>
-                        <span>Delete</span>
-                      </button>
+                    <td [attr.rowspan]="code.versions.length + 1">
+                      {{ code.name }}
                     </td>
                   </tr>
+                  <ng-container *ngFor="let version of code.versions">
+                    <tr>
+                      <td>{{ version.version }}</td>
+                      <td *ngIf="version.description"> <div class="description">
+                        {{ version.description }}
+                      </div></td>
+                      <td *ngIf="!version.description">NA</td>
+                      <td *ngIf="
+                        hasAuthority('PRODUCT_DETAIL_UPDATE') ||
+                        hasAuthority('PRODUCT_DETAIL_DELETE')
+                      ">
+                        <button class="edit_button top_tooltip" *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
+                          (click)="editProductDetail(detail, code, version)">
+                          <i class="fa fa-edit"></i>
+                          <span>Edit </span>
+                    </button>
+                        <button class="delete_button top_tooltip" *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')" (click)="
+                          deleteProductDetail(
+                            detail,
+                            code,
+                            version.productDetailId
+                          )
+                        ">
+                          <i class="fa fa-trash"></i>
+                          <span>Delete</span>
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
                 </ng-container>
               </ng-container>
-            </ng-container>
-          </tbody>
-        </table>
-        <div *ngIf="isloader" class="loader">
-          <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
+            </tbody>
+          </table>
+          <div *ngIf="isloader" class="loader">
+            <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
+        </div>
+        <!-- </div> -->
       </div>
-      <!-- </div> -->
     </div>
   </div>
 </div>
