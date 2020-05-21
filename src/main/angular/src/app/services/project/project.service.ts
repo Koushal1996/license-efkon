@@ -59,10 +59,16 @@ export class ProjectService {
   getLicenseType() {
     return this.api.get("api/license/types");
   }
+  updateLicenseType(Id, data) {
+    return this.api.put(`api/license/type/${Id}`, data);
+  }
   generateLicenseKeyProduct(Id, data) {
     return this.api.put(`api/license​/${Id}​/generate-key`, data);
   }
-  updateLicenseKeyProduct(Id) {
-    return this.api.put(`api/license​/${Id}​/replace`, {});
+  updateLicenseKeyProduct(Id, data) {
+    return this.api.put(`api/license​/${Id}​/replace`, data);
+  }
+  getProjectLicenseById(projectId) {
+    return this.api.get(`api/project/${projectId}/licenses`);
   }
 }

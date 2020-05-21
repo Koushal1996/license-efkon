@@ -3,6 +3,7 @@
 body {
   font-family: 'Oxygen', sans-serif !important;
   margin: 0;
+  background: #f2f2f3 !important;
 }
 // html, body { height: 100%; }
 // body { margin: 0; font-family: 'Roboto', sans-serif; }
@@ -35,7 +36,7 @@ i{
   .users_table_hader {
     width: 100%;
     th {
-      background: #e2dddd;
+      background: #e8e8e8;
       color: #333;
       font-size: 13px;
       border: solid 1px #cec6c6;
@@ -105,10 +106,10 @@ table.table.table-bordered {
 
 .middle-content {
   margin: 15px 0;
-  padding: 5px 0;
-  background: white;
-  border: 1px solid #e7eaec;
-  padding: 15px;
+  // padding: 5px 0;
+  // background: white;
+  // border: 1px solid #e7eaec;
+  // padding: 15px;
 }
 
 table.table.table-bordered {
@@ -210,44 +211,61 @@ h2.text-center {
   text-transform: capitalize;
 }
 .form_main{
-  max-width: 450px;
-  margin: auto;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 10px #b9b3b3;
-  margin: 20px auto;
-  background: white;
-  border-radius: 5px;
-    // overflow: hidden;
+  border: 1px solid #dadcde;
+    background: white;
+    // margin-top: 20px;
+    // padding: 15px;
+    float: left;
   h3{
-    font-size: 20px;
-    text-align: center;
-    background: #29aba4;
-    padding: 10px;
-    color: #ffffff;
     border-bottom: 1px solid #ddd;
-    font-weight: bold;
+    font-size: 16px;
+    font-weight: 600;
+    color: #676a6c;
+    padding: 10px 15px;
   }
   .input_feild{
     padding: 15px;
+    .category_col{
+      h4 {
+        font-size: 15px;
+        font-weight: bold;
+        color: #29aba4;
+        // border-bottom: 1px solid;
+    }
   label{
-      font-size: 16px !important;
+      font-size: 13px !important;
+      font-weight: bold;
+      margin-bottom: 5px;
   }
   input{
       border-radius: 0;
+      font-size: 13px !important;
 
       &:focus{
-          border: 1px solid #ddd;
+          border: 1px solid #29aba4;
           box-shadow: none;
           font-size: 14px;
       }
   }
   select{
       border-radius: 0;
-      font-size: 14px;
+      font-size: 13px !important;
       &:focus{
-          border: 1px solid #ddd;
+          border: 1px solid #29aba4;
           box-shadow: none;
       }
+  }
+}
+}
+.form_footer{
+  width: 100%;
+  float: right;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  padding: 13px 0;
+  margin-top: 5px;
+  button{
+    margin-left: 10px;
   }
 }
 }
@@ -373,6 +391,13 @@ table {
           color: #2b3643;
           cursor: pointer;
         }
+        .custom_badge {
+          background: #2b3643 !important;
+          color: white !important;
+          margin-right: 0 !important;
+          border: none;
+          cursor: pointer;
+      }
       }
      }
   }
@@ -506,8 +531,12 @@ table {
 .table_scroll {
   width: 100%;
   display: inline-block;
-  height: calc(100vh - 115px);
+  height: calc(100vh - 81px);
   overflow: auto;
+}
+
+.site_main {
+  background: white;
 }
 
 .t_save_btn{
@@ -653,4 +682,58 @@ table {
 .error{
   font-size: 13px;
   color: #dc3545;
+}
+.shorting {
+  display: inline-block;
+  float: right;
+  button {
+    background: transparent;
+    border: transparent;
+    padding: 0;
+    margin: 0;
+    color: #29aba4;
+    span {
+      font-size: 18px;
+      position: relative;
+      top: 2px;
+  }
+  &:focus{
+    border: none;
+    box-shadow: none;
+    outline: none;
+  }
+  }
+}
+.check_main {
+  position: relative;
+}
+.check_main label:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 21px;
+  height: 21px;
+  content: "";
+  border: 2px solid #29aba4;
+}
+
+.form_main .input_feild .category_col input {
+    border-radius: 0;
+    font-size: 13px !important;
+}
+.check_main input {
+    position: absolute;
+    z-index: 3;
+    width: 21px;
+    height: 21px;
+    top: -5px;
+    opacity: 0;
+}
+.check_main input:checked + label:after{
+  background-image :url('/assets/images/check.png');
+  background-size: 100% 100%;
+}
+.check_main label {
+  margin-left: 13px;
+  vertical-align: text-top;
 }

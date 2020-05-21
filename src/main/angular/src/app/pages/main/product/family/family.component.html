@@ -1,47 +1,49 @@
-<div class="container-fluid p-0">
-  <div class="col-12 p-0">
-      <button class="createBtn" (click)="addProductFamily()">Add Product family</button>
-    <div class="table_scroll">
-    <table>
-      <thead class="users_table_hader">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Code</th>
-          <th scope="col">Product Codes</th>
-          <th  scope="col">Description</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let family of family; index as i">
-          <td>{{i+1}}</td>
-          <td>{{family.name}}</td>
-          <td>{{family.code}}</td>
-          <td><span *ngFor="let fam of family.productCodes">
-              <span class="badge mr-2  custom_badge">{{fam.name}}</span>
-            </span>
-          </td>
-          <td *ngIf="family.description">
-            <div class="description">{{family.description}}</div>
-          </td>
-          <td *ngIf="!family.description">NA</td>
-          <td>
-            <button class="edit_button top_tooltip" (click)="editFamilyDescription(family)">
-              <i class="fa fa-edit"></i>
-              <span>Edit</span>
-            </button>
-            <button class="delete_button top_tooltip" (click)="deleteFamilyDescription(family)">
-              <i class="fa fa-trash"></i>
-              <span>Delete</span>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div *ngIf="isloader" class="loader">
-      <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
+<div class="site_main">
+  <div class="container-fluid p-0">
+    <div class="col-12 p-0">
+        <button class="createBtn" (click)="addProductFamily()">Add Product family</button>
+      <div class="table_scroll">
+      <table>
+        <thead class="users_table_hader">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Code</th>
+            <th scope="col">Product Codes</th>
+            <th  scope="col">Description</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let family of family; index as i">
+            <td>{{i+1}}</td>
+            <td>{{family.name}}</td>
+            <td>{{family.code}}</td>
+            <td><span *ngFor="let fam of family.productCodes">
+                <span class="badge mr-2  custom_badge">{{fam.name}}</span>
+              </span>
+            </td>
+            <td *ngIf="family.description">
+              <div class="description">{{family.description}}</div>
+            </td>
+            <td *ngIf="!family.description">NA</td>
+            <td>
+              <button class="edit_button top_tooltip" (click)="editFamilyDescription(family)">
+                <i class="fa fa-edit"></i>
+                <span>Edit</span>
+              </button>
+              <button class="delete_button top_tooltip" (click)="deleteFamilyDescription(family)">
+                <i class="fa fa-trash"></i>
+                <span>Delete</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <div *ngIf="isloader" class="loader">
+        <img class="loader_gif" src="assets/images/loader3.gif" alt=""></div>
+    </div>
   </div>
-</div>
+  </div>
 </div>

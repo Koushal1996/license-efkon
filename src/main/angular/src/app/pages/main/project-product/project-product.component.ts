@@ -260,25 +260,40 @@ export class ProjectProductComponent implements OnInit {
   generateLicensekey(license) {
     const object = {
       accessId: license.accessId,
-      name: "License for varanasi",
+      name: license.name,
     };
     this._projectService
       .generateLicenseKeyProduct(license.id, object)
       .subscribe((data) => {
+        console.log(data);
         license.generatedKey = data.generatedKey;
         swal("License key generate successfully!");
       });
   }
   updateLicensekey(license) {
     console.log(license);
-    console.log(typeof license.id);
-    this._projectService
-      .updateLicenseKeyProduct(license.id)
-      .subscribe((data) => {
-        console.log(data);
-        license.generatedKey = data.generatedKey;
-        swal("License key update successfully!");
-      });
+    const object = {
+      accessId: license.accessId,
+      name: license.name,
+    };
+    if (object) {
+      this._projectService
+        .updateLicenseKeyProduct(license.id, object)
+        .subscribe(
+          (data) => {
+            license.edit = false;
+            console.log(data);
+            license.generatedKey = data.generatedKey;
+            swal("License key update successfully!");
+          },
+          (error) => {
+            license.edit = false;
+          }
+        );
+    }
+  }
+  editLicensekey(license) {
+    license.edit = true;
   }
   renewProductStatus(project) {
     this.selectedProduct = project;
@@ -308,5 +323,18 @@ export class ProjectProductComponent implements OnInit {
           this.showRenewModal = false;
         }
       );
+  }
+  sortAphabetically() {
+    console.log(this.projectProduct);
+    this.projectProduct.sort(function (a, b) {
+      var statusA = a.status.toLowerCase(),
+        statusB = b.status.toLowerCase();
+      if (statusA < statusB) return -1;
+      if (statusA > statusB) return 1;
+      return 0;
+    });
+  }
+  reverseAphabetically() {
+    this.projectProduct.reverse();
   }
 }
