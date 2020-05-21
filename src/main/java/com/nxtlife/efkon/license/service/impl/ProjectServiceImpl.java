@@ -1,6 +1,8 @@
 package com.nxtlife.efkon.license.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -53,8 +55,8 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 	private UserRoleJpaDao userRoleDao;
 
 	/**
-	 * this method used to validate request. In this we are validating that project
-	 * type and project manager are valid
+	 * this method used to validate request. In this we are validating that
+	 * project type and project manager are valid
 	 * 
 	 * @param request
 	 */
@@ -127,11 +129,16 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 				projects = projectDao.findByActive(true);
 			}
 		}
-
-		for (ProjectResponse iterate : projects) {
-			iterate.setProjectProductCount(projectProductDao.countByProjectIdAndActive(unmask(iterate.getId()), true));
-		}
-
+		List<Map<String, Object>> projectProductCounts = projectProductDao
+				.findProjectIdAndCountByGroupByProjectIdAndActive(true);
+		Map<Long, Long> projectProductCountLookup = new HashMap<>();
+		projectProductCounts.forEach(projectProductCount -> {
+			projectProductCountLookup.putIfAbsent(Long.parseLong(projectProductCount.get("id").toString()),
+					Long.parseLong(projectProductCount.get("count").toString()));
+		});
+		projects.forEach(project -> {
+			project.setProductsCount(projectProductCountLookup.get(unmask(project.getId())));
+		});
 		return projects;
 	}
 

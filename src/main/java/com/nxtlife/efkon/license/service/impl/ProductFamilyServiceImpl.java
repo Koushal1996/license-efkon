@@ -109,8 +109,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 			});
 		}
 		if (request.getName() != null) {
-			int rows = productFamilyDao.updateById(request.getName(), request.getCode(), unmaskId, getUserId(),
-					new Date());
+			int rows = productFamilyDao.updateById(request.getName(), request.getDescription(), request.getCode(),
+					unmaskId, getUserId(), new Date());
 			if (rows > 0) {
 				logger.info("Product family {} updated successfully", unmaskId);
 			}

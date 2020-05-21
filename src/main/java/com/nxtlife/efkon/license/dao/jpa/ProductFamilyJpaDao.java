@@ -16,7 +16,7 @@ public interface ProductFamilyJpaDao extends JpaRepository<ProductFamily, Long> 
 
 	public Boolean existsByName(String name);
 
-	public Boolean existsByIdAndActive(Long id,Boolean active);
+	public Boolean existsByIdAndActive(Long id, Boolean active);
 
 	public ProductFamilyResponse findResponseById(Long id);
 
@@ -26,11 +26,11 @@ public interface ProductFamilyJpaDao extends JpaRepository<ProductFamily, Long> 
 	public Long findIdByName(String name);
 
 	@Modifying
-	@Query("update ProductFamily set name=?1, code=?2, modified_by =?4, modified_at =?5 where id = ?3 ")
-	public int updateById(String name, String code, Long id, Long userId, Date date);
+	@Query("update ProductFamily set name=?1, description=?2, code=?3, modified_by =?5, modified_at =?6 where id = ?4 ")
+	public int updateById(String name, String description, String code, Long id, Long userId, Date date);
 
-    @Modifying
-    @Query(value = "update ProductFamily set active = false, modified_by =?2, modified_at =?3 where id =?1")
-    public int delete(Long id,Long userId,Date date);
+	@Modifying
+	@Query(value = "update ProductFamily set active = false, modified_by =?2, modified_at =?3 where id =?1")
+	public int delete(Long id, Long userId, Date date);
 
 }

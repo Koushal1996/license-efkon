@@ -467,8 +467,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	public ProjectProductResponse renew(Long id, ProjectProductRequest request) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
-		if (request.getExpirationMonthCount() == null && request.getStartDate() == null) {
+		if (request.getExpirationMonthCount() == null || request.getStartDate() == null) {
 			throw new ValidationException("Start date and exipration month count is mandatory for renewal");
+		}
+		if (request.getExpirationMonthCount() < 1) {
+			throw new ValidationException("Expiration month can't be less than 1");
 		}
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		ProjectProductResponse projectProduct = null;
@@ -493,7 +496,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				throw new ValidationException("You can't renew demo product");
 			}
 			if (!(projectProduct.getStatus().equals(ProjectProductStatus.APPROVED)
-					|| !projectProduct.getStatus().equals(ProjectProductStatus.RENEWED))) {
+					|| projectProduct.getStatus().equals(ProjectProductStatus.RENEWED))) {
 				throw new ValidationException(
 						String.format("You can't renew if project product(%s) not approved", projectProduct.getId()));
 			}
@@ -521,8 +524,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			projectProductResponse
 					.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 			logger.info("Project product {} renewed successfully", unmaskId);
-			List<LicenseResponse> licenseList = licenseDao
-					.findByProjectProductIdAndActive(renewedProjectProduct.getId(), true);
+			List<LicenseResponse> licenseList = licenseDao.findByProjectProductIdAndActive(unmaskId, true);
 			int i = 0;
 			License license;
 			for (LicenseResponse oldLicense : licenseList) {
