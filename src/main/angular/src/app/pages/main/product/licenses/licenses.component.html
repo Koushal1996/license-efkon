@@ -1,44 +1,50 @@
-<div class="row">
-  <div class="col-12">
-    <table>
-      <thead class="users_table_hader">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">License Type</th>
-          <th scope="col">Expiry Period Limit (in months)</th>
-          <th scope="col">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let license of licenseType; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ license.name }}</td>
-          <td *ngIf="!license.edit">{{ license.maxMonthCount }}</td>
-          <td *ngIf="license.edit">
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Expiry Period Limit"
-              name="Expiry Period Limit"
-              [(ngModel)]="license.maxMonthCount"
-            />
-          </td>
-          <td *ngIf="!license.edit">
-            <button
-              type="button"
-              (click)="editMonthCount(license)"
-              class="addlBtn mt-2"
-            >
-              edit
-            </button>
-          </td>
-          <td *ngIf="license.edit">
-            <button type="submit" (click)="onSubmit(license)" class="saveBtn">
-              Submit
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<div class="site_main">
+  <div class="row">
+    <div class="col-12">
+      <table>
+        <thead class="users_table_hader">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">License Type</th>
+            <th scope="col">Expiry Period Limit (in months)</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let license of licenseType; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ license.name }}</td>
+            <td *ngIf="!license.edit">{{ license.maxMonthCount }}</td>
+            <td *ngIf="license.edit">
+              <input
+                type="number"
+                class="form-control tableinput"
+                placeholder="Expiry Period Limit"
+                name="Expiry Period Limit"
+                [(ngModel)]="license.maxMonthCount"
+              />
+            </td>
+            <td *ngIf="!license.edit">
+              <button
+                type="button"
+                (click)="editMonthCount(license)"
+                class="edit_button top_tooltip"
+              >
+              <span style="min-width: 85px;">Edit Licenses</span>
+              <i class="fa fa-edit"></i>
+              </button>
+              
+
+            </td>
+            <td *ngIf="license.edit">
+              <button type="submit" (click)="onSubmit(license)" class="t_save_btn top_tooltip">
+                Submit
+                <!-- <span>Submit</span> -->
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

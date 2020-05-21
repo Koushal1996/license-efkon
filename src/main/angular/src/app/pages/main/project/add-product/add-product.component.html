@@ -33,9 +33,9 @@
           <label>Customer Email</label>
           <span
             >{{ selectedProductDetail.customerEmail }}
-            <span *ngIf="selectedProductDetail.isEmailSend">
-              <i class="fa fa-check"></i>
-            </span>
+         
+              <i *ngIf="selectedProductDetail.isEmailSend" class="fa fa-check text-success"></i>
+           
           </span>
         </div>
         <div class="product_details">

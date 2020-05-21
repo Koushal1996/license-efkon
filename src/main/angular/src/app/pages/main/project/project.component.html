@@ -73,7 +73,7 @@
                       [attr.data-target]="'#collapse' + i"
                       >{{ project.productsCount }}</label
                     >
-                    <span>Added Product Details</span>
+                    <span style="min-width:140px;">Added Product Details</span>
                   </div>
                   <!-- <button (click)="viewLicenses(project)">
                     View Licenses
@@ -162,7 +162,7 @@
                               (click)="editProduct(project, pro)"
                             >
                               <i class="fa fa-edit"></i>
-                              <span>Edit Added Product</span>
+                              <span style="width:130px">Edit Added Product</span>
                             </a>
                             <a
                               class="delete_button top_tooltip text-danger"
@@ -170,10 +170,10 @@
                               (click)="deleteProduct(pro)"
                             >
                               <i class="fa fa-trash"></i>
-                              <span>Delete Added Product</span>
+                              <span style="width:140px">Delete Added Product</span>
                             </a>
                             <button
-                              class="t_save_btn ml-2"
+                              class="t_save_btn ml-2 top_tooltip"
                               type="button"
                               *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                               (click)="submitProductStatus(pro)"
@@ -182,6 +182,7 @@
                                 class="fa fa-floppy-o pr-1"
                                 aria-hidden="true"
                               ></i>
+                              <span style="width:160px">Submit Added Product</span>
                               Submit
                             </button>
                           </td>
