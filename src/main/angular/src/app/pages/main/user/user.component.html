@@ -9,30 +9,45 @@
     </button>
   
     <form [formGroup]="serachUserForm">
-      <div class="form-group">
+      <div class="search_bar">
         <input
           type="text"
           formControlName="name"
           class="form-control"
-          placeholder="Search"
+          placeholder="Search here.."
           (ngModelChange)="onSearchUser($event)"
         />
+        <i class="fa fa-search" aria-hidden="true"></i>
       </div>
     </form>
-  
+  <div class="table_scroll">
     <table>
       <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">
             Name
-            <button (click)="sortAphabetically()">up</button>
-            <button (click)="reverseAphabetically()">down</button>
+            <div class="shorting">
+              <button (click)="sortAphabetically()"><span class="material-icons">
+                arrow_upward
+                </span></button>
+              <button (click)="reverseAphabetically()"><span class="material-icons">
+                arrow_downward
+                </span></button>
+              </div>
           </th>
           <th scope="col">
             UserName
-            <button (click)="sortUserNameAphabetically()">up</button>
-            <button (click)="reverseUserNameAphabetically()">down</button>
+            <div class="shorting">
+              <button (click)="sortUserNameAphabetically()"><span class="material-icons">
+                arrow_upward
+                </span></button>
+              <button (click)="reverseUserNameAphabetically()"><span class="material-icons">
+                arrow_downward
+                </span></button>
+              </div>
+            <!-- <button (click)="sortUserNameAphabetically()">up</button>
+            <button (click)="reverseUserNameAphabetically()">down</button> -->
           </th>
           <th scope="col">Email</th>
           <th scope="col">Contact No.</th>
@@ -55,7 +70,7 @@
           <td>{{ item.contactNo }}</td>
           <td>
             <span
-              (click)="showRoleAuthoities()"
+              (click)="showRoleAuthoities(role)"
               class="badge custom_badge"
               *ngFor="let role of item.roles; index as index"
             >
@@ -95,32 +110,26 @@
       </tbody>
     </table>
   </div>
-  <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Authorities</h4>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            (click)="hideModel()"
-          >
-            &times;
-          </button>
-        </div>
-        <div class="modal-body">
-          <div *ngFor="let item of users">
-            <span
-              (click)="showRoleAuthoities()"
-              *ngFor="let role of item.roles; index as index"
-            >
-              <p *ngFor="let auth of role.authorities">
-                {{ auth.name }}
-              </p>
-            </span>
-          </div>
-        </div>
+  </div>
+</div>
+<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Authorities</h4>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          (click)="hideModel()"
+        >
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <p *ngFor="let auth of selectedAuthorites">
+          {{ auth.name }}
+        </p>
       </div>
     </div>
   </div>

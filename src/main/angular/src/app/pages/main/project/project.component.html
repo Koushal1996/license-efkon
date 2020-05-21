@@ -16,8 +16,14 @@
               <th scope="col">#</th>
               <th scope="col">
                 Customer Name
-                <button (click)="sortAphabetically()">up</button>
-                <button (click)="reverseAphabetically()">down</button>
+                <div class="shorting">
+                <button (click)="sortAphabetically()"><span class="material-icons">
+                  arrow_upward
+                  </span></button>
+                <button (click)="reverseAphabetically()"><span class="material-icons">
+                  arrow_downward
+                  </span></button>
+                </div>
               </th>
               <th scope="col">Customer Email</th>
               <th scope="col">Customer Contact NO</th>
@@ -35,9 +41,12 @@
                 <td>{{ project.customerName }}</td>
                 <td>
                   {{ project.customerEmail }}
-                  <span *ngIf="project.isEmailSend">
-                    <i class="fa fa-check"></i>
-                  </span>
+                  <div class="top_tooltip">
+                    <label *ngIf="project.isEmailSend" class="badge badge-success badge-outlined">
+                      <i class="fa fa-check "></i>
+                    </label>
+                    <span>Send Email</span>
+                  </div>
                 </td>
                 <!-- <td>{{ project.isEmailSend }}</td> -->
                 <td>{{ project.customerContactNo }}</td>
@@ -45,18 +54,19 @@
                 <td>{{ project.projectManagerName }}</td>
                 <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
                   <button class="roleactive" (click)="addProduct(project)">
-                    <!-- Add Product -->
-                    +
+                     + Product 
                   </button>
-                  <span
+                  <div class="info top_tooltip">
+                  <label class="badge custom_badge"
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
-                    >{{ project.productsCount }}</span
-                  >
-                  <div class="info top_tooltip">
-                    <i class="fa fa-info-circle"></i>
+                    >{{ project.productsCount }}</label>
                     <span>More details</span>
                   </div>
+                  <!-- <div class="info top_tooltip">
+                    <i class="fa fa-info-circle"></i>
+                    <span>More details</span>
+                  </div> -->
                 </td>
               </tr>
               <tr>

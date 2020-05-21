@@ -15,7 +15,7 @@ export class MainComponent implements OnInit {
     { route: "/projects", title: "Projects", privilege: "PROJECT_FETCH" },
     {
       route: "/products/detail",
-      title: "Products",
+      title: "Configuration",
       privilege: "PRODUCT_DETAIL_FETCH",
     },
     {
