@@ -48,11 +48,11 @@ const routes: Routes = [
         path: "products",
         component: ProductComponent,
         children: [
-          { path: "version", component: VersionComponent },
           { path: "family", component: FamilyComponent },
           { path: "family/create", component: CreateFamilyComponent },
           { path: "family/:id", component: CreateFamilyComponent },
           { path: "detail", component: DetailComponent },
+          { path: "version", component: VersionComponent },
           { path: "license", component: LicensesComponent },
         ],
       },

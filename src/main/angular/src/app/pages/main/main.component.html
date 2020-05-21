@@ -1,8 +1,7 @@
-
 <div id="wrapper">
   <div class="header_main">
     <div class="logo">
-      <img src="assets/logo-name.png" alt="">
+      <img src="assets/logo-name.png" alt="" />
     </div>
     <!-- <button class="toggle_main" id="menu-toggle" (click)="menu()"><span class="material-icons">
       menu
@@ -19,33 +18,42 @@
     <div class="sidebar-logo">
       <div class="user" (click)="userProfile()">
         <div class="user-img">
-          <img src="assets/images/profile.jpg" alt="" style="cursor: pointer;">
+          <img
+            src="assets/images/profile.jpg"
+            alt=""
+            style="cursor: pointer;"
+          />
         </div>
-        <div class="user-name" style="cursor: pointer;">{{UserInfo}} <h6>Super Admin</h6>
+        <div class="user-name" style="cursor: pointer;">
+          {{ UserInfo }}
+          <h6>Super Admin</h6>
         </div>
       </div>
     </div>
     <div class="list-group list-group-flush">
       <ng-container *ngFor="let p of pages">
-          <div class="dropdown_sidebar">
-            <a href="#" class="list-group-item list-group-item-action" 
-                [routerLink]="[p.route]"  routerLinkActive="active"
-                *ngIf="pageAuthority(p.privilege)">
-                <span class="material-icons">
-                  keyboard_arrow_right
-                  </span> {{p.title}}
-            </a>
-          </div>
-    </ng-container>
+        <div class="dropdown_sidebar">
+          <a
+            href="#"
+            class="list-group-item list-group-item-action"
+            [routerLink]="[p.route]"
+            routerLinkActive="active"
+            *ngIf="pageAuthority(p.privilege)"
+          >
+            <span class="material-icons">
+              keyboard_arrow_right
+            </span>
+            {{ p.title }}
+          </a>
+        </div>
+      </ng-container>
     </div>
   </div>
   <div id="page-content-wrapper">
-   
     <div class="container-fluid">
-        <div class="middle-content">
-           <router-outlet></router-outlet>
-        </div>
+      <div class="middle-content">
+        <router-outlet></router-outlet>
+      </div>
     </div>
   </div>
-
 </div>

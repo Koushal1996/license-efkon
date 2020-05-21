@@ -61,7 +61,7 @@ export class ProjectComponent implements OnInit {
 
   initpopUpForm() {
     return this.fb.group({
-      comment: [""],
+      comment: ["", [Validators.required]],
     });
   }
   initpopUpStartDateForm() {
@@ -265,6 +265,7 @@ export class ProjectComponent implements OnInit {
     this.showCommentModal = false;
   }
   showComments(pro) {
+    console.log(pro.comments);
     this.comments = pro.comments;
     if (this.comments.length > 0) {
       this.showCommentModal = true;
@@ -321,5 +322,9 @@ export class ProjectComponent implements OnInit {
   }
   reverseAphabetically() {
     this.projects.reverse();
+  }
+  viewLicenses(project) {
+    console.log(project.id);
+    //this.projectservice.getProjectLicenseById
   }
 }

@@ -14,13 +14,17 @@
           <th scope="col" style="min-width: 110px;">
             Status
             <div class="shorting">
-              <button (click)="sortAphabetically()"><span class="material-icons">
-                arrow_upward
-                </span></button>
-              <button (click)="reverseAphabetically()"><span class="material-icons">
-                arrow_downward
-                </span></button>
-              </div>
+              <button (click)="sortAphabetically()">
+                <span class="material-icons">
+                  arrow_upward
+                </span>
+              </button>
+              <button (click)="reverseAphabetically()">
+                <span class="material-icons">
+                  arrow_downward
+                </span>
+              </button>
+            </div>
             <!-- <button (click)="sortAphabetically()">up</button>
             <button (click)="reverseAphabetically()">down</button> -->
           </th>
@@ -87,7 +91,8 @@
                 <i class="fa fa-trash"></i>
               </a>
               <button
-                type="button" class="t_save_btn mt-2"
+                type="button"
+                class="t_save_btn mt-2"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                 (click)="submitProductStatus(project)"
               >
@@ -102,31 +107,42 @@
               >
                 Review
               </button>
-              <button type="button" class="t_save_btn bg-danger" (click)="rejectProductStatus(project)">
+              <button
+                type="button"
+                class="t_save_btn bg-danger"
+                (click)="rejectProductStatus(project)"
+              >
                 Reject
               </button>
             </td>
             <td *ngIf="project.status == 'REVIEWED'">
-              <button class="t_save_btn"
+              <button
+                class="t_save_btn"
                 type="button"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_APPROVE')"
                 (click)="approveProductStatus(project)"
               >
                 Approve
               </button>
-              <button type="button" class="t_save_btn bg-danger mt-2" (click)="rejectProductStatus(project)">
+              <button
+                type="button"
+                class="t_save_btn bg-danger mt-2"
+                (click)="rejectProductStatus(project)"
+              >
                 Reject
               </button>
             </td>
             <td *ngIf="project.status == 'APPROVED'">
               <button
-                type="button" class="roleactive mb-2"
+                type="button"
+                class="roleactive mb-2"
                 (click)="renewProductStatus(project); $event.stopPropagation()"
               >
                 Renew
               </button>
               <button
-                type="button" class="t_save_btn"
+                type="button"
+                class="t_save_btn"
                 data-toggle="collapse"
                 [attr.data-target]="'#collapse' + i"
                 #c
@@ -136,13 +152,15 @@
             </td>
             <td *ngIf="project.status == 'RENEWED'">
               <button
-                type="button"class="roleactive mb-2"
+                type="button"
+                class="roleactive mb-2"
                 (click)="renewProductStatus(project); $event.stopPropagation()"
               >
                 Renew
               </button>
               <button
-                type="button" class="t_save_btn"
+                type="button"
+                class="t_save_btn"
                 data-toggle="collapse"
                 [attr.data-target]="'#collapse' + i"
                 #c
@@ -178,19 +196,15 @@
                     <tr class="text-primary">
                       <th scope="col">Sr. No.</th>
                       <th scope="col">Code</th>
-                      <th scope="col">Generate License Key</th>
-                      <th scope="col">NAME</th>
-                      <th scope="col">Unique Access ID.</th>
 
+                      <th scope="col">Remarks</th>
+                      <th scope="col">Unique Access ID.</th>
+                      <th scope="col">Generate License Key</th>
                       <th scope="col">Action</th>
                     </tr>
                     <tr *ngFor="let license of project.licenses; index as i">
                       <td>{{ i + 1 }}</td>
                       <td>{{ license.code }}</td>
-                      <td *ngIf="license.generatedKey">
-                        {{ license.generatedKey }}
-                      </td>
-                      <td *ngIf="!license.generatedKey">NA</td>
                       <td *ngIf="!license.generatedKey || license.edit">
                         <input
                           type="text"
@@ -213,6 +227,10 @@
                       <td *ngIf="license.generatedKey && !license.edit">
                         {{ license.accessId }}
                       </td>
+                      <td *ngIf="license.generatedKey">
+                        {{ license.generatedKey }}
+                      </td>
+                      <td *ngIf="!license.generatedKey">NA</td>
                       <td *ngIf="license.edit">
                         <button
                           *ngIf="hasAuthority('LICENSE_UPDATE')"
@@ -228,7 +246,11 @@
                           !license.edit
                         "
                       >
-                        <button type="button" class="edit_button" (click)="editLicensekey(license)">
+                        <button
+                          type="button"
+                          class="edit_button"
+                          (click)="editLicensekey(license)"
+                        >
                           edit
                         </button>
                       </td>
@@ -328,9 +350,9 @@
           <li>
             <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
             <span *ngIf="hasUserId(c)"> NAME : me</span>
-            COMMENT :{{ c.comment }}
-
-            TIME:{{ c.createdAt | date: "medium" }}
+            COMMENT :{{ c.comment }} REMARK:{{ c.remark }} TIME:{{
+              c.createdAt | date: "medium"
+            }}
           </li>
         </ul>
       </div>

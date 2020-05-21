@@ -8,7 +8,7 @@
       >
         Create Project
       </button>
-  
+
       <div class="table_scroll">
         <table>
           <thead>
@@ -17,16 +17,20 @@
               <th scope="col">
                 Customer Name
                 <div class="shorting">
-                <button (click)="sortAphabetically()"><span class="material-icons">
-                  arrow_upward
-                  </span></button>
-                <button (click)="reverseAphabetically()"><span class="material-icons">
-                  arrow_downward
-                  </span></button>
+                  <button (click)="sortAphabetically()">
+                    <span class="material-icons">
+                      arrow_upward
+                    </span>
+                  </button>
+                  <button (click)="reverseAphabetically()">
+                    <span class="material-icons">
+                      arrow_downward
+                    </span>
+                  </button>
                 </div>
               </th>
               <th scope="col">Customer Email</th>
-              <th scope="col">Customer Contact NO</th>
+              <th scope="col">Customer Contact No</th>
               <th scope="col">Project Type</th>
               <th scope="col">Project Manager</th>
               <th scope="col" *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
@@ -42,8 +46,11 @@
                 <td>
                   {{ project.customerEmail }}
                   <div class="top_tooltip">
-                    <label *ngIf="project.isEmailSend" class="badge badge-success badge-outlined">
-                      <i class="fa fa-check "></i>
+                    <label
+                      *ngIf="project.isEmailSend"
+                      class="badge badge-success badge-outlined"
+                    >
+                      <i class="fa fa-check"></i>
                     </label>
                     <span>Send Email</span>
                   </div>
@@ -53,16 +60,24 @@
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
                 <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
-                  <button class="roleactive" (click)="addProduct(project)">
-                     + Product 
-                  </button>
                   <div class="info top_tooltip">
-                  <label class="badge custom_badge"
-                    data-toggle="collapse"
-                    [attr.data-target]="'#collapse' + i"
-                    >{{ project.productsCount }}</label>
-                    <span>More details</span>
+                    <button class="roleactive" (click)="addProduct(project)">
+                      + Product
+                    </button>
+                    <span>Add Product</span>
                   </div>
+                  <div class="info top_tooltip">
+                    <label
+                      class="badge custom_badge"
+                      data-toggle="collapse"
+                      [attr.data-target]="'#collapse' + i"
+                      >{{ project.productsCount }}</label
+                    >
+                    <span>Added Product Details</span>
+                  </div>
+                  <!-- <button (click)="viewLicenses(project)">
+                    View Licenses
+                  </button> -->
                   <!-- <div class="info top_tooltip">
                     <i class="fa fa-info-circle"></i>
                     <span>More details</span>
@@ -82,9 +97,9 @@
                         style="width: 3rem; height: 3rem;"
                       ></div>
                     </div>
-  
+
                     <div class="sub_table mt-3 p-0">
-                      <h3>Project details</h3>
+                      <h3>Added Product Details</h3>
                       <div
                         *ngIf="
                           !project.products?.length && !project.productLoader
@@ -99,16 +114,18 @@
                           class="text-primary"
                           *ngIf="project.products && project.products.length"
                         >
+                          <th>#</th>
                           <th scope="col">Product Detail</th>
                           <th scope="col">No of License</th>
                           <th scope="col">License Type</th>
-  
+
                           <th scope="col">Start Date</th>
                           <th scope="col">End Date</th>
                           <th scope="col">Status</th>
                           <th scope="col">Action</th>
                         </tr>
                         <tr *ngFor="let pro of project.products; index as i">
+                          <td>{{ i + 1 }}</td>
                           <td>
                             {{ pro.productDetailResponse.productCodeName }}
                             {{ pro.productDetailResponse.productFamilyName }}
@@ -120,7 +137,7 @@
                             {{ pro.licenseTypeName }}
                           </td>
                           <td *ngIf="!pro.licenseTypeName">NA</td>
-  
+
                           <td>{{ pro.startDate }}</td>
                           <td *ngIf="pro.expirationPeriodType == 'LIMITED'">
                             {{ pro.endDate }}
@@ -145,7 +162,7 @@
                               (click)="editProduct(project, pro)"
                             >
                               <i class="fa fa-edit"></i>
-                              <span>Edit Project</span>
+                              <span>Edit Added Product</span>
                             </a>
                             <a
                               class="delete_button top_tooltip text-danger"
@@ -153,7 +170,7 @@
                               (click)="deleteProduct(pro)"
                             >
                               <i class="fa fa-trash"></i>
-                              <span>Delete Project</span>
+                              <span>Delete Added Product</span>
                             </a>
                             <button
                               class="t_save_btn ml-2"
@@ -238,7 +255,6 @@
       </div>
     </div>
   </div>
-  
 </div>
 <div
   class="custom_modal_main"
@@ -320,7 +336,7 @@
           <li>
             <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
             <span *ngIf="hasUserId(c)"> NAME : me</span>
-            COMMENT :{{ c.comment }}
+            COMMENT :{{ c.comment }} REMARK:{{ c.remark }}
 
             TIME:{{ c.createdAt | date: "medium" }}
           </li>

@@ -1,16 +1,6 @@
 <div class="container-fluid p-0">
   <div class="tab_main">
     <ul role="tablist">
-      <li class="nav-item" *ngIf="hasAuthority('PRODUCT_DETAIL_FETCH')">
-        <a
-          class="nav-link"
-          data-toggle="tab"
-          routerLinkActive="active"
-          routerLink="detail"
-          >Products Detail</a
-        >
-      </li>
-
       <li class="nav-item" *ngIf="hasAuthority('PRODUCT_FAMILY_FETCH')">
         <a
           class="nav-link"
@@ -18,6 +8,15 @@
           routerLinkActive="active"
           routerLink="family"
           >Product Family</a
+        >
+      </li>
+      <li class="nav-item" *ngIf="hasAuthority('PRODUCT_DETAIL_FETCH')">
+        <a
+          class="nav-link"
+          data-toggle="tab"
+          routerLinkActive="active"
+          routerLink="detail"
+          >Products Detail</a
         >
       </li>
       <li class="nav-item">

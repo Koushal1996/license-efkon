@@ -16,6 +16,7 @@ export class AddProductComponent implements OnInit {
   productId;
   projects;
   productDetail: any;
+  productCodes: any[] = [];
   eachProductId;
   expirationMonthNo: any;
   sDate: any;
@@ -34,6 +35,7 @@ export class AddProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getLicenseType();
     this.productForm = this.initProductForm();
     this.activate.params.subscribe((params) => {
       if (params.productId) this.productId = params["productId"];
@@ -45,8 +47,6 @@ export class AddProductComponent implements OnInit {
       this.selectedProjectId = params["id"];
     });
     this.getProductDetail();
-    this.patchaValue();
-    this.getLicenseType();
     this.getProjects();
   }
 
@@ -77,14 +77,16 @@ export class AddProductComponent implements OnInit {
     if (this.productId) {
       this.projectservice.selecetedProduct.subscribe((data) => {
         if (Object.keys(data).length) {
-          console.log(data);
-          console.log(data.productDetailResponse.productCodeId);
           this.productForm.patchValue(data);
-          //debugger;
           this.productForm.patchValue({
-            productFamily: data.productDetailResponse.productFamilyId,
-            productCode: data.productDetailResponse.productCodeId,
-            productDetailId: data.productDetailResponse.versionId,
+            productFamily: this.productDetail.find(
+              (pd) => pd.id == data.productDetailResponse.productFamilyId
+            ),
+          });
+          this.productForm.patchValue({
+            productCode: this.productCodes.find(
+              (pc) => pc.id == data.productDetailResponse.productCodeId
+            ),
           });
         } else {
           this._productService
@@ -92,6 +94,16 @@ export class AddProductComponent implements OnInit {
             .subscribe((data) => {
               //console.log(data);
               this.productForm.patchValue(data);
+              this.productForm.patchValue({
+                productFamily: this.productDetail.find(
+                  (pd) => pd.id == data.productDetailResponse.productFamilyId
+                ),
+              });
+              this.productForm.patchValue({
+                productCode: this.productCodes.find(
+                  (pc) => pc.id == data.productDetailResponse.productCodeId
+                ),
+              });
             });
         }
       });
@@ -101,6 +113,7 @@ export class AddProductComponent implements OnInit {
   getProductDetail() {
     this._productService.getProductDetails().subscribe((data) => {
       this.productDetail = data;
+      this.patchaValue();
     });
     var today = new Date();
     this.todayDate =
