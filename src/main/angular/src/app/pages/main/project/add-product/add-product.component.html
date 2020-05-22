@@ -33,9 +33,11 @@
           <label>Customer Email</label>
           <span
             >{{ selectedProductDetail.customerEmail }}
-         
-              <i *ngIf="selectedProductDetail.isEmailSend" class="fa fa-check text-success"></i>
-           
+
+            <i
+              *ngIf="selectedProductDetail.isEmailSend"
+              class="fa fa-check text-success"
+            ></i>
           </span>
         </div>
         <div class="product_details">
@@ -55,7 +57,9 @@
     
     <div class="col-8 p-0 card-body">
       <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form_main">
-        <h3>Add Product</h3>
+        <h3>
+          {{ productId ? "Edit Product" : "Add Product" }}
+        </h3>
         <div class="input_feild">
           <div class="category_col">
             <h4>Product Details</h4>
@@ -278,6 +282,8 @@
                     class="form-control"
                     formControlName="EndDate"
                     name="EndDate"
+                    disabled
+                    [readonly]="productId"
                   />
                 </div>
               </div>
@@ -290,7 +296,7 @@
               *ngIf="!loaderbutton"
               [disabled]="!productForm.valid"
             >
-              Submit
+              {{ productId ? "Update" : "Submit" }}
             </button>
             <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading

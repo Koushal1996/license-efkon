@@ -78,58 +78,64 @@
                     "
                   >
                     <span
-                      *ngIf="createFamilyForm.get('description').errors.required"
+                      *ngIf="
+                        createFamilyForm.get('description').errors.required
+                      "
                       class="error"
                       >Description is required</span
                     >
                   </span>
                 </div>
               </div>
-              
             </div>
 
             <div class="category_col">
               <h4 class="mt-3">Product Codes</h4>
               <div class="row">
-            <div class="col-12">
-              <div class="form-group" formArrayName="productCodes">
-               <div class="row">
-                <div class="col-6"
-                *ngFor="
-                  let productcode of createFamilyForm.get('productCodes')
-                    .controls;
-                  index as i ">
-              <div [formGroupName]="i" class="addcode">
-                <input
-                  tupe="text"
-                  formControlName="name"
-                  name="productCodeName"
-                  class="form-control mt-2"
-                />
-                <button
-                  type="button"
-                  (click)="onDeleteName(i)"
-                  class="addlBtn mt-2"
-                >
-                  <span>x</span>
-                </button>
+                <div class="col-12">
+                  <div class="form-group" formArrayName="productCodes">
+                    <div class="row">
+                      <div
+                        class="col-6"
+                        *ngFor="
+                          let productcode of createFamilyForm.get(
+                            'productCodes'
+                          ).controls;
+                          index as i
+                        "
+                      >
+                        <div [formGroupName]="i" class="addcode">
+                          <input
+                            tupe="text"
+                            formControlName="name"
+                            name="productCodeName"
+                            class="form-control mt-2"
+                          />
+                          <button
+                            type="button"
+                            (click)="onDeleteName(i)"
+                            class="addlBtn mt-2"
+                          >
+                            <span>x</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button
+                    type="button"
+                    (click)="onAddName()"
+                    class="addcodebutton"
+                  >
+                    Add Product Code
+                  </button>
+                </div>
               </div>
-              </div>
-               </div>
-               
-              </div>
             </div>
-            <div class="col-12">
-              <button type="button" (click)="onAddName()" class="addcodebutton">
-                Add Product Code
-              </button>
-            </div>
-            </div>
-            
-            </div>
-          
-          
-          <!-- <div class="form-group" formArrayName="productCodes">
+
+            <!-- <div class="form-group" formArrayName="productCodes">
             <label>Product Codes </label>
             <ng-container
               *ngFor="
@@ -158,16 +164,12 @@
               <i>+</i>Add Product Code
             </button>
           </div> -->
-        </div>
-          
+          </div>
         </div>
         <div class="form_footer pr-3">
-          <button
-          type="submit"
-          class="cancelBtn"
-        >
-          Back
-        </button>
+          <button type="button" class="cancelBtn" (click)="back()">
+            Back
+          </button>
           <button
             type="submit"
             class="saveBtn"
@@ -175,7 +177,6 @@
           >
             Submit
           </button>
-         
         </div>
       </form>
     </div>
