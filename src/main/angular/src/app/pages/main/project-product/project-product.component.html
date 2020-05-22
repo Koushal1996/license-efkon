@@ -7,8 +7,8 @@
           <th scope="col">Product Detail</th>
           <th scope="col">No of License</th>
           <th scope="col">License Type</th>
-          <th scope="col">Start Date</th>
-          <th scope="col">End Date</th>
+          <th scope="col" style="min-width: 100px;">Start Date</th>
+          <th scope="col" style="min-width: 100px;">End Date</th>
           <th scope="col">Customer Details</th>
           <th scope="col">Project Type</th>
           <th scope="col" style="min-width: 110px;">
@@ -28,7 +28,7 @@
             <!-- <button (click)="sortAphabetically()">up</button>
             <button (click)="reverseAphabetically()">down</button> -->
           </th>
-          <th scope="col">Action</th>
+          <th scope="col"  style="min-width: 112px;">Action</th>
         </tr>
       </thead>
       <tbody id="accordion">
@@ -101,7 +101,7 @@
             </td>
             <td *ngIf="project.status == 'SUBMIT'">
               <button
-                type="button"
+                type="button" class="t_save_btn mb-2"
                 *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                 (click)="reviewProductStatus(project)"
               >
@@ -184,10 +184,10 @@
                     No License Available Now
                   </p>
                 </div> -->
-                <div class="col-12 mt-3">
-                  <h4>License Detail</h4>
+                <div class="sub_table mt-3 p-0">
+                  <h3>License Detail</h3>
                   <table
-                    class="table table-bordered innertable"
+                    class=""
                     *ngIf="
                       project.status == 'APPROVED' ||
                       project.status == 'RENEWED'
@@ -196,17 +196,16 @@
                     <tr class="text-primary">
                       <th scope="col">Sr. No.</th>
                       <th scope="col">Code</th>
-
                       <th scope="col">Remarks</th>
                       <th scope="col">Unique Access ID.</th>
-                      <th scope="col">Generate License Key</th>
+                      <th scope="col">Generated License Key</th>
                       <th scope="col">Action</th>
                     </tr>
                     <tr *ngFor="let license of project.licenses; index as i">
                       <td>{{ i + 1 }}</td>
                       <td>{{ license.code }}</td>
                       <td *ngIf="!license.generatedKey || license.edit">
-                        <input
+                        <input class="tableinput"
                           type="text"
                           placeholder="name"
                           name="name"
@@ -214,7 +213,7 @@
                         />
                       </td>
                       <td *ngIf="!license.generatedKey || license.edit">
-                        <input
+                        <input class="tableinput"
                           type="text"
                           placeholder="Access ID"
                           name="accessId"
@@ -234,7 +233,7 @@
                       <td *ngIf="license.edit">
                         <button
                           *ngIf="hasAuthority('LICENSE_UPDATE')"
-                          type="button"
+                          type="button" class="t_save_btn"
                           (click)="updateLicensekey(license)"
                         >
                           Update License Key
@@ -248,16 +247,16 @@
                       >
                         <button
                           type="button"
-                          class="edit_button"
+                          class="edit_button text-success"
                           (click)="editLicensekey(license)"
                         >
-                          edit
+                          <i class="fa fa-edit"></i>
                         </button>
                       </td>
                       <td *ngIf="!license.generatedKey">
                         <button
                           *ngIf="hasAuthority('LICENSE_UPDATE')"
-                          type="button"
+                          type="button" class="t_save_btn"
                           (click)="generateLicensekey(license)"
                         >
                           Generate License Key
@@ -278,51 +277,54 @@
   </div>
 </div>
 
-<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Enter Comment</h4>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          (click)="hide()"
-        >
-          &times;
-        </button>
-      </div>
 
-      <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
-        <div class="modal-body">
-          <div class="form-group">
-            <textarea
-              class="form-control"
-              formControlName="comment"
-              name="comment"
-            ></textarea>
-            <span
-              *ngIf="
-                popUpForm.get('comment').errors &&
-                (popUpForm.get('comment').touched ||
-                  popUpForm.get('comment').dirty)
-              "
-            >
-              <span
-                *ngIf="popUpForm.get('comment').errors.required"
-                class="text-danger"
-              >
-                Comment is required</span
-              >
-            </span>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" [disabled]="!popUpForm.valid">
-            {{ commentSubmitButton }}
+  <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+    <div class="custom_modal_main">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header mb-0">
+          <h4 class="modal-title">Enter Comment</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            (click)="hide()"
+          >
+            &times;
           </button>
         </div>
-      </form>
+  
+        <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm" >
+          <div class="modal-body p-3">
+            <div class="form-group  mb-0">
+              <textarea
+                class="form-control"
+                formControlName="comment"
+                name="comment"
+              ></textarea>
+              <span
+                *ngIf="
+                  popUpForm.get('comment').errors &&
+                  (popUpForm.get('comment').touched ||
+                    popUpForm.get('comment').dirty)
+                "
+              >
+                <span
+                  *ngIf="popUpForm.get('comment').errors.required"
+                  class="error"
+                >
+                  Comment is required</span
+                >
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="cancelBtn" type="submit" [disabled]="!popUpForm.valid">
+              {{ commentSubmitButton }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
@@ -332,6 +334,7 @@
   id="myModal"
   [style.display]="showCommentModal ? 'block' : 'none'"
 >
+<div class="custom_modal_main">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -346,18 +349,49 @@
         </button>
       </div>
       <div class="modal-body">
-        <ul *ngFor="let c of comments">
-          <li>
-            <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
-            <span *ngIf="hasUserId(c)"> NAME : me</span>
-            COMMENT :{{ c.comment }} REMARK:{{ c.remark }} TIME:{{
-              c.createdAt | date: "medium"
-            }}
-          </li>
-        </ul>
+        <div class="coment_list_content">
+          <ul *ngFor="let c of comments">
+            <li>
+              <div class="comnent_main" *ngIf="!hasUserId(c)">
+               <label>NAME:</label> <span > {{ c.commentedBy }}</span>
+              </div>
+              <div class="comnent_main" *ngIf="hasUserId(c)">
+                <label>NAME:</label> <span>Me</span>
+              </div>
+              <div class="comnent_main">
+                <label>COMMENT:</label> <span >{{ c.comment }}</span>
+              </div>
+             
+              <div class="comnent_main">
+                <label> REMARK:</label> <span >{{ c.remark }}</span>
+              </div>
+              <div class="comnent_main">
+                <!-- <label> TIME:</label> -->
+                 <span class="time">{{ c.createdAt | date: "medium" }}</span>
+              </div>
+              
+            </li>
+            <!-- <li>
+              
+              <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
+              <span *ngIf="hasUserId(c)"> NAME : me</span>
+              COMMENT :{{ c.comment }} REMARK:{{ c.remark }} TIME:{{
+                c.createdAt | date: "medium"
+              }}
+            </li> -->
+          </ul>
+        </div>
+        
+      </div>
+      <div class="modal_footer">
+        <button class="cancelBtn" type="button"
+        
+        data-dismiss="modal"
+        (click)="hideCommentModel()">Close</button>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <div
@@ -365,77 +399,79 @@
   id="myModal"
   [style.display]="showRenewModal ? 'block' : 'none'"
 >
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Enter Start Date</h4>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          (click)="hideRenewModel()"
-        >
-          &times;
-        </button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="onSubmitStartDate()" [formGroup]="popUpStartDateForm">
-          <div class="modal-body">
-            <div class="form-group">
-              <label>Start Date</label>
-              <input
-                type="date"
-                class="form-control"
-                formControlName="startDate"
-                name="startDate"
-              />
-              <span
-                *ngIf="
-                  popUpStartDateForm.get('startDate').errors &&
-                  (popUpStartDateForm.get('startDate').touched ||
-                    popUpStartDateForm.get('startDate').dirty)
-                "
-              >
-                <span
-                  *ngIf="popUpStartDateForm.get('startDate').errors.required"
-                  class="field_error"
-                >
-                  Start Date is required</span
-                >
-              </span>
-            </div>
-            <div class="form-group">
-              <label>Expiry Period (in months) </label>
-              <input
-                type="number"
-                class="form-control"
-                formControlName="expirationMonthCount"
-                name="expirationMonthCount"
-              />
-              <span
-                *ngIf="
-                  popUpStartDateForm.get('expirationMonthCount').errors &&
-                  (popUpStartDateForm.get('expirationMonthCount').touched ||
-                    popUpStartDateForm.get('expirationMonthCount').dirty)
-                "
-              >
+  <div class="custom_modal_main">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Enter Start Date</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            (click)="hideRenewModel()"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="onSubmitStartDate()" [formGroup]="popUpStartDateForm">
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="startDate"
+                  name="startDate"
+                />
                 <span
                   *ngIf="
-                    popUpStartDateForm.get('expirationMonthCount').errors.min
+                    popUpStartDateForm.get('startDate').errors &&
+                    (popUpStartDateForm.get('startDate').touched ||
+                      popUpStartDateForm.get('startDate').dirty)
                   "
-                  class="field_error"
                 >
-                  minimun 1 is required</span
+                  <span
+                    *ngIf="popUpStartDateForm.get('startDate').errors.required"
+                    class="field_error"
+                  >
+                    Start Date is required</span
+                  >
+                </span>
+              </div>
+              <div class="form-group">
+                <label>Expiry Period (in months) </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="expirationMonthCount"
+                  name="expirationMonthCount"
+                />
+                <span
+                  *ngIf="
+                    popUpStartDateForm.get('expirationMonthCount').errors &&
+                    (popUpStartDateForm.get('expirationMonthCount').touched ||
+                      popUpStartDateForm.get('expirationMonthCount').dirty)
+                  "
                 >
-              </span>
+                  <span
+                    *ngIf="
+                      popUpStartDateForm.get('expirationMonthCount').errors.min
+                    "
+                    class="field_error"
+                  >
+                    minimun 1 is required</span
+                  >
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" [disabled]="!popUpForm.valid">
-              Renew
-            </button>
-          </div>
-        </form>
+            <div class="modal-footer">
+              <button class="saveBtn" type="submit" [disabled]="!popUpForm.valid">
+                Renew
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

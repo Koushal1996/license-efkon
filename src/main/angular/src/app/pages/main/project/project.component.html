@@ -321,7 +321,7 @@
 >
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header mb-0">
         <h4 class="modal-title">Comments</h4>
         <button
           type="button"
@@ -333,15 +333,36 @@
         </button>
       </div>
       <div class="modal-body">
-        <ul *ngFor="let c of comments">
-          <li>
-            <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
-            <span *ngIf="hasUserId(c)"> NAME : me</span>
-            COMMENT :{{ c.comment }} REMARK:{{ c.remark }}
-
-            TIME:{{ c.createdAt | date: "medium" }}
-          </li>
-        </ul>
+        <div class="coment_list_content">
+          <ul *ngFor="let c of comments">
+            <li>
+              <div class="comnent_main" *ngIf="!hasUserId(c)">
+               <label>NAME:</label> <span > {{ c.commentedBy }}</span>
+              </div>
+              <div class="comnent_main" *ngIf="hasUserId(c)">
+                <label>NAME:</label> <span>Me</span>
+              </div>
+              <div class="comnent_main">
+                <label>COMMENT:</label> <span >{{ c.comment }}</span>
+              </div>
+             
+              <div class="comnent_main">
+                <label> REMARK:</label> <span >{{ c.remark }}</span>
+              </div>
+              <div class="comnent_main">
+                <!-- <label> TIME:</label> -->
+                 <span class="time">{{ c.createdAt | date: "medium" }}</span>
+              </div>
+              
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal_footer">
+        <button class="cancelBtn" type="button"
+        
+        data-dismiss="modal"
+        (click)="hideCommentModel()">Close</button>
       </div>
     </div>
   </div>
@@ -417,7 +438,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" [disabled]="!popUpForm.valid">
+            <button type="submit" class="saveBtn" [disabled]="!popUpForm.valid">
               Renew
             </button>
           </div>
