@@ -63,7 +63,7 @@ export class ProjectProductComponent implements OnInit {
   }
   initpopUpForm() {
     return this.fb.group({
-      comment: [""],
+      comment: ["", [Validators.required]],
     });
   }
   initpopUpStartDateForm() {
