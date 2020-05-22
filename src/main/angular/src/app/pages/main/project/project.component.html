@@ -73,11 +73,14 @@
                       [attr.data-target]="'#collapse' + i"
                       >{{ project.productsCount }}</label
                     >
-                    <span style="min-width:140px;">Added Product Details</span>
+                    <span style="min-width: 140px;">Added Product Details</span>
                   </div>
-                  <!-- <button (click)="viewLicenses(project)">
+                  <button (click)="viewLicenses(project)">
                     View Licenses
-                  </button> -->
+                  </button>
+                  <button (click)="createExcelLicense(project)">
+                    License into Excel
+                  </button>
                   <!-- <div class="info top_tooltip">
                     <i class="fa fa-info-circle"></i>
                     <span>More details</span>
@@ -162,7 +165,9 @@
                               (click)="editProduct(project, pro)"
                             >
                               <i class="fa fa-edit"></i>
-                              <span style="width:130px">Edit Added Product</span>
+                              <span style="width: 130px;"
+                                >Edit Added Product</span
+                              >
                             </a>
                             <a
                               class="delete_button top_tooltip text-danger"
@@ -170,7 +175,9 @@
                               (click)="deleteProduct(pro)"
                             >
                               <i class="fa fa-trash"></i>
-                              <span style="width:140px">Delete Added Product</span>
+                              <span style="width: 140px;"
+                                >Delete Added Product</span
+                              >
                             </a>
                             <button
                               class="t_save_btn ml-2 top_tooltip"
@@ -182,7 +189,9 @@
                                 class="fa fa-floppy-o pr-1"
                                 aria-hidden="true"
                               ></i>
-                              <span style="width:160px">Submit Added Product</span>
+                              <span style="width: 160px;"
+                                >Submit Added Product</span
+                              >
                               Submit
                             </button>
                           </td>
@@ -337,32 +346,35 @@
           <ul *ngFor="let c of comments">
             <li>
               <div class="comnent_main" *ngIf="!hasUserId(c)">
-               <label>NAME:</label> <span > {{ c.commentedBy }}</span>
+                <label>NAME:</label> <span> {{ c.commentedBy }}</span>
               </div>
               <div class="comnent_main" *ngIf="hasUserId(c)">
                 <label>NAME:</label> <span>Me</span>
               </div>
               <div class="comnent_main">
-                <label>COMMENT:</label> <span >{{ c.comment }}</span>
+                <label>COMMENT:</label> <span>{{ c.comment }}</span>
               </div>
-             
+
               <div class="comnent_main">
-                <label> REMARK:</label> <span >{{ c.remark }}</span>
+                <label> REMARK:</label> <span>{{ c.remark }}</span>
               </div>
               <div class="comnent_main">
                 <!-- <label> TIME:</label> -->
-                 <span class="time">{{ c.createdAt | date: "medium" }}</span>
+                <span class="time">{{ c.createdAt | date: "medium" }}</span>
               </div>
-              
             </li>
           </ul>
         </div>
       </div>
       <div class="modal_footer">
-        <button class="cancelBtn" type="button"
-        
-        data-dismiss="modal"
-        (click)="hideCommentModel()">Close</button>
+        <button
+          class="cancelBtn"
+          type="button"
+          data-dismiss="modal"
+          (click)="hideCommentModel()"
+        >
+          Close
+        </button>
       </div>
     </div>
   </div>

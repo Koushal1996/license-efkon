@@ -88,9 +88,13 @@ export class ProjectComponent implements OnInit {
     this.route.navigate([`projects/${project.id}/product`]);
   }
   deleteProduct(pro) {
+    console.log(pro);
+    console.log(pro.productDetailResponse.productCodeName);
+    console.log(pro.productDetailResponse.productFamilyName);
+    console.log(pro.productDetailResponse.versionName);
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      text: `You want to go ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName}ahead with deletion?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -325,6 +329,11 @@ export class ProjectComponent implements OnInit {
   }
   viewLicenses(project) {
     console.log(project.id);
-    //this.projectservice.getProjectLicenseById
+    this.route.navigate([`projects/${project.id}/licenses`]);
+  }
+  createExcelLicense(project) {
+    this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {
+      console.log(data);
+    });
   }
 }
