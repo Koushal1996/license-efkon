@@ -1,84 +1,135 @@
 <div class="container">
   <div class="row">
-    <div class="col-12">
+    <div class="col-12 p-0">
       <form
         [formGroup]="createFamilyForm"
         class="form_main"
         (ngSubmit)="onSubmit()"
-        class="form_main"
       >
         <h3>Edit product family</h3>
-        <div class="input_feild">
-          <div class="form-group">
-            <label>Name</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="name"
-              name="name"
-              placeholder="Name"
-            />
-            <span
-              *ngIf="
-                createFamilyForm.get('name').errors &&
-                (createFamilyForm.get('name').touched ||
-                  createFamilyForm.get('name').dirty)
-              "
-            >
-              <span
-                *ngIf="createFamilyForm.get('name').errors.required"
-                class="error"
-                >Name is required</span
-              >
-            </span>
-          </div>
-          <div class="form-group">
-            <label>Code</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="code"
-              name="code"
-              placeholder="code"
-            />
-            <span
-              *ngIf="
-                createFamilyForm.get('code').errors &&
-                (createFamilyForm.get('code').touched ||
-                  createFamilyForm.get('code').dirty)
-              "
-            >
-              <span
-                *ngIf="createFamilyForm.get('code').errors.required"
-                class="error"
-                >Code is required</span
-              >
-            </span>
-          </div>
-          <div class="form-group">
-            <label>Description</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="description"
-              name="description"
-              placeholder="description"
-            />
-            <span
-              *ngIf="
-                createFamilyForm.get('description').errors &&
-                (createFamilyForm.get('description').touched ||
-                  createFamilyForm.get('description').dirty)
-              "
-            >
-              <span
-                *ngIf="createFamilyForm.get('description').errors.required"
-                class="error"
-                >Description is required</span
-              >
-            </span>
-          </div>
-          <div class="form-group" formArrayName="productCodes">
+        <div class="input_feild pt-0">
+          <div class="category_col">
+            <div class="row border-bottom">
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    name="name"
+                    placeholder="Name"
+                  />
+                  <span
+                    *ngIf="
+                      createFamilyForm.get('name').errors &&
+                      (createFamilyForm.get('name').touched ||
+                        createFamilyForm.get('name').dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="createFamilyForm.get('name').errors.required"
+                      class="error"
+                      >Name is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Code</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="code"
+                    name="code"
+                    placeholder="code"
+                  />
+                  <span
+                    *ngIf="
+                      createFamilyForm.get('code').errors &&
+                      (createFamilyForm.get('code').touched ||
+                        createFamilyForm.get('code').dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="createFamilyForm.get('code').errors.required"
+                      class="error"
+                      >Code is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="description"
+                    name="description"
+                    placeholder="description"
+                  />
+                  <span
+                    *ngIf="
+                      createFamilyForm.get('description').errors &&
+                      (createFamilyForm.get('description').touched ||
+                        createFamilyForm.get('description').dirty)
+                    "
+                  >
+                    <span
+                      *ngIf="createFamilyForm.get('description').errors.required"
+                      class="error"
+                      >Description is required</span
+                    >
+                  </span>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="category_col">
+              <h4 class="mt-3">Product Codes</h4>
+              <div class="row">
+            <div class="col-12">
+              <div class="form-group" formArrayName="productCodes">
+               <div class="row">
+                <div class="col-6"
+                *ngFor="
+                  let productcode of createFamilyForm.get('productCodes')
+                    .controls;
+                  index as i ">
+              <div [formGroupName]="i" class="addcode">
+                <input
+                  tupe="text"
+                  formControlName="name"
+                  name="productCodeName"
+                  class="form-control mt-2"
+                />
+                <button
+                  type="button"
+                  (click)="onDeleteName(i)"
+                  class="addlBtn mt-2"
+                >
+                  <span>x</span>
+                </button>
+              </div>
+              </div>
+               </div>
+               
+              </div>
+            </div>
+            <div class="col-12">
+              <button type="button" (click)="onAddName()" class="addcodebutton">
+                Add Product Code
+              </button>
+            </div>
+            </div>
+            
+            </div>
+          
+          
+          <!-- <div class="form-group" formArrayName="productCodes">
             <label>Product Codes </label>
             <ng-container
               *ngFor="
@@ -106,17 +157,25 @@
             <button type="button" (click)="onAddName()" class="addlBtn mt-2">
               <i>+</i>Add Product Code
             </button>
-          </div>
-
-          <div class="form-group text-right mt-1 mb-0 border-top">
-            <button
-              type="submit"
-              class="saveBtn mt-3"
-              [disabled]="!createFamilyForm.valid"
-            >
-              Submit
-            </button>
-          </div>
+          </div> -->
+        </div>
+          
+        </div>
+        <div class="form_footer pr-3">
+          <button
+          type="submit"
+          class="cancelBtn"
+        >
+          Back
+        </button>
+          <button
+            type="submit"
+            class="saveBtn"
+            [disabled]="!createFamilyForm.valid"
+          >
+            Submit
+          </button>
+         
         </div>
       </form>
     </div>

@@ -1,0 +1,30 @@
+.addcode{
+    position: relative;
+    margin-bottom: 5px;
+    display: inline-block;
+    width: 100%;
+    button {
+        position: absolute;
+        right: 0;
+        padding: 0;
+        font-size: 23px;
+        padding: 4px 15px;
+        border-radius: 0;
+        height: 34px;
+        line-height: 0px;
+        background-color: #364150;
+        span {
+            position: relative;
+            top: -3px;
+        }
+    }
+}
+.addcodebutton {
+    font-size: 13px;
+    background: #29aba4;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    padding: 4px 12px;
+    // margin-bottom: 12px;
+}

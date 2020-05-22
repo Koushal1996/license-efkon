@@ -273,7 +273,7 @@
 >
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header mb-0">
         <h4 class="modal-title">Enter Comment</h4>
         <button
           type="button"
@@ -286,8 +286,8 @@
       </div>
 
       <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
-        <div class="modal-body">
-          <div class="form-group">
+        <div class="modal-body p-3">
+          <div class="form-group mb-0">
             <textarea
               class="form-control"
               formControlName="comment"
@@ -302,7 +302,7 @@
             >
               <span
                 *ngIf="popUpForm.get('comment').errors.required"
-                class="text-danger"
+                class="error"
               >
                 Comment is required</span
               >
@@ -310,11 +310,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="submit"
-            class="btn btn-danger"
-            [disabled]="!popUpForm.valid"
-          >
+          <button type="submit" class="saveBtn" [disabled]="!popUpForm.valid">
             {{ commentSubmitButton }}
           </button>
         </div>
@@ -356,7 +352,7 @@
               </div>
 
               <div class="comnent_main">
-                <label> REMARK:</label> <span>{{ c.remark }}</span>
+                <label> Action:</label> <span>{{ c.remark }}</span>
               </div>
               <div class="comnent_main">
                 <!-- <label> TIME:</label> -->

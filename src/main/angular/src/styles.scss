@@ -142,6 +142,11 @@ table.table.table-bordered {
   }
 }
 
+input, select, textarea{
+  border: 1px solid #29aba4;
+  box-shadow:  inherit !important;
+  outline: #29aba4;
+}
 
 h2.text-center {
   display: inline-block;
@@ -222,6 +227,7 @@ h2.text-center {
     // margin-top: 20px;
     // padding: 15px;
     float: left;
+    width: 100%;
   h3{
     border-bottom: 1px solid #ddd;
     font-size: 16px;
@@ -789,3 +795,4 @@ table {
   margin-left: 13px;
   vertical-align: text-top;
 }
+
