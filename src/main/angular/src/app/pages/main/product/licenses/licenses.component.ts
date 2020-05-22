@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProjectService } from "src/app/services/project/project.service";
+import swal from "sweetalert";
 
 @Component({
   selector: "app-licenses",
@@ -20,15 +21,15 @@ export class LicensesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.LicenseForm = this.initLicenseForm();
+    // this.LicenseForm = this.initLicenseForm();
     this.getLicenseType();
   }
-  initLicenseForm() {
-    return this.fb.group({
-      name: [""],
-      monthCount: ["", [Validators.required]],
-    });
-  }
+  // initLicenseForm() {
+  //   return this.fb.group({
+  //     name: [""],
+  //     monthCount: ["", [Validators.required]],
+  //   });
+  // }
   getLicenseType() {
     this.projectservice.getLicenseType().subscribe((data) => {
       this.licenseType = data;
@@ -51,6 +52,7 @@ export class LicensesComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log(data);
+          swal("Expiry Period Limit Updated Successfully");
           license.edit = false;
         },
         (error) => {}
