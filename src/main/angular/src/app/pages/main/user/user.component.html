@@ -71,7 +71,7 @@
           <td>
             <span
               (click)="showRoleAuthoities(role)"
-              class="badge custom_badge"
+              class="badge-light cursor-pointer"
               *ngFor="let role of item.roles; index as index"
             >
               {{ role.name }}
@@ -128,10 +128,14 @@
           &times;
         </button>
       </div>
-      <div class="modal-body">
-        <p *ngFor="let auth of selectedAuthorites">
+      <div class="modal-body p-3">
+        <p *ngFor="let auth of selectedAuthorites" class="badge badge-light padding">
           {{ auth.name }}
         </p>
+      </div>
+      <div class="modal_footer">
+        <button class="cancelBtn" data-dismiss="modal"
+        (click)="hideModel()">Close</button>
       </div>
     </div>
   </div>
