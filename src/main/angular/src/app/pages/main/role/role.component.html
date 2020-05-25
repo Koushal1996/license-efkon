@@ -1,4 +1,4 @@
-<div class="site_main">
+<div class="site_main col-12 p-0">
   <div class="container-fluid p-0">
     <button
       class="createBtn"
@@ -96,6 +96,9 @@
       </table>
      </div>
     </ng-container>
+   
   </div>
-  
+  <div *ngIf="isloader" class="loader">
+    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+  </div>
 </div>
