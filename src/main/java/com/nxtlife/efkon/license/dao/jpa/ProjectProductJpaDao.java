@@ -58,9 +58,9 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public Boolean existsByProjectIdAndProductDetailIdAndActiveTrue(Long unmaskProjectId, Long unmaskProductId);
 
 	public Boolean existsByIdAndActive(Long id, Boolean active);
-	
+
 	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 group by project.id")
-	public List<Map<String,Object>> findProjectIdAndCountByGroupByProjectIdAndActive(Boolean active);
+	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActive(Boolean active);
 
 	@Query(value = "select projectProduct.status from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where projectProduct.id =?1 and project.projectManager.id=?2 and projectProduct.active=?3")
 	public ProjectProductStatus findStatusByIdAndProjectProjectManagerIdAndActive(Long id, Long projectManagerId,
@@ -131,6 +131,6 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 			+ "where pp.endDate < curdate() and pp.active = true and p.projectManager.id=?1")
 	public ProjectProductGraphResponse findExpiredLicensesByProjectManagerId(Long userId);
 
-	public Integer countByProjectIdAndActive(Long unmask, boolean b);
+	public Long countByProjectIdAndActive(Long unmask, boolean b);
 
 }

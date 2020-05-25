@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -145,12 +144,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration
-	 * month count
+	 * this method used to set end date according to start date and expiration month
+	 * count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater
-	 * than 12 then year will be incremented and month will be add result minus
-	 * 12.
+	 * if addition of month of start date and expiration month count greater than 12
+	 * then year will be incremented and month will be add result minus 12.
 	 *
 	 * @return String
 	 */
@@ -431,27 +429,24 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
-						licenseDao.save(
-								new License(
-										String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
-												projectProductResponse.getProjectResponse().getCustomerCode(),
-												projectProductResponse.getProductDetailResponse()
-														.getProductFamilyCode(),
-												projectProductResponse.getProductDetailResponse().getProductCodeCode(),
-												getUser().getCode(), projectProductResponse.getLicenseTypeCode(),
-												(i + 1),
-												projectProductResponse.getExpirationMonthCount() == null ? 0
-														: projectProductResponse.getExpirationMonthCount(),
-												LocalDate
-														.parse(projectProductResponse.getStartDate(),
+						licenseDao.save(new License(
+								String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
+										projectProductResponse.getProjectResponse().getCustomerCode(),
+										projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
+										projectProductResponse.getProductDetailResponse().getProductCodeCode(),
+										getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (i + 1),
+										projectProductResponse.getExpirationMonthCount() == null ? 0
+												: projectProductResponse.getExpirationMonthCount(),
+										LocalDate
+												.parse(projectProductResponse.getStartDate(),
+														DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+												.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
+										projectProductResponse.getEndDate() == null ? "NA"
+												: LocalDate
+														.parse(projectProductResponse.getEndDate(),
 																DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-														.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
-												projectProductResponse.getEndDate() == null ? "NA"
-														: LocalDate
-																.parse(projectProductResponse.getEndDate(),
-																		DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-																.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
-										LicenseStatus.ACTIVE, unmaskId));
+														.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
+								LicenseStatus.ACTIVE, unmaskId));
 					}
 				}
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
@@ -584,7 +579,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 	}
 
-	@SuppressWarnings({ "null", "unused" })
+	@SuppressWarnings({ "unused" })
 	@Override
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
 	public List<ProjectProductGraphResponse> findCountByStatus() {

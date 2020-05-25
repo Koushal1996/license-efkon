@@ -129,7 +129,7 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		}
 
 		for (ProjectResponse iterate : projects) {
-			iterate.setProjectProductCount(projectProductDao.countByProjectIdAndActive(unmask(iterate.getId()), true));
+			iterate.setProductsCount(projectProductDao.countByProjectIdAndActive(unmask(iterate.getId()), true));
 		}
 
 		return projects;
