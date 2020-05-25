@@ -139,7 +139,7 @@ export class DetailComponent implements OnInit {
   deleteProductDetail(detail, code, productDetailId) {
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      text: `You want to delete ${detail.name} ${code.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],

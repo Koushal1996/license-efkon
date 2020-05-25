@@ -29,7 +29,7 @@
               <!-- <button (click)="sortAphabetically()">up</button>
               <button (click)="reverseAphabetically()">down</button> -->
             </th>
-            <th scope="col"  style="min-width: 112px;">Action</th>
+            <th scope="col" style="min-width: 112px;">Action</th>
           </tr>
         </thead>
         <tbody id="accordion">
@@ -44,7 +44,7 @@
               <td>
                 {{ project.licenseCount }}
               </td>
-  
+
               <td *ngIf="project.licenseTypeName">
                 {{ project.licenseTypeName }}
               </td>
@@ -59,7 +59,7 @@
                 {{ project.endDate }}
               </td>
               <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
-  
+
               <td>
                 {{ project.projectResponse.customerName }}
                 <br />
@@ -102,7 +102,8 @@
               </td>
               <td *ngIf="project.status == 'SUBMIT'">
                 <button
-                  type="button" class="t_save_btn mb-2"
+                  type="button"
+                  class="t_save_btn mb-2"
                   *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                   (click)="reviewProductStatus(project)"
                 >
@@ -137,7 +138,9 @@
                 <button
                   type="button"
                   class="roleactive mb-2"
-                  (click)="renewProductStatus(project); $event.stopPropagation()"
+                  (click)="
+                    renewProductStatus(project); $event.stopPropagation()
+                  "
                 >
                   Renew
                 </button>
@@ -155,7 +158,9 @@
                 <button
                   type="button"
                   class="roleactive mb-2"
-                  (click)="renewProductStatus(project); $event.stopPropagation()"
+                  (click)="
+                    renewProductStatus(project); $event.stopPropagation()
+                  "
                 >
                   Renew
                 </button>
@@ -206,7 +211,8 @@
                         <td>{{ i + 1 }}</td>
                         <td>{{ license.code }}</td>
                         <td *ngIf="!license.generatedKey || license.edit">
-                          <input class="tableinput"
+                          <input
+                            class="tableinput"
                             type="text"
                             placeholder="name"
                             name="name"
@@ -214,7 +220,8 @@
                           />
                         </td>
                         <td *ngIf="!license.generatedKey || license.edit">
-                          <input class="tableinput"
+                          <input
+                            class="tableinput"
                             type="text"
                             placeholder="Access ID"
                             name="accessId"
@@ -234,7 +241,8 @@
                         <td *ngIf="license.edit">
                           <button
                             *ngIf="hasAuthority('LICENSE_UPDATE')"
-                            type="button" class="t_save_btn"
+                            type="button"
+                            class="t_save_btn"
                             (click)="updateLicensekey(license)"
                           >
                             Update License Key
@@ -257,18 +265,18 @@
                         <td *ngIf="!license.generatedKey">
                           <button
                             *ngIf="hasAuthority('LICENSE_UPDATE')"
-                            type="button" class="t_save_btn"
+                            type="button"
+                            class="t_save_btn"
                             (click)="generateLicensekey(license)"
                           >
                             Generate License Key
                           </button>
                         </td>
-  
+
                         <!-- <td> <input type="text" placeholder="Access ID" name="accessId" #accessId></td>
                   <td><button type="button" (click)="generateLicensekey(licenses)"> Generate License Key</button></td> -->
                       </tr>
                     </table>
-                  
                   </div>
                 </div>
               </td>
@@ -283,9 +291,8 @@
   </div>
 </div>
 
-
-  <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
-    <div class="custom_modal_main">
+<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="custom_modal_main">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header mb-0">
@@ -299,10 +306,10 @@
             &times;
           </button>
         </div>
-  
-        <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm" >
+
+        <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
           <div class="modal-body p-3">
-            <div class="form-group  mb-0">
+            <div class="form-group mb-0">
               <textarea
                 class="form-control"
                 formControlName="comment"
@@ -325,7 +332,11 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button class="cancelBtn" type="submit" [disabled]="!popUpForm.valid">
+            <button
+              class="cancelBtn"
+              type="submit"
+              [disabled]="!popUpForm.valid"
+            >
               {{ commentSubmitButton }}
             </button>
           </div>
@@ -340,44 +351,43 @@
   id="myModal"
   [style.display]="showCommentModal ? 'block' : 'none'"
 >
-<div class="custom_modal_main">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">Comments</h4>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          (click)="hideCommentModel()"
-        >
-          &times;
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="coment_list_content">
-          <ul *ngFor="let c of comments">
-            <li>
-              <div class="comnent_main" *ngIf="!hasUserId(c)">
-               <label>NAME:</label> <span > {{ c.commentedBy }}</span>
-              </div>
-              <div class="comnent_main" *ngIf="hasUserId(c)">
-                <label>NAME:</label> <span>Me</span>
-              </div>
-              <div class="comnent_main">
-                <label>COMMENT:</label> <span >{{ c.comment }}</span>
-              </div>
-             
-              <div class="comnent_main">
-                <label> Action:</label> <span >{{ c.remark }}</span>
-              </div>
-              <div class="comnent_main">
-                <!-- <label> TIME:</label> -->
-                 <span class="time">{{ c.createdAt | date: "medium" }}</span>
-              </div>
-              
-            </li>
-            <!-- <li>
+  <div class="custom_modal_main">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Comments</h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            (click)="hideCommentModel()"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="coment_list_content">
+            <ul *ngFor="let c of comments">
+              <li>
+                <div class="comnent_main" *ngIf="!hasUserId(c)">
+                  <label>NAME:</label> <span> {{ c.commentedBy }}</span>
+                </div>
+                <div class="comnent_main" *ngIf="hasUserId(c)">
+                  <label>NAME:</label> <span>Me</span>
+                </div>
+                <div class="comnent_main">
+                  <label>COMMENT:</label> <span>{{ c.comment }}</span>
+                </div>
+
+                <div class="comnent_main">
+                  <label> Action:</label> <span>{{ c.remark }}</span>
+                </div>
+                <div class="comnent_main">
+                  <!-- <label> TIME:</label> -->
+                  <span class="time">{{ c.createdAt | date: "medium" }}</span>
+                </div>
+              </li>
+              <!-- <li>
               
               <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
               <span *ngIf="hasUserId(c)"> NAME : me</span>
@@ -385,19 +395,22 @@
                 c.createdAt | date: "medium"
               }}
             </li> -->
-          </ul>
+            </ul>
+          </div>
         </div>
-        
-      </div>
-      <div class="modal_footer">
-        <button class="cancelBtn" type="button"
-        
-        data-dismiss="modal"
-        (click)="hideCommentModel()">Close</button>
+        <div class="modal_footer">
+          <button
+            class="cancelBtn"
+            type="button"
+            data-dismiss="modal"
+            (click)="hideCommentModel()"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <div
@@ -420,7 +433,10 @@
           </button>
         </div>
         <div class="modal-body">
-          <form (ngSubmit)="onSubmitStartDate()" [formGroup]="popUpStartDateForm">
+          <form
+            (ngSubmit)="onSubmitStartDate()"
+            [formGroup]="popUpStartDateForm"
+          >
             <div class="modal-body">
               <div class="form-group">
                 <label>Start Date</label>
@@ -472,7 +488,11 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button class="saveBtn" type="submit" [disabled]="!popUpForm.valid">
+              <button
+                type="submit"
+                class="saveBtn"
+                [disabled]="!popUpStartDateForm.valid"
+              >
                 Renew
               </button>
             </div>
