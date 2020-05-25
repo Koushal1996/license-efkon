@@ -147,23 +147,13 @@ public class LicenseController {
 		return licenseService.findById(licenseId);
 	}
 
-	@GetMapping(value = "license/active", produces = { "application/json" })
+	@GetMapping(value = "dashboard/license", produces = { "application/json" })
 	@Operation(summary = "Find all active licenses", description = "return active license count", tags = { "License" })
 	@ApiResponses(value = {
-			@ApiResponse(description = "active license count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "active and expired license count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
 			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public ProjectProductGraphResponse findActiveLicenses() {
-		return licenseService.findActiveLicenses();
-	}
-
-	@GetMapping(value = "license/expired", produces = { "application/json" })
-	@Operation(summary = "Find all expired licenses", description = "return expired license count", tags = {
-			"License" })
-	@ApiResponses(value = {
-			@ApiResponse(description = "expired license count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
-			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public ProjectProductGraphResponse findExpiredLicenses() {
-		return licenseService.findExpiredLicenses();
+	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenses() {
+		return licenseService.findTotalActiveAndExpiredLicenses();
 	}
 
 }

@@ -193,7 +193,7 @@ public class ProjectProductController {
 
 	}
 
-	@GetMapping(value = "project/product/status", produces = { "application/json" })
+	@GetMapping(value = "dashboard/product-status", produces = { "application/json" })
 	@Operation(summary = "Find count of products by status", description = "return a list of product status and their count", tags = {
 			"Project" })
 	@ApiResponses(value = {

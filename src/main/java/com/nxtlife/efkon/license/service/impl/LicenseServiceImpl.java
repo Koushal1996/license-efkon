@@ -305,14 +305,12 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 
 	@Override
 	@Secured(AuthorityUtils.LICENSE_FETCH)
-	public ProjectProductGraphResponse findActiveLicenses() {
+	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenses() {
 		User user = getUser();
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
-		ProjectProductGraphResponse response = null;
-
+		List<ProjectProductGraphResponse> licenseCounts;
 		if (roles.contains("Customer")) {
-			response = projectProductDao.findActiveLicensesByCustomerEmail(user.getEmail());
-			response.setStatus("Active Licenses");
+			licenseCounts = projectProductDao.findTotalActiveAndExpiredLicenseCountByCustomerEmail(user.getEmail());
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -320,46 +318,14 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				roles.remove("Project Manager");
 			}
 			if (roles.isEmpty() && isProjectManager) {
-				response = projectProductDao.findActiveLicensesByProjectManagerId(user.getUserId());
-				response.setStatus("Active Licenses");
+				licenseCounts = projectProductDao
+						.findTotalActiveAndExpiredLicenseCountByProjectManagerId(user.getUserId());
 
 			} else {
-				response = projectProductDao.findActiveLicenses();
-				response.setStatus("Active Licenses");
+				licenseCounts = projectProductDao.findTotalActiveAndExpiredLicenseCount();
 			}
 		}
-		return response;
-	}
-
-	@Override
-	@Secured(AuthorityUtils.LICENSE_FETCH)
-	public ProjectProductGraphResponse findExpiredLicenses() {
-		User user = getUser();
-		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
-		ProjectProductGraphResponse response;
-
-		if (roles.contains("Customer")) {
-			if (user.getEmail() == null) {
-				throw new ValidationException(String.format("Email having id [%d] doesn't have email", user.getId()));
-			}
-			response = projectProductDao.findExpiredLicensesByCustomerEmail(user.getEmail());
-			response.setStatus("Expired Licenses");
-		} else {
-			Boolean isProjectManager = false;
-			if (roles.contains("Project Manager")) {
-				isProjectManager = true;
-				roles.remove("Project Manager");
-			}
-			if (roles.isEmpty() && isProjectManager) {
-				response = projectProductDao.findExpiredLicensesByProjectManagerId(user.getUserId());
-				response.setStatus("Expired Licenses");
-
-			} else {
-				response = projectProductDao.findExpiredLicenses();
-				response.setStatus("Expired Licenses");
-			}
-		}
-		return response;
+		return licenseCounts;
 	}
 
 }

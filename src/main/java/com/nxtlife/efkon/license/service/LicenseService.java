@@ -82,26 +82,14 @@ public interface LicenseService {
 	public Resource findLicensesByProjectIdAndProductIdExcel(Long projectId, Long productId);
 
 	/**
-	 * this method is used to generate the excel file containing licenses of all the
-	 * products of particular project
+	 * this method is used to generate the excel file containing licenses of all
+	 * the products of particular project
 	 * 
 	 * @param projectId
 	 * @return
 	 */
 	public Resource findLicensesByProjectIdExcel(Long projectId);
 
-	/**
-	 * this method is used to find all the active licenses
-	 * 
-	 * @return {@link ProjectProductGraphResponse}
-	 */
-	public ProjectProductGraphResponse findActiveLicenses();
-
-	/**
-	 * this method is used to find all the expired licenses
-	 * 
-	 * @return {@link ProjectProductGraphResponse}
-	 */
-	public ProjectProductGraphResponse findExpiredLicenses();
+	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenses();
 
 }

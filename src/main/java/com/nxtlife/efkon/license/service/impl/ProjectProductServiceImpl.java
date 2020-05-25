@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -586,7 +585,6 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 	}
 
-	@SuppressWarnings({ "null", "unused" })
 	@Override
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
 	public List<ProjectProductGraphResponse> findCountByStatus() {
@@ -610,62 +608,31 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 			}
 		}
-
 		ProjectProductStatus pps[] = ProjectProductStatus.values();
 		Arrays.sort(pps);
-
 		int arrSize = pps.length;
 		int responseSize = projectProductGraphResponse.size();
 		int i = 0, j = 0;
-
-		if (projectProductGraphResponse != null) {
+		if (projectProductGraphResponse == null || projectProductGraphResponse.isEmpty()) {
+			for (ProjectProductStatus status : pps) {
+				projectProductGraphResponse.add(new ProjectProductGraphResponse(status, 0));
+			}
+		} else {
 			while (i < arrSize && j < responseSize) {
-				if (pps[i].toString() == projectProductGraphResponse.get(j).getStatus()) {
+				if (pps[i].toString().equals(projectProductGraphResponse.get(j).getStatus())) {
 					i++;
 					j++;
 					continue;
-				}
-
-				else {
+				} else {
 					projectProductGraphResponse.add(new ProjectProductGraphResponse(pps[i], 0));
 					i++;
 				}
 			}
-
 			while (i < arrSize) {
 				projectProductGraphResponse.add(new ProjectProductGraphResponse(pps[i], 0));
 				i++;
 			}
-
-		} else {
-
-			for (ProjectProductStatus status : pps) {
-				projectProductGraphResponse.add(new ProjectProductGraphResponse(status, 0));
-			}
 		}
-
-//		if (projectProductGraphResponse != null) {
-//			List<String> ppsList = new LinkedList<String>();
-//			for (ProjectProductStatus iterate : pps) {
-//				ppsList.add(iterate.toString());
-//			}
-//
-//			for (ProjectProductGraphResponse iterate : projectProductGraphResponse) {
-//				if (ppsList.contains(iterate.getStatus())) {
-//					ppsList.remove(iterate.getStatus());
-//				}
-//			}
-//
-//			for (String status : ppsList) {
-//				projectProductGraphResponse.add(new ProjectProductGraphResponse(status, 0));
-//			}
-//		} else {
-//
-//			for (ProjectProductStatus status : pps) {
-//				projectProductGraphResponse.add(new ProjectProductGraphResponse(status, 0));
-//			}
-//		}
-
 		return projectProductGraphResponse;
 	}
 
