@@ -20,83 +20,94 @@
           <i class="fa fa-search"></i>
         </div>
       </form>
-     <div class="table_scroll">
-      <table>
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col" style="min-width:120px;">
-              Name
-              <div class="shorting">
-                <button (click)="sortAphabetically()"><span class="material-icons">
-                  arrow_upward
-                  </span></button>
-                <button (click)="reverseAphabetically()"><span class="material-icons">
-                  arrow_downward
-                  </span></button>
+      <div class="table_scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" style="min-width: 120px;">
+                Name
+                <div class="shorting">
+                  <button (click)="sortAphabetically()">
+                    <span class="material-icons">
+                      arrow_upward
+                    </span>
+                  </button>
+                  <button (click)="reverseAphabetically()">
+                    <span class="material-icons">
+                      arrow_downward
+                    </span>
+                  </button>
                 </div>
-              <!-- <button (click)="sortAphabetically()">up</button>
+                <!-- <button (click)="sortAphabetically()">up</button>
               <button (click)="reverseAphabetically()">down</button> -->
-            </th>
-            <th scope="col">Authorities</th>
-            <th
-              class="action_width"
-              scope="col"
-              *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')"
-            >
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of roles; index as index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ item.name }}</td>
-            <td>
-              <span
-                class="badge badge-pill badge-info custom_badge"
-                *ngFor="let auth of item.authorities; index as index"
+              </th>
+              <th scope="col">Authorities</th>
+              <th
+                class="action_width"
+                scope="col"
+                *ngIf="
+                  hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')
+                "
               >
-                {{ auth.name }}
-              </span>
-            </td>
-            <ng-container
-              *ngIf="hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')"
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of roles; index as index"
+              id="{{ item.id }}"
+              class=""
             >
-              <td *ngIf="item.active">
-                <button
-                  class="edit_button top_tooltip"
-                  *ngIf="hasAuthority('ROLE_UPDATE')"
-                  (click)="editrole(item)"
+              <td>{{ index + 1 }}</td>
+              <td>{{ item.name }}</td>
+              <td>
+                <span
+                  class="badge badge-pill badge-info custom_badge"
+                  *ngFor="let auth of item.authorities; index as index"
                 >
-                  <i class="fa fa-edit"></i>
-                  <span>Edit Role</span>
-                </button>
-                <button
-                  class="delete_button top_tooltip"
-                  *ngIf="hasAuthority('ROLE_DELETE')"
-                  (click)="deleterole(item)"
-                >
-                  <i class="fa fa-trash"></i>
-                  <span>Delete Role</span>
-                </button>
+                  {{ auth.name }}
+                </span>
               </td>
-              <td *ngIf="!item.active">
-                <button
-                  class="roleactive"
-                  *ngIf="hasAuthority('ROLE_DELETE')"
-                  (click)="activaterole(item)"
-                >
-                  activate
-                </button>
-              </td>
-            </ng-container>
-          </tr>
-        </tbody>
-      </table>
-     </div>
+              <ng-container
+                *ngIf="
+                  hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')
+                "
+              >
+                <td *ngIf="item.active">
+                  <button
+                    class="edit_button top_tooltip"
+                    *ngIf="hasAuthority('ROLE_UPDATE')"
+                    (click)="editrole(item)"
+                  >
+                    <i class="fa fa-edit"></i>
+                    <span>Edit Role</span>
+                  </button>
+                  <button
+                    class="delete_button top_tooltip"
+                    *ngIf="hasAuthority('ROLE_DELETE')"
+                    (click)="deleterole(item)"
+                  >
+                    <i class="fa fa-trash"></i>
+                    <span>Delete Role</span>
+                  </button>
+                </td>
+                <td *ngIf="!item.active">
+                  <button
+                    class="roleactive"
+                    *ngIf="hasAuthority('ROLE_DELETE')"
+                    (click)="activaterole(item)"
+                  >
+                    activate
+                  </button>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </ng-container>
-   
   </div>
   <div *ngIf="isloader" class="loader">
     <img class="loader_gif" src="assets/images/loader3.gif" alt="" />

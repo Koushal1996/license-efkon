@@ -15,6 +15,8 @@ export class LicensesComponent implements OnInit {
   selectedLicenseTypeId: any;
   monthCount;
   showForm: boolean = false;
+  isloader: boolean = true;
+
   constructor(
     private fb: FormBuilder,
     private projectservice: ProjectService
@@ -34,6 +36,7 @@ export class LicensesComponent implements OnInit {
     this.projectservice.getLicenseType().subscribe((data) => {
       this.licenseType = data;
       console.log(data);
+      this.isloader = false;
     });
   }
 
@@ -57,6 +60,9 @@ export class LicensesComponent implements OnInit {
         },
         (error) => {}
       );
+  }
+  onBack(license) {
+    license.edit = false;
   }
 
   // editMonthCount(license) {

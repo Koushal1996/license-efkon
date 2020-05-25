@@ -73,6 +73,7 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   deleteProduct(project) {
+    $("#" + project.id).addClass("highlight");
     swal({
       title: "You sure?",
       // text: "You want to go ahead with deletion?",
@@ -83,6 +84,7 @@ export class ProjectProductComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + project.id).removeClass("highlight");
       } else {
         this._projectService.deleteProduct(project.id).subscribe(
           (data) => {
@@ -97,6 +99,7 @@ export class ProjectProductComponent implements OnInit {
           },
           (error) => {}
         );
+        $("#" + project.id).removeClass("highlight");
       }
     });
   }

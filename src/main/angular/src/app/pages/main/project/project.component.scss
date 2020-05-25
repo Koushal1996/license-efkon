@@ -1,24 +1,29 @@
-.padding{padding:0px}
-.cursor{ cursor: pointer;}
+.padding {
+  padding: 0px;
+}
+.cursor {
+  cursor: pointer;
+}
 
 button.btn.btn-primary {
-    display: inline-block;
-    width: auto;
-    padding: 5px;
-    font-size: 14px;
-    background: green;
-    border: 1px solid green;
-    border-radius: 3px;
-    color: #fff;
+  display: inline-block;
+  width: auto;
+  padding: 5px;
+  font-size: 14px;
+  background: green;
+  border: 1px solid green;
+  border-radius: 3px;
+  color: #fff;
 }
-.btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
-    box-shadow: none;
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: none;
 }
-.top_tooltip{
-    position: relative;
-    display: inline-block;
-    width: auto;
-   span{
+.top_tooltip {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  span {
     position: absolute;
     top: -36px;
     left: auto;
@@ -26,121 +31,117 @@ button.btn.btn-primary {
     min-width: 90px;
     text-align: center;
     right: -12px;
-    &:after{
+    &:after {
       content: "";
       border-top: 10px solid #2b3643;
       bottom: -9px;
       left: auto;
       right: 10px;
     }
-   }
-   &:hover{
-    span{
+  }
+  &:hover {
+    span {
       display: block;
-      animation: top .5s;
+      animation: top 0.5s;
     }
   }
-  }
-  .badge.badge-success {
-    background-color: transparent;
-    border: 1px solid green;
-    color: green;
-  }
-
-  .box_com{
-    display: inline-block;
-    width: 19%;
-    position: relative;
-    vertical-align: top;
+}
+.badge.badge-success {
+  background-color: transparent;
+  border: 1px solid green;
+  color: green;
 }
 
+.box_com {
+  display: inline-block;
+  width: 19%;
+  position: relative;
+  vertical-align: top;
+}
 
-.box_com:nth-child(even){
-    margin-top: 180px;
+.box_com:nth-child(even) {
+  margin-top: 180px;
 }
 
 .box_com:nth-child(even) .box_2 {
-    display: grid;
+  display: grid;
 }
 
 .box_com:nth-child(odd) .box_1::after {
-    height: 3px;
-    width: 110%;
-    background-color: steelblue;
-    display: inline-block;
-    position: absolute;
-    content: "";
-    right: 0px;
-    bottom: -87px;
-    margin-right: -18px;
+  height: 3px;
+  width: 110%;
+  background-color: steelblue;
+  display: inline-block;
+  position: absolute;
+  content: "";
+  right: 0px;
+  bottom: -87px;
+  margin-right: -18px;
 }
 
 .box_com:nth-child(even) .box_2 .upper_box {
-    order: 2;
-    margin-top: 0px;
-    min-height: 140px;
-    text-align: center;
-    width: 360px;
-    border-width: 3px !important; 
-
+  order: 2;
+  margin-top: 0px;
+  min-height: 140px;
+  text-align: center;
+  width: 360px;
+  border-width: 3px !important;
 }
 
 .box_com:nth-child(even) .box_2 .lower_box {
-    order: 1;
-    margin-top: 140px;
-    transform: rotate(180deg);
-    margin-left: 60px;
+  order: 1;
+  margin-top: 140px;
+  transform: rotate(180deg);
+  margin-left: 60px;
 }
-
 
 .main-slider .slide .auto-container {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    right: 0;
-    left: 0;
-    transform: translateY(-50%);
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  right: 0;
+  left: 0;
+  transform: translateY(-50%);
 }
-section.main-slider{
-  padding:0 !important;}
-
-
+section.main-slider {
+  padding: 0 !important;
+}
 
 /*---------about-ibc------*/
-.content_main .main_box{
-    width: 100%;
-    display: inline-block;
-    padding: 0px 10px 10px 10px;
-    position: relative;
-    vertical-align: top;
-    text-align: center;
+.content_main .main_box {
+  width: 100%;
+  display: inline-block;
+  padding: 0px 10px 10px 10px;
+  position: relative;
+  vertical-align: top;
+  text-align: center;
 }
 
 /*-------about-ibc--------*/
-.ibc-code-section .main_box{
-    width: 100%;
-    display: inline-block;
-    margin-top: 10px; 
-} 
+.ibc-code-section .main_box {
+  width: 100%;
+  display: inline-block;
+  margin-top: 10px;
+}
 
 .ibc-code-section .box_com {
-    padding: 20px;
-    width: 100%;
-    display: inline-block;
-    /*font-family: 'Open Sans', sans-serif;*/
-    position: relative;
+  padding: 20px;
+  width: 100%;
+  display: inline-block;
+  /*font-family: 'Open Sans', sans-serif;*/
+  position: relative;
 }
 .ibc-code-section .box_com:nth-child(even) {
-  margin-top:0;
+  margin-top: 0;
 }
 .ibc-code-section .box_com:nth-child(even) .left_box {
-    float: right;
-    text-align: left;
-    padding-top: 20px;
+  float: right;
+  text-align: left;
+  padding-top: 20px;
 }
 
 .ibc-code-section .box_com:nth-child(even) .right_box .img_box {
-    order: 2;
+  order: 2;
 }
 
 // .ibc-code-section .box_com:nth-child(even) .right_box .text_box {
@@ -161,63 +162,63 @@ section.main-slider{
 }
 
 .ibc-code-section .box_com:nth-child(even) .right_box {
-    display: table-column-group;
-    float: left;
+  display: table-column-group;
+  float: left;
 }
 
-.ibc-code-section .box_com:nth-child(even) .right_box:after, .box_com:nth-child(even) .right_box:before{
-    left: 88%;
-    top: 20px;
+.ibc-code-section .box_com:nth-child(even) .right_box:after,
+.box_com:nth-child(even) .right_box:before {
+  left: 88%;
+  top: 20px;
 }
 
-.ibc-code-section .left_box{
-    width: 49%;
-    float: left;
-    position: relative;
-    padding: 20px 10px 0px 10px;
-    text-align: right;
+.ibc-code-section .left_box {
+  width: 49%;
+  float: left;
+  position: relative;
+  padding: 20px 10px 0px 10px;
+  text-align: right;
 }
 
-.ibc-code-section .box_com p{
+.ibc-code-section .box_com p {
   font-size: 15px;
   line-height: normal;
   color: #333333;
   margin-bottom: 5px;
 }
 
-.ibc-code-section .right_box{
-    width: 49%;
-    float: right;
-    display: inline-block;
-    padding: 10px;
-    position: relative;
+.ibc-code-section .right_box {
+  width: 49%;
+  float: right;
+  display: inline-block;
+  padding: 10px;
+  position: relative;
 }
 
-.ibc-code-section .img_box{
-    width: 50px;
-    height: 50px;
-    float: none;
-    margin: auto;
-    background: orange;
-    border-radius: 50%;
-    text-align: center;
-    overflow: hidden;
-    margin-top: 20px;
+.ibc-code-section .img_box {
+  width: 50px;
+  height: 50px;
+  float: none;
+  margin: auto;
+  background: orange;
+  border-radius: 50%;
+  text-align: center;
+  overflow: hidden;
+  margin-top: 20px;
 }
 
-.ibc-code-section .img_box img{
-    width: 100%;
-    // filter: invert(1);
-    vertical-align: inherit;
+.ibc-code-section .img_box img {
+  width: 100%;
+  // filter: invert(1);
+  vertical-align: inherit;
 }
 .ibc-code-section .img_box .img2 {
-    
 }
 .ibc-code-section .img_box .img3 {
-    margin-top: 14px;
+  margin-top: 14px;
 }
 
-.ibc-code-section .text_box{
+.ibc-code-section .text_box {
   width: 100%;
   float: none;
   font-size: 25px;
@@ -232,48 +233,46 @@ section.main-slider{
 }
 
 .ibc-code-section .box_com:after {
-    content: "";
-    position: absolute;
-    width: 3px;
-    height: 100%;
-    background: #4d4e4f;
-    left: 0;
-    right: 0;
-    margin: auto;
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 100%;
+  background: #4d4e4f;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 .ibc-code-section .right_box:before {
-    content: "";
-    position: absolute;
-    width: 14%;
-    height: 3px;
-    background: #4d4e4f;
-    left: -6px;
-    top: 19px;
-    bottom: 0;
-    margin: auto;
+  content: "";
+  position: absolute;
+  width: 14%;
+  height: 3px;
+  background: #4d4e4f;
+  left: -6px;
+  top: 19px;
+  bottom: 0;
+  margin: auto;
 }
 
 .ibc-code-section .right_box:after {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: #4d4e4f;
-    border-radius: 50%;
-    top: 19px;
-    bottom: 0;
-    margin: auto;
-    left: 9%;
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  background: #4d4e4f;
+  border-radius: 50%;
+  top: 19px;
+  bottom: 0;
+  margin: auto;
+  left: 9%;
 }
 
-
-
-.ibc-code-section .box_com:nth-child(1) .right_box:after{
-    background: #455c7b;
+.ibc-code-section .box_com:nth-child(1) .right_box:after {
+  background: #455c7b;
 }
-.ibc-code-section .box_com:nth-child(2) .right_box:after{
-    background: #4d4e4f;
+.ibc-code-section .box_com:nth-child(2) .right_box:after {
+  background: #4d4e4f;
 }
 // .ibc-code-section .box_com:nth-child(3) .right_box:after{
 //     background: #3c6294;
@@ -285,11 +284,11 @@ section.main-slider{
 //     background: #2b405a;
 // }
 
-.ibc-code-section .box_com:nth-child(1) .right_box:before{
-    background: #455c7b;
+.ibc-code-section .box_com:nth-child(1) .right_box:before {
+  background: #455c7b;
 }
-.ibc-code-section .box_com:nth-child(2) .right_box:before{
-    background: #4d4e4f;
+.ibc-code-section .box_com:nth-child(2) .right_box:before {
+  background: #4d4e4f;
 }
 // .ibc-code-section .box_com:nth-child(3) .right_box:before{
 //     background: #3c6294;
@@ -301,11 +300,11 @@ section.main-slider{
 //     background: #2b405a;
 // }
 
-.ibc-code-section .box_com:nth-child(1) .left_box:before{
-    background: #455c7b;
+.ibc-code-section .box_com:nth-child(1) .left_box:before {
+  background: #455c7b;
 }
-.ibc-code-section .box_com:nth-child(2) .left_box:before{
-    background: #4d4e4f;
+.ibc-code-section .box_com:nth-child(2) .left_box:before {
+  background: #4d4e4f;
 }
 // .ibc-code-section .box_com:nth-child(3) .left_box:before{
 //     background: #3c6294;
@@ -317,11 +316,11 @@ section.main-slider{
 //     background: #2b405a;
 // }
 
-.ibc-code-section .box_com:nth-child(1):after{
-    background: #455c7b;
+.ibc-code-section .box_com:nth-child(1):after {
+  background: #455c7b;
 }
-.ibc-code-section .box_com:nth-child(2):after{
-    background: #4d4e4f;
+.ibc-code-section .box_com:nth-child(2):after {
+  background: #4d4e4f;
 }
 // .ibc-code-section .box_com:nth-child(3):after{
 //     background: #3c6294;
@@ -333,11 +332,11 @@ section.main-slider{
 //     background: #2b405a;
 // }
 
-.ibc-code-section .box_com:nth-child(1) .img_box{
-    background: #455c7b;
+.ibc-code-section .box_com:nth-child(1) .img_box {
+  background: #455c7b;
 }
-.ibc-code-section .box_com:nth-child(2) .img_box{
-    background: #4d4e4f;
+.ibc-code-section .box_com:nth-child(2) .img_box {
+  background: #4d4e4f;
 }
 // .ibc-code-section .box_com:nth-child(3) .img_box{
 //     background: #3c6294;
@@ -396,5 +395,12 @@ section.main-slider{
   background: rgba(0, 0, 0, 0.8);
   width: 100%;
   min-height: 100vh;
-  transform:inherit;
+  transform: inherit;
+}
+
+.highlight {
+  background-color: #ccc;
+}
+.highlight td {
+  color: #fff;
 }

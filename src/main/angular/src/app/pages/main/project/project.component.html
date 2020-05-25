@@ -137,7 +137,8 @@
                           <th scope="col">Status</th>
                           <th scope="col">Action</th>
                         </tr>
-                        <tr *ngFor="let pro of project.products; index as i">
+                        <tr *ngFor="let pro of project.products; 
+                        index as i" id="{{ pro.id }}" class="" >
                           <td>{{ i + 1 }}</td>
                           <td>
                             {{ pro.productDetailResponse.productCodeName }}
@@ -379,9 +380,7 @@
                   <div class="box_com" *ngFor="let c of comments">
                     <div class="left_box">
                       <p>
-                        {{ c.comment }} Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim
+                        {{ c.comment }}
                       </p>
                       <h5>{{ c.remark }}</h5>
                       <h6>{{ c.createdAt | date: "medium" }}</h6>
@@ -397,7 +396,7 @@
                           {{ c.commentedBy }}
                         </h2>
                         <h2 *ngIf="hasUserId(c)">
-                          Aeikee Nantes
+                          me
                         </h2>
                       </div>
                     </div>

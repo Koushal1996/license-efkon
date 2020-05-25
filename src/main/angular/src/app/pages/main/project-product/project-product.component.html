@@ -34,7 +34,7 @@
         </thead>
         <tbody id="accordion">
           <ng-container *ngFor="let project of projectProduct; index as i">
-            <tr>
+            <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
               <td>
                 {{ project.productDetailResponse.productCodeName }}

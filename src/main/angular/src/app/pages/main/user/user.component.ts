@@ -4,6 +4,7 @@ import { AdminService } from "./../../../services/admin/admin.service";
 import swal from "sweetalert";
 import { StorageService } from "src/app/services/storage/storage.service";
 import { FormControl, FormGroup, FormBuilder } from "@angular/forms";
+declare let $: any;
 @Component({
   selector: "app-user",
   templateUrl: "./user.component.html",
@@ -17,6 +18,7 @@ export class UserComponent implements OnInit {
   usersCopy: any[] = [];
   showModal: boolean = false;
   selectedAuthorites: any;
+
   constructor(
     private _admin: AdminService,
     private route: Router,
@@ -44,8 +46,11 @@ export class UserComponent implements OnInit {
       .map((a) => a.name);
     return authorities.includes(authority);
   }
-
   deleteuser(item) {
+    //$("#item").addClass("highlight");
+    $("#" + item.id).addClass("highlight");
+    // var element = document.getElementById("item");
+    // element.classList.add("highlight");
     swal({
       title: "You sure?",
       text: `You want to delete ${item.name}?`,
@@ -55,13 +60,15 @@ export class UserComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + item.id).removeClass("highlight");
       } else {
         this._admin.deleteUser(item.id).subscribe(
           (data) => {
             item.active = false;
             swal(`${item.name} Delete successfully!`);
+            $("#" + item.id).removeClass("highlight");
           },
-          (error) => {}
+          (error) => $("#" + item.id).removeClass("highlight")
         );
       }
     });

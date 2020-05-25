@@ -9,7 +9,7 @@ import {
   FormArray,
 } from "@angular/forms";
 import swal from "sweetalert";
-
+declare let $: any;
 @Component({
   selector: "app-detail",
   templateUrl: "./detail.component.html",
@@ -137,6 +137,7 @@ export class DetailComponent implements OnInit {
     });
   }
   deleteProductDetail(detail, code, productDetailId) {
+    $("#" + productDetailId).addClass("highlight");
     swal({
       title: "You sure?",
       text: `You want to delete ${detail.name} ${code.name}?`,
@@ -145,6 +146,7 @@ export class DetailComponent implements OnInit {
       buttons: ["Yes", "No"],
       dangerMode: true,
     }).then((willDelete) => {
+      $("#" + productDetailId).removeClass("highlight");
       if (willDelete) {
       } else {
         this._productService.deleteProductDetail(productDetailId).subscribe(

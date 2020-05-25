@@ -1,21 +1,24 @@
-.backgroundcolor{background-color:#ccc}
-.cursor{ cursor: pointer;}
+.backgroundcolor {
+  background-color: #ccc;
+}
+.cursor {
+  cursor: pointer;
+}
 .buttan_main {
-    display: inline-block;
-    width: 100%;
-    margin-top: 15px;
+  display: inline-block;
+  width: 100%;
+  margin-top: 15px;
 }
 
 .btn-danger {
-    color: #fff;
-    text-align: center;
-    position: inherit;
-    bottom: 2px;
-    right: 15px;
-    background-color: #e74111;
-    border-color: #e74111;
+  color: #fff;
+  text-align: center;
+  position: inherit;
+  bottom: 2px;
+  right: 15px;
+  background-color: #e74111;
+  border-color: #e74111;
 }
-
 
 .search_bar {
   max-width: 250px;
@@ -28,15 +31,21 @@
     height: auto;
     border: 1px solid #ddd;
     font-size: 14px;
-    }
-i {
-  position: absolute;
-  top: 7px;
-  right: 11px;
-  color: #29aba4cf;
-}
+  }
+  i {
+    position: absolute;
+    top: 7px;
+    right: 11px;
+    color: #29aba4cf;
+  }
 }
 
 .table_scroll {
   height: calc(100vh - 134px);
+}
+.highlight {
+  background-color: #ccc;
+}
+.highlight td {
+  color: #fff;
 }

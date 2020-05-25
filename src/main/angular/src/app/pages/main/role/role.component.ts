@@ -6,6 +6,7 @@ import { hasLifecycleHook } from "@angular/compiler/src/lifecycle_reflector";
 import { Router } from "@angular/router";
 import swal from "sweetalert";
 import { FormGroup, FormBuilder } from "@angular/forms";
+declare let $: any;
 
 @Component({
   selector: "app-role",
@@ -57,6 +58,7 @@ export class RoleComponent implements OnInit {
   }
 
   deleterole(item) {
+    $("#" + item.id).addClass("highlight");
     swal({
       title: "You sure?",
       text: `You want to delete ${item.name}?`,
@@ -66,14 +68,17 @@ export class RoleComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + item.id).removeClass("highlight");
       } else {
         this._adminService.deleteRole(item.id).subscribe(
           (data) => {
             item.active = false;
             swal(`${item.name} Delete successfully!`);
+            $("#" + item.id).removeClass("highlight");
           },
           (error) => {
             console.log(error);
+            $("#" + item.id).removeClass("highlight");
           }
         );
       }

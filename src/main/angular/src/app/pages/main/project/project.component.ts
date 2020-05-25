@@ -88,6 +88,7 @@ export class ProjectComponent implements OnInit {
     this.route.navigate([`projects/${project.id}/product`]);
   }
   deleteProduct(pro) {
+    $("#" + pro.id).addClass("highlight");
     swal({
       title: "You sure?",
       text: `You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
@@ -97,6 +98,7 @@ export class ProjectComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + pro.id).removeClass("highlight");
       } else {
         this.projectservice.deleteProduct(pro.id).subscribe(
           (data) => {
@@ -107,6 +109,7 @@ export class ProjectComponent implements OnInit {
           },
           (error) => {}
         );
+        $("#" + pro.id).removeClass("highlight");
       }
     });
   }
