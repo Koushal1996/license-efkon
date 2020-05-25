@@ -16,6 +16,7 @@ export class FamilyComponent implements OnInit {
   ngOnInit() {
     this._productService.getProductFamilies().subscribe((data) => {
       this.family = data;
+      console.log(data);
       this.isloader = false;
     });
   }
@@ -29,7 +30,7 @@ export class FamilyComponent implements OnInit {
   deleteFamilyDescription(family) {
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      text: `You want to delete ${family.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -44,8 +45,8 @@ export class FamilyComponent implements OnInit {
               this.family.findIndex((pd) => pd.id == family.id),
               1
             );
+            swal("Product family delete successfully!");
           });
-        swal("Product family delete successfully!");
       }
     });
   }

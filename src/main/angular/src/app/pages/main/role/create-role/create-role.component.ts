@@ -42,7 +42,7 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
       textField: 'name',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
-      itemsShowLimit: 3,
+      itemsShowLimit: 2,
       allowSearchFilter: true
     };
 

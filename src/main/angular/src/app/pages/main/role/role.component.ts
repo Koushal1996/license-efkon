@@ -59,7 +59,7 @@ export class RoleComponent implements OnInit {
   deleterole(item) {
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      text: `You want to delete ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -70,7 +70,7 @@ export class RoleComponent implements OnInit {
         this._adminService.deleteRole(item.id).subscribe(
           (data) => {
             item.active = false;
-            swal("Delete successfully!");
+            swal(`${item.name} Delete successfully!`);
           },
           (error) => {
             console.log(error);
@@ -82,7 +82,7 @@ export class RoleComponent implements OnInit {
   activaterole(item) {
     swal({
       title: "Are you sure?",
-      text: "Are you sure that you want to activate this?",
+      text: `You want to activate ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -90,10 +90,10 @@ export class RoleComponent implements OnInit {
     }).then((willDelete) => {
       if (willDelete) {
       } else {
-        this._adminService.deleteRole(item.id).subscribe(
+        this._adminService.activateRole(item.id).subscribe(
           (data) => {
             item.active = true;
-            swal("Activate successfully!");
+            swal(`${item.name} Activate successfully!`);
           },
           (error) => {
             console.log(error);

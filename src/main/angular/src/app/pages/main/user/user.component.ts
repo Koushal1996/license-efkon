@@ -48,7 +48,7 @@ export class UserComponent implements OnInit {
   deleteuser(item) {
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      text: `You want to delete ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -59,7 +59,7 @@ export class UserComponent implements OnInit {
         this._admin.deleteUser(item.id).subscribe(
           (data) => {
             item.active = false;
-            swal("Delete successfully!");
+            swal(`${item.name} Delete successfully!`);
           },
           (error) => {}
         );
@@ -83,7 +83,7 @@ export class UserComponent implements OnInit {
   activateuser(item) {
     swal({
       title: "Are you sure?",
-      text: "Are you sure that you want to activate this?",
+      text: `You want to activate ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -94,7 +94,7 @@ export class UserComponent implements OnInit {
         this._admin.activateUser(item.id).subscribe(
           (data) => {
             item.active = true;
-            swal("Activate successfully!");
+            swal(`${item.name} Activate successfully!`);
           },
           (error) => {}
         );

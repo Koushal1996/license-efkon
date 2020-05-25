@@ -3,6 +3,7 @@ package com.nxtlife.efkon.license.entity.project.product;
 import java.io.Serializable;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -72,6 +73,9 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 
 	@OneToMany(mappedBy = "projectProduct")
 	private Set<ProjectProductComment> projectProductComments;
+
+	@OneToMany(mappedBy = "projectProduct", cascade = CascadeType.ALL)
+	private Set<ProjectProductLicenseRequest> projectProductLicenseRequest;
 
 	public ProjectProduct() {
 		super();
@@ -215,6 +219,14 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 
 	public void setProjectProductComments(Set<ProjectProductComment> projectProductComments) {
 		this.projectProductComments = projectProductComments;
+	}
+
+	public Set<ProjectProductLicenseRequest> getProjectProductLicenseRequest() {
+		return projectProductLicenseRequest;
+	}
+
+	public void setProjectProductLicenseRequest(Set<ProjectProductLicenseRequest> projectProductLicenseRequest) {
+		this.projectProductLicenseRequest = projectProductLicenseRequest;
 	}
 
 }

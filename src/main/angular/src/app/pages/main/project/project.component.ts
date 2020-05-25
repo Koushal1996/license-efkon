@@ -61,7 +61,7 @@ export class ProjectComponent implements OnInit {
 
   initpopUpForm() {
     return this.fb.group({
-      comment: [""],
+      comment: ["", [Validators.required]],
     });
   }
   initpopUpStartDateForm() {
@@ -90,7 +90,7 @@ export class ProjectComponent implements OnInit {
   deleteProduct(pro) {
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      text: `You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -100,7 +100,9 @@ export class ProjectComponent implements OnInit {
       } else {
         this.projectservice.deleteProduct(pro.id).subscribe(
           (data) => {
-            swal("Delete Successfully!");
+            swal(
+              `${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} Delete successfully!`
+            );
             this.getProjects();
           },
           (error) => {}
@@ -265,6 +267,7 @@ export class ProjectComponent implements OnInit {
     this.showCommentModal = false;
   }
   showComments(pro) {
+    console.log(pro.comments);
     this.comments = pro.comments;
     if (this.comments.length > 0) {
       this.showCommentModal = true;
@@ -305,6 +308,7 @@ export class ProjectComponent implements OnInit {
           this.popUpStartDateForm.reset();
         },
         (error) => {
+          this.popUpStartDateForm.reset();
           this.showRenewModal = false;
         }
       );
@@ -321,5 +325,22 @@ export class ProjectComponent implements OnInit {
   }
   reverseAphabetically() {
     this.projects.reverse();
+  }
+  viewLicenses(project) {
+    console.log(project.id);
+    this.projectservice.getProjectLicenseById(project.id).subscribe(
+      (data) => {
+        console.log(data);
+        this.route.navigate([`projects/${project.id}/licenses`]);
+      },
+      (error) => {
+        //swal("No License are found");
+      }
+    );
+  }
+  createExcelLicense(project) {
+    this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {
+      console.log(data);
+    });
   }
 }

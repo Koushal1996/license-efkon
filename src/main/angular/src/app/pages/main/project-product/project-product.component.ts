@@ -63,7 +63,7 @@ export class ProjectProductComponent implements OnInit {
   }
   initpopUpForm() {
     return this.fb.group({
-      comment: [""],
+      comment: ["", [Validators.required]],
     });
   }
   initpopUpStartDateForm() {
@@ -75,7 +75,8 @@ export class ProjectProductComponent implements OnInit {
   deleteProduct(project) {
     swal({
       title: "You sure?",
-      text: "You want to go ahead with deletion?",
+      // text: "You want to go ahead with deletion?",
+      text: `You want to delete ${project.productDetailResponse.productCodeName}  ${project.productDetailResponse.productFamilyName} ${project.productDetailResponse.versionName} Product`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -85,7 +86,9 @@ export class ProjectProductComponent implements OnInit {
       } else {
         this._projectService.deleteProduct(project.id).subscribe(
           (data) => {
-            swal("Delete Successfully!");
+            swal(
+              `${project.productDetailResponse.productCodeName}  ${project.productDetailResponse.productFamilyName} ${project.productDetailResponse.versionName} Delete successfully!`
+            );
             // this.getProjectProducts();
             this.projectProduct.splice(
               this.projectProduct.findIndex((pd) => pd.id == project.id),
@@ -320,6 +323,7 @@ export class ProjectProductComponent implements OnInit {
           this.popUpStartDateForm.reset();
         },
         (error) => {
+          this.popUpStartDateForm.reset();
           this.showRenewModal = false;
         }
       );

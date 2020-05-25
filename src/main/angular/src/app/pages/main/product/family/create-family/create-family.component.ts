@@ -59,6 +59,7 @@ export class CreateFamilyComponent implements OnInit {
 
   onSubmit() {
     if (this.familyId) {
+      console.log(this.createFamilyForm.value);
       this._productService
         .updateProductFamily(this.familyId, this.createFamilyForm.value)
         .subscribe((data) => {
@@ -96,5 +97,8 @@ export class CreateFamilyComponent implements OnInit {
       );
       productCodeIds.push(this.productCode("", ""));
     }
+  }
+  back() {
+    this.route.navigate(["/products/family"]);
   }
 }

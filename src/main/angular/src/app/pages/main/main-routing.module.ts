@@ -17,12 +17,14 @@ import { AddProductComponent } from "./project/add-product/add-product.component
 import { ProfileComponent } from "./profile/profile.component";
 import { ProjectProductComponent } from "./project-product/project-product.component";
 import { CreateFamilyComponent } from "./product/family/create-family/create-family.component";
+import { SelectedLicensesComponent } from "./project/selected-licenses/selected-licenses.component";
 
 const routes: Routes = [
   {
     path: "",
     component: MainComponent,
     children: [
+      { path: "", redirectTo: "projects", pathMatch: "full" },
       { path: "roles", component: RoleComponent },
       {
         path: "roles/create",
@@ -40,6 +42,7 @@ const routes: Routes = [
       { path: "projects", component: ProjectComponent },
       { path: "projects/create", component: CreateProjectComponent },
       { path: "projects/:id/product", component: AddProductComponent },
+      { path: "projects/:id/licenses", component: SelectedLicensesComponent },
       {
         path: "projects/:id/product/:productId",
         component: AddProductComponent,
@@ -48,11 +51,11 @@ const routes: Routes = [
         path: "products",
         component: ProductComponent,
         children: [
-          { path: "version", component: VersionComponent },
           { path: "family", component: FamilyComponent },
           { path: "family/create", component: CreateFamilyComponent },
           { path: "family/:id", component: CreateFamilyComponent },
           { path: "detail", component: DetailComponent },
+          { path: "version", component: VersionComponent },
           { path: "license", component: LicensesComponent },
         ],
       },

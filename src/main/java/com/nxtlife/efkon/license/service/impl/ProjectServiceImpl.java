@@ -115,8 +115,11 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		User user = getUser();
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		List<ProjectResponse> projects;
+		List<Map<String, Object>> projectProductCounts;
 		if (roles.contains("Customer")) {
 			projects = projectDao.findByCustomerEmailAndActive(user.getEmail(), true);
+			projectProductCounts = projectProductDao
+					.findProjectIdAndCountByGroupByProjectIdAndActiveAndCustomerEmail(true, user.getEmail());
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -125,12 +128,14 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 			}
 			if (roles.isEmpty() && isProjectManager) {
 				projects = projectDao.findByProjectManagerIdAndActive(user.getUserId(), true);
+				projectProductCounts = projectProductDao
+						.findProjectIdAndCountByGroupByProjectIdAndActiveAndProjectManagerId(true, user.getUserId());
 			} else {
 				projects = projectDao.findByActive(true);
+				projectProductCounts = projectProductDao.findProjectIdAndCountByGroupByProjectIdAndActive(true);
 			}
 		}
-		List<Map<String, Object>> projectProductCounts = projectProductDao
-				.findProjectIdAndCountByGroupByProjectIdAndActive(true);
+
 		Map<Long, Long> projectProductCountLookup = new HashMap<>();
 		projectProductCounts.forEach(projectProductCount -> {
 			projectProductCountLookup.putIfAbsent(Long.parseLong(projectProductCount.get("id").toString()),
