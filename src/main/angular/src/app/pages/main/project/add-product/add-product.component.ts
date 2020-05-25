@@ -116,12 +116,24 @@ export class AddProductComponent implements OnInit {
       this.patchaValue();
     });
     var today = new Date();
+
+    var month = (today.getMonth() + 1).toString();
+    var currentMonth;
+    if (month.length > 1) {
+      currentMonth = parseInt(month);
+    } else {
+      currentMonth = "0" + parseInt(month);
+    }
+    var arDate = today.getDate().toString();
+    var currentDate;
+    if (arDate.length > 1) {
+      currentDate = parseInt(arDate);
+    } else {
+      currentDate = "0" + parseInt(arDate);
+    }
+
     this.todayDate =
-      today.getFullYear() +
-      "-" +
-      ("0" + (today.getMonth() + 1)) +
-      "-" +
-      +today.getDate();
+      today.getFullYear() + "-" + currentMonth + "-" + currentDate;
     console.log(this.todayDate);
     this.productForm.controls["startDate"].patchValue(this.todayDate);
   }

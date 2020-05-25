@@ -1,8 +1,12 @@
 <div class="row">
   <div class="col-12">
     <div class="roal_create_roal">
-      <form (ngSubmit)="onSubmit()" [formGroup]="createRoleForm" class="form_main">
-        <h3>Role Edit</h3>
+      <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="createRoleForm"
+        class="form_main"
+      >
+        <h3>{{ roleId ? "Edit" : "Add" }} Role</h3>
         <div class="input_feild">
           <div class="category_col">
             <div class="row">
@@ -58,7 +62,7 @@
             </div>
           </div>
         </div>
-        <div class="form_footer ">
+        <div class="form_footer">
           <div class="loading_back_button">
             <button
               type="submit"
