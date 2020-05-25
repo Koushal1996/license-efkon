@@ -1,5 +1,7 @@
 package com.nxtlife.efkon.license;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +101,18 @@ public class ProjectProductLicenseRequestController {
 			@ApiResponse(description = "If required field are not filled properly or projectProductLicenseRequest/Projectproduct not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public ProjectProductLicenseRequestResponse findById(@PathVariable Long id) {
 		return projectProductLicenseRequestService.findById(id);
+	}
+
+	@GetMapping(value = "projectProductLicenseRequest/pending", produces = { "application/json" })
+	@Operation(summary = "fetch pending product product license request detail ", description = "return product product license response", tags = {
+			"Project Product License Request", "Project Product" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Project Product License Request response", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to fetch Project Product License Request details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If Project Product License Request id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If required field are not filled properly or projectProductLicenseRequest/Projectproduct not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<ProjectProductLicenseRequestResponse> findByStatus() {
+		return projectProductLicenseRequestService.findByStatus(LicenseRequestStatus.PENDING);
 	}
 
 	@DeleteMapping(value = "projectProductLicenseRequest/{id}", produces = { "application/json" })

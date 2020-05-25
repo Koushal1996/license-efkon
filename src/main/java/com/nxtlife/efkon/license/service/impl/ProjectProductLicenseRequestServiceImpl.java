@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -155,6 +156,39 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		if (pplrResponse != null) {
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
+		}
+
+		return pplrResponse;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_REQUEST_FETCH)
+	public List<ProjectProductLicenseRequestResponse> findByStatus(LicenseRequestStatus status) {
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		List<ProjectProductLicenseRequestResponse> pplrResponse;
+		if (roles.contains("Customer")) {
+			pplrResponse = projectProductLicenseRequestDao
+					.findByStatusAndProjectProductProjectCustomerEmailAndActive(status, user.getUserId(), true);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				pplrResponse = projectProductLicenseRequestDao
+						.findByStatusAndProjectProductProjectProjectManagerIdAndActive(status, user.getUserId(), true);
+			} else {
+				pplrResponse = projectProductLicenseRequestDao.findByStatusAndActive(status, true);
+			}
+		}
+
+		if (pplrResponse != null) {
+			for (ProjectProductLicenseRequestResponse iterate : pplrResponse) {
+				iterate.setProjectProductResponse(
+						projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
+			}
 		}
 
 		return pplrResponse;
