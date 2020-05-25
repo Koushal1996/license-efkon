@@ -123,7 +123,8 @@ public class ProjectProductLicenseRequestResponse implements Response {
 	public static ProjectProductLicenseRequestResponse get(ProjectProductLicenseRequest pplr) {
 		if (pplr != null) {
 			ProjectProductLicenseRequestResponse response = new ProjectProductLicenseRequestResponse(pplr.getId(),
-					pplr.getLicenseCount(), pplr.getCreatedAt(), pplr.getStatus(), pplr.getModifiedAt(), null, null);
+					pplr.getLicenseCount(), pplr.getCreatedAt(), pplr.getStatus(), pplr.getModifiedAt(), null,
+					pplr.gettProjectProductId());
 			return response;
 		}
 		return null;

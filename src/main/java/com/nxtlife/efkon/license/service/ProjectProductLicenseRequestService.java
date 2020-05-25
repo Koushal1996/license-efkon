@@ -1,5 +1,7 @@
 package com.nxtlife.efkon.license.service;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.nxtlife.efkon.license.enums.LicenseRequestStatus;
@@ -67,5 +69,12 @@ public interface ProjectProductLicenseRequestService {
 	 * @return
 	 */
 	public ProjectProductLicenseRequestResponse updateStatus(Long id, LicenseRequestStatus reject, String comment);
+
+	/**
+	 * this method is used to find project product license request by status
+	 * 
+	 * @return
+	 */
+	public List<ProjectProductLicenseRequestResponse> findByStatus(LicenseRequestStatus status);
 
 }

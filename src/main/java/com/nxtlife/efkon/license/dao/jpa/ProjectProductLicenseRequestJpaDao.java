@@ -1,6 +1,7 @@
 package com.nxtlife.efkon.license.dao.jpa;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -44,5 +45,13 @@ public interface ProjectProductLicenseRequestJpaDao extends JpaRepository<Projec
 	public int update(Long unmaskId, LicenseRequestStatus status, Long userId, Date date);
 
 	public Integer findLicenseCountById(Long unmaskId);
+
+	public List<ProjectProductLicenseRequestResponse> findByStatusAndProjectProductProjectCustomerEmailAndActive(
+			LicenseRequestStatus pending, Long id, Boolean active);
+
+	public List<ProjectProductLicenseRequestResponse> findByStatusAndProjectProductProjectProjectManagerIdAndActive(
+			LicenseRequestStatus pending, Long userId, boolean b);
+
+	public List<ProjectProductLicenseRequestResponse> findByStatusAndActive(LicenseRequestStatus pending, boolean b);
 
 }
