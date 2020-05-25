@@ -97,4 +97,7 @@ export class CreateFamilyComponent implements OnInit {
       productCodeIds.push(this.productCode("", ""));
     }
   }
+  back() {
+    this.route.navigate(["/products/family"]);
+  }
 }

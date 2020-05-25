@@ -46,6 +46,8 @@
           (projectForm.get('customerContactNo').touched||projectForm.get('customerContactNo').dirty)">
           <span *ngIf="projectForm.get('customerContactNo').errors.pattern" class="field_error">only numbers 
           allowed</span>
+          <span *ngIf="projectForm.get('customerContactNo').errors.required" class="field_error">Customer Contact No
+          is required</span>
           <span *ngIf="projectForm.get('customerContactNo').errors.maxlength" class="field_error">maximum 10
           digits is required</span>
           <span *ngIf="projectForm.get('customerContactNo').errors.minlength" class="field_error">minimum 10
@@ -84,7 +86,6 @@
       </div>
       <div class="col-12">
         <div class="form-check check_main">
-         
           <input type="checkbox" class="form-check-input" id="check1" formControlName="isEmailSend" name="option1" value="something" checked>
           <label class="form-check-label" for="check1"> Send Email </label>
           </div>
@@ -95,7 +96,7 @@
   
 </div>
 <div class="form_footer ">
-  <button  class="cancelBtn">
+  <button type="button" class="cancelBtn" (click)="backCreateProjectForm()">
     Back</button>
   <button type="submit" class="saveBtn mr-3" *ngIf="!loaderbutton"
    [disabled]="!projectForm.valid">

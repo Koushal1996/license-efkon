@@ -46,12 +46,15 @@ export class DetailComponent implements OnInit {
     return authorities.includes(authority);
   }
   onProductFamilySelect(productFamilyId: number) {
+    //this.createDetailForm.reset();
     console.log(productFamilyId);
     const family = this.Family.find((item) => item.id == productFamilyId);
     this.productCodes = family.productCodes;
     this.currentProductFamilyData = this.productDetail.find(
       (item) => item.id == productFamilyId
     );
+    this.createDetailForm.controls["version"].reset();
+    this.createDetailForm.controls["description"].reset();
   }
 
   onProductCodeSelect(productCodeId) {
@@ -117,7 +120,10 @@ export class DetailComponent implements OnInit {
       this.isloader = false;
     });
   }
-
+  close() {
+    this.isCreateDetail = false;
+    this.createDetailForm.reset();
+  }
   editProductDetail(detail, code, version) {
     this.productCodes = detail.productCodes;
     this.isCreateDetail = true;
@@ -172,10 +178,6 @@ export class DetailComponent implements OnInit {
   }
   Reset() {
     this.createDetailForm.patchValue(this.formDetail);
-  }
-  close() {
-    this.isCreateDetail = false;
-    this.createDetailForm.reset();
   }
 
   getDetailRowspan(detail) {

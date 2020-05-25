@@ -35,10 +35,11 @@ export class CreateProjectComponent implements OnInit {
     return this.fb.group({
       customerName: ["", [Validators.required]],
       customerEmail: ["", [Validators.required]],
-      isEmailSend: [false],
+      isEmailSend: ["", [Validators.required]],
       customerContactNo: [
         "",
         [
+          Validators.required,
           Validators.maxLength(10),
           Validators.minLength(10),
           Validators.pattern("^[0-9]*$"),
@@ -90,5 +91,8 @@ export class CreateProjectComponent implements OnInit {
     } else {
       this.projectForm.reset();
     }
+  }
+  backCreateProjectForm() {
+    this.route.navigate(["/projects"]);
   }
 }

@@ -14,7 +14,7 @@ export class MainComponent implements OnInit {
   pages: any[] = [
     { route: "/projects", title: "Projects", privilege: "PROJECT_FETCH" },
     {
-      route: "/products/detail",
+      route: "/products/family",
       title: "Configuration",
       privilege: "PRODUCT_DETAIL_FETCH",
     },

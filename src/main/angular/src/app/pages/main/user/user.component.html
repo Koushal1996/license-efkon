@@ -1,3 +1,4 @@
+<div class="col-12 p-0">
 <div class="site_main">
   <div class="container-fluid p-0">
     <button
@@ -71,7 +72,7 @@
           <td>
             <span
               (click)="showRoleAuthoities(role)"
-              class="badge custom_badge"
+              class="badge-light cursor-pointer"
               *ngFor="let role of item.roles; index as index"
             >
               {{ role.name }}
@@ -112,10 +113,12 @@
   </div>
   </div>
 </div>
+
 <div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="custom_modal_main">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header mb-0">
         <h4 class="modal-title">Authorities</h4>
         <button
           type="button"
@@ -126,11 +129,21 @@
           &times;
         </button>
       </div>
-      <div class="modal-body">
-        <p *ngFor="let auth of selectedAuthorites">
+      <div class="modal-body p-3">
+        <p *ngFor="let auth of selectedAuthorites" class="badge badge-light padding">
           {{ auth.name }}
         </p>
       </div>
+      <div class="modal_footer">
+        <button class="cancelBtn" data-dismiss="modal"
+        (click)="hideModel()">Close</button>
+      </div>
     </div>
+  </div>
+</div>
+</div>
+
+  <div *ngIf="isloader" class="loader">
+    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
   </div>
 </div>
