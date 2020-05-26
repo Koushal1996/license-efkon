@@ -18,7 +18,8 @@ public interface ProjectProductLicenseRequestService {
 	 * @param request
 	 * @return {@link ProjectProductLicenseRequestResponse}
 	 */
-	public ProjectProductLicenseRequestResponse save(ProjectProductLicenseRequestRequest request);
+	public ProjectProductLicenseRequestResponse save(Long projectProductId,
+			ProjectProductLicenseRequestRequest request);
 
 	/**
 	 * this method is used for updating project product license request
@@ -30,8 +31,8 @@ public interface ProjectProductLicenseRequestService {
 	public ProjectProductLicenseRequestResponse update(Long id, @Valid ProjectProductLicenseRequestRequest request);
 
 	/**
-	 * this method is used for finding project product license request using project
-	 * product license request id
+	 * this method is used for finding project product license request using
+	 * project product license request id
 	 * 
 	 * @param id
 	 * @return {@link ProjectProductLicenseRequestResponse}
@@ -48,8 +49,8 @@ public interface ProjectProductLicenseRequestService {
 	public SuccessResponse delete(Long id);
 
 	/**
-	 * this method is used for updating project product license request status to
-	 * accept using project product license request id
+	 * this method is used for updating project product license request status
+	 * to accept using project product license request id
 	 * 
 	 * @param id
 	 * @param status
@@ -60,8 +61,8 @@ public interface ProjectProductLicenseRequestService {
 			ProjectProductRequest request);
 
 	/**
-	 * this method is used for updating project product license request status to
-	 * reject using project product license request id
+	 * this method is used for updating project product license request status
+	 * to reject using project product license request id
 	 * 
 	 * @param id
 	 * @param reject

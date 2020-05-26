@@ -1,4 +1,4 @@
-package com.nxtlife.efkon.license;
+package com.nxtlife.efkon.license.controller;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class ProjectProductLicenseRequestController {
 	@Autowired
 	private ProjectProductLicenseRequestService projectProductLicenseRequestService;
 
-	@PostMapping(value = "projectProductLicenseRequest", produces = { "application/json" }, consumes = {
+	@PostMapping(value = "project/product/{projectProductId}/request", produces = { "application/json" }, consumes = {
 			"application/json" })
 	@Operation(summary = "Save product license request in project ", description = "return project product license request response after saving the license in project product license request", tags = {
 			"Project Product", "Project Product License Request" })
@@ -46,8 +46,9 @@ public class ProjectProductLicenseRequestController {
 			@ApiResponse(description = "Project Product License Request response after successfully saved license request in Project Product License Request", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
 			@ApiResponse(description = "If user doesn't have access to request Project Product License Request", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public ProjectProductLicenseRequestResponse save(@Valid @RequestBody ProjectProductLicenseRequestRequest request) {
-		return projectProductLicenseRequestService.save(request);
+	public ProjectProductLicenseRequestResponse save(@PathVariable Long projectProductId,
+			@Valid @RequestBody ProjectProductLicenseRequestRequest request) {
+		return projectProductLicenseRequestService.save(projectProductId, request);
 	}
 
 	@PutMapping(value = "projectProductLicenseRequest/{id}/accept", produces = { "application/json" }, consumes = {

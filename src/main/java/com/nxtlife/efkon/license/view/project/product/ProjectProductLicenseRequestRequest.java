@@ -14,15 +14,13 @@ public class ProjectProductLicenseRequestRequest implements Request {
 	@NotNull(message = "License count can't be null")
 	@Min(message = "license count can't be less than 1", value = 1)
 	private Integer licenseCount;
-
-	@Schema(description = "Id of the projectProduct", example = "1", required = true)
-	@NotNull(message = "project product Id can't be null")
-	private Long projectProductId;
+	
+	@Schema(description = "comment", example = "abc")
+	private String comment;
 
 	public ProjectProductLicenseRequest toEntity() {
 		ProjectProductLicenseRequest pplr = new ProjectProductLicenseRequest();
 		pplr.setLicenseCount(licenseCount);
-		pplr.settProjectProductId(unmask(projectProductId));
 		return pplr;
 
 	}
@@ -33,14 +31,6 @@ public class ProjectProductLicenseRequestRequest implements Request {
 
 	public void setLicenseCount(Integer licenseCount) {
 		this.licenseCount = licenseCount;
-	}
-
-	public Long getProjectProductId() {
-		return projectProductId;
-	}
-
-	public void setProjectProductId(Long projectProductId) {
-		this.projectProductId = projectProductId;
 	}
 
 }

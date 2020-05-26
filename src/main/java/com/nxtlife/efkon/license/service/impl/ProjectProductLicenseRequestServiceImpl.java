@@ -66,17 +66,13 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	 * 
 	 * @param request
 	 */
-	public void validate(ProjectProductLicenseRequestRequest request) {
-		if (request.getProjectProductId() == null) {
-			throw new NotFoundException("Project Product Id is required for generating license request");
-		}
+	private void validate(Long projectProductId) {
 		ProjectProductResponse projectProductResponse = projectProductDao
-				.findByIdAndActive(unmask(request.getProjectProductId()), true);
-
+				.findByIdAndProjectCustomerEmailAndActive(unmask(projectProductId), getUser().getEmail(), true);
 		if (projectProductResponse == null) {
 			throw new NotFoundException(String.format(
-					"project product having id [%s] not found. product is required for license requesting",
-					request.getProjectProductId()));
+					"Project product having id [%s] not found. product is required for license requesting",
+					projectProductId));
 
 		}
 
@@ -84,17 +80,16 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 	@Override
 	@Secured(AuthorityUtils.LICENSE_REQUEST_CREATE)
-	public ProjectProductLicenseRequestResponse save(ProjectProductLicenseRequestRequest request) {
-
-		validate(request);
+	public ProjectProductLicenseRequestResponse save(Long projectProductId,
+			ProjectProductLicenseRequestRequest request) {
+		validate(projectProductId);
 		ProjectProductLicenseRequest pplRequest = request.toEntity();
+		pplRequest.settProjectProductId(unmask(projectProductId));
 		pplRequest.setStatus(LicenseRequestStatus.PENDING);
 		projectProductLicenseRequestDao.save(pplRequest);
-
 		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
-
 		response.setProjectProductResponse(
-				projectProductDao.findByIdAndActive(unmask(request.getProjectProductId()), true));
+				projectProductDao.findByIdAndActive(unmask(projectProductId), true));
 		return response;
 	}
 
@@ -229,11 +224,12 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration month
-	 * count
+	 * this method used to set end date according to start date and expiration
+	 * month count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater than 12
-	 * then year will be incremented and month will be add result minus 12.
+	 * if addition of month of start date and expiration month count greater
+	 * than 12 then year will be incremented and month will be add result minus
+	 * 12.
 	 *
 	 * @return String
 	 */
