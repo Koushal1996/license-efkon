@@ -66,7 +66,7 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndCustomerEmail(Boolean active,
 			String customerEmail);
 
-	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 group by project.id and project.projectManager.id=?2")
+	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 and project.projectManager.id=?2 group by project.id ")
 	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndProjectManagerId(Boolean active,
 			Long projectManagerId);
 

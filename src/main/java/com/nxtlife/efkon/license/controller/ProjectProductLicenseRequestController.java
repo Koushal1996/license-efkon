@@ -76,7 +76,8 @@ public class ProjectProductLicenseRequestController {
 			@ApiResponse(description = "If required field are not filled properly or projectProduct/productProductLicenseRequest not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public ProjectProductLicenseRequestResponse reject(@PathVariable Long id,
 			@RequestBody ProjectProductCommentRequest request) {
-		return projectProductLicenseRequestService.updateStatus(id, LicenseRequestStatus.REJECT, request.getComment());
+		return projectProductLicenseRequestService.updateStatus(id, LicenseRequestStatus.REJECTED,
+				request.getComment());
 	}
 
 	@PutMapping(value = "projectProductLicenseRequest/{id}", produces = { "application/json" }, consumes = {
