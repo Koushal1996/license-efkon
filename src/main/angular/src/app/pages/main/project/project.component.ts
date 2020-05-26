@@ -35,6 +35,8 @@ export class ProjectComponent implements OnInit {
   popUpStartDateForm: FormGroup;
   showRenewModal: any;
   projectProductCount: string;
+  licenses: any;
+
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -66,8 +68,8 @@ export class ProjectComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: [""],
-      expirationMonthCount: ["", [Validators.min(1)]],
+      startDate: ["", [Validators.required]],
+      expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
   getProjects() {
@@ -329,17 +331,26 @@ export class ProjectComponent implements OnInit {
   reverseAphabetically() {
     this.projects.reverse();
   }
-  viewLicenses(project) {
+  viewLicenses(project, event) {
+    project.productLoader = true;
     console.log(project.id);
     this.projectservice.getProjectLicenseById(project.id).subscribe(
       (data) => {
         console.log(data);
-        this.route.navigate([`projects/${project.id}/licenses`]);
+        this.licenses = data;
+        project.licenceActive = true;
+        project.ProductActive = false;
+        project.productLoader = false;
       },
       (error) => {
-        //swal("No License are found");
+        project.licenceActive = false;
+        project.ProductActive = false;
       }
     );
+  }
+  productsCount(project) {
+    project.licenceActive = false;
+    project.ProductActive = true;
   }
   createExcelLicense(project) {
     this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {

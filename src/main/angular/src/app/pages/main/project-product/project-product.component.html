@@ -200,7 +200,8 @@
                       "
                     >
                       <tr class="text-primary">
-                        <th scope="col">Sr. No.</th>
+                        <th scope="col">#</th>
+                        <th></th>
                         <th scope="col">Code</th>
                         <th scope="col">Remarks</th>
                         <th scope="col">Unique Access ID.</th>
@@ -296,7 +297,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header mb-0">
-          <h4 class="modal-title">Enter Comment</h4>
+          <h4 class="modal-title">Enter Comment *</h4>
           <button
             type="button"
             class="close"
@@ -335,6 +336,11 @@
             <button
               class="cancelBtn"
               type="submit"
+              [ngStyle]="{
+                'background-color': !popUpForm.valid
+                  ? 'rgb(255, 162, 162)'
+                  : '#dc3545'
+              }"
               [disabled]="!popUpForm.valid"
             >
               {{ commentSubmitButton }}
@@ -491,6 +497,11 @@
               <button
                 type="submit"
                 class="saveBtn"
+                [ngStyle]="{
+                  'background-color': !popUpStartDateForm.valid
+                    ? 'rgb(255, 162, 162)'
+                    : '#dc3545'
+                }"
                 [disabled]="!popUpStartDateForm.valid"
               >
                 Renew

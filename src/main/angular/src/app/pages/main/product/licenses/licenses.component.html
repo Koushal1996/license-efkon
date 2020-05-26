@@ -21,8 +21,21 @@
                 class="form-control tableinput"
                 placeholder="Expiry Period Limit"
                 name="Expiry Period Limit"
+                required
+                min="1"
+                #maxMonthCount="ngModel"
                 [(ngModel)]="license.maxMonthCount"
               />
+              <!-- <div
+                *ngIf="
+                  maxMonthCount.invalid &&
+                  (maxMonthCount.touched || maxMonthCount.dirty)
+                "
+              >
+                <div *ngIf="maxMonthCount.errors.min" class="red">
+                  1 is required
+                </div>
+              </div> -->
             </td>
             <td *ngIf="!license.edit">
               <button
@@ -48,7 +61,7 @@
                 (click)="onBack(license)"
                 class="t_save_btn top_tooltip"
               >
-                back
+                Cancel
               </button>
             </td>
           </tr>

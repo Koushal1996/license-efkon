@@ -219,6 +219,11 @@
               type="submit"
               class="saveBtn"
               *ngIf="!loaderbutton"
+              [ngStyle]="{
+                'background-color': !createDetailForm.valid
+                  ? 'rgb(255, 162, 162)'
+                  : '#dc3545'
+              }"
               [disabled]="!createDetailForm.valid"
             >
               {{ detailId ? "Update" : "Submit" }}

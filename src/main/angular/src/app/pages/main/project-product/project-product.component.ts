@@ -68,8 +68,8 @@ export class ProjectProductComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: [""],
-      expirationMonthCount: ["", [Validators.min(1)]],
+      startDate: ["", [Validators.required]],
+      expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
   deleteProduct(project) {

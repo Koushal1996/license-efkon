@@ -26,7 +26,10 @@
         </div>
         <div class="user-name" style="cursor: pointer;">
           {{ UserInfo }}
-          <h6>Super Admin</h6>
+
+          <h6 *ngFor="let role of UserRole">
+            {{ role.name }}
+          </h6>
         </div>
       </div>
     </div>

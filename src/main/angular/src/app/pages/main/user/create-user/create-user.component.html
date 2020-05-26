@@ -182,6 +182,11 @@
           *ngIf="!loaderbutton"
           class="saveBtn"
           [disabled]="!createUserForm.valid"
+          [ngStyle]="{
+            'background-color': !createUserForm.valid
+              ? 'rgb(255, 162, 162)'
+              : '#dc3545'
+          }"
         >
           {{ userId ? "Update" : "Submit" }}
         </button>

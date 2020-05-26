@@ -26,6 +26,7 @@ export class AddProductComponent implements OnInit {
   licenseType: any;
   selectedProjectId;
   selectedProductDetail: any = {};
+  selectedproducts: any;
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -48,6 +49,7 @@ export class AddProductComponent implements OnInit {
     });
     this.getProductDetail();
     this.getProjects();
+    this.getProductsByProjectId();
   }
 
   getVersions(c) {
@@ -64,7 +66,7 @@ export class AddProductComponent implements OnInit {
       productCode: [""],
       projectId: ["", [Validators.required]],
       productDetailId: ["", [Validators.required]],
-      licenseCount: ["", [Validators.required]],
+      licenseCount: ["", [Validators.required, Validators.min(1)]],
       licenseTypeId: ["", [Validators.required]],
       expirationPeriodType: ["", [Validators.required]],
       expirationMonthCount: ["", [Validators.min(1)]],
@@ -239,6 +241,7 @@ export class AddProductComponent implements OnInit {
   getProjects() {
     this.projectservice.getProjects().subscribe(
       (data) => {
+        console.log(data);
         this.projects = data;
         this.selectedProductDetail = this.projects.find(
           (item) => item.id == this.selectedProjectId
@@ -247,5 +250,16 @@ export class AddProductComponent implements OnInit {
       },
       (error) => {}
     );
+  }
+  getProductsByProjectId() {
+    this.projectservice
+      .getProductsByProjectId(this.selectedProjectId)
+      .subscribe(
+        (data) => {
+          this.selectedproducts = data;
+          console.log(data);
+        },
+        (error) => {}
+      );
   }
 }

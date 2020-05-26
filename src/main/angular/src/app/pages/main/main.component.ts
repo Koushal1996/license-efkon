@@ -28,6 +28,8 @@ export class MainComponent implements OnInit {
   ];
   UserInfo: any;
   UserAuthorities;
+  UserRole: any;
+  UserInfoo: any;
   constructor(
     private adminService: AdminService,
     private route: Router,
@@ -40,6 +42,8 @@ export class MainComponent implements OnInit {
     this.mainService.getLoginUser().subscribe((data) => {
       console.log(data);
       this.UserInfo = data.name;
+
+      this.UserRole = data.roles;
       this._storageService.storeData("userAuthorities", data.authorities);
     });
   }

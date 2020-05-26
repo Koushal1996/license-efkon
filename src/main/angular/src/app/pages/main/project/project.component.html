@@ -55,7 +55,6 @@
                     <span>Send Email</span>
                   </div>
                 </td>
-                <!-- <td>{{ project.isEmailSend }}</td> -->
                 <td>{{ project.customerContactNo }}</td>
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
@@ -71,20 +70,23 @@
                       class="badge custom_badge"
                       data-toggle="collapse"
                       [attr.data-target]="'#collapse' + i"
+                      (click)="productsCount(project)"
                       >{{ project.productsCount }}</label
                     >
                     <span style="min-width: 140px;">Added Product Details</span>
                   </div>
-                  <button (click)="viewLicenses(project)">
+                  <button
+                    class="badge custom_badge"
+                    data-toggle="collapse"
+                    [attr.data-target]="'#collapse' + i"
+                    #c
+                    (click)="viewLicenses(project)"
+                  >
                     View Licenses
                   </button>
                   <button (click)="createExcelLicense(project)">
-                    License into Excel
+                    Export Licenses
                   </button>
-                  <!-- <div class="info top_tooltip">
-                    <i class="fa fa-info-circle"></i>
-                    <span>More details</span>
-                  </div> -->
                 </td>
               </tr>
               <tr>
@@ -100,9 +102,53 @@
                         style="width: 3rem; height: 3rem;"
                       ></div>
                     </div> -->
-
-                    <div class="sub_table mt-3 p-0">
-                      <h3>Added Product Details</h3>
+                    <div class="sub_table mt-3 p-0" *ngIf="project.licenceActive">
+                      <div
+                      *ngIf="project.productLoader"
+                      class="text-center w-100"
+                    >
+                      <img
+                        width="100px"
+                        src="assets/images/loader3.gif"
+                        alt=""
+                      />
+                    </div>
+                      <h3>Licenses Details</h3>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Generated Key</th>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Expiry Period Type</th>
+                            <th scope="col">No of License</th>
+                            <th scope="col">Start Date</th>
+                            <th scope="col">End Date</th>
+                            <th scope="col">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let license of licenses; index as i">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ license.code }}</td>
+                            <td>{{ license.generatedKey }}</td>
+                            <td>{{ license.name }}</td>
+                            <td>
+                              {{ license.projectProduct.expirationPeriodType }}
+                            </td>
+                            <td>{{ license.projectProduct.licenseCount }}</td>
+                            <td>{{ license.projectProduct.startDate }}</td>
+                            <td>{{ license.projectProduct.endDate }}</td>
+                            <td>{{ license.projectProduct.status }}</td>
+                          </tr>
+                          <!-- <div *ngIf="!licenses?.length">
+                            No license is generated 
+                          </div> -->
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="sub_table mt-3 p-0" *ngIf="project.ProductActive">
                       <div
                         *ngIf="project.productLoader"
                         class="text-center w-100"
@@ -113,7 +159,7 @@
                           alt=""
                         />
                       </div>
-                      <div
+                      <!-- <div
                         *ngIf="
                           !project.products?.length && !project.productLoader
                         "
@@ -121,7 +167,8 @@
                         <p>
                           No Products Available Now
                         </p>
-                      </div>
+                      </div> -->
+                      <h3>Added Product Details</h3>
                       <table class="">
                         <tr
                           class="text-primary"
@@ -137,8 +184,11 @@
                           <th scope="col">Status</th>
                           <th scope="col">Action</th>
                         </tr>
-                        <tr *ngFor="let pro of project.products; 
-                        index as i" id="{{ pro.id }}" class="" >
+                        <tr
+                          *ngFor="let pro of project.products; index as i"
+                          id="{{ pro.id }}"
+                          class=""
+                        >
                           <td>{{ i + 1 }}</td>
                           <td>
                             {{ pro.productDetailResponse.productCodeName }}
@@ -285,7 +335,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header mb-0">
-        <h4 class="modal-title">Enter Comment</h4>
+        <h4 class="modal-title">
+          Enter Comment *
+          <!-- <span style="color: #f00;">*</span> -->
+        </h4>
         <button
           type="button"
           class="close"
@@ -321,7 +374,16 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="saveBtn" [disabled]="!popUpForm.valid">
+          <button
+            type="submit"
+            class="saveBtn"
+            [ngStyle]="{
+              'background-color': !popUpForm.valid
+                ? 'rgb(255, 162, 162)'
+                : '#dc3545'
+            }"
+            [disabled]="!popUpForm.valid"
+          >
             {{ commentSubmitButton }}
           </button>
         </div>
@@ -494,6 +556,11 @@
             <button
               type="submit"
               class="saveBtn"
+              [ngStyle]="{
+                'background-color': !popUpStartDateForm.valid
+                  ? 'rgb(255, 162, 162)'
+                  : '#dc3545'
+              }"
               [disabled]="!popUpStartDateForm.valid"
             >
               Renew

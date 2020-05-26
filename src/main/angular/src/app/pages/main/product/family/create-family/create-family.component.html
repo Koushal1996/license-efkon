@@ -173,6 +173,11 @@
           <button
             type="submit"
             class="saveBtn"
+            [ngStyle]="{
+              'background-color': !createFamilyForm.valid
+                ? 'rgb(255, 162, 162)'
+                : '#dc3545'
+            }"
             [disabled]="!createFamilyForm.valid"
           >
             {{ familyId ? "Update" : "Submit" }}
