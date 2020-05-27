@@ -32,7 +32,11 @@
             <th scope="col" style="min-width: 112px;">Action</th>
           </tr>
         </thead>
+
         <tbody id="accordion">
+          <!-- <div *ngIf="!projectProduct?.length">
+            No products Available Now
+          </div> -->
           <ng-container *ngFor="let project of projectProduct; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>

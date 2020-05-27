@@ -31,7 +31,7 @@ export class RoleComponent implements OnInit {
     this._adminService.getRoles().subscribe(
       (data) => {
         this.roles = data;
-        this.rolesCopy = data;
+        this.rolesCopy = JSON.parse(JSON.stringify(data));
         console.log(this.roles);
         this.isloader = false;
       },

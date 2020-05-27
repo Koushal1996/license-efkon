@@ -38,6 +38,9 @@
               </th>
             </tr>
           </thead>
+          <!-- <div *ngIf="!projects?.length">
+            No Project Available Now
+          </div> -->
           <tbody id="accordion">
             <ng-container *ngFor="let project of projects; index as i">
               <tr #c (click)="getProductsByProjectId(c, project)">
@@ -102,17 +105,20 @@
                         style="width: 3rem; height: 3rem;"
                       ></div>
                     </div> -->
-                    <div class="sub_table mt-3 p-0" *ngIf="project.licenceActive">
-                      <div
-                      *ngIf="project.productLoader"
-                      class="text-center w-100"
+                    <div
+                      class="sub_table mt-3 p-0"
+                      *ngIf="project.licenceActive"
                     >
-                      <img
-                        width="100px"
-                        src="assets/images/loader3.gif"
-                        alt=""
-                      />
-                    </div>
+                      <div
+                        *ngIf="project.productLoader"
+                        class="text-center w-100"
+                      >
+                        <img
+                          width="100px"
+                          src="assets/images/loader3.gif"
+                          alt=""
+                        />
+                      </div>
                       <h3>Licenses Details</h3>
                       <table>
                         <thead>
@@ -148,7 +154,10 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="sub_table mt-3 p-0" *ngIf="project.ProductActive">
+                    <div
+                      class="sub_table mt-3 p-0"
+                      *ngIf="project.ProductActive"
+                    >
                       <div
                         *ngIf="project.productLoader"
                         class="text-center w-100"
