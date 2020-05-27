@@ -35,7 +35,7 @@ export class CreateProjectComponent implements OnInit {
     return this.fb.group({
       customerName: ["", [Validators.required]],
       customerEmail: ["", [Validators.required]],
-      isEmailSend: ["", [Validators.required]],
+      isEmailSend: [""],
       customerContactNo: [
         "",
         [

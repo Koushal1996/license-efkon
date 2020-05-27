@@ -127,11 +127,8 @@
                             <th scope="col">Code</th>
                             <th scope="col">Generated Key</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col">Expiry Period Type</th>
-                            <th scope="col">No of License</th>
                             <th scope="col">Start Date</th>
                             <th scope="col">End Date</th>
-                            <th scope="col">Status</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -140,13 +137,8 @@
                             <td>{{ license.code }}</td>
                             <td>{{ license.generatedKey }}</td>
                             <td>{{ license.name }}</td>
-                            <td>
-                              {{ license.projectProduct.expirationPeriodType }}
-                            </td>
-                            <td>{{ license.projectProduct.licenseCount }}</td>
                             <td>{{ license.projectProduct.startDate }}</td>
                             <td>{{ license.projectProduct.endDate }}</td>
-                            <td>{{ license.projectProduct.status }}</td>
                           </tr>
                           <!-- <div *ngIf="!licenses?.length">
                             No license is generated 

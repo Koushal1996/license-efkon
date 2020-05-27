@@ -55,6 +55,7 @@ export class DetailComponent implements OnInit {
     );
     this.createDetailForm.controls["version"].reset();
     this.createDetailForm.controls["description"].reset();
+    // this.createDetailForm.controls["productCodeId"].reset();
   }
 
   onProductCodeSelect(productCodeId) {
@@ -123,6 +124,8 @@ export class DetailComponent implements OnInit {
   close() {
     this.isCreateDetail = false;
     this.createDetailForm.reset();
+    this.productVersion = "";
+    this.detailId = "";
   }
   editProductDetail(detail, code, version) {
     this.productCodes = detail.productCodes;

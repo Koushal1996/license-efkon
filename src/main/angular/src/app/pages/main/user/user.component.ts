@@ -114,10 +114,10 @@ export class UserComponent implements OnInit {
     if (key) {
       this.users = this.users.filter(
         (item) =>
-          item.name.toLowerCase().startsWith(key) ||
-          item.username.toLowerCase().startsWith(key) ||
-          item.email.toLowerCase().startsWith(key) ||
-          item.contactNo.startsWith(key)
+          (item.name && item.name.toLowerCase().startsWith(key)) ||
+          (item.username && item.username.toLowerCase().startsWith(key)) ||
+          (item.email && item.email.toLowerCase().startsWith(key)) ||
+          (item.contactNo && item.contactNo.startsWith(key))
       );
     } else {
       this.users = this.usersCopy;

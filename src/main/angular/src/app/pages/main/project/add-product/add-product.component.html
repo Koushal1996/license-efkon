@@ -1,5 +1,5 @@
 <div class="site_main">
-  <table *ngIf="selectedproducts.length">
+  <table *ngIf="selectedproducts?.length">
     <thead class="users_table_hader">
       <tr>
         <th>#</th>
@@ -253,6 +253,12 @@
                     >
                       minimun 1 is required</span
                     >
+                    <span
+                      *ngIf="productForm.get('expirationMonthCount').errors.max"
+                      class="field_error"
+                    >
+                      maximum expiry period is 240 for commercial and 2 for demo
+                    </span>
                   </span>
                 </div>
               </div>

@@ -157,6 +157,7 @@ export class AddProductComponent implements OnInit {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
+          swal("New Product Added successfully!");
           swal({
             text: "You want to add add more products?",
             closeOnClickOutside: false,
@@ -168,10 +169,11 @@ export class AddProductComponent implements OnInit {
               swal("New Product Added successfully!");
               this.route.navigate(["projects"]);
             } else {
+              swal("New Product Added successfully!");
               this.loaderbutton = false;
               console.log(data);
-              this.ngOnInit();
-              swal("New Product Added successfully!");
+              this.productForm.reset();
+              this.productForm.controls["licenseTypeId"].reset();
             }
           });
         },
@@ -190,10 +192,16 @@ export class AddProductComponent implements OnInit {
       this.productForm.controls["expirationMonthCount"].patchValue(
         foundItem.maxMonthCount
       );
+      this.productForm.controls["expirationMonthCount"].setValidators(
+        Validators.max(2)
+      );
       this.productForm.controls["expirationPeriodType"].disable();
     } else {
       this.productForm.controls["expirationMonthCount"].patchValue(
         foundItem.maxMonthCount
+      );
+      this.productForm.controls["expirationMonthCount"].setValidators(
+        Validators.max(240)
       );
       this.productForm.controls["expirationPeriodType"].enable();
     }
@@ -204,7 +212,7 @@ export class AddProductComponent implements OnInit {
       this.productForm.controls["EndDate"].disable();
     } else {
       this.productForm.controls["expirationMonthCount"].enable();
-      this.productForm.controls["EndDate"].enable();
+      this.productForm.controls["EndDate"].disable();
     }
   }
 
