@@ -223,9 +223,9 @@
               class="saveBtn"
               *ngIf="!loaderbutton"
               [ngStyle]="{
-                'background-color': !createDetailForm.valid
-                  ? 'rgb(255, 162, 162)'
-                  : '#dc3545'
+                'opacity': !createDetailForm.valid
+                  ? '0.6)'
+                  : '1'
               }"
               [disabled]="!createDetailForm.valid"
             >

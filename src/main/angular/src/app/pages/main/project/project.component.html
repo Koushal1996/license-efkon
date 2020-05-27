@@ -14,7 +14,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">
+              <th scope="col" style="min-width: 159px;">
                 Customer Name
                 <div class="shorting">
                   <button (click)="sortAphabetically()">
@@ -88,11 +88,11 @@
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     #c
-                    (click)="viewLicenses(project)"
+                    (click)="viewLicenses(project)" class="info_btn_tbl mr-1 ml-1"
                   >
                     View Licenses
                   </button>
-                  <button (click)="createExcelLicense(project)">
+                  <button class="save_btn_tbl" (click)="createExcelLicense(project)">
                     Export Licenses
                   </button>
                 </td>
@@ -132,8 +132,8 @@
                             <th scope="col">Code</th>
                             <th scope="col">Generated Key</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">End Date</th>
+                            <th scope="col" style="min-width:95px">Start Date</th>
+                            <th scope="col" style="min-width:95px">End Date</th>
                           </tr>
                         </thead>
                         <tbody>

@@ -115,7 +115,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger"
+                  class="t_save_btn bg-danger ml-2"
                   (click)="rejectProductStatus(project)"
                 >
                   Reject
@@ -340,9 +340,9 @@
               class="cancelBtn"
               type="submit"
               [ngStyle]="{
-                'background-color': !popUpForm.valid
-                  ? 'rgb(255, 162, 162)'
-                  : '#dc3545'
+                'opacity': !popUpForm.valid
+                  ? '0.6'
+                  : '1'
               }"
               [disabled]="!popUpForm.valid"
             >
@@ -356,7 +356,7 @@
 </div>
 
 <div
-  class="modal"
+  class=""
   id="myModal"
   [style.display]="showCommentModal ? 'block' : 'none'"
 >
@@ -374,8 +374,8 @@
             &times;
           </button>
         </div>
-        <div class="modal-body">
-          <div class="coment_list_content">
+        <div class="modal-body  overflow-hidden mb-3">
+          <!-- <div class="coment_list_content">
             <ul *ngFor="let c of comments">
               <li>
                 <div class="comnent_main" *ngIf="!hasUserId(c)">
@@ -392,20 +392,47 @@
                   <label> Action:</label> <span>{{ c.remark }}</span>
                 </div>
                 <div class="comnent_main">
-                  <!-- <label> TIME:</label> -->
                   <span class="time">{{ c.createdAt | date: "medium" }}</span>
                 </div>
               </li>
-              <!-- <li>
-              
-              <span *ngIf="!hasUserId(c)"> NAME :{{ c.commentedBy }}</span>
-              <span *ngIf="hasUserId(c)"> NAME : me</span>
-              COMMENT :{{ c.comment }} REMARK:{{ c.remark }} TIME:{{
-                c.createdAt | date: "medium"
-              }}
-            </li> -->
+            
             </ul>
+          </div> -->
+          <div class="ibc-code-section">
+            <div class="container">
+              <div class="row">
+                <div class="ibc-code-main">
+                  <div class="main_box">
+                    <div class="box_com" *ngFor="let c of comments">
+                      <div class="left_box">
+                        <p>
+                          {{ c.comment }}
+                        </p>
+                        <h5>{{ c.remark }}</h5>
+                        <h6>{{ c.createdAt | date: "medium" }}</h6>
+                      </div>
+                      <div class="right_box">
+                        <div class="img_box_main">
+                          <div class="img_box">
+                            <img src="assets/images/profile1.jpg" />
+                          </div>
+                        </div>
+                        <div class="text_box">
+                          <h2 *ngIf="!hasUserId(c)">
+                            {{ c.commentedBy }}
+                          </h2>
+                          <h2 *ngIf="hasUserId(c)">
+                            me
+                          </h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+          
         </div>
         <div class="modal_footer">
           <button
@@ -501,9 +528,9 @@
                 type="submit"
                 class="saveBtn"
                 [ngStyle]="{
-                  'background-color': !popUpStartDateForm.valid
-                    ? 'rgb(255, 162, 162)'
-                    : '#dc3545'
+                  'opacity': !popUpStartDateForm.valid
+                    ? '0.6'
+                    : '1'
                 }"
                 [disabled]="!popUpStartDateForm.valid"
               >

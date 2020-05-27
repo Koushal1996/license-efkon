@@ -1,30 +1,9 @@
 <div class="site_main">
-  <table *ngIf="selectedproducts?.length">
-    <thead class="users_table_hader">
-      <tr>
-        <th>#</th>
-        <th scope="col">Product Detail</th>
-        <th scope="col">No of License</th>
-        <th scope="col">License Type</th>
-        <th scope="col">Status</th>
-      </tr>
-    </thead>
-    <tr *ngFor="let pro of selectedproducts; index as i">
-      <td>{{ i + 1 }}</td>
-      <td>
-        {{ pro.productDetailResponse.productCodeName }}
-        {{ pro.productDetailResponse.productFamilyName }}
-        {{ pro.productDetailResponse.versionName }}
-      </td>
-      <td>{{ pro.licenseCount }}</td>
-      <td>{{ pro.licenseTypeName }}</td>
-      <td>{{ pro.status }}</td>
-    </tr>
-  </table>
+
 </div>
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-4 pl-0">
+    <div class="col-6 pl-0">
       <div class="product_main">
         <h3>Project Details</h3>
         <div class="product_details">
@@ -55,9 +34,35 @@
           <span>{{ selectedProductDetail.projectManagerName }}</span>
         </div>
       </div>
+
+      <div class="product_main mt-3">
+        <h3 class="m-0">Added Product</h3>
+        <table *ngIf="selectedproducts?.length">
+          <thead class="users_table_hader">
+            <tr>
+              <th>#</th>
+              <th scope="col">Product Detail</th>
+              <th scope="col">No of License</th>
+              <th scope="col">License Type</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tr *ngFor="let pro of selectedproducts; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>
+              {{ pro.productDetailResponse.productCodeName }}
+              {{ pro.productDetailResponse.productFamilyName }}
+              {{ pro.productDetailResponse.versionName }}
+            </td>
+            <td>{{ pro.licenseCount }}</td>
+            <td>{{ pro.licenseTypeName }}</td>
+            <td>{{ pro.status }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
 
-    <div class="col-8 p-0 card-body">
+    <div class="col-6 p-0 card-body">
       <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form_main">
         <h3>
           {{ productId ? "Edit Product" : "Add Product" }}
@@ -310,9 +315,9 @@
               *ngIf="!loaderbutton"
               [disabled]="!productForm.valid"
               [ngStyle]="{
-                'background-color': !productForm.valid
-                  ? 'rgb(255, 162, 162)'
-                  : '#dc3545'
+                'opacity': !productForm.valid
+                  ? '0.6'
+                  : '1'
               }"
             >
               {{ productId ? "Update" : "Submit" }}
@@ -320,12 +325,13 @@
             <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading
             </button>
-            <button type="button" class="saveBtn" (click)="close()">
+            <button type="button" class="cancelBtn" (click)="close()">
               Back
             </button>
           </div>
         </div>
       </form>
     </div>
+
   </div>
 </div>
