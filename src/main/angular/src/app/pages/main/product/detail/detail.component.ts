@@ -128,6 +128,8 @@ export class DetailComponent implements OnInit {
     this.detailId = "";
   }
   editProductDetail(detail, code, version) {
+    console.log(version);
+    console.log(code.versions);
     this.productCodes = detail.productCodes;
     this.isCreateDetail = true;
     this.detailId = version.productDetailId;
@@ -138,6 +140,7 @@ export class DetailComponent implements OnInit {
       version: version.version,
       description: version.description,
     });
+    this.productVersion = code.versions;
   }
   deleteProductDetail(detail, code, productDetailId) {
     $("#" + productDetailId).addClass("highlight");
