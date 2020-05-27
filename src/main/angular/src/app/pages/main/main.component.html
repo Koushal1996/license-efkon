@@ -35,13 +35,12 @@
     </div>
     <div class="list-group list-group-flush">
       <ng-container *ngFor="let p of pages">
-        <div class="dropdown_sidebar">
+        <div class="dropdown_sidebar" *ngIf="pageAuthority(p.privilege)">
           <a
             href="#"
             class="list-group-item list-group-item-action"
             [routerLink]="[p.route]"
             routerLinkActive="active"
-            *ngIf="pageAuthority(p.privilege)"
           >
             <span class="material-icons">
               keyboard_arrow_right
