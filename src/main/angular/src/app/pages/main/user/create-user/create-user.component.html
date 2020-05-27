@@ -183,9 +183,9 @@
           class="saveBtn"
           [disabled]="!createUserForm.valid"
           [ngStyle]="{
-            'background-color': !createUserForm.valid
-              ? 'rgb(255, 162, 162)'
-              : '#dc3545'
+            'opacity': !createUserForm.valid
+              ? '0.6'
+              : '1'
           }"
         >
           {{ userId ? "Update" : "Submit" }}

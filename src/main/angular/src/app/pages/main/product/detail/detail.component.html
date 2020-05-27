@@ -107,7 +107,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
-          Products detail
+          Products detail {{ detailId ? "Edit" : "Add" }}
         </h4>
         <button class="close" type="button" (click)="close()">×</button>
       </div>
@@ -120,9 +120,12 @@
               (ngModelChange)="onProductFamilySelect($event)"
               formControlName="productFamilyId"
             >
-              <option value="{{ name.id }}" *ngFor="let name of Family">{{
-                name.name
-              }}</option>
+              <option
+                value="{{ name.id }}"
+                [disabled]="detailId"
+                *ngFor="let name of Family"
+                >{{ name.name }}</option
+              >
             </select>
             <span
               *ngIf="
@@ -220,9 +223,9 @@
               class="saveBtn"
               *ngIf="!loaderbutton"
               [ngStyle]="{
-                'background-color': !createDetailForm.valid
-                  ? 'rgb(255, 162, 162)'
-                  : '#dc3545'
+                'opacity': !createDetailForm.valid
+                  ? '0.6)'
+                  : '1'
               }"
               [disabled]="!createDetailForm.valid"
             >

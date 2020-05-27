@@ -32,7 +32,7 @@ export class DetailComponent implements OnInit {
     private _productService: ProductService,
     private fb: FormBuilder,
     private _storageService: StorageService
-  ) {}
+  ) { }
   createDetailForm: FormGroup;
   ngOnInit() {
     this.createDetailForm = this.initProductDetailForm();
@@ -49,20 +49,22 @@ export class DetailComponent implements OnInit {
     //this.createDetailForm.reset();
     console.log(productFamilyId);
     const family = this.Family.find((item) => item.id == productFamilyId);
-    this.productCodes = family.productCodes;
+    if (family) this.productCodes = family.productCodes;
     this.currentProductFamilyData = this.productDetail.find(
       (item) => item.id == productFamilyId
     );
     this.createDetailForm.controls["version"].reset();
     this.createDetailForm.controls["description"].reset();
+    // this.createDetailForm.controls["productCodeId"].reset();
   }
 
   onProductCodeSelect(productCodeId) {
     // console.log(this.currentProductFamilyData.productCodes);
-    this.currentProductVersion = this.currentProductFamilyData.productCodes.find(
-      (item) => item.id == productCodeId
-    );
-    this.productVersion = this.currentProductVersion.versions;
+    if (this.currentProductFamilyData)
+      this.currentProductVersion = this.currentProductFamilyData.productCodes.find(
+        (item) => item.id == productCodeId
+      );
+    if (this.currentProductVersion) this.productVersion = this.currentProductVersion.versions;
   }
 
   initProductDetailForm() {
@@ -91,7 +93,8 @@ export class DetailComponent implements OnInit {
             this.detailId = "";
             this.loaderbutton = false;
             swal("Product’s details updated successfully!");
-            this.createDetailForm.reset();
+            //this.createDetailForm.reset();
+            this.createDetailForm = this.initProductDetailForm()
           },
           (error) => {
             this.loaderbutton = false;
@@ -114,17 +117,24 @@ export class DetailComponent implements OnInit {
         );
     }
   }
+
   getProductDetail() {
     this._productService.getProductDetails().subscribe((data) => {
       this.productDetail = data;
       this.isloader = false;
     });
   }
+
   close() {
     this.isCreateDetail = false;
     this.createDetailForm.reset();
+    this.productVersion = "";
+    this.detailId = "";
   }
+
   editProductDetail(detail, code, version) {
+    console.log(version);
+    console.log(code.versions);
     this.productCodes = detail.productCodes;
     this.isCreateDetail = true;
     this.detailId = version.productDetailId;
@@ -135,6 +145,7 @@ export class DetailComponent implements OnInit {
       version: version.version,
       description: version.description,
     });
+    this.productVersion = code.versions;
   }
   deleteProductDetail(detail, code, productDetailId) {
     $("#" + productDetailId).addClass("highlight");
@@ -170,7 +181,7 @@ export class DetailComponent implements OnInit {
             }
             swal("Product’s details delete successfully!");
           },
-          (error) => {}
+          (error) => { }
         );
       }
     });

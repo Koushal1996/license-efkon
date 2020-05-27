@@ -14,7 +14,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">
+              <th scope="col" style="min-width: 159px;">
                 Customer Name
                 <div class="shorting">
                   <button (click)="sortAphabetically()">
@@ -38,6 +38,9 @@
               </th>
             </tr>
           </thead>
+          <!-- <div *ngIf="!projects?.length">
+            No Project Available Now
+          </div> -->
           <tbody id="accordion">
             <ng-container *ngFor="let project of projects; index as i">
               <tr #c (click)="getProductsByProjectId(c, project)">
@@ -58,9 +61,13 @@
                 <td>{{ project.customerContactNo }}</td>
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
-                <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
+                <td>
                   <div class="info top_tooltip">
-                    <button class="roleactive" (click)="addProduct(project)">
+                    <button
+                      class="roleactive"
+                      (click)="addProduct(project)"
+                      *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
+                    >
                       + Product
                     </button>
                     <span>Add Product</span>
@@ -76,15 +83,16 @@
                     <span style="min-width: 140px;">Added Product Details</span>
                   </div>
                   <button
+                    *ngIf="hasAuthority('LICENSE_FETCH')"
                     class="badge custom_badge"
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     #c
-                    (click)="viewLicenses(project)"
+                    (click)="viewLicenses(project)" class="info_btn_tbl mr-1 ml-1"
                   >
                     View Licenses
                   </button>
-                  <button (click)="createExcelLicense(project)">
+                  <button class="save_btn_tbl" (click)="createExcelLicense(project)">
                     Export Licenses
                   </button>
                 </td>
@@ -102,17 +110,20 @@
                         style="width: 3rem; height: 3rem;"
                       ></div>
                     </div> -->
-                    <div class="sub_table mt-3 p-0" *ngIf="project.licenceActive">
-                      <div
-                      *ngIf="project.productLoader"
-                      class="text-center w-100"
+                    <div
+                      class="sub_table mt-3 p-0"
+                      *ngIf="project.licenceActive"
                     >
-                      <img
-                        width="100px"
-                        src="assets/images/loader3.gif"
-                        alt=""
-                      />
-                    </div>
+                      <div
+                        *ngIf="project.productLoader"
+                        class="text-center w-100"
+                      >
+                        <img
+                          width="100px"
+                          src="assets/images/loader3.gif"
+                          alt=""
+                        />
+                      </div>
                       <h3>Licenses Details</h3>
                       <table>
                         <thead>
@@ -121,11 +132,8 @@
                             <th scope="col">Code</th>
                             <th scope="col">Generated Key</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col">Expiry Period Type</th>
-                            <th scope="col">No of License</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">End Date</th>
-                            <th scope="col">Status</th>
+                            <th scope="col" style="min-width:95px">Start Date</th>
+                            <th scope="col" style="min-width:95px">End Date</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -134,13 +142,8 @@
                             <td>{{ license.code }}</td>
                             <td>{{ license.generatedKey }}</td>
                             <td>{{ license.name }}</td>
-                            <td>
-                              {{ license.projectProduct.expirationPeriodType }}
-                            </td>
-                            <td>{{ license.projectProduct.licenseCount }}</td>
                             <td>{{ license.projectProduct.startDate }}</td>
                             <td>{{ license.projectProduct.endDate }}</td>
-                            <td>{{ license.projectProduct.status }}</td>
                           </tr>
                           <!-- <div *ngIf="!licenses?.length">
                             No license is generated 
@@ -148,7 +151,10 @@
                         </tbody>
                       </table>
                     </div>
-                    <div class="sub_table mt-3 p-0" *ngIf="project.ProductActive">
+                    <div
+                      class="sub_table mt-3 p-0"
+                      *ngIf="project.ProductActive"
+                    >
                       <div
                         *ngIf="project.productLoader"
                         class="text-center w-100"
