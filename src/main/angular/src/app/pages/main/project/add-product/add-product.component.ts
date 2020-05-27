@@ -33,7 +33,7 @@ export class AddProductComponent implements OnInit {
     private projectservice: ProjectService,
     private _productService: ProductService,
     private route: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getLicenseType();
@@ -158,24 +158,26 @@ export class AddProductComponent implements OnInit {
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
           swal("New Product Added successfully!");
-          swal({
-            text: "You want to add add more products?",
-            closeOnClickOutside: false,
-            buttons: ["Yes", "No"],
-            dangerMode: true,
-          }).then((willDelete) => {
-            if (willDelete) {
-              console.log(data);
-              swal("New Product Added successfully!");
-              this.route.navigate(["projects"]);
-            } else {
-              swal("New Product Added successfully!");
-              this.loaderbutton = false;
-              console.log(data);
-              this.productForm.reset();
-              this.productForm.controls["licenseTypeId"].reset();
-            }
-          });
+          this.route.navigate(["projects"]);
+          // swal({
+          //   text: "You want to add add more products?",
+          //   closeOnClickOutside: false,
+          //   buttons: ["Yes", "No"],
+          //   dangerMode: true,
+          // }).then((willDelete) => {
+          //   if (willDelete) {
+          //     console.log(data);
+          //     swal("New Product Added successfully!");
+          //     this.route.navigate(["projects"]);
+          //   } else {
+          //     swal("New Product Added successfully!");
+          //     this.loaderbutton = false;
+          //     console.log(data);
+          //     this.productForm.reset();
+          //     this.productForm.controls["licenseTypeId"].reset();
+          //     this.productForm.controls["projectId"].patchValue(this.productId);
+          //   }
+          // });
         },
         (error) => {
           this.loaderbutton = false;
@@ -256,7 +258,7 @@ export class AddProductComponent implements OnInit {
         );
         console.log(this.selectedProductDetail);
       },
-      (error) => {}
+      (error) => { }
     );
   }
   getProductsByProjectId() {
@@ -267,7 +269,7 @@ export class AddProductComponent implements OnInit {
           this.selectedproducts = data;
           console.log(data);
         },
-        (error) => {}
+        (error) => { }
       );
   }
 }
