@@ -32,10 +32,6 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 	@ManyToOne
 	private ProjectProduct projectProduct;
 
-	// @NotNull(message = "project product license request id can't be null")
-	@ManyToOne
-	private ProjectProductLicenseRequest projectProductLicenseRequest;
-
 	public ProjectProductComment() {
 		super();
 	}
@@ -52,26 +48,6 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 			this.projectProduct.setId(projectProductId);
 		}
 		this.remark = remark;
-
-	}
-
-	public ProjectProductComment(String comment, Long commentedById, String remark, Long projectProductId,
-			Long projectProductLicenseRequestId) {
-		super();
-		this.comment = comment;
-		this.remark = remark;
-		if (commentedById != null) {
-			this.commentedBy = new User();
-			this.commentedBy.setId(commentedById);
-		}
-		if (projectProductId != null) {
-			this.projectProduct = new ProjectProduct();
-			this.projectProduct.setId(projectProductId);
-		}
-		if (projectProductLicenseRequestId != null) {
-			this.projectProductLicenseRequest = new ProjectProductLicenseRequest();
-			this.projectProductLicenseRequest.setId(projectProductLicenseRequestId);
-		}
 
 	}
 
@@ -105,14 +81,6 @@ public class ProjectProductComment extends BaseEntity implements Serializable {
 
 	public void setProjectProduct(ProjectProduct projectProduct) {
 		this.projectProduct = projectProduct;
-	}
-
-	public ProjectProductLicenseRequest getProjectProductlicenseRequest() {
-		return projectProductLicenseRequest;
-	}
-
-	public void setProjectProductlicenseRequest(ProjectProductLicenseRequest projectProductLicenseRequest) {
-		this.projectProductLicenseRequest = projectProductLicenseRequest;
 	}
 
 }

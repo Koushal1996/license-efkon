@@ -51,7 +51,7 @@ public class ProjectProductLicenseRequestController {
 		return projectProductLicenseRequestService.save(projectProductId, request);
 	}
 
-	@PutMapping(value = "projectProductLicenseRequest/{id}/accept", produces = { "application/json" }, consumes = {
+	@PutMapping(value = "project-request/{id}/accept", produces = { "application/json" }, consumes = {
 			"application/json" })
 	@Operation(summary = "update product license request status to submit ", description = "return project product license request response after updating details", tags = {
 			"Project Product License Request", "Project Product" })
@@ -65,7 +65,7 @@ public class ProjectProductLicenseRequestController {
 		return projectProductLicenseRequestService.updateStatus(id, LicenseRequestStatus.ACCEPTED, request);
 	}
 
-	@PutMapping(value = "projectProductLicenseRequest/{id}/reject", produces = { "application/json" }, consumes = {
+	@PutMapping(value = "project-request/{id}/reject", produces = { "application/json" }, consumes = {
 			"application/json" })
 	@Operation(summary = "update product license request status to reject ", description = "return project product license request response after rejecting details", tags = {
 			"Project Product License Request", "Project Product" })
@@ -80,8 +80,7 @@ public class ProjectProductLicenseRequestController {
 				request.getComment());
 	}
 
-	@PutMapping(value = "projectProductLicenseRequest/{id}", produces = { "application/json" }, consumes = {
-			"application/json" })
+	@PutMapping(value = "project-request/{id}", produces = { "application/json" }, consumes = { "application/json" })
 	@Operation(summary = "update product product license request in project ", description = "return project product license request response after updating the license in project product license request", tags = {
 			"Project Product", "Project Product License Request" })
 	@ApiResponses(value = {
@@ -93,7 +92,7 @@ public class ProjectProductLicenseRequestController {
 		return projectProductLicenseRequestService.update(id, request);
 	}
 
-	@GetMapping(value = "projectProductLicenseRequest/{id}", produces = { "application/json" })
+	@GetMapping(value = "project-request/{id}", produces = { "application/json" })
 	@Operation(summary = "fetch product product license request detail ", description = "return product product license response", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {
@@ -105,7 +104,7 @@ public class ProjectProductLicenseRequestController {
 		return projectProductLicenseRequestService.findById(id);
 	}
 
-	@GetMapping(value = "projectProductLicenseRequest/pending", produces = { "application/json" })
+	@GetMapping(value = "project-request/pending", produces = { "application/json" })
 	@Operation(summary = "fetch pending product product license request detail ", description = "return product product license response", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {
@@ -117,7 +116,7 @@ public class ProjectProductLicenseRequestController {
 		return projectProductLicenseRequestService.findByStatus(LicenseRequestStatus.PENDING);
 	}
 
-	@DeleteMapping(value = "projectProductLicenseRequest/{id}", produces = { "application/json" })
+	@DeleteMapping(value = "project-request/{id}", produces = { "application/json" })
 	@Operation(summary = "Delete product product license request detail ", description = "return success response after successfully deleting the product product license request", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {

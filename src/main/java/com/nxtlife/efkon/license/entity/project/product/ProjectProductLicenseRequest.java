@@ -16,6 +16,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import com.nxtlife.efkon.license.entity.common.BaseEntity;
+import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.enums.LicenseRequestStatus;
 
 @SuppressWarnings("serial")
@@ -32,8 +33,15 @@ public class ProjectProductLicenseRequest extends BaseEntity implements Serializ
 	@Enumerated(EnumType.STRING)
 	private LicenseRequestStatus status;
 
-	@OneToMany(mappedBy = "projectProduct")
-	private Set<ProjectProductComment> projectProductComments;
+	@NotNull(message = "customer email can't be null")
+	private String customerEmail;
+
+	@NotNull(message = "project manager can't be null")
+	@ManyToOne
+	private User projectManager;
+
+	@Transient
+	private Long tProjectManagerId;
 
 	@NotNull(message = "project_product can't be null")
 	@ManyToOne
@@ -41,6 +49,9 @@ public class ProjectProductLicenseRequest extends BaseEntity implements Serializ
 
 	@Transient
 	private Long tProjectProductId;
+
+	@OneToMany(mappedBy = "projectProductLicenseRequest")
+	private Set<ProjectProductRequestComment> projectProductRequestComments;
 
 	public ProjectProductLicenseRequest() {
 		super();
@@ -66,6 +77,14 @@ public class ProjectProductLicenseRequest extends BaseEntity implements Serializ
 		return tProjectProductId;
 	}
 
+	public void settProjectProductId(Long tProjectProductId) {
+		if (tProjectProductId != null) {
+			this.projectProduct = new ProjectProduct();
+			this.projectProduct.setId(tProjectProductId);
+		}
+		this.tProjectProductId = tProjectProductId;
+	}
+
 	public LicenseRequestStatus getStatus() {
 		return status;
 	}
@@ -74,20 +93,40 @@ public class ProjectProductLicenseRequest extends BaseEntity implements Serializ
 		this.status = status;
 	}
 
-	public Set<ProjectProductComment> getProjectProductComments() {
-		return projectProductComments;
+	public Set<ProjectProductRequestComment> getProjectProductRequestComments() {
+		return projectProductRequestComments;
 	}
 
-	public void setProjectProductComments(Set<ProjectProductComment> projectProductComments) {
-		this.projectProductComments = projectProductComments;
+	public void setProjectProductRequestComments(Set<ProjectProductRequestComment> projectProductRequestComments) {
+		this.projectProductRequestComments = projectProductRequestComments;
 	}
 
-	public void settProjectProductId(Long tProjectProductId) {
-		if (tProjectProductId != null) {
-			this.projectProduct = new ProjectProduct();
-			this.projectProduct.setId(tProjectProductId);
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public User getProjectManager() {
+		return projectManager;
+	}
+
+	public void setProjectManager(User projectManager) {
+		this.projectManager = projectManager;
+	}
+
+	public Long gettProjectManagerId() {
+		return tProjectManagerId;
+	}
+
+	public void settProjectManagerId(Long tProjectManagerId) {
+		if (tProjectManagerId != null) {
+			this.projectManager = new User();
+			this.projectManager.setId(tProjectManagerId);
 		}
-		this.tProjectProductId = tProjectProductId;
+		this.tProjectManagerId = tProjectManagerId;
 	}
 
 }

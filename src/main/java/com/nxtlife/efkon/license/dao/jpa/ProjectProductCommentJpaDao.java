@@ -14,8 +14,6 @@ public interface ProjectProductCommentJpaDao extends JpaRepository<ProjectProduc
 
 	public List<ProjectProductCommentResponse> findByProjectProductId(Long projectProductId);
 
-	public List<ProjectProductCommentResponse> findByProjectProductLicenseRequestId(Long unmaskId);
-
 	@Query("select id from ProjectProductComment where projectProduct.id=?1 and active=?2")
 	List<Long> findAllIdsByProjectProductIdAndActive(Long projectProductId, Boolean active);
 

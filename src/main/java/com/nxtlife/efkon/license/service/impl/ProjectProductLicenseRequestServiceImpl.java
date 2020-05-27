@@ -19,6 +19,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.nxtlife.efkon.license.dao.jpa.LicenseTypeJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductLicenseRequestJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductRequestCommentJpaDao;
@@ -37,6 +38,7 @@ import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProjectProductLicenseRequestService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.SuccessResponse;
+import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductLicenseRequestRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductLicenseRequestResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
@@ -49,6 +51,9 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 	@Autowired
 	private ProjectProductJpaDao projectProductDao;
+
+	@Autowired
+	private ProjectJpaDao projectDao;
 
 	@Autowired
 	private ProjectProductLicenseRequestJpaDao projectProductLicenseRequestDao;
@@ -82,13 +87,37 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	@Secured(AuthorityUtils.LICENSE_REQUEST_CREATE)
 	public ProjectProductLicenseRequestResponse save(Long projectProductId,
 			ProjectProductLicenseRequestRequest request) {
+		User user = getUser();
 		validate(projectProductId);
 		ProjectProductLicenseRequest pplRequest = request.toEntity();
 		pplRequest.settProjectProductId(unmask(projectProductId));
 		pplRequest.setStatus(LicenseRequestStatus.PENDING);
+		pplRequest.setCustomerEmail(user.getEmail());
+
+		ProjectProductResponse ppResponse = projectProductDao.findByIdAndActive(unmask(projectProductId), true);
+
+		if (ppResponse != null && ppResponse.getProjectId() != null) {
+			ProjectResponse pResponse = projectDao.findByIdAndActive(unmask(ppResponse.getProjectId()), true);
+
+			if (pResponse != null && pResponse.getProjectManagerId() != null) {
+				pplRequest.settProjectManagerId(unmask(pResponse.getProjectManagerId()));
+			} else {
+				throw new ValidationException(String.format(
+						"project manager not found of the project (%s) for which you're requesting the product having id (%s) ",
+						ppResponse.getProjectId(), projectProductId));
+			}
+		}
+
 		projectProductLicenseRequestDao.save(pplRequest);
 		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
+		if (request.getComment() != null && !request.getComment().isEmpty()) {
+			projectProductRequestCommentDao.save(new ProjectProductRequestComment(request.getComment(), getUserId(),
+					LicenseRequestStatus.PENDING.toString(), unmask(response.getId())));
+		}
 		response.setProjectProductResponse(projectProductDao.findByIdAndActive(unmask(projectProductId), true));
+		response.setComments(
+				projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(response.getId())));
+
 		return response;
 	}
 
