@@ -35,30 +35,33 @@
         </div>
       </div>
 
-      <div class="product_main mt-3">
+      <div class="product_main mt-3" >
         <h3 class="m-0">Added Product</h3>
-        <table *ngIf="selectedproducts?.length">
-          <thead class="users_table_hader">
-            <tr>
-              <th>#</th>
-              <th scope="col">Product Detail</th>
-              <th scope="col">No of License</th>
-              <th scope="col">License Type</th>
-              <th scope="col">Status</th>
+        <div class="added_pct_scl">
+          <h4 class="nodata" *ngIf="!selectedproducts?.length">No Added Product </h4>
+          <table *ngIf="selectedproducts?.length">
+            <thead class="users_table_hader">
+              <tr>
+                <th>#</th>
+                <th scope="col">Product Detail</th>
+                <th scope="col">No of License</th>
+                <th scope="col">License Type</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tr *ngFor="let pro of selectedproducts; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>
+                {{ pro.productDetailResponse.productCodeName }}
+                {{ pro.productDetailResponse.productFamilyName }}
+                {{ pro.productDetailResponse.versionName }}
+              </td>
+              <td>{{ pro.licenseCount }}</td>
+              <td>{{ pro.licenseTypeName }}</td>
+              <td>{{ pro.status }}</td>
             </tr>
-          </thead>
-          <tr *ngFor="let pro of selectedproducts; index as i">
-            <td>{{ i + 1 }}</td>
-            <td>
-              {{ pro.productDetailResponse.productCodeName }}
-              {{ pro.productDetailResponse.productFamilyName }}
-              {{ pro.productDetailResponse.versionName }}
-            </td>
-            <td>{{ pro.licenseCount }}</td>
-            <td>{{ pro.licenseTypeName }}</td>
-            <td>{{ pro.status }}</td>
-          </tr>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -322,7 +325,7 @@
             >
               {{ productId ? "Update" : "Submit" }}
             </button>
-            <button class="buttonload btn-danger ml-auto" *ngIf="loaderbutton">
+            <button class="saveBtn" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i> Loading
             </button>
             <button type="button" class="cancelBtn" (click)="close()">

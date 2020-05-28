@@ -209,9 +209,9 @@
             class="saveBtn mr-3"
             *ngIf="!loaderbutton"
             [ngStyle]="{
-              'background-color': !projectForm.valid
-                ? 'rgb(255, 162, 162)'
-                : '#dc3545'
+              'opacity': !projectForm.valid
+                ? '0.6'
+                : '1'
             }"
             [disabled]="!projectForm.valid"
           >
