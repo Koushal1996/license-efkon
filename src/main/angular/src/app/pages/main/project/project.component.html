@@ -94,6 +94,7 @@
                   <button
                     class="save_btn_tbl"
                     (click)="createExcelLicense(project)"
+                    *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
                     Export Licenses
                   </button>
@@ -306,6 +307,7 @@
                             <button
                               type="button"
                               class="roleactive"
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
@@ -318,6 +320,7 @@
                             <button
                               type="button"
                               class="roleactive"
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
@@ -360,7 +363,12 @@
           &times;
         </button>
       </div>
-
+      <h6 style="color: rgb(67, 68, 67);">
+        Product Details:
+        {{ selectedProductCode }}
+        {{ selectedProductFamily }}
+        {{ selectedProductVersion }}
+      </h6>
       <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
         <div class="modal-body p-3">
           <div class="form-group mb-0">
@@ -422,6 +430,12 @@
           &times;
         </button>
       </div>
+      <h6 style="color: rgb(67, 68, 67);">
+        Product Details:
+        {{ selectedProductCode }}
+        {{ selectedProductFamily }}
+        {{ selectedProductVersion }}
+      </h6>
       <div class="modal-body overflow-hidden mb-3">
         <!-- <div class="coment_list_content">
           <ul *ngFor="let c of comments">
@@ -559,7 +573,7 @@
                   "
                   class="field_error"
                 >
-                  minimun 1 is required</span
+                  Minimum 1 is required</span
                 >
               </span>
             </div>

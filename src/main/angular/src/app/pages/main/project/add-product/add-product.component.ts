@@ -148,7 +148,7 @@ export class AddProductComponent implements OnInit {
         .subscribe(
           (data) => {
             this.route.navigate(["projects"]);
-            swal("Product Update successfully!");
+            swal("Product details updated successfully!");
           },
           (error) => {
             this.loaderbutton = false;
@@ -158,7 +158,7 @@ export class AddProductComponent implements OnInit {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
-          swal("New Product Added successfully!");
+          swal("New Product details Added successfully!");
           this.route.navigate(["projects"]);
           // swal({
           //   text: "You want to add add more products?",

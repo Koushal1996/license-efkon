@@ -142,6 +142,7 @@
                 <button
                   type="button"
                   class="roleactive mb-2"
+                  *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
                   (click)="
                     renewProductStatus(project); $event.stopPropagation()
                   "
@@ -154,6 +155,7 @@
                   data-toggle="collapse"
                   [attr.data-target]="'#collapse' + i"
                   #c
+                  *ngIf="hasAuthority('LICENSE_FETCH')"
                 >
                   View License
                 </button>
@@ -161,6 +163,7 @@
               <td *ngIf="project.status == 'RENEWED'">
                 <button
                   type="button"
+                  *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
                   class="roleactive mb-2"
                   (click)="
                     renewProductStatus(project); $event.stopPropagation()
@@ -174,6 +177,7 @@
                   data-toggle="collapse"
                   [attr.data-target]="'#collapse' + i"
                   #c
+                  *ngIf="hasAuthority('LICENSE_FETCH')"
                 >
                   View License
                 </button>
@@ -301,6 +305,7 @@
       <div class="modal-content">
         <div class="modal-header mb-0">
           <h4 class="modal-title">Enter Comment *</h4>
+
           <button
             type="button"
             class="close"
@@ -310,7 +315,12 @@
             &times;
           </button>
         </div>
-
+        <h6 style="color: rgb(67, 68, 67);">
+          Product Details:
+          {{ selectedProductCode }}
+          {{ selectedProductFamily }}
+          {{ selectedProductVersion }}
+        </h6>
         <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
           <div class="modal-body p-3">
             <div class="form-group mb-0">
@@ -340,9 +350,7 @@
               class="cancelBtn"
               type="submit"
               [ngStyle]="{
-                'opacity': !popUpForm.valid
-                  ? '0.6'
-                  : '1'
+                opacity: !popUpForm.valid ? '0.6' : '1'
               }"
               [disabled]="!popUpForm.valid"
             >
@@ -374,7 +382,13 @@
             &times;
           </button>
         </div>
-        <div class="modal-body  overflow-hidden mb-3">
+        <h6 style="color: rgb(67, 68, 67);">
+          Product Details:
+          {{ selectedProductCode }}
+          {{ selectedProductFamily }}
+          {{ selectedProductVersion }}
+        </h6>
+        <div class="modal-body overflow-hidden mb-3">
           <!-- <div class="coment_list_content">
             <ul *ngFor="let c of comments">
               <li>
@@ -432,7 +446,6 @@
               </div>
             </div>
           </div>
-          
         </div>
         <div class="modal_footer">
           <button
@@ -518,7 +531,7 @@
                     "
                     class="field_error"
                   >
-                    minimun 1 is required</span
+                    Minimum 1 is required</span
                   >
                 </span>
               </div>
@@ -528,9 +541,7 @@
                 type="submit"
                 class="saveBtn"
                 [ngStyle]="{
-                  'opacity': !popUpStartDateForm.valid
-                    ? '0.6'
-                    : '1'
+                  opacity: !popUpStartDateForm.valid ? '0.6' : '1'
                 }"
                 [disabled]="!popUpStartDateForm.valid"
               >

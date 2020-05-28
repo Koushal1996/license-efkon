@@ -4,6 +4,8 @@ import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { ProjectService } from "./../../../services/project/project.service";
 import swal from "sweetalert";
+//import { saveAs } from 'file-saver';
+
 import {
   FormBuilder,
   FormGroup,
@@ -36,7 +38,9 @@ export class ProjectComponent implements OnInit {
   showRenewModal: any;
   projectProductCount: string;
   licenses: any;
-
+  selectedProductVersion: any;
+  selectedProductFamily: any;
+  selectedProductCode: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -161,7 +165,10 @@ export class ProjectComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = "SUBMIT";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Submitted successfully!");
+                //swal("Product Submitted successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Submitted successfully!`
+                );
               });
           }
         });
@@ -185,7 +192,10 @@ export class ProjectComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
-                swal("Project Rejected successfully!");
+                //swal("Product Rejected successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Rejected successfully!`
+                );
               });
           }
         });
@@ -209,7 +219,10 @@ export class ProjectComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = "REVIEWED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Reviewed successfully!");
+                //swal("Product Reviewed successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Reviewed successfully!`
+                );
               });
           }
         });
@@ -233,7 +246,10 @@ export class ProjectComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = "APPROVED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Approved successfully!");
+                //swal("Product Approved successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Approved successfully!`
+                );
               });
           }
         });
@@ -241,24 +257,36 @@ export class ProjectComponent implements OnInit {
     }
   }
   submitProductStatus(pro) {
+    this.selectedProductCode = pro.productDetailResponse.productCodeName;
+    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = pro.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Submit";
     this.selectedProduct = pro;
   }
   reviewProductStatus(pro) {
+    this.selectedProductCode = pro.productDetailResponse.productCodeName;
+    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = pro.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Review";
     this.selectedProduct = pro;
   }
   approveProductStatus(pro) {
+    this.selectedProductCode = pro.productDetailResponse.productCodeName;
+    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = pro.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Approved";
     this.selectedProduct = pro;
   }
   rejectProductStatus(pro) {
+    this.selectedProductCode = pro.productDetailResponse.productCodeName;
+    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = pro.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.controls["comment"].setValidators(Validators.required);
     this.commentSubmitButton = "Reject";
@@ -276,6 +304,9 @@ export class ProjectComponent implements OnInit {
     this.comments = pro.comments;
     if (this.comments.length > 0) {
       this.showCommentModal = true;
+      this.selectedProductCode = pro.productDetailResponse.productCodeName;
+      this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
+      this.selectedProductVersion = pro.productDetailResponse.versionName;
     } else {
       swal("No Comments Found");
     }
@@ -355,6 +386,9 @@ export class ProjectComponent implements OnInit {
   createExcelLicense(project) {
     this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {
       console.log(data);
+      // const blob = new Blob([data.body], {
+      // });
+      // FileSaver.saveAs(blob, data.headers.get('fileName'));
     });
   }
 }
