@@ -12,6 +12,7 @@ import swal from "sweetalert";
 })
 export class AddProductComponent implements OnInit {
   loaderbutton: boolean = false;
+  selectedProductLoader: boolean = true;
   productForm: FormGroup;
   productId;
   projects;
@@ -33,7 +34,7 @@ export class AddProductComponent implements OnInit {
     private projectservice: ProjectService,
     private _productService: ProductService,
     private route: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getLicenseType();
@@ -258,7 +259,7 @@ export class AddProductComponent implements OnInit {
         );
         console.log(this.selectedProductDetail);
       },
-      (error) => { }
+      (error) => {}
     );
   }
   getProductsByProjectId() {
@@ -267,9 +268,10 @@ export class AddProductComponent implements OnInit {
       .subscribe(
         (data) => {
           this.selectedproducts = data;
+          this.selectedProductLoader = false;
           console.log(data);
         },
-        (error) => { }
+        (error) => {}
       );
   }
 }

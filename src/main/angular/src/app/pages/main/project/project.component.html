@@ -33,9 +33,7 @@
               <th scope="col">Customer Contact No</th>
               <th scope="col">Project Type</th>
               <th scope="col">Project Manager</th>
-              <th scope="col" *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
-                Products
-              </th>
+              <th scope="col">Products</th>
             </tr>
           </thead>
           <!-- <div *ngIf="!projects?.length">
@@ -88,11 +86,15 @@
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     #c
-                    (click)="viewLicenses(project)" class="info_btn_tbl mr-1 ml-1"
+                    (click)="viewLicenses(project)"
+                    class="info_btn_tbl mr-1 ml-1"
                   >
                     View Licenses
                   </button>
-                  <button class="save_btn_tbl" (click)="createExcelLicense(project)">
+                  <button
+                    class="save_btn_tbl"
+                    (click)="createExcelLicense(project)"
+                  >
                     Export Licenses
                   </button>
                 </td>
@@ -132,8 +134,12 @@
                             <th scope="col">Code</th>
                             <th scope="col">Generated Key</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col" style="min-width:95px">Start Date</th>
-                            <th scope="col" style="min-width:95px">End Date</th>
+                            <th scope="col" style="min-width: 95px;">
+                              Start Date
+                            </th>
+                            <th scope="col" style="min-width: 95px;">
+                              End Date
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
