@@ -36,8 +36,13 @@ public class ProjectProductLicenseRequestResponse implements Response {
 
 	private List<ProjectProductCommentResponse> comments;
 
+	private String customerEmail;
+
+	private Long projectManagerId;
+
 	public ProjectProductLicenseRequestResponse(Long id, Integer licenseCount, String createdAt,
-			LicenseRequestStatus status, Date modifiedAt, Long createdById, Long projectProductId) {
+			LicenseRequestStatus status, Date modifiedAt, Long createdById, Long projectProductId, String customerEmail,
+			Long projectManagerId) {
 		super();
 		this.id = id;
 		this.licenseCount = licenseCount;
@@ -46,6 +51,8 @@ public class ProjectProductLicenseRequestResponse implements Response {
 		this.modifiedAt = modifiedAt;
 		this.createdById = createdById;
 		this.projectProductId = projectProductId;
+		this.customerEmail = customerEmail;
+		this.projectManagerId = projectManagerId;
 	}
 
 	public Long getId() {
@@ -120,11 +127,27 @@ public class ProjectProductLicenseRequestResponse implements Response {
 		this.comments = comments;
 	}
 
+	public String getCustomerEmail() {
+		return customerEmail;
+	}
+
+	public void setCustomerEmail(String customerEmail) {
+		this.customerEmail = customerEmail;
+	}
+
+	public Long getProjectManagerId() {
+		return mask(projectManagerId);
+	}
+
+	public void setProjectManagerId(Long projectManagerId) {
+		this.projectManagerId = projectManagerId;
+	}
+
 	public static ProjectProductLicenseRequestResponse get(ProjectProductLicenseRequest pplr) {
 		if (pplr != null) {
 			ProjectProductLicenseRequestResponse response = new ProjectProductLicenseRequestResponse(pplr.getId(),
 					pplr.getLicenseCount(), pplr.getCreatedAt(), pplr.getStatus(), pplr.getModifiedAt(), null,
-					pplr.gettProjectProductId());
+					pplr.gettProjectProductId(), pplr.getCustomerEmail(), pplr.gettProjectManagerId());
 			return response;
 		}
 		return null;
