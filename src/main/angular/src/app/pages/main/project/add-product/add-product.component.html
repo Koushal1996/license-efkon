@@ -88,7 +88,7 @@
                     class="form-control"
                     name="productFamily"
                     formControlName="productFamily"
-                    (ngModelChange)="productCodes = $event.productCodes"
+                    (ngModelChange)="productCodes = $event?.productCodes"
                   >
                     <option value="" disabled>Select Product Family</option>
                     <option
