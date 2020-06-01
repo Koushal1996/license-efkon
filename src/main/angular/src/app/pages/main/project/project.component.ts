@@ -4,7 +4,10 @@ import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { ProjectService } from "./../../../services/project/project.service";
 import swal from "sweetalert";
-//import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
+import { ResponseContentType } from "@angular/http";
 
 import {
   FormBuilder,
@@ -384,11 +387,34 @@ export class ProjectComponent implements OnInit {
     project.ProductActive = true;
   }
   createExcelLicense(project) {
+    // var FileSaver = require("file-saver");
+    // var blob = new Blob(["Hello, world!"], {
+    //   type: "text/plain;charset=utf-8",
+    // });
+    // FileSaver.saveAs(blob, "hello world.txt");
     this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {
-      console.log(data);
-      // const blob = new Blob([data.body], {
-      // });
-      // FileSaver.saveAs(blob, data.headers.get('fileName'));
+      const blob = new Blob([data.body], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      FileSaver.saveAs(blob, data.headers.get("fileName"));
     });
   }
+
+  // createExcelLicense(project) {
+  //   this.projectservice
+  //     .createExcelbyProjectId(project.id)
+  //     .subscribe((response) => {
+  //       if (response) {
+  //         console.log(response);
+  //         var contentType =
+  //           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+  //         let blob = new Blob([response._body], { type: contentType });
+  //         let link = document.createElement("a");
+  //         link.href = URL.createObjectURL(blob);
+  //         link.download = "report.xlsx";
+  //         link.click();
+  //       }
+  //     });
+  // }
 }
