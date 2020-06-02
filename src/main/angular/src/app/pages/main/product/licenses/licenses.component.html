@@ -59,7 +59,7 @@
               <button
                 type="submit"
                 (click)="onBack(license)"
-                class="t_save_btn top_tooltip"
+                class=" ml-2 t_save_btn bg-danger top_tooltip"
               >
                 Cancel
               </button>
@@ -67,9 +67,11 @@
           </tr>
         </tbody>
       </table>
+      
     </div>
   </div>
+  <div *ngIf="isloader" class="loader">
+    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+  </div>
 </div>
-<div *ngIf="isloader" class="loader">
-  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
-</div>
+

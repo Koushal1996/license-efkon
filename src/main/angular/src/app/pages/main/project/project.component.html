@@ -14,7 +14,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">
+              <th scope="col" style="min-width: 159px;">
                 Customer Name
                 <div class="shorting">
                   <button (click)="sortAphabetically()">
@@ -33,9 +33,7 @@
               <th scope="col">Customer Contact No</th>
               <th scope="col">Project Type</th>
               <th scope="col">Project Manager</th>
-              <th scope="col" *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
-                Products
-              </th>
+              <th scope="col">Products</th>
             </tr>
           </thead>
           <!-- <div *ngIf="!projects?.length">
@@ -61,9 +59,13 @@
                 <td>{{ project.customerContactNo }}</td>
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
-                <td *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')">
+                <td>
                   <div class="info top_tooltip">
-                    <button class="roleactive" (click)="addProduct(project)">
+                    <button
+                      class="roleactive"
+                      (click)="addProduct(project)"
+                      *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
+                    >
                       + Product
                     </button>
                     <span>Add Product</span>
@@ -79,15 +81,21 @@
                     <span style="min-width: 140px;">Added Product Details</span>
                   </div>
                   <button
+                    *ngIf="hasAuthority('LICENSE_FETCH')"
                     class="badge custom_badge"
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     #c
                     (click)="viewLicenses(project)"
+                    class="info_btn_tbl mr-1 ml-1"
                   >
                     View Licenses
                   </button>
-                  <button (click)="createExcelLicense(project)">
+                  <button
+                    class="save_btn_tbl"
+                    (click)="createExcelLicense(project)"
+                    *ngIf="hasAuthority('LICENSE_FETCH')"
+                  >
                     Export Licenses
                   </button>
                 </td>
@@ -127,11 +135,12 @@
                             <th scope="col">Code</th>
                             <th scope="col">Generated Key</th>
                             <th scope="col">Remarks</th>
-                            <th scope="col">Expiry Period Type</th>
-                            <th scope="col">No of License</th>
-                            <th scope="col">Start Date</th>
-                            <th scope="col">End Date</th>
-                            <th scope="col">Status</th>
+                            <th scope="col" style="min-width: 95px;">
+                              Start Date
+                            </th>
+                            <th scope="col" style="min-width: 95px;">
+                              End Date
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -140,13 +149,8 @@
                             <td>{{ license.code }}</td>
                             <td>{{ license.generatedKey }}</td>
                             <td>{{ license.name }}</td>
-                            <td>
-                              {{ license.projectProduct.expirationPeriodType }}
-                            </td>
-                            <td>{{ license.projectProduct.licenseCount }}</td>
                             <td>{{ license.projectProduct.startDate }}</td>
                             <td>{{ license.projectProduct.endDate }}</td>
-                            <td>{{ license.projectProduct.status }}</td>
                           </tr>
                           <!-- <div *ngIf="!licenses?.length">
                             No license is generated 
@@ -303,6 +307,7 @@
                             <button
                               type="button"
                               class="roleactive"
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
@@ -315,6 +320,7 @@
                             <button
                               type="button"
                               class="roleactive"
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
@@ -357,7 +363,12 @@
           &times;
         </button>
       </div>
-
+      <h6 style="color: rgb(67, 68, 67);">
+        Product Details:
+        {{ selectedProductCode }}
+        {{ selectedProductFamily }}
+        {{ selectedProductVersion }}
+      </h6>
       <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
         <div class="modal-body p-3">
           <div class="form-group mb-0">
@@ -419,6 +430,12 @@
           &times;
         </button>
       </div>
+      <h6 style="color: rgb(67, 68, 67);">
+        Product Details:
+        {{ selectedProductCode }}
+        {{ selectedProductFamily }}
+        {{ selectedProductVersion }}
+      </h6>
       <div class="modal-body overflow-hidden mb-3">
         <!-- <div class="coment_list_content">
           <ul *ngFor="let c of comments">
@@ -556,7 +573,7 @@
                   "
                   class="field_error"
                 >
-                  minimun 1 is required</span
+                  Minimum 1 is required</span
                 >
               </span>
             </div>

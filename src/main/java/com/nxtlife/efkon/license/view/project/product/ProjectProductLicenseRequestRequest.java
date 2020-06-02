@@ -33,4 +33,13 @@ public class ProjectProductLicenseRequestRequest implements Request {
 		this.licenseCount = licenseCount;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	
 }

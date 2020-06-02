@@ -31,6 +31,10 @@ export class ProjectProductComponent implements OnInit {
   accessId: string;
   showRenewModal: any;
   selectProductId: any;
+  selectedProductStatus: any;
+  selectedProductVersion: any;
+  selectedProductFamily: any;
+  selectedProductCode: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -134,7 +138,10 @@ export class ProjectProductComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = "SUBMIT";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Submitted successfully!");
+                //swal("Product Submitted successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Submitted successfully!`
+                );
               });
           }
         });
@@ -158,7 +165,10 @@ export class ProjectProductComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
-                swal("Project Rejected successfully!");
+                //swal("Product Rejected successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Rejected successfully!`
+                );
               });
           }
         });
@@ -182,7 +192,12 @@ export class ProjectProductComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = "REVIEWED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Reviewed successfully!");
+                // swal("Product Reviewed successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName}
+                    ${this.selectedProduct.productDetailResponse.productFamilyName}
+                    ${this.selectedProduct.productDetailResponse.versionName}) Reviewed successfully!`
+                );
               });
           }
         });
@@ -206,7 +221,10 @@ export class ProjectProductComponent implements OnInit {
               .subscribe((data) => {
                 this.selectedProduct.status = "APPROVED";
                 this.selectedProduct.comments = data.comments;
-                swal("Project Approved successfully!");
+                //swal("Product Approved successfully!");
+                swal(
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Approved successfully!`
+                );
               });
           }
         });
@@ -214,24 +232,41 @@ export class ProjectProductComponent implements OnInit {
     }
   }
   submitProductStatus(project) {
+    console.log(project);
+    this.selectedProductCode = project.productDetailResponse.productCodeName;
+    this.selectedProductFamily =
+      project.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = project.productDetailResponse.versionName;
+    console.log(this.selectedProductStatus);
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Submit";
-    this.selectedProduct = project;
   }
   reviewProductStatus(project) {
+    this.selectedProductCode = project.productDetailResponse.productCodeName;
+    this.selectedProductFamily =
+      project.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = project.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Review";
     this.selectedProduct = project;
   }
   approveProductStatus(project) {
+    this.selectedProductCode = project.productDetailResponse.productCodeName;
+    this.selectedProductFamily =
+      project.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = project.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Approved";
     this.selectedProduct = project;
   }
   rejectProductStatus(project) {
+    this.selectedProductCode = project.productDetailResponse.productCodeName;
+    this.selectedProductFamily =
+      project.productDetailResponse.productFamilyName;
+    this.selectedProductVersion = project.productDetailResponse.versionName;
     this.showModal = true;
     this.popUpForm.controls["comment"].setValidators(Validators.required);
     this.commentSubmitButton = "Reject";
@@ -249,6 +284,10 @@ export class ProjectProductComponent implements OnInit {
   showComments(project) {
     this.comments = project.comments;
     if (this.comments.length > 0) {
+      this.selectedProductCode = project.productDetailResponse.productCodeName;
+      this.selectedProductFamily =
+        project.productDetailResponse.productFamilyName;
+      this.selectedProductVersion = project.productDetailResponse.versionName;
       this.showCommentModal = true;
     } else {
       swal("No Comment Found");
@@ -273,7 +312,7 @@ export class ProjectProductComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         license.generatedKey = data.generatedKey;
-        swal("License key generate successfully!");
+        swal("License Key Generated successfully!");
       });
   }
   updateLicensekey(license) {
@@ -290,7 +329,7 @@ export class ProjectProductComponent implements OnInit {
             license.edit = false;
             console.log(data);
             license.generatedKey = data.generatedKey;
-            swal("License key update successfully!");
+            swal("License Key Updated successfully!");
           },
           (error) => {
             license.edit = false;
