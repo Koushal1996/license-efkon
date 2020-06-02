@@ -2,12 +2,16 @@ package com.nxtlife.efkon.license.service.impl;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
@@ -57,10 +62,23 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	@Autowired
 	private ProjectJpaDao projectDao;
 
+	@Autowired
+	private ProductDetailJpaDao productDetailJpaDao;
+
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
 
 	private static Logger logger = LoggerFactory.getLogger(LicenseServiceImpl.class);
+
+	@PostConstruct
+	public void init() {
+		try {
+			Files.createDirectories(Paths.get(excelDirectory));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void createExcel(List<LicenseResponse> licenseResponseList, String fileName, String heading) {
 		SXSSFWorkbook workbook = new SXSSFWorkbook();
@@ -70,7 +88,6 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			CellStyle headerStyle = WorkBookUtil.getHeaderCellStyle(workbook);
 			WorkBookUtil.createRow(headerStyle, sheet, columnHeaders, 0);
 			Integer row = 1;
-
 			for (LicenseResponse iterate : licenseResponseList) {
 				WorkBookUtil.createRow(sheet, iterate.columnValues(), row++);
 			}
@@ -79,9 +96,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			workbook.close();
 			workbook.dispose();
 			fout.close();
-
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new ValidationException(String.format("Couldn't create excel file because of %s", e.getMessage()));
 		}
 
 	}
@@ -288,6 +305,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 		for (LicenseResponse iterate : responseList) {
 			iterate.setProjectProduct(projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
+			if (iterate.getProjectProduct() != null && iterate.getProjectProduct().getProductDetailId() != null)
+				iterate.getProjectProduct().setProductDetailResponse(
+						productDetailJpaDao.findResponseById(unmask(iterate.getProjectProduct().getProductDetailId())));
 		}
 
 		return responseList;
@@ -296,7 +316,6 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	@Override
 	@Secured(AuthorityUtils.LICENSE_FETCH)
 	public Resource findLicensesByProjectIdExcel(Long projectId) {
-
 		List<LicenseResponse> licenseResponseList = findByProjectId(projectId);
 		String fileName = excelDirectory + "LicensesByProjectId.xlsx";
 		createExcel(licenseResponseList, fileName, "licenses");
