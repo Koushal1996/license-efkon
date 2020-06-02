@@ -272,7 +272,8 @@
                       *ngIf="productForm.get('expirationMonthCount').errors.max"
                       class="field_error"
                     >
-                      maximum expiry period is 240 for commercial and 2 for demo
+                      maximum expiry period is
+                      {{ foundlicenseTypeId.maxMonthCount }}
                     </span>
                   </span>
                 </div>
@@ -282,7 +283,10 @@
                   <label>Start Date</label>
                   <input
                     type="date"
+                    data-provide="datepicker"
                     class="form-control"
+                    id="mydate"
+                    [min]="getToday()"
                     (ngModelChange)="onStartDate($event)"
                     formControlName="startDate"
                     name="startDate"

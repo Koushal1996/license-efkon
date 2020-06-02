@@ -60,8 +60,8 @@ export class RoleComponent implements OnInit {
   deleterole(item) {
     $("#" + item.id).addClass("highlight");
     swal({
-      title: "You sure?",
-      text: `You want to delete ${item.name}?`,
+      //title: "You sure?",
+      text: `Are you sure, You want to delete ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -86,8 +86,8 @@ export class RoleComponent implements OnInit {
   }
   activaterole(item) {
     swal({
-      title: "Are you sure?",
-      text: `You want to activate ${item.name}?`,
+      //title: "Are you sure?",
+      text: `Are you sure, You want to activate ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
