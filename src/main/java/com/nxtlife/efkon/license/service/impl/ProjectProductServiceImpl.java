@@ -101,6 +101,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new ValidationException(String.format("Couldn't create excel because of %s", e.getMessage()));
 		}
 
 	}
