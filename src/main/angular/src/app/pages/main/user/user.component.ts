@@ -52,8 +52,8 @@ export class UserComponent implements OnInit {
     // var element = document.getElementById("item");
     // element.classList.add("highlight");
     swal({
-      title: "You sure?",
-      text: `You want to delete ${item.name}?`,
+      // title: "You sure?",
+      text: `Are you sure, You want to delete ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],

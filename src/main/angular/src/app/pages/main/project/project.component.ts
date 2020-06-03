@@ -99,8 +99,8 @@ export class ProjectComponent implements OnInit {
   deleteProduct(pro) {
     $("#" + pro.id).addClass("highlight");
     swal({
-      title: "You sure?",
-      text: `You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
+      //title: "You sure?",
+      text: `Are you sure, You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],

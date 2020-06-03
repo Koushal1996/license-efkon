@@ -13,7 +13,10 @@
         <tbody>
           <tr *ngFor="let license of licenseType; index as i">
             <td>{{ i + 1 }}</td>
-            <td>{{ license.name }}</td>
+            <td>
+              {{ license.name }}
+              <span *ngIf="license.name == 'DEMO'">(LIMITED)</span>
+            </td>
             <td *ngIf="!license.edit">{{ license.maxMonthCount }}</td>
             <td *ngIf="license.edit">
               <input
@@ -59,7 +62,7 @@
               <button
                 type="submit"
                 (click)="onBack(license)"
-                class=" ml-2 t_save_btn bg-danger top_tooltip"
+                class="ml-2 t_save_btn bg-danger top_tooltip"
               >
                 Cancel
               </button>
@@ -67,11 +70,9 @@
           </tr>
         </tbody>
       </table>
-      
     </div>
   </div>
   <div *ngIf="isloader" class="loader">
     <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
   </div>
 </div>
-

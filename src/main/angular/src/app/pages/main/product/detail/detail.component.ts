@@ -32,7 +32,7 @@ export class DetailComponent implements OnInit {
     private _productService: ProductService,
     private fb: FormBuilder,
     private _storageService: StorageService
-  ) { }
+  ) {}
   createDetailForm: FormGroup;
   ngOnInit() {
     this.createDetailForm = this.initProductDetailForm();
@@ -64,7 +64,8 @@ export class DetailComponent implements OnInit {
       this.currentProductVersion = this.currentProductFamilyData.productCodes.find(
         (item) => item.id == productCodeId
       );
-    if (this.currentProductVersion) this.productVersion = this.currentProductVersion.versions;
+    if (this.currentProductVersion)
+      this.productVersion = this.currentProductVersion.versions;
   }
 
   initProductDetailForm() {
@@ -94,7 +95,7 @@ export class DetailComponent implements OnInit {
             this.loaderbutton = false;
             swal("Product’s details updated successfully!");
             //this.createDetailForm.reset();
-            this.createDetailForm = this.initProductDetailForm()
+            this.createDetailForm = this.initProductDetailForm();
           },
           (error) => {
             this.loaderbutton = false;
@@ -150,8 +151,7 @@ export class DetailComponent implements OnInit {
   deleteProductDetail(detail, code, productDetailId) {
     $("#" + productDetailId).addClass("highlight");
     swal({
-      title: "You sure?",
-      text: `You want to delete ${detail.name} ${code.name}?`,
+      text: `Are you sure, You want to delete ${detail.name} ${code.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -181,7 +181,7 @@ export class DetailComponent implements OnInit {
             }
             swal("Product’s details delete successfully!");
           },
-          (error) => { }
+          (error) => {}
         );
       }
     });
