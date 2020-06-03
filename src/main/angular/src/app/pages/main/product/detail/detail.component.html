@@ -152,6 +152,7 @@
               <option
                 *ngFor="let productCode of productCodes"
                 value="{{ productCode.id }}"
+                [disabled]="detailId"
               >
                 {{ productCode.name }}
               </option>
@@ -209,7 +210,7 @@
                 (createDetailForm.get('description').touched ||
                   createDetailForm.get('description').dirty)
               "
-            > 
+            >
               <span
                 *ngIf="createDetailForm.get('description').errors.required"
                 class="error"
@@ -223,16 +224,15 @@
               class="saveBtn"
               *ngIf="!loaderbutton"
               [ngStyle]="{
-                'opacity': !createDetailForm.valid
-                  ? '0.6)'
-                  : '1'
+                opacity: !createDetailForm.valid ? '0.6' : '1'
               }"
               [disabled]="!createDetailForm.valid"
             >
               {{ detailId ? "Update" : "Submit" }}
             </button>
             <button class="buttonload saveBtn" *ngIf="loaderbutton">
-              <i class="fa fa-refresh fa-spin"></i> Loading
+              <i class="fa fa-refresh fa-spin"></i>
+              {{ detailId ? "Updating...." : "Submitting...." }}
             </button>
             <button type="button" class="cancelBtn" (click)="close()">
               Back

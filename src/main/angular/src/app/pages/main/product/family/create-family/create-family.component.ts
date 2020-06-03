@@ -19,6 +19,8 @@ export class CreateFamilyComponent implements OnInit {
   createFamilyForm: FormGroup;
   productCodes: FormArray;
   familyId;
+  loaderbutton: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private _productService: ProductService,
@@ -58,21 +60,35 @@ export class CreateFamilyComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loaderbutton = true;
     if (this.familyId) {
       console.log(this.createFamilyForm.value);
       this._productService
         .updateProductFamily(this.familyId, this.createFamilyForm.value)
-        .subscribe((data) => {
-          this.route.navigate(["products/family"]);
-          swal("Product family updated successfully!");
-        });
+        .subscribe(
+          (data) => {
+            this.route.navigate(["products/family"]);
+            this.loaderbutton = false;
+            swal("Product family updated successfully!");
+          },
+          (error) => {
+            this.loaderbutton = false;
+          }
+        );
     } else {
+      //this.loaderbutton = false;
       this._productService
         .addProductFamily(this.createFamilyForm.value)
-        .subscribe((data) => {
-          this.route.navigate(["products/family"]);
-          swal("New Product family added successfully!");
-        });
+        .subscribe(
+          (data) => {
+            this.loaderbutton = false;
+            this.route.navigate(["products/family"]);
+            swal("New Product family added successfully!");
+          },
+          (error) => {
+            this.loaderbutton = false;
+          }
+        );
     }
   }
 

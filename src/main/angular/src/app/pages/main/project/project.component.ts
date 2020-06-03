@@ -44,6 +44,8 @@ export class ProjectComponent implements OnInit {
   selectedProductVersion: any;
   selectedProductFamily: any;
   selectedProductCode: any;
+  searchProjectsForm: FormGroup;
+  projectsCopy: any[];
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -59,8 +61,27 @@ export class ProjectComponent implements OnInit {
     this.mainService.getLoginUser().subscribe((data) => {
       this.userId = data.id;
     });
+    this.searchProjectsForm = this.fb.group({
+      Search: [""],
+    });
   }
-
+  onsearchProjectsForm(key) {
+    console.log(key);
+    if (key) {
+      this.projects = this.projects.filter(
+        (item) =>
+          (item.customerName &&
+            item.customerName.toLowerCase().startsWith(key)) ||
+          (item.customerEmail &&
+            item.customerEmail.toLowerCase().startsWith(key)) ||
+          // (item.projectManagerName &&
+          //   item.projectManagerName.toLowerCase().startsWith(key)) ||
+          (item.customerContactNo && item.customerContactNo.startsWith(key))
+      );
+    } else {
+      this.projects = this.projectsCopy;
+    }
+  }
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
       .getData("userAuthorities")
@@ -84,6 +105,7 @@ export class ProjectComponent implements OnInit {
       (data) => {
         console.log(data);
         this.projects = data;
+        this.projectsCopy = JSON.parse(JSON.stringify(data));
         this.isloader = false;
       },
       (error) => {}
@@ -393,28 +415,13 @@ export class ProjectComponent implements OnInit {
     // });
     // FileSaver.saveAs(blob, "hello world.txt");
     this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {
+      console.log(data);
       const blob = new Blob([data.body], {
         type:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      FileSaver.saveAs(blob, data.headers.get("fileName"));
+      //FileSaver.saveAs(blob, data.headers.get("fileName"));
+      FileSaver.saveAs(blob, project.customerName);
     });
   }
-
-  // createExcelLicense(project) {
-  //   this.projectservice
-  //     .createExcelbyProjectId(project.id)
-  //     .subscribe((response) => {
-  //       if (response) {
-  //         console.log(response);
-  //         var contentType =
-  //           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-  //         let blob = new Blob([response._body], { type: contentType });
-  //         let link = document.createElement("a");
-  //         link.href = URL.createObjectURL(blob);
-  //         link.download = "report.xlsx";
-  //         link.click();
-  //       }
-  //     });
-  // }
 }

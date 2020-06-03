@@ -183,15 +183,14 @@
           class="saveBtn"
           [disabled]="!createUserForm.valid"
           [ngStyle]="{
-            'opacity': !createUserForm.valid
-              ? '0.6'
-              : '1'
+            opacity: !createUserForm.valid ? '0.6' : '1'
           }"
         >
           {{ userId ? "Update" : "Submit" }}
         </button>
         <button class="saveBtn" *ngIf="loaderbutton">
-          <i class="fa fa-refresh fa-spin"></i> Loading
+          <i class="fa fa-refresh fa-spin"></i>
+          {{ userId ? "Updating...." : "Submitting...." }}
         </button>
         <!-- <button
               type="button"

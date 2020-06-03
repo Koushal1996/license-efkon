@@ -70,15 +70,15 @@
               class="saveBtn"
               [disabled]="!createRoleForm.valid"
               [ngStyle]="{
-                'opacity': !createRoleForm.valid
-                  ? '0.6'
-                  : '1'
+                opacity: !createRoleForm.valid ? '0.6' : '1'
               }"
             >
               {{ roleId ? "Update" : "Submit" }}
             </button>
             <button class="saveBtn" *ngIf="loaderbutton">
-              <i class="fa fa-refresh fa-spin"></i> Loading
+              <i class="fa fa-refresh fa-spin"></i>
+              <!-- Loading -->
+              {{ roleId ? "Updating...." : "Submitting...." }}
             </button>
             <!-- <button
               type="button"

@@ -117,22 +117,38 @@ export class AddProductComponent implements OnInit, OnChanges {
               productCode: productCodess,
             });
           }
+          if (data.licenseTypeName == "DEMO") {
+            this.productForm.controls["expirationPeriodType"].disable();
+          } else {
+            this.productForm.controls["expirationPeriodType"].enable();
+          }
         } else {
           this._productService
             .getProductById(this.productId)
             .subscribe((data) => {
               //console.log(data);
               this.productForm.patchValue(data);
-              this.productForm.patchValue({
-                productFamily: this.productDetail.find(
-                  (pd) => pd.id == data.productDetailResponse.productFamilyId
-                ),
-              });
-              this.productForm.patchValue({
-                productCode: this.productCodes.find(
-                  (pc) => pc.id == data.productDetailResponse.productCodeId
-                ),
-              });
+              const productDetaill = this.productDetail.find(
+                (pd) => pd.id == data.productDetailResponse.productFamilyId
+              );
+              if (productDetaill) {
+                this.productForm.patchValue({
+                  productFamily: productDetaill,
+                });
+              }
+              const productCodess = this.productCodes.find(
+                (pc) => pc.id == data.productDetailResponse.productCodeId
+              );
+              if (productCodess) {
+                this.productForm.patchValue({
+                  productCode: productCodess,
+                });
+              }
+              if (data.licenseTypeName == "DEMO") {
+                this.productForm.controls["expirationPeriodType"].disable();
+              } else {
+                this.productForm.controls["expirationPeriodType"].enable();
+              }
             });
         }
       });

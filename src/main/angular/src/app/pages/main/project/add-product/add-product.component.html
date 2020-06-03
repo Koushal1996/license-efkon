@@ -335,7 +335,8 @@
               {{ productId ? "Update" : "Submit" }}
             </button>
             <button class="saveBtn" *ngIf="loaderbutton">
-              <i class="fa fa-refresh fa-spin"></i> Loading
+              <i class="fa fa-refresh fa-spin"></i>
+              {{ productId ? "Updating...." : "Submitting...." }}
             </button>
             <button type="button" class="cancelBtn" (click)="close()">
               Back
