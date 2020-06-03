@@ -59,6 +59,9 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	public Boolean existsByIdAndActive(Long id, Boolean active);
 
+	@Query(value = "select project.projectManager.id from ProjectProduct projectProduct inner join Project project on projectProduct.project.id=project.id where id =?1")
+	public Long findProjectManagerIdByProjectProductId(Long id);
+
 	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 group by project.id")
 	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActive(Boolean active);
 

@@ -68,6 +68,12 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 	@ManyToOne
 	private ProductDetail productDetail;
 
+	@ManyToOne
+	private ProjectProduct pastProjectProduct;
+
+	@Transient
+	private Long tPastProjectProductId;
+
 	@OneToMany(mappedBy = "projectProduct")
 	private Set<License> licenses;
 
@@ -203,6 +209,26 @@ public class ProjectProduct extends BaseEntity implements Serializable {
 
 	public void setProductDetail(ProductDetail productDetail) {
 		this.productDetail = productDetail;
+	}
+
+	public ProjectProduct getPastProjectProduct() {
+		return pastProjectProduct;
+	}
+
+	public void setPastProjectProduct(ProjectProduct pastProjectProduct) {
+		this.pastProjectProduct = pastProjectProduct;
+	}
+
+	public Long gettPastProjectProductId() {
+		return tPastProjectProductId;
+	}
+
+	public void settPastProjectProductId(Long tPastProjectProductId) {
+		if (tPastProjectProductId != null) {
+			this.pastProjectProduct = new ProjectProduct();
+			this.pastProjectProduct.setId(tPastProjectProductId);
+		}
+		this.tPastProjectProductId = tPastProjectProductId;
 	}
 
 	public Set<License> getLicenses() {
