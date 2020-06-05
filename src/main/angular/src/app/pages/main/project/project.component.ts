@@ -130,7 +130,7 @@ export class ProjectComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: ["", [Validators.required]],
+      startDate: [""],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
