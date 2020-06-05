@@ -35,7 +35,6 @@ export class ProjectProductComponent implements OnInit {
   selectedProductVersion: any;
   selectedProductFamily: any;
   selectedProductCode: any;
-  productCounts: any;
   showBeforeDays: any;
   sDate: any;
   startDateChange: any;
@@ -49,7 +48,6 @@ export class ProjectProductComponent implements OnInit {
 
   ngOnInit() {
     this.getProjectProducts();
-    this.getproductCountByStatus();
     this.getrenewConfiguration();
     this.mainService.getLoginUser().subscribe((data) => {
       this.userId = data.id;
@@ -57,12 +55,7 @@ export class ProjectProductComponent implements OnInit {
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
   }
-  getproductCountByStatus() {
-    this._projectService.productCountByStatus().subscribe((data) => {
-      console.log(data);
-      this.productCounts = data;
-    });
-  }
+
   getrenewConfiguration() {
     this._projectService.renewConfiguration().subscribe((data) => {
       console.log("getrenewConfiguration");
