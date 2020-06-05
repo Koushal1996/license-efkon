@@ -20,6 +20,18 @@ public class RenewConfiguration extends BaseEntity implements Serializable {
 	@NotNull(message = "Start date change can't be null")
 	private Boolean startDateChange;
 
+	public RenewConfiguration() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public RenewConfiguration(@NotNull(message = "Show before days can't be null") Integer showBeforeDays,
+			@NotNull(message = "Start date change can't be null") Boolean startDateChange) {
+		super();
+		this.showBeforeDays = showBeforeDays;
+		this.startDateChange = startDateChange;
+	}
+
 	public Integer getShowBeforeDays() {
 		return showBeforeDays;
 	}

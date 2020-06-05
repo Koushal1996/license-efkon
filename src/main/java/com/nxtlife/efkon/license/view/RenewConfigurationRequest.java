@@ -1,9 +1,11 @@
 package com.nxtlife.efkon.license.view;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class RenewConfigurationRequest {
 
+	@Min(value = 1, message = "Show before days can't be less than 1")
 	@NotNull(message = "Show before days can't be null")
 	private Integer showBeforeDays;
 

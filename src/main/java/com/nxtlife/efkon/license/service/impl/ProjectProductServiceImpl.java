@@ -31,6 +31,7 @@ import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductCommentJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.RenewConfigurationJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.license.LicenseType;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -47,6 +48,7 @@ import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
+import com.nxtlife.efkon.license.view.RenewConfigurationResponse;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
@@ -74,6 +76,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 	@Autowired
 	private LicenseTypeJpaDao licenseTypeJpaDao;
+
+	@Autowired
+	private RenewConfigurationJpaDao renewConfigurationJpaDao;
 
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
@@ -471,7 +476,15 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	public ProjectProductResponse renew(Long id, ProjectProductRequest request) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
-		if (request.getExpirationMonthCount() == null || request.getStartDate() == null) {
+		List<RenewConfigurationResponse> renewConfigurationResponses = renewConfigurationJpaDao.findByActiveTrue();
+		RenewConfigurationResponse renewConfiguration = null;
+		if (!renewConfigurationResponses.isEmpty()) {
+			renewConfiguration = renewConfigurationResponses.get(0);
+		} else {
+			throw new ValidationException("Renew configuration details not found");
+		}
+		if (request.getExpirationMonthCount() == null || (renewConfiguration != null
+				&& renewConfiguration.getStartDateChange() && request.getStartDate() == null)) {
 			throw new ValidationException("Start date and exipration month count is mandatory for renewal");
 		}
 		if (request.getExpirationMonthCount() < 1) {
@@ -507,9 +520,18 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				throw new ValidationException(
 						"Start date of renewal license should be greater than end date of previous");
 			}
+			LocalDate endDate = LocalDate.parse(projectProduct.getEndDate());
+			if (renewConfiguration != null && renewConfiguration.getShowBeforeDays() != null) {
+				LocalDate date = LocalDate.now().plusDays(renewConfiguration.getShowBeforeDays());
+				if (endDate.isAfter(date)) {
+					throw new ValidationException(String.format("You can't renew this product now"));
+				}
+			}
+
 			ProjectProduct renewedProjectProduct = new ProjectProduct(projectProduct.getLicenseCount(),
 					unmask(projectProduct.getLicenseTypeId()), projectProduct.getExpirationPeriodType(),
-					request.getExpirationMonthCount(), request.getStartDate(),
+					request.getExpirationMonthCount(),
+					request.getStartDate() == null ? projectProduct.getEndDate() : request.getStartDate(),
 					setEndDate(request.getStartDate(), request.getExpirationMonthCount()), ProjectProductStatus.SUBMIT);
 			renewedProjectProduct.settProductDetailId(unmask(projectProduct.getProductDetailId()));
 			renewedProjectProduct.settProjectId(unmask(projectProduct.getProjectId()));
