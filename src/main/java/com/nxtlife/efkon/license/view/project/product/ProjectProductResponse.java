@@ -65,6 +65,9 @@ public class ProjectProductResponse implements Response {
 	@Schema(description = "status of the project product", example = "Approved")
 	private ProjectProductStatus status;
 
+	@Schema(description = "This property will be set if that is renewed project product. Otherwise it won't be set")
+	private Long pastProjectProductId;
+
 	@JsonIgnore
 	private Long createdById;
 
@@ -75,7 +78,7 @@ public class ProjectProductResponse implements Response {
 	public ProjectProductResponse(Long id, Integer licenseCount, Long licenseTypeId, String licenseTypeName,
 			String licenseTypeCode, ExpirationPeriodType expirationPeriodType, Integer expirationMonthCount,
 			String startDate, String endDate, ProjectProductStatus status, String createdAt, Date modifiedAt,
-			Long projectId, Long productDetailId, Long createdById) {
+			Long projectId, Long productDetailId, Long createdById, Long pastProjectProductId) {
 		super();
 		this.id = id;
 		this.licenseCount = licenseCount;
@@ -92,6 +95,7 @@ public class ProjectProductResponse implements Response {
 		this.projectId = projectId;
 		this.productDetailId = productDetailId;
 		this.createdById = createdById;
+		this.pastProjectProductId = pastProjectProductId;
 	}
 
 	public Long getId() {
@@ -253,7 +257,7 @@ public class ProjectProductResponse implements Response {
 					projectProduct.getLicenseType().getName(), projectProduct.getLicenseType().getCode(),
 					projectProduct.getExpirationPeriodType(), projectProduct.getExpirationMonthCount(),
 					projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus(),
-					projectProduct.getCreatedAt(), projectProduct.getModifiedAt(), null, null, null);
+					projectProduct.getCreatedAt(), projectProduct.getModifiedAt(), null, null, null, null);
 			return response;
 		}
 		return null;

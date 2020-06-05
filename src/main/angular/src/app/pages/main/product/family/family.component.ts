@@ -30,8 +30,8 @@ export class FamilyComponent implements OnInit {
   deleteFamilyDescription(family) {
     $("#" + family.id).addClass("highlight");
     swal({
-      title: "You sure?",
-      text: `You want to delete ${family.name}?`,
+      text: `Are you sure, You want to delete ${family.name}?`,
+
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],

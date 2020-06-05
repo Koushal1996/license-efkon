@@ -88,7 +88,7 @@
                     class="form-control"
                     name="productFamily"
                     formControlName="productFamily"
-                    (ngModelChange)="productCodes = $event.productCodes"
+                    (ngModelChange)="productCodes = $event?.productCodes"
                   >
                     <option value="" disabled>Select Product Family</option>
                     <option
@@ -272,7 +272,8 @@
                       *ngIf="productForm.get('expirationMonthCount').errors.max"
                       class="field_error"
                     >
-                      maximum expiry period is 240 for commercial and 2 for demo
+                      maximum expiry period is
+                      {{ foundlicenseTypeId.maxMonthCount }}
                     </span>
                   </span>
                 </div>
@@ -282,7 +283,10 @@
                   <label>Start Date</label>
                   <input
                     type="date"
+                    data-provide="datepicker"
                     class="form-control"
+                    id="mydate"
+                    [min]="getToday()"
                     (ngModelChange)="onStartDate($event)"
                     formControlName="startDate"
                     name="startDate"
@@ -331,7 +335,8 @@
               {{ productId ? "Update" : "Submit" }}
             </button>
             <button class="saveBtn" *ngIf="loaderbutton">
-              <i class="fa fa-refresh fa-spin"></i> Loading
+              <i class="fa fa-refresh fa-spin"></i>
+              {{ productId ? "Updating...." : "Submitting...." }}
             </button>
             <button type="button" class="cancelBtn" (click)="close()">
               Back

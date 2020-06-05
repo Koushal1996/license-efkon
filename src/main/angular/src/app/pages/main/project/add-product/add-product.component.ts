@@ -1,22 +1,22 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnChanges } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { ProjectService } from "src/app/services/project/project.service";
 import { ProductService } from "src/app/services/product/product.service";
 import swal from "sweetalert";
-
+declare let $: any;
 @Component({
   selector: "app-add-product",
   templateUrl: "./add-product.component.html",
   styleUrls: ["./add-product.component.scss"],
 })
-export class AddProductComponent implements OnInit {
+export class AddProductComponent implements OnInit, OnChanges {
   loaderbutton: boolean = false;
   selectedProductLoader: boolean = true;
   productForm: FormGroup;
   productId;
   projects;
-  productDetail: any;
+  productDetail: any[] = [];
   productCodes: any[] = [];
   eachProductId;
   expirationMonthNo: any;
@@ -24,10 +24,11 @@ export class AddProductComponent implements OnInit {
   d: any;
   todayDate: string;
   versions: any[];
-  licenseType: any;
+  licenseType: any[] = [];
   selectedProjectId;
   selectedProductDetail: any = {};
   selectedproducts: any;
+  foundlicenseTypeId: any;
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -37,8 +38,8 @@ export class AddProductComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getLicenseType();
     this.productForm = this.initProductForm();
+    //this.productForm.controls["licenseTypeId"].reset();
     this.activate.params.subscribe((params) => {
       if (params.productId) this.productId = params["productId"];
       if (params.id)
@@ -49,11 +50,19 @@ export class AddProductComponent implements OnInit {
       this.selectedProjectId = params["id"];
     });
     this.getProductDetail();
+    this.getLicenseType();
     this.getProjects();
     this.getProductsByProjectId();
+    this.patchaValue();
+  }
+  ngOnChanges() {
+    // $(function () {
+    //   $("#mydate").datepicker({ minDate: 0 });
+    // });
   }
 
   getVersions(c) {
+    console.log(c);
     this.versions = c.versions;
   }
   getLicenseType() {
@@ -80,33 +89,66 @@ export class AddProductComponent implements OnInit {
     if (this.productId) {
       this.projectservice.selecetedProduct.subscribe((data) => {
         if (Object.keys(data).length) {
+          console.log(data);
           this.productForm.patchValue(data);
-          this.productForm.patchValue({
-            productFamily: this.productDetail.find(
-              (pd) => pd.id == data.productDetailResponse.productFamilyId
-            ),
-          });
-          this.productForm.patchValue({
-            productCode: this.productCodes.find(
-              (pc) => pc.id == data.productDetailResponse.productCodeId
-            ),
-          });
+          // this.productForm.patchValue({
+          //   productFamily: this.productDetail.find(
+          //     (pd) => pd.id == data.productDetailResponse.productFamilyId
+          //   ),
+          // });
+          const productDetaill = this.productDetail.find(
+            (pd) => pd.id == data.productDetailResponse.productFamilyId
+          );
+          if (productDetaill) {
+            this.productForm.patchValue({
+              productFamily: productDetaill,
+            });
+          }
+          // this.productForm.patchValue({
+          //   productCode: this.productCodes.find(
+          //     (pc) => pc.id == data.productDetailResponse.productCodeId
+          //   ),
+          // });
+          const productCodess = this.productCodes.find(
+            (pc) => pc.id == data.productDetailResponse.productCodeId
+          );
+          if (productCodess) {
+            this.productForm.patchValue({
+              productCode: productCodess,
+            });
+          }
+          if (data.licenseTypeName == "DEMO") {
+            this.productForm.controls["expirationPeriodType"].disable();
+          } else {
+            this.productForm.controls["expirationPeriodType"].enable();
+          }
         } else {
           this._productService
             .getProductById(this.productId)
             .subscribe((data) => {
               //console.log(data);
               this.productForm.patchValue(data);
-              this.productForm.patchValue({
-                productFamily: this.productDetail.find(
-                  (pd) => pd.id == data.productDetailResponse.productFamilyId
-                ),
-              });
-              this.productForm.patchValue({
-                productCode: this.productCodes.find(
-                  (pc) => pc.id == data.productDetailResponse.productCodeId
-                ),
-              });
+              const productDetaill = this.productDetail.find(
+                (pd) => pd.id == data.productDetailResponse.productFamilyId
+              );
+              if (productDetaill) {
+                this.productForm.patchValue({
+                  productFamily: productDetaill,
+                });
+              }
+              const productCodess = this.productCodes.find(
+                (pc) => pc.id == data.productDetailResponse.productCodeId
+              );
+              if (productCodess) {
+                this.productForm.patchValue({
+                  productCode: productCodess,
+                });
+              }
+              if (data.licenseTypeName == "DEMO") {
+                this.productForm.controls["expirationPeriodType"].disable();
+              } else {
+                this.productForm.controls["expirationPeriodType"].enable();
+              }
             });
         }
       });
@@ -119,7 +161,6 @@ export class AddProductComponent implements OnInit {
       this.patchaValue();
     });
     var today = new Date();
-
     var month = (today.getMonth() + 1).toString();
     var currentMonth;
     if (month.length > 1) {
@@ -158,27 +199,36 @@ export class AddProductComponent implements OnInit {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
-          swal("New Product details Added successfully!");
-          this.route.navigate(["projects"]);
-          // swal({
-          //   text: "You want to add add more products?",
-          //   closeOnClickOutside: false,
-          //   buttons: ["Yes", "No"],
-          //   dangerMode: true,
-          // }).then((willDelete) => {
-          //   if (willDelete) {
-          //     console.log(data);
-          //     swal("New Product Added successfully!");
-          //     this.route.navigate(["projects"]);
-          //   } else {
-          //     swal("New Product Added successfully!");
-          //     this.loaderbutton = false;
-          //     console.log(data);
-          //     this.productForm.reset();
-          //     this.productForm.controls["licenseTypeId"].reset();
-          //     this.productForm.controls["projectId"].patchValue(this.productId);
-          //   }
-          // });
+          console.log(data);
+          this.loaderbutton = false;
+          this.getProductsByProjectId();
+          swal({
+            text:
+              "New Product details Added successfully, Do you want to add add more products?",
+            closeOnClickOutside: false,
+            buttons: ["Yes", "No"],
+            dangerMode: true,
+          }).then((willDelete) => {
+            if (willDelete) {
+              console.log(data);
+              //swal("New Product Added successfully!");
+              this.route.navigate(["projects"]);
+            } else {
+              //swal("New Product Added successfully!");
+              this.loaderbutton = false;
+              console.log(data);
+              this.ngOnInit();
+              //this.productForm.reset();
+              //this.productForm.controls["startDate"].patchValue(this.todayDate);
+              // this.productForm.controls["EndDate"].reset();
+              this.licenseType = [];
+              this.productForm.controls["licenseTypeId"].reset();
+              //this.productForm.controls["projectId"].reset();
+              //this.productForm.controls["productFamily"].reset();
+              //this.productForm.controls["projectId"].patchValue(this.productId);
+              //this.getProductDetail();
+            }
+          });
         },
         (error) => {
           this.loaderbutton = false;
@@ -187,34 +237,59 @@ export class AddProductComponent implements OnInit {
     }
   }
   onLicenseChange(licenseTypeId) {
-    const foundItem = this.licenseType.find((item) => {
+    this.foundlicenseTypeId = this.licenseType.find((item) => {
       return item.id == licenseTypeId;
     });
-    if (foundItem.name == "DEMO") {
-      this.productForm.controls["expirationPeriodType"].patchValue("LIMITED");
-      this.productForm.controls["expirationMonthCount"].patchValue(
-        foundItem.maxMonthCount
-      );
-      this.productForm.controls["expirationMonthCount"].setValidators(
-        Validators.max(2)
-      );
-      this.productForm.controls["expirationPeriodType"].disable();
-    } else {
-      this.productForm.controls["expirationMonthCount"].patchValue(
-        foundItem.maxMonthCount
-      );
-      this.productForm.controls["expirationMonthCount"].setValidators(
-        Validators.max(240)
-      );
-      this.productForm.controls["expirationPeriodType"].enable();
+    if (this.foundlicenseTypeId) {
+      if (this.foundlicenseTypeId.name == "DEMO") {
+        this.productForm.controls["expirationPeriodType"].patchValue("LIMITED");
+        this.productForm.controls["expirationMonthCount"].patchValue(
+          this.foundlicenseTypeId.maxMonthCount
+        );
+        this.productForm.controls["expirationMonthCount"].setValidators([
+          Validators.max(this.foundlicenseTypeId.maxMonthCount),
+          Validators.min(1),
+        ]);
+        // this.productForm.controls["expirationMonthCount"].setValidators(
+        //   Validators.min(1)
+        // );
+        this.productForm.controls["expirationPeriodType"].disable();
+      } else {
+        // this.productForm.controls["expirationMonthCount"].patchValue(
+        //   this.foundlicenseTypeId.maxMonthCount
+        // );
+        this.productForm.controls["expirationMonthCount"].reset();
+        this.productForm.controls["expirationMonthCount"].setValidators([
+          Validators.max(this.foundlicenseTypeId.maxMonthCount),
+          Validators.min(1),
+        ]);
+        this.productForm.controls["expirationPeriodType"].enable();
+        this.productForm.controls["expirationPeriodType"].reset();
+      }
     }
   }
   onExpirationChange(expirationPeriodType) {
     if (expirationPeriodType == "LIFETIME") {
+      this.productForm.controls["expirationMonthCount"].patchValue(
+        this.foundlicenseTypeId.maxMonthCount
+      );
+      this.productForm.controls["expirationMonthCount"].setValidators([
+        Validators.max(this.foundlicenseTypeId.maxMonthCount),
+        Validators.min(1),
+      ]);
       this.productForm.controls["expirationMonthCount"].disable();
       this.productForm.controls["EndDate"].disable();
+      this.productForm.controls["expirationMonthCount"].setValidators(
+        Validators.required
+      );
     } else {
+      this.productForm.controls["expirationMonthCount"].setValidators([
+        Validators.required,
+        Validators.max(this.foundlicenseTypeId.maxMonthCount),
+        Validators.min(1),
+      ]);
       this.productForm.controls["expirationMonthCount"].enable();
+      this.productForm.controls["expirationMonthCount"].reset();
       this.productForm.controls["EndDate"].disable();
     }
   }
@@ -231,7 +306,19 @@ export class AddProductComponent implements OnInit {
     }
     this.productForm.controls["EndDate"].patchValue(convert(d));
   }
+  getToday(): string {
+    console.log(new Date().toISOString().split("T")[1]);
+    return new Date().toISOString().split("T")[0];
+  }
   onStartDate(startDate) {
+    console.log(startDate);
+    // var UserDate = startDate;
+    // var ToDate = new Date();
+    // if (new Date(UserDate).getTime() <= ToDate.getTime()) {
+    //   alert("The Date must be Bigger or Equal to today date");
+    //   return false;
+    // }
+    // return true;
     this.sDate = startDate;
     var d = new Date(this.sDate);
     d.setMonth(d.getMonth() + this.expirationMonthNo);

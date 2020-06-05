@@ -4,7 +4,10 @@ import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { ProjectService } from "./../../../services/project/project.service";
 import swal from "sweetalert";
-//import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
+import { ResponseContentType } from "@angular/http";
 
 import {
   FormBuilder,
@@ -41,6 +44,11 @@ export class ProjectComponent implements OnInit {
   selectedProductVersion: any;
   selectedProductFamily: any;
   selectedProductCode: any;
+  searchProjectsForm: FormGroup;
+  projectsCopy: any[];
+  showBeforeDays: any;
+  startDateChange: any;
+  sDate: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -51,20 +59,70 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+    this.getrenewConfiguration();
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
     this.mainService.getLoginUser().subscribe((data) => {
       this.userId = data.id;
     });
+    this.searchProjectsForm = this.fb.group({
+      Search: [""],
+    });
   }
-
+  onsearchProjectsForm(key) {
+    console.log(key);
+    if (key) {
+      this.projects = this.projects.filter(
+        (item) =>
+          (item.customerName &&
+            item.customerName.toLowerCase().startsWith(key)) ||
+          (item.customerEmail &&
+            item.customerEmail.toLowerCase().startsWith(key)) ||
+          // (item.projectManagerName &&
+          //   item.projectManagerName.toLowerCase().startsWith(key)) ||
+          (item.customerContactNo && item.customerContactNo.startsWith(key))
+      );
+    } else {
+      this.projects = this.projectsCopy;
+    }
+  }
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
       .getData("userAuthorities")
       .map((a) => a.name);
     return authorities.includes(authority);
   }
+  getrenewConfiguration() {
+    this.projectservice.renewConfiguration().subscribe((data) => {
+      console.log("getrenewConfiguration");
+      console.log(data);
+      this.showBeforeDays = data.showBeforeDays;
+      this.startDateChange = data.startDateChange;
+      console.log(this.showBeforeDays);
+    });
+  }
+  hasRenewDays(pro) {
+    let currentDate = new Date().toISOString().split("T")[0];
+    //console.log(currentDate);
+    //console.log(pro.endDate);
 
+    this.sDate = pro.endDate;
+    var d = new Date(this.sDate);
+    d.setDate(d.getDate() - this.showBeforeDays);
+    function convert(d) {
+      var date = new Date(d),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+    console.log(convert(d));
+    console.log(currentDate);
+    if (currentDate >= convert(d)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   initpopUpForm() {
     return this.fb.group({
       comment: ["", [Validators.required]],
@@ -72,7 +130,7 @@ export class ProjectComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: ["", [Validators.required]],
+      startDate: [""],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
@@ -81,6 +139,7 @@ export class ProjectComponent implements OnInit {
       (data) => {
         console.log(data);
         this.projects = data;
+        this.projectsCopy = JSON.parse(JSON.stringify(data));
         this.isloader = false;
       },
       (error) => {}
@@ -96,8 +155,8 @@ export class ProjectComponent implements OnInit {
   deleteProduct(pro) {
     $("#" + pro.id).addClass("highlight");
     swal({
-      title: "You sure?",
-      text: `You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
+      //title: "You sure?",
+      text: `Are you sure, You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -384,11 +443,19 @@ export class ProjectComponent implements OnInit {
     project.ProductActive = true;
   }
   createExcelLicense(project) {
+    // var FileSaver = require("file-saver");
+    // var blob = new Blob(["Hello, world!"], {
+    //   type: "text/plain;charset=utf-8",
+    // });
+    // FileSaver.saveAs(blob, "hello world.txt");
     this.projectservice.createExcelbyProjectId(project.id).subscribe((data) => {
       console.log(data);
-      // const blob = new Blob([data.body], {
-      // });
-      // FileSaver.saveAs(blob, data.headers.get('fileName'));
+      const blob = new Blob([data.body], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      //FileSaver.saveAs(blob, data.headers.get("fileName"));
+      FileSaver.saveAs(blob, project.customerName);
     });
   }
 }

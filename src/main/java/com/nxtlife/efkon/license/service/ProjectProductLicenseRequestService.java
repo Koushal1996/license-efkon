@@ -57,7 +57,7 @@ public interface ProjectProductLicenseRequestService {
 	 * @param request
 	 * @return {@link ProjectProductLicenseRequestResponse}
 	 */
-	public ProjectProductLicenseRequestResponse updateStatus(Long id, LicenseRequestStatus accept,
+	public ProjectProductLicenseRequestResponse accept(Long id, LicenseRequestStatus accept,
 			ProjectProductRequest request);
 
 	/**
@@ -69,7 +69,7 @@ public interface ProjectProductLicenseRequestService {
 	 * @param comment
 	 * @return
 	 */
-	public ProjectProductLicenseRequestResponse updateStatus(Long id, LicenseRequestStatus reject, String comment);
+	public ProjectProductLicenseRequestResponse reject(Long id, LicenseRequestStatus reject, String comment);
 
 	/**
 	 * this method is used to find project product license request by status

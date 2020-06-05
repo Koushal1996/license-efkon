@@ -173,14 +173,18 @@
           <button
             type="submit"
             class="saveBtn"
+            *ngIf="!loaderbutton"
             [ngStyle]="{
-              'opacity': !createFamilyForm.valid
-                ? '0.6'
-                : '1'
+              opacity: !createFamilyForm.valid ? '0.6' : '1'
             }"
             [disabled]="!createFamilyForm.valid"
           >
             {{ familyId ? "Update" : "Submit" }}
+          </button>
+          <button class="buttonload saveBtn" *ngIf="loaderbutton">
+            <i class="fa fa-refresh fa-spin"></i>
+            <!-- Loading -->
+            {{ familyId ? "Updating...." : "Submitting...." }}
           </button>
         </div>
       </form>

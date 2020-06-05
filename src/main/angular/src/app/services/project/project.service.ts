@@ -72,6 +72,15 @@ export class ProjectService {
     return this.api.get(`api/project/${projectId}/licenses`);
   }
   createExcelbyProjectId(projectId) {
-    return this.api.get(`api/project/${projectId}/licenses/excel`);
+    return this.api.getFile(`api/project/${projectId}/licenses/excel`);
+  }
+  productCountByStatus() {
+    return this.api.get("api/dashboard/product-status");
+  }
+  renewConfiguration() {
+    return this.api.get("api/renew-configuration");
+  }
+  updaterenewConfiguration(data) {
+    return this.api.put("api/renew-configuration", data);
   }
 }

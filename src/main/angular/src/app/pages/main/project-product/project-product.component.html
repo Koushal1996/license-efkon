@@ -142,7 +142,10 @@
                 <button
                   type="button"
                   class="roleactive mb-2"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
+                  *ngIf="
+                    hasAuthority('PROJECT_PRODUCT_RENEW') &&
+                    hasRenewDays(project)
+                  "
                   (click)="
                     renewProductStatus(project); $event.stopPropagation()
                   "
@@ -163,7 +166,10 @@
               <td *ngIf="project.status == 'RENEWED'">
                 <button
                   type="button"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
+                  *ngIf="
+                    hasAuthority('PROJECT_PRODUCT_RENEW') &&
+                    hasRenewDays(project)
+                  "
                   class="roleactive mb-2"
                   (click)="
                     renewProductStatus(project); $event.stopPropagation()
@@ -487,7 +493,7 @@
             [formGroup]="popUpStartDateForm"
           >
             <div class="modal-body">
-              <div class="form-group">
+              <div class="form-group" *ngIf="startDateChange == true">
                 <label>Start Date</label>
                 <input
                   type="date"

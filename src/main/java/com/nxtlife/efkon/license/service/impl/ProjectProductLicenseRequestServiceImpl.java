@@ -19,12 +19,14 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.nxtlife.efkon.license.dao.jpa.LicenseTypeJpaDao;
-import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProjectProductCommentJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductLicenseRequestJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductRequestCommentJpaDao;
 import com.nxtlife.efkon.license.entity.license.LicenseType;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
+import com.nxtlife.efkon.license.entity.project.product.ProjectProductComment;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProductLicenseRequest;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProductRequestComment;
 import com.nxtlife.efkon.license.entity.user.User;
@@ -38,7 +40,6 @@ import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProjectProductLicenseRequestService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.view.SuccessResponse;
-import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductLicenseRequestRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductLicenseRequestResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
@@ -53,7 +54,10 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	private ProjectProductJpaDao projectProductDao;
 
 	@Autowired
-	private ProjectJpaDao projectDao;
+	private ProductDetailJpaDao productDetailJpaDao;
+
+	@Autowired
+	private ProjectProductCommentJpaDao projectProductCommentJpaDao;
 
 	@Autowired
 	private ProjectProductLicenseRequestJpaDao projectProductLicenseRequestDao;
@@ -80,7 +84,6 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 					projectProductId));
 
 		}
-
 	}
 
 	@Override
@@ -88,36 +91,35 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	public ProjectProductLicenseRequestResponse save(Long projectProductId,
 			ProjectProductLicenseRequestRequest request) {
 		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		if (!roles.contains("Customer")) {
+			throw new ValidationException("Only customer can request for more product");
+		}
 		validate(projectProductId);
 		ProjectProductLicenseRequest pplRequest = request.toEntity();
 		pplRequest.settProjectProductId(unmask(projectProductId));
 		pplRequest.setStatus(LicenseRequestStatus.PENDING);
 		pplRequest.setCustomerEmail(user.getEmail());
-
-		ProjectProductResponse ppResponse = projectProductDao.findByIdAndActive(unmask(projectProductId), true);
-
-		if (ppResponse != null && ppResponse.getProjectId() != null) {
-			ProjectResponse pResponse = projectDao.findByIdAndActive(unmask(ppResponse.getProjectId()), true);
-
-			if (pResponse != null && pResponse.getProjectManagerId() != null) {
-				pplRequest.settProjectManagerId(unmask(pResponse.getProjectManagerId()));
-			} else {
-				throw new ValidationException(String.format(
-						"project manager not found of the project (%s) for which you're requesting the product having id (%s) ",
-						ppResponse.getProjectId(), projectProductId));
-			}
+		Long projectManagerId = projectProductDao.findProjectManagerIdByProjectProductId(unmask(projectProductId));
+		if (projectManagerId != null) {
+			pplRequest.settProjectManagerId(projectManagerId);
+		} else {
+			throw new ValidationException(String.format(
+					"Project manager not found of the project for which you're requesting the product having id (%s) ",
+					projectProductId));
 		}
-
 		projectProductLicenseRequestDao.save(pplRequest);
-		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
 		if (request.getComment() != null && !request.getComment().isEmpty()) {
 			projectProductRequestCommentDao.save(new ProjectProductRequestComment(request.getComment(), getUserId(),
-					LicenseRequestStatus.PENDING.toString(), unmask(response.getId())));
+					LicenseRequestStatus.PENDING.toString(), pplRequest.getId()));
 		}
+		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
 		response.setProjectProductResponse(projectProductDao.findByIdAndActive(unmask(projectProductId), true));
+		if (response.getProjectProductResponse() != null)
+			response.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
 		response.setComments(
 				projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(response.getId())));
-
 		return response;
 	}
 
@@ -142,10 +144,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			logger.info("Project product license request {} updated successfully", unmaskId);
 		}
 		ProjectProductLicenseRequestResponse response = projectProductLicenseRequestDao.findResponseById(unmaskId);
-
 		response.setProjectProductResponse(
 				projectProductDao.findByIdAndActive(unmask(response.getProjectProductId()), true));
-
+		if (response.getProjectProductResponse() != null)
+			response.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
 		return response;
 	}
 
@@ -175,6 +178,13 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		if (pplrResponse != null) {
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
+			if (pplrResponse.getProjectProductResponse() != null)
+				pplrResponse.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+						.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProductDetailId())));
+			pplrResponse.setComments(
+					projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(pplrResponse.getId())));
+		} else {
+			throw new NotFoundException(String.format("Project product license request (%s) not found", id));
 		}
 
 		return pplrResponse;
@@ -207,6 +217,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			for (ProjectProductLicenseRequestResponse iterate : pplrResponse) {
 				iterate.setProjectProductResponse(
 						projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
+				if (iterate.getProjectProductResponse() != null)
+					iterate.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+							.findResponseById(unmask(iterate.getProjectProductResponse().getProductDetailId())));
+				iterate.setComments(
+						projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(iterate.getId())));
 			}
 		}
 
@@ -217,10 +232,14 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	@Secured(AuthorityUtils.LICENSE_REQUEST_DELETE)
 	public SuccessResponse delete(Long id) {
 		Long unmaskId = unmask(id);
-		if (!projectProductLicenseRequestDao.existsById(unmaskId)) {
+		ProjectProductLicenseRequestResponse pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId,
+				true);
+		if (pplrResponse == null) {
 			throw new NotFoundException(String.format("Project product license request (%s) not found", id));
 		}
-
+		if (pplrResponse.getStatus().equals(LicenseRequestStatus.ACCEPTED)) {
+			throw new ValidationException("You can't delete accepted request");
+		}
 		int rows = projectProductLicenseRequestDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("project product license request {} successfully deleted", unmaskId);
@@ -248,11 +267,12 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration month
-	 * count
+	 * this method used to set end date according to start date and expiration
+	 * month count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater than 12
-	 * then year will be incremented and month will be add result minus 12.
+	 * if addition of month of start date and expiration month count greater
+	 * than 12 then year will be incremented and month will be add result minus
+	 * 12.
 	 *
 	 * @return String
 	 */
@@ -262,7 +282,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		}
 		try {
 			LocalDate endDate = LocalDate.parse(startDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			if (endDate.isBefore(LocalDate.now())) {
+				throw new ValidationException(String.format("Start date of license (%s) can't be in past", startDate));
+			}
 			endDate = endDate.plusMonths(expirationMonthCount);
+			endDate = endDate.minusDays(1);
 			return endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		} catch (DateTimeParseException ex) {
 			throw new ValidationException(String.format("Start date (%s) isn't valid", startDate));
@@ -272,9 +296,8 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 	@Override
 	@Secured(AuthorityUtils.LICENSE_REQUEST_ACCEPT)
-	public ProjectProductLicenseRequestResponse updateStatus(Long id, LicenseRequestStatus status,
+	public ProjectProductLicenseRequestResponse accept(Long id, LicenseRequestStatus status,
 			ProjectProductRequest request) {
-
 		User user = getUser();
 		Long unmaskId = unmask(id);
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
@@ -284,30 +307,31 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			throw new NotFoundException(
 					String.format("Project Product License Request having id (%s) didn't exist", id));
 		}
-
 		LicenseRequestStatus licenseRequestStatus;
-		if (roles.contains("Customer")) {
-			licenseRequestStatus = projectProductLicenseRequestDao
-					.findStatusByIdAndProjectProductProjectCustomerEmailAndActive(unmaskId, user.getEmail(), true);
+		if (roles.contains("Customer") && pplrResponse.getCustomerEmail().equalsIgnoreCase(user.getEmail())) {
+			licenseRequestStatus = pplrResponse.getStatus();
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
 				isProjectManager = true;
 				roles.remove("Project Manager");
 			}
-			if (roles.isEmpty() && isProjectManager) {
-				licenseRequestStatus = projectProductLicenseRequestDao
-						.findStatusByIdAndProjectProductProjectProjectManagerIdAndActive(unmaskId, user.getUserId(),
-								true);
+			if (roles.isEmpty() && isProjectManager
+					&& pplrResponse.getProjectManagerId().equals(mask(user.getUserId()))) {
+				licenseRequestStatus = pplrResponse.getStatus();
+			} else if (roles.isEmpty() && isProjectManager
+					&& !pplrResponse.getProjectManagerId().equals(mask(user.getUserId()))) {
+				licenseRequestStatus = null;
 			} else {
-				licenseRequestStatus = projectProductLicenseRequestDao.findStatusByIdAndActive(unmaskId, true);
+				licenseRequestStatus = pplrResponse.getStatus();
 			}
 		}
 
 		if (licenseRequestStatus != null) {
 			if (status.equals(LicenseRequestStatus.ACCEPTED)
 					&& licenseRequestStatus.equals(LicenseRequestStatus.REJECTED)) {
-				throw new ValidationException("You can accept project product license request who is already rejected");
+				throw new ValidationException(
+						"You can't accept project product license request who is already rejected");
 			}
 			if (status.equals(LicenseRequestStatus.ACCEPTED)
 					&& !licenseRequestStatus.equals(LicenseRequestStatus.PENDING)) {
@@ -350,11 +374,12 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 			int rows;
 			rows = projectProductLicenseRequestDao.update(unmaskId, status, getUserId(), new Date());
-
+			projectProductCommentJpaDao
+					.save(new ProjectProductComment("This product was created using customer request", getUserId(),
+							ProjectProductStatus.SUBMIT.name(), projectProduct.getId()));
 			if (rows > 0) {
 				logger.info("Project product license request {} approved successfully", unmaskId);
 			}
-
 			pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId, true);
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
@@ -367,7 +392,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 	@Override
 	@Secured(AuthorityUtils.LICENSE_REQUEST_REJECT)
-	public ProjectProductLicenseRequestResponse updateStatus(Long id, LicenseRequestStatus status, String comment) {
+	public ProjectProductLicenseRequestResponse reject(Long id, LicenseRequestStatus status, String comment) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
@@ -379,54 +404,45 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		}
 
 		LicenseRequestStatus licenseRequestStatus;
-		if (roles.contains("Customer")) {
-			licenseRequestStatus = projectProductLicenseRequestDao
-					.findStatusByIdAndProjectProductProjectCustomerEmailAndActive(unmaskId, user.getEmail(), true);
+		if (roles.contains("Customer") && pplrResponse.getCustomerEmail().equalsIgnoreCase(user.getEmail())) {
+			licenseRequestStatus = pplrResponse.getStatus();
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
 				isProjectManager = true;
 				roles.remove("Project Manager");
 			}
-			if (roles.isEmpty() && isProjectManager) {
-				licenseRequestStatus = projectProductLicenseRequestDao
-						.findStatusByIdAndProjectProductProjectProjectManagerIdAndActive(unmaskId, user.getUserId(),
-								true);
+			if (roles.isEmpty() && isProjectManager
+					&& pplrResponse.getProjectManagerId().equals(mask(user.getUserId()))) {
+				licenseRequestStatus = pplrResponse.getStatus();
+			} else if (roles.isEmpty() && isProjectManager
+					&& !pplrResponse.getProjectManagerId().equals(mask(user.getUserId()))) {
+				licenseRequestStatus = null;
 			} else {
-				licenseRequestStatus = projectProductLicenseRequestDao.findStatusByIdAndActive(unmaskId, true);
+				licenseRequestStatus = pplrResponse.getStatus();
 			}
 		}
-
 		if (licenseRequestStatus != null) {
 			if (status.equals(LicenseRequestStatus.REJECTED)
 					&& licenseRequestStatus.equals(LicenseRequestStatus.ACCEPTED)) {
-				throw new ValidationException("You can reject project product license request who is already accepted");
+				throw new ValidationException(
+						"You can't reject project product license request who is already accepted");
 			}
-			if (!status.equals(LicenseRequestStatus.REJECTED)) {
-				throw new ValidationException("choose status reject for rejecting the project product license request");
-			}
-
 			if (status.equals(LicenseRequestStatus.REJECTED)
 					&& licenseRequestStatus.equals(LicenseRequestStatus.REJECTED)) {
-				throw new ValidationException("project product license request is already rejected");
+				throw new ValidationException("Project product license request is already rejected");
 			}
-
-			if (status.equals(LicenseRequestStatus.REJECTED) && (comment == null || comment.isEmpty())) {
+			if (comment == null || comment.isEmpty()) {
 				throw new ValidationException("Comment is required at the reject time");
 			}
-
 			int rows;
 			rows = projectProductLicenseRequestDao.update(unmaskId, LicenseRequestStatus.REJECTED, getUserId(),
 					new Date());
 			if (rows > 0) {
 				logger.info("Project product license request {} successfully updated", unmaskId);
 			}
-
-			if (comment != null && !comment.isEmpty()) {
-				projectProductRequestCommentDao
-						.save(new ProjectProductRequestComment(comment, getUserId(), status.name(), unmaskId));
-			}
-
+			projectProductRequestCommentDao
+					.save(new ProjectProductRequestComment(comment, getUserId(), status.name(), unmaskId));
 			pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId, true);
 			if (pplrResponse != null) {
 				pplrResponse.setProjectProductResponse(
@@ -434,7 +450,6 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 				pplrResponse
 						.setComments(projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmaskId));
 			}
-
 			return pplrResponse;
 		} else {
 			throw new NotFoundException(String.format("Project product license Request (%s) not found", id));

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nxtlife.efkon.license.enums.LicenseRequestStatus;
@@ -62,7 +63,7 @@ public class ProjectProductLicenseRequestController {
 			@ApiResponse(description = "If required field are not filled properly or v not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public ProjectProductLicenseRequestResponse accept(@PathVariable Long id,
 			@RequestBody ProjectProductRequest request) {
-		return projectProductLicenseRequestService.updateStatus(id, LicenseRequestStatus.ACCEPTED, request);
+		return projectProductLicenseRequestService.accept(id, LicenseRequestStatus.ACCEPTED, request);
 	}
 
 	@PutMapping(value = "project-request/{id}/reject", produces = { "application/json" }, consumes = {
@@ -76,8 +77,7 @@ public class ProjectProductLicenseRequestController {
 			@ApiResponse(description = "If required field are not filled properly or projectProduct/productProductLicenseRequest not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public ProjectProductLicenseRequestResponse reject(@PathVariable Long id,
 			@RequestBody ProjectProductCommentRequest request) {
-		return projectProductLicenseRequestService.updateStatus(id, LicenseRequestStatus.REJECTED,
-				request.getComment());
+		return projectProductLicenseRequestService.reject(id, LicenseRequestStatus.REJECTED, request.getComment());
 	}
 
 	@PutMapping(value = "project-request/{id}", produces = { "application/json" }, consumes = { "application/json" })
@@ -104,7 +104,7 @@ public class ProjectProductLicenseRequestController {
 		return projectProductLicenseRequestService.findById(id);
 	}
 
-	@GetMapping(value = "project-request/pending", produces = { "application/json" })
+	@GetMapping(value = "project-requests", produces = { "application/json" })
 	@Operation(summary = "fetch pending product product license request detail ", description = "return product product license response", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {
@@ -112,8 +112,8 @@ public class ProjectProductLicenseRequestController {
 			@ApiResponse(description = "If user doesn't have access to fetch Project Product License Request details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If Project Product License Request id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled properly or projectProductLicenseRequest/Projectproduct not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public List<ProjectProductLicenseRequestResponse> findByStatus() {
-		return projectProductLicenseRequestService.findByStatus(LicenseRequestStatus.PENDING);
+	public List<ProjectProductLicenseRequestResponse> findByStatus(@RequestParam LicenseRequestStatus status) {
+		return projectProductLicenseRequestService.findByStatus(status);
 	}
 
 	@DeleteMapping(value = "project-request/{id}", produces = { "application/json" })

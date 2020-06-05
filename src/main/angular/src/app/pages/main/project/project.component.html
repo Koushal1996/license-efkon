@@ -8,7 +8,18 @@
       >
         Create Project
       </button>
-
+      <form [formGroup]="searchProjectsForm">
+        <div class="search_bar">
+          <input
+            type="text"
+            formControlName="Search"
+            class="form-control"
+            placeholder="Search here.."
+            (ngModelChange)="onsearchProjectsForm($event)"
+          />
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+      </form>
       <div class="table_scroll">
         <table>
           <thead>
@@ -307,7 +318,10 @@
                             <button
                               type="button"
                               class="roleactive"
-                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
+                              *ngIf="
+                                hasAuthority('PROJECT_PRODUCT_RENEW') &&
+                                hasRenewDays(pro)
+                              "
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
@@ -320,7 +334,10 @@
                             <button
                               type="button"
                               class="roleactive"
-                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
+                              *ngIf="
+                                hasAuthority('PROJECT_PRODUCT_RENEW') &&
+                                hasRenewDays(pro)
+                              "
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
