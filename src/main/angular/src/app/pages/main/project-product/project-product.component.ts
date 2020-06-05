@@ -461,9 +461,11 @@ export class ProjectProductComponent implements OnInit {
           console.log(data);
           swal("save product license request in project successfully!");
           this.showRequestModal = false;
+          this.popUpRequestForm.reset();
         },
         (error) => {
           this.showRequestModal = false;
+          this.popUpRequestForm.reset();
         }
       );
   }
