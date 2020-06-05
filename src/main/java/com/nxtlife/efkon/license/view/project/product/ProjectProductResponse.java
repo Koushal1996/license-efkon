@@ -283,4 +283,8 @@ public class ProjectProductResponse implements Response {
 		return columnHeaders;
 	}
 
+	public static float[] columnWidth() {
+		return new float[] { 3.75f, 3.75f, 3.75f, 3.75f, 1.75f, 3.75f, 3.75f, 1.75f, 3.75f, 3.75f, 3.75f };
+	}
+
 }
