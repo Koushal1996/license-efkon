@@ -171,6 +171,18 @@ public class ProjectProductController {
 
 	}
 
+	@GetMapping(value = "project/product/pdf", produces = { "application/json" })
+	@Operation(summary = "Find all projects products and create pdf", description = "return pdf file of all the products of all the projects", tags = {
+			"Projects products" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Project products pdf successfully created", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findAllProductsPdf(HttpServletResponse response) throws IOException {
+		Resource resource = projectProductService.findAllPdf();
+		Response.setFileResponseHeader(resource, "application/pdf", response);
+
+	}
+
 	@GetMapping(value = "project/{projectId}/product", produces = { "application/json" })
 	@Operation(summary = "Find all product types", description = "return a list of product types", tags = { "Project" })
 	@ApiResponses(value = {
@@ -190,6 +202,17 @@ public class ProjectProductController {
 	public void findByProjectIdExcel(@PathVariable Long projectId, HttpServletResponse response) throws IOException {
 		Resource resource = projectProductService.findByProjectIdExcel(projectId);
 		Response.setFileResponseHeader(resource, "application/octet-stream", response);
+	}
+
+	@GetMapping(value = "project/{projectId}/product/pdf", produces = { "application/json" })
+	@Operation(summary = "Find all product types of a project and create pdf", description = "return a pdf file of product types", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Project product pdf successfully created", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findByProjectIdPdf(@PathVariable Long projectId, HttpServletResponse response) throws IOException {
+		Resource resource = projectProductService.findByProjectIdPdf(projectId);
+		Response.setFileResponseHeader(resource, "application/pdf", response);
 
 	}
 

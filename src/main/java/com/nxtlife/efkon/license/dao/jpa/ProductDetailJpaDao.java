@@ -19,7 +19,7 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 
 	public ProductDetailResponse findResponseById(Long id);
 
-	//public List<ProductDetailResponse> findByActive(Boolean active);
+	// public List<ProductDetailResponse> findByActive(Boolean active);
 
 	public List<ProductDetailResponse> findByActiveOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc(
 			Boolean active);
@@ -42,5 +42,7 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 	@Modifying
 	@Query(value = "update ProductDetail set active = false, modified_by =?2, modified_at =?3 where id =?1")
 	public int delete(Long id, Long userId, Date date);
+
+	public ProductDetailResponse findByIdAndActive(Long id, Boolean active);
 
 }
