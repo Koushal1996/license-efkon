@@ -46,6 +46,9 @@ export class ProjectComponent implements OnInit {
   selectedProductCode: any;
   searchProjectsForm: FormGroup;
   projectsCopy: any[];
+  showBeforeDays: any;
+  startDateChange: any;
+  sDate: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -56,6 +59,7 @@ export class ProjectComponent implements OnInit {
 
   ngOnInit() {
     this.getProjects();
+    this.getrenewConfiguration();
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
     this.mainService.getLoginUser().subscribe((data) => {
@@ -88,7 +92,37 @@ export class ProjectComponent implements OnInit {
       .map((a) => a.name);
     return authorities.includes(authority);
   }
+  getrenewConfiguration() {
+    this.projectservice.renewConfiguration().subscribe((data) => {
+      console.log("getrenewConfiguration");
+      console.log(data);
+      this.showBeforeDays = data.showBeforeDays;
+      this.startDateChange = data.startDateChange;
+      console.log(this.showBeforeDays);
+    });
+  }
+  hasRenewDays(pro) {
+    let currentDate = new Date().toISOString().split("T")[0];
+    //console.log(currentDate);
+    //console.log(pro.endDate);
 
+    this.sDate = pro.endDate;
+    var d = new Date(this.sDate);
+    d.setDate(d.getDate() - this.showBeforeDays);
+    function convert(d) {
+      var date = new Date(d),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+    console.log(convert(d));
+    console.log(currentDate);
+    if (currentDate >= convert(d)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   initpopUpForm() {
     return this.fb.group({
       comment: ["", [Validators.required]],

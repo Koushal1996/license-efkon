@@ -318,7 +318,10 @@
                             <button
                               type="button"
                               class="roleactive"
-                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
+                              *ngIf="
+                                hasAuthority('PROJECT_PRODUCT_RENEW') &&
+                                hasRenewDays(pro)
+                              "
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
@@ -331,7 +334,10 @@
                             <button
                               type="button"
                               class="roleactive"
-                              *ngIf="hasAuthority('PROJECT_PRODUCT_RENEW')"
+                              *ngIf="
+                                hasAuthority('PROJECT_PRODUCT_RENEW') &&
+                                hasRenewDays(pro)
+                              "
                               (click)="renewProductStatus(pro)"
                             >
                               Renew
