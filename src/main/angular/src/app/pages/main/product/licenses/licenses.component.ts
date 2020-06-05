@@ -63,6 +63,7 @@ export class LicensesComponent implements OnInit {
   }
   onBack(license) {
     license.edit = false;
+    this.getLicenseType();
   }
 
   // editMonthCount(license) {

@@ -35,6 +35,10 @@ export class ProjectProductComponent implements OnInit {
   selectedProductVersion: any;
   selectedProductFamily: any;
   selectedProductCode: any;
+  productCounts: any;
+  showBeforeDays: any;
+  sDate: any;
+  startDateChange: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -45,11 +49,65 @@ export class ProjectProductComponent implements OnInit {
 
   ngOnInit() {
     this.getProjectProducts();
+    this.getproductCountByStatus();
+    this.getrenewConfiguration();
     this.mainService.getLoginUser().subscribe((data) => {
       this.userId = data.id;
     });
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
+  }
+  getproductCountByStatus() {
+    this._projectService.productCountByStatus().subscribe((data) => {
+      console.log(data);
+      this.productCounts = data;
+    });
+  }
+  getrenewConfiguration() {
+    this._projectService.renewConfiguration().subscribe((data) => {
+      console.log("getrenewConfiguration");
+      console.log(data);
+      this.showBeforeDays = data.showBeforeDays;
+      this.startDateChange = data.startDateChange;
+      console.log(this.showBeforeDays);
+    });
+  }
+  hasRenewDays(project) {
+    let currentDate = new Date().toISOString().split("T")[0];
+    //console.log(currentDate);
+    //console.log(project.endDate);
+    // var cDate = new Date(currentDate);
+    // console.log(cDate.getDate()); //currntdate
+    // var eDate = new Date(project.endDate);
+    // console.log(eDate.getDate()); //enddate
+    // if (eDate.getDate() - cDate.getDate() <= this.showBeforeDays) {
+    //   console.log("true");
+    //   return true;
+    // } else {
+    //   console.log("false");
+    //   return false;
+    // }
+    this.sDate = project.endDate;
+    var d = new Date(this.sDate);
+    d.setDate(d.getDate() - this.showBeforeDays);
+    function convert(d) {
+      var date = new Date(d),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+    console.log(convert(d));
+    console.log(currentDate);
+    if (currentDate >= convert(d)) {
+      return true;
+    } else {
+      return false;
+    }
+    // if (new Date(currentDate).getTime() > new Date(convert(d)).getTime()) {
+    //   return true;
+    // } else {
+    //   return false;
+    // }
   }
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe((data) => {
@@ -72,7 +130,7 @@ export class ProjectProductComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: ["", [Validators.required]],
+      startDate: [""],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
@@ -356,6 +414,7 @@ export class ProjectProductComponent implements OnInit {
       )
       .subscribe(
         (data) => {
+          console.log("renewProjectProduct");
           console.log(data);
           this.selectedProduct.status = data.status;
           this.selectedProduct.endDate = data.endDate;

@@ -18,6 +18,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { ProjectProductComponent } from "./project-product/project-product.component";
 import { CreateFamilyComponent } from "./product/family/create-family/create-family.component";
 import { SelectedLicensesComponent } from "./project/selected-licenses/selected-licenses.component";
+import { RenewConfigurationComponent } from "./product/renew-configuration/renew-configuration.component";
 
 const routes: Routes = [
   {
@@ -57,6 +58,10 @@ const routes: Routes = [
           { path: "detail", component: DetailComponent },
           { path: "version", component: VersionComponent },
           { path: "license", component: LicensesComponent },
+          {
+            path: "renewconfiguration",
+            component: RenewConfigurationComponent,
+          },
         ],
       },
       { path: "profile", component: ProfileComponent },

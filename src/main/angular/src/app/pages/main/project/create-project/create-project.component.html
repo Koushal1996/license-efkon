@@ -209,16 +209,14 @@
             class="saveBtn mr-3"
             *ngIf="!loaderbutton"
             [ngStyle]="{
-              'opacity': !projectForm.valid
-                ? '0.6'
-                : '1'
+              opacity: !projectForm.valid ? '0.6' : '1'
             }"
             [disabled]="!projectForm.valid"
           >
             Submit
           </button>
           <button class="saveBtn mr-3" *ngIf="loaderbutton">
-            Loading...
+            Submitting....
           </button>
         </div>
       </form>

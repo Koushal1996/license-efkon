@@ -1,0 +1,51 @@
+<form (ngSubmit)="onSubmit()" [formGroup]="renewForm" class="form_main">
+  <div class="input_feild">
+    <div class="col-6">
+      <div class="form-group">
+        <label>show Before Days</label>
+        <input
+          type="number"
+          class="form-control"
+          name="showBeforeDays"
+          formControlName="showBeforeDays"
+        />
+        <span
+          *ngIf="
+            renewForm.get('showBeforeDays').errors &&
+            (renewForm.get('showBeforeDays').touched ||
+              renewForm.get('showBeforeDays').dirty)
+          "
+        >
+          <span
+            *ngIf="renewForm.get('showBeforeDays').errors.required"
+            class="error"
+          >
+            Show Before Days is required</span
+          >
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 form-check check_main">
+    <input
+      type="checkbox"
+      class="form-check-input"
+      formControlName="startDateChange"
+      name="option1"
+      value="something"
+    />
+    <label class="form-check-label" for="check1">
+      start Date Change
+    </label>
+  </div>
+  <button
+    type="submit"
+    class="saveBtn mr-3"
+    [ngStyle]="{
+      opacity: !renewForm.valid ? '0.6' : '1'
+    }"
+    [disabled]="!renewForm.valid"
+  >
+    Submit
+  </button>
+</form>

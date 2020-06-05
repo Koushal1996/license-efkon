@@ -55,7 +55,7 @@ export class DetailComponent implements OnInit {
     );
     this.createDetailForm.controls["version"].reset();
     this.createDetailForm.controls["description"].reset();
-    // this.createDetailForm.controls["productCodeId"].reset();
+    //this.productCodes = [];
   }
 
   onProductCodeSelect(productCodeId) {
@@ -64,8 +64,11 @@ export class DetailComponent implements OnInit {
       this.currentProductVersion = this.currentProductFamilyData.productCodes.find(
         (item) => item.id == productCodeId
       );
-    if (this.currentProductVersion)
+    if (this.currentProductVersion) {
       this.productVersion = this.currentProductVersion.versions;
+    } else {
+      this.productVersion = [];
+    }
   }
 
   initProductDetailForm() {
@@ -95,6 +98,7 @@ export class DetailComponent implements OnInit {
             this.loaderbutton = false;
             swal("Product’s details updated successfully!");
             //this.createDetailForm.reset();
+            this.productVersion = "";
             this.createDetailForm = this.initProductDetailForm();
           },
           (error) => {
@@ -111,6 +115,7 @@ export class DetailComponent implements OnInit {
             this.isCreateDetail = false;
             this.loaderbutton = false;
             this.createDetailForm.reset();
+            this.productVersion = "";
           },
           (error) => {
             this.loaderbutton = false;
