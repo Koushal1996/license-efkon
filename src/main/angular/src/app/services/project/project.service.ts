@@ -83,4 +83,10 @@ export class ProjectService {
   updaterenewConfiguration(data) {
     return this.api.put("api/renew-configuration", data);
   }
+  saveProjectLicenseById(projectProductId, data) {
+    return this.api.post(
+      `api/project/product/${projectProductId}/request`,
+      data
+    );
+  }
 }

@@ -88,12 +88,22 @@
               {{ startDateChange }}
             </td>
             <td *ngIf="!isBeforeDaysEdit">
-              <input
+              <!-- <input
                 type="text"
                 name="startDateChange"
                 id="startDateChange"
                 [(ngModel)]="startDateChange"
-              />
+              /> -->
+              <select
+                class="form-control"
+                name="startDateChange"
+                id="startDateChange"
+                [(ngModel)]="startDateChange"
+              >
+                <option>true</option>
+                <option>false </option>
+              </select>
+
               <!-- <input
                 type="checkbox"
                 id="startDateChange"
