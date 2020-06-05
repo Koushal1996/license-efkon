@@ -425,6 +425,7 @@ export class ProjectProductComponent implements OnInit {
           this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
           this.showRenewModal = false;
           this.popUpStartDateForm.reset();
+          swal("Project Product Renew Successfully!");
         },
         (error) => {
           this.popUpStartDateForm.reset();
