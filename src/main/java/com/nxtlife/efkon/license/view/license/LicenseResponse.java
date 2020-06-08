@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.license.License;
-import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -30,7 +29,7 @@ public class LicenseResponse implements Response {
 
 	private Long projectProductId;
 
-	private ProjectProductResponse projectProduct;
+	private ProjectProductResponse projectProductResponse;
 
 	public LicenseResponse get(License license) {
 		if (license != null) {
@@ -67,12 +66,12 @@ public class LicenseResponse implements Response {
 		this.name = name;
 	}
 
-	public ProjectProductResponse getProjectProduct() {
-		return projectProduct;
+	public ProjectProductResponse getProjectProductResponse() {
+		return projectProductResponse;
 	}
 
-	public void setProjectProduct(ProjectProductResponse projectProduct) {
-		this.projectProduct = projectProduct;
+	public void setProjectProductResponse(ProjectProductResponse projectProduct) {
+		this.projectProductResponse = projectProduct;
 	}
 
 	public String getCode() {
@@ -109,18 +108,19 @@ public class LicenseResponse implements Response {
 
 	public List<String> columnValues() {
 		List<String> columnValues = new ArrayList<>();
-		columnValues.add(name == null ? "NA" : name);
-		columnValues.add(generatedKey == null ? "NA" : generatedKey);
 		columnValues.add(accessId == null ? "NA" : accessId);
-		// columnValues.add(projectProduct.getLicenseTypeName() == null ? "NA" :
-		// projectProduct.getLicenseTypeCode());
-		columnValues.add(projectProductId == null ? "NA" : BaseService.unmask(projectProductId) + "");
+		columnValues.add(generatedKey == null ? "NA" : generatedKey);
 		return columnValues;
 
 	}
 
 	public static List<String> licenseColumnHeaders() {
-		List<String> columnHeaders = Arrays.asList("Name", "Generated Key", "Access Id", "Project Product Id");
+		List<String> columnHeaders = Arrays.asList("Access Id", "Generated Key", "Product Code", "Product Family",
+				"Version", "Remark");
 		return columnHeaders;
+	}
+
+	public static float[] columnWidth() {
+		return new float[] { 1.25f, 2.75f, .75f, .75f, .75f, .75f };
 	}
 }

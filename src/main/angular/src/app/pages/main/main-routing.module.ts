@@ -67,7 +67,7 @@ const routes: Routes = [
       },
       { path: "profile", component: ProfileComponent },
       { path: "projectproduct", component: ProjectProductComponent },
-      { path: "deshboard", component: DeshboardComponent },
+      { path: "dashboard", component: DeshboardComponent },
     ],
   },
 ];

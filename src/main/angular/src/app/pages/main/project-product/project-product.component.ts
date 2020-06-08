@@ -23,6 +23,8 @@ export class ProjectProductComponent implements OnInit {
   showCommentModal: boolean = false;
   popUpForm: FormGroup;
   popUpStartDateForm: FormGroup;
+  popUpRequestForm: FormGroup;
+  showRequestModal: boolean = false;
   commentValue: any;
   commentSubmitButton: string;
   selectedProduct: any;
@@ -38,6 +40,7 @@ export class ProjectProductComponent implements OnInit {
   showBeforeDays: any;
   sDate: any;
   startDateChange: any;
+  selectedRequestProjectId: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -54,15 +57,16 @@ export class ProjectProductComponent implements OnInit {
     });
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
+    this.popUpRequestForm = this.initpopUpRequestForm();
   }
 
   getrenewConfiguration() {
     this._projectService.renewConfiguration().subscribe((data) => {
       console.log("getrenewConfiguration");
-      console.log(data);
+      //console.log(data);
       this.showBeforeDays = data.showBeforeDays;
       this.startDateChange = data.startDateChange;
-      console.log(this.showBeforeDays);
+      //console.log(this.showBeforeDays);
     });
   }
   hasRenewDays(project) {
@@ -89,8 +93,8 @@ export class ProjectProductComponent implements OnInit {
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     }
-    console.log(convert(d));
-    console.log(currentDate);
+    //console.log(convert(d));
+    //console.log(currentDate);
     if (currentDate >= convert(d)) {
       return true;
     } else {
@@ -125,6 +129,12 @@ export class ProjectProductComponent implements OnInit {
     return this.fb.group({
       startDate: [""],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
+    });
+  }
+  initpopUpRequestForm() {
+    return this.fb.group({
+      licenseCount: ["", [Validators.required]],
+      comment: [""],
     });
   }
   deleteProduct(project) {
@@ -415,6 +425,7 @@ export class ProjectProductComponent implements OnInit {
           this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
           this.showRenewModal = false;
           this.popUpStartDateForm.reset();
+          swal("Project Product Renew Successfully!");
         },
         (error) => {
           this.popUpStartDateForm.reset();
@@ -434,5 +445,47 @@ export class ProjectProductComponent implements OnInit {
   }
   reverseAphabetically() {
     this.projectProduct.reverse();
+  }
+  hideRequestModel() {
+    this.showRequestModal = false;
+  }
+  onSubmitRequest() {
+    console.log(this.popUpRequestForm.value);
+    this._projectService
+      .saveProjectLicenseById(
+        this.selectedRequestProjectId,
+        this.popUpRequestForm.value
+      )
+      .subscribe(
+        (data) => {
+          console.log(data);
+          swal("save product license request in project successfully!");
+          this.showRequestModal = false;
+          this.popUpRequestForm.reset();
+        },
+        (error) => {
+          this.showRequestModal = false;
+          this.popUpRequestForm.reset();
+        }
+      );
+  }
+  saveProjectLicenseById(project) {
+    console.log(project.id);
+    this.selectedRequestProjectId = project.id;
+    this.showRequestModal = true;
+    const object = {
+      licenseCount: project.licenseCount,
+      comment: project.comments,
+    };
+
+    // if (object) {
+    //   this._projectService.saveProjectLicenseById(project.id, object).subscribe(
+    //     (data) => {
+    //       console.log(data);
+    //       swal("Configuration Update successfully!");
+    //     },
+    //     (error) => {}
+    //   );
+    // }
   }
 }

@@ -25,12 +25,18 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.LicenseTypeJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductCommentJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.RenewConfigurationJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.license.LicenseType;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -46,7 +52,12 @@ import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.util.DateUtil;
+import com.nxtlife.efkon.license.util.ITextPdfUtil;
+import com.nxtlife.efkon.license.util.PdfHeaderFooterPageEvent;
+import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
+import com.nxtlife.efkon.license.view.RenewConfigurationResponse;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
@@ -75,8 +86,14 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	@Autowired
 	private LicenseTypeJpaDao licenseTypeJpaDao;
 
+	@Autowired
+	private RenewConfigurationJpaDao renewConfigurationJpaDao;
+
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
+
+	@Value("${file.upload-pdf-dir}")
+	private String pdfDirectory;
 
 	private static Logger logger = LoggerFactory.getLogger(ProjectProductServiceImpl.class);
 
@@ -101,6 +118,37 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ValidationException(String.format("Couldn't create excel because of %s", e.getMessage()));
+		}
+
+	}
+
+	private void createPdf(List<ProjectProductResponse> projectProductResponseList, String fileName, String heading) {
+
+		Document document = new Document(PageSize.A4, 10f, 10f, 10f, 30f);
+		try {
+			FileOutputStream fout = new FileOutputStream(fileName);
+			PdfWriter pdfWriter = PdfWriter.getInstance(document, fout);
+			List<String> columnHeaders = ProjectProductResponse.projectProductsColumnHeaders();
+			int length = columnHeaders.size();
+			PdfPTable headerPdfTable = new PdfPTable(length);
+			headerPdfTable.setTotalWidth(ProjectProductResponse.columnWidth());
+			PdfTableUtil.addTableHeader(headerPdfTable, columnHeaders);
+			String generatedDate = DateUtil.get(new Date(), "dd-MM-yyyy HH:mm:ss");
+			pdfWriter.setPageEvent(new PdfHeaderFooterPageEvent(heading, headerPdfTable, generatedDate));
+			document.open();
+			ITextPdfUtil.setProjectProductDocumentProperties(document);
+			PdfPTable pdfTable = new PdfPTable(length);
+			pdfTable.setTotalWidth(ProjectProductResponse.columnWidth());
+
+			for (ProjectProductResponse iterate : projectProductResponseList) {
+				PdfTableUtil.addTableRows(pdfTable, iterate.columnValues());
+			}
+			pdfTable.setWidthPercentage(95f);
+			document.add(pdfTable);
+			document.close();
+			fout.close();
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -144,12 +192,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration
-	 * month count
+	 * this method used to set end date according to start date and expiration month
+	 * count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater
-	 * than 12 then year will be incremented and month will be add result minus
-	 * 12.
+	 * if addition of month of start date and expiration month count greater than 12
+	 * then year will be incremented and month will be add result minus 12.
 	 *
 	 * @return String
 	 */
@@ -245,7 +292,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 		projectProductResponse
 				.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
-		return null;
+		return projectProductResponse;
 	}
 
 	@Override
@@ -295,6 +342,15 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 	@Override
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
+	public Resource findAllPdf() {
+		List<ProjectProductResponse> projectProductResponseList = findAll();
+		String fileName = pdfDirectory + "Allproducts.pdf";
+		createPdf(projectProductResponseList, fileName, "ProjectProducts");
+		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
 	public List<ProjectProductResponse> findByProjectId(Long projectId) {
 		User user = getUser();
 		Long unmaskProjectId = unmask(projectId);
@@ -335,6 +391,15 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		List<ProjectProductResponse> projectProductResponseList = findByProjectId(projectId);
 		String fileName = excelDirectory + "productsByProjectId.xlsx";
 		createExcel(projectProductResponseList, fileName, "ProjectProducts");
+		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
+	public Resource findByProjectIdPdf(Long projectId) {
+		List<ProjectProductResponse> projectProductResponseList = findByProjectId(projectId);
+		String fileName = pdfDirectory + "productsByProjectId.pdf";
+		createPdf(projectProductResponseList, fileName, "ProjectProducts");
 		return FileStorageService.fetchFile(fileName);
 	}
 
@@ -434,27 +499,24 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
-						licenseDao.save(
-								new License(
-										String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
-												projectProductResponse.getProjectResponse().getCustomerCode(),
-												projectProductResponse.getProductDetailResponse()
-														.getProductFamilyCode(),
-												projectProductResponse.getProductDetailResponse().getProductCodeCode(),
-												getUser().getCode(), projectProductResponse.getLicenseTypeCode(),
-												(i + 1),
-												projectProductResponse.getExpirationMonthCount() == null ? 0
-														: projectProductResponse.getExpirationMonthCount(),
-												LocalDate
-														.parse(projectProductResponse.getStartDate(),
+						licenseDao.save(new License(
+								String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
+										projectProductResponse.getProjectResponse().getCustomerCode(),
+										projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
+										projectProductResponse.getProductDetailResponse().getProductCodeCode(),
+										getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (i + 1),
+										projectProductResponse.getExpirationMonthCount() == null ? 0
+												: projectProductResponse.getExpirationMonthCount(),
+										LocalDate
+												.parse(projectProductResponse.getStartDate(),
+														DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+												.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
+										projectProductResponse.getEndDate() == null ? "NA"
+												: LocalDate
+														.parse(projectProductResponse.getEndDate(),
 																DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-														.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
-												projectProductResponse.getEndDate() == null ? "NA"
-														: LocalDate
-																.parse(projectProductResponse.getEndDate(),
-																		DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-																.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
-										LicenseStatus.ACTIVE, unmaskId));
+														.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
+								LicenseStatus.ACTIVE, unmaskId));
 					}
 				}
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
@@ -471,7 +533,15 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	public ProjectProductResponse renew(Long id, ProjectProductRequest request) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
-		if (request.getExpirationMonthCount() == null || request.getStartDate() == null) {
+		List<RenewConfigurationResponse> renewConfigurationResponses = renewConfigurationJpaDao.findByActiveTrue();
+		RenewConfigurationResponse renewConfiguration = null;
+		if (!renewConfigurationResponses.isEmpty()) {
+			renewConfiguration = renewConfigurationResponses.get(0);
+		} else {
+			throw new ValidationException("Renew configuration details not found");
+		}
+		if (request.getExpirationMonthCount() == null || (renewConfiguration != null
+				&& renewConfiguration.getStartDateChange() && request.getStartDate() == null)) {
 			throw new ValidationException("Start date and exipration month count is mandatory for renewal");
 		}
 		if (request.getExpirationMonthCount() < 1) {
@@ -507,9 +577,18 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				throw new ValidationException(
 						"Start date of renewal license should be greater than end date of previous");
 			}
+			LocalDate endDate = LocalDate.parse(projectProduct.getEndDate());
+			if (renewConfiguration != null && renewConfiguration.getShowBeforeDays() != null) {
+				LocalDate date = LocalDate.now().plusDays(renewConfiguration.getShowBeforeDays());
+				if (endDate.isAfter(date)) {
+					throw new ValidationException(String.format("You can't renew this product now"));
+				}
+			}
+
 			ProjectProduct renewedProjectProduct = new ProjectProduct(projectProduct.getLicenseCount(),
 					unmask(projectProduct.getLicenseTypeId()), projectProduct.getExpirationPeriodType(),
-					request.getExpirationMonthCount(), request.getStartDate(),
+					request.getExpirationMonthCount(),
+					request.getStartDate() == null ? projectProduct.getEndDate() : request.getStartDate(),
 					setEndDate(request.getStartDate(), request.getExpirationMonthCount()), ProjectProductStatus.SUBMIT);
 			renewedProjectProduct.settProductDetailId(unmask(projectProduct.getProductDetailId()));
 			renewedProjectProduct.settProjectId(unmask(projectProduct.getProjectId()));
@@ -582,27 +661,31 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			}
 		}
 		ProjectProductStatus pps[] = ProjectProductStatus.values();
-		Arrays.sort(pps);
+		String[] projectProductStatus = new String[pps.length];
+		for (int i = 0; i < pps.length; i++) {
+			projectProductStatus[i] = pps[i].toString();
+		}
+		Arrays.sort(projectProductStatus);
 		int arrSize = pps.length;
 		int responseSize = projectProductGraphResponse.size();
 		int i = 0, j = 0;
 		if (projectProductGraphResponse == null || projectProductGraphResponse.isEmpty()) {
-			for (ProjectProductStatus status : pps) {
+			for (String status : projectProductStatus) {
 				projectProductGraphResponse.add(new ProjectProductGraphResponse(status, 0));
 			}
 		} else {
 			while (i < arrSize && j < responseSize) {
-				if (pps[i].toString().equals(projectProductGraphResponse.get(j).getStatus())) {
+				if (projectProductStatus[i].toString().equals(projectProductGraphResponse.get(j).getStatus())) {
 					i++;
 					j++;
 					continue;
 				} else {
-					projectProductGraphResponse.add(new ProjectProductGraphResponse(pps[i], 0));
+					projectProductGraphResponse.add(new ProjectProductGraphResponse(projectProductStatus[i], 0));
 					i++;
 				}
 			}
 			while (i < arrSize) {
-				projectProductGraphResponse.add(new ProjectProductGraphResponse(pps[i], 0));
+				projectProductGraphResponse.add(new ProjectProductGraphResponse(projectProductStatus[i], 0));
 				i++;
 			}
 		}

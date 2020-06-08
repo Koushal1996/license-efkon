@@ -1,11 +1,14 @@
 package com.nxtlife.efkon.license.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,6 +25,7 @@ import com.nxtlife.efkon.license.dao.jpa.UserRoleJpaDao;
 import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.entity.user.UserRole;
+import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProjectService;
@@ -54,21 +58,29 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 	@Autowired
 	private UserRoleJpaDao userRoleDao;
 
+	private static Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
+
 	/**
-	 * this method used to validate request. In this we are validating that
-	 * project type and project manager are valid
+	 * this method used to validate request. In this we are validating that project
+	 * type and project manager are valid
 	 * 
 	 * @param request
 	 */
 	private void validate(ProjectRequest request) {
-		if (!projectTypeDao.existsById(request.getProjectTypeId())) {
-			throw new ValidationException(
-					String.format("Project type (%s) not found", mask(request.getProjectTypeId())));
+		if (request.getProjectTypeId() != null) {
+			if (!projectTypeDao.existsById(request.getProjectTypeId())) {
+				throw new ValidationException(
+						String.format("Project type (%s) not found", mask(request.getProjectTypeId())));
+			}
 		}
-		if (!userRoleDao.existsByUserIdAndRoleName(request.getProjectManagerId(), "Project Manager")) {
-			throw new ValidationException(
-					String.format("Project manager doesn't exists", mask(request.getProjectManagerId())));
+
+		if (request.getProjectManagerId() != null) {
+			if (!userRoleDao.existsByUserIdAndRoleName(request.getProjectManagerId(), "Project Manager")) {
+				throw new ValidationException(
+						String.format("Project manager doesn't exists", mask(request.getProjectManagerId())));
+			}
 		}
+
 	}
 
 	@Override
@@ -102,6 +114,53 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		ProjectResponse response = projectDao.findResponseById(project.getId());
 		return response;
 
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_UPDATE)
+	public ProjectResponse update(Long id, ProjectRequest request) {
+
+		Long unmaskId = unmask(id);
+		ProjectResponse response = projectDao.findByIdAndActive(unmaskId, true);
+		if (response == null) {
+			throw new NotFoundException(String.format("project having id (%s) didn't exist", id));
+		}
+		validate(request);
+
+		if (request.getCustomerEmail() != null) {
+			UserResponse existUser = userDao.findByEmailAndActive(request.getCustomerEmail(), true);
+			if (existUser != null && request.getCustomerEmail().equals(existUser.getEmail())) {
+				throw new ValidationException(String.format(
+						"email (%s) already taken, please enter email which is not used", request.getCustomerEmail()));
+			}
+		}
+		if (request.getCustomerContactNo() != null) {
+			UserResponse existUser = userDao.findByContactNoAndActive(request.getCustomerContactNo(), true);
+			if (existUser != null && request.getCustomerContactNo().equals(existUser.getContactNo())) {
+				throw new ValidationException(String.format(
+						"contact number (%s) is already used, please enter contact number which is not used",
+						request.getCustomerContactNo()));
+			}
+		}
+
+		int rows = projectDao.update(unmaskId,
+				request.getCustomerContactNo() == null ? response.getCustomerContactNo()
+						: request.getCustomerContactNo(),
+				request.getCustomerEmail() == null ? response.getCustomerEmail() : request.getCustomerEmail(),
+				request.getIsEmailSend() == null ? response.getIsEmailSend() : request.getIsEmailSend(),
+				request.getCustomerName() == null ? response.getCustomerName() : request.getCustomerName(),
+				request.getProjectManagerId() == null ? unmask(response.getProjectManagerId())
+						: request.getProjectManagerId(),
+				request.getProjectTypeId() == null ? unmask(response.getProjectTypeId()) : request.getProjectTypeId(),
+				getUserId(), new Date());
+
+		if (rows > 0) {
+			logger.info("Project updated successfully", unmaskId);
+		}
+
+		response = projectDao.findByIdAndActive(unmaskId, true);
+
+		return response;
 	}
 
 	/**
