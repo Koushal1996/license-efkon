@@ -827,3 +827,38 @@ table {
   vertical-align: text-top;
 }
 
+input{
+  border-radius: 0;
+  font-size: 13px !important;
+
+  &:focus{
+      border: 1px solid #29aba4 !important;
+      box-shadow: none;
+      font-size: 14px;
+  }
+}
+select{
+  border-radius: 0 !important;
+  font-size: 13px !important;
+  &:focus{
+      border: 1px solid #29aba4 !important;
+      box-shadow: none;
+  }
+}
+
+.product_details_popup {
+  width: 100%;
+  display: inline-block;
+  position: relative;
+  top: -5px;
+  label {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    color: #5a5a5a;
+}
+span {
+  font-size: 13px;
+  margin-left: 6px;
+}
+}

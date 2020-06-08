@@ -33,6 +33,8 @@
 .added_pct_scl {
     max-height: 227px;
     overflow-y: auto;
+    min-height: 100px;
+    position: relative;
 }
 .nodata{
    

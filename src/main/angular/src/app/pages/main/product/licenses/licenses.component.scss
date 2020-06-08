@@ -1,7 +1,28 @@
 .tableinput{
-    padding: 3px 15px;
+    padding: 6px 15px;
     height: auto;
     border-radius: 0;
     border: 1px solid #ddd;
-    font-size: 14px;
+    font-size: 13px;
+}
+
+.site_main{
+    background: transparent;
+    table{
+        background: white;
+       
+    }
+    .table_header {
+    background: white;
+    margin-top: 20px;
+        h4 {
+            margin: 0;
+            font-size: 20px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            font-weight: 600;
+            color: #676a6c;
+            padding: 10px 15px;
+        }
+    }
 }
