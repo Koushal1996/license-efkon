@@ -1,0 +1,14 @@
+<table>
+  <thead>
+    <tr>
+      <th scope="col">status</th>
+      <th scope="col">count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let status of productCounts">
+      <td>{{ status.status }}</td>
+      <td>{{ status.count }}</td>
+    </tr>
+  </tbody>
+</table>

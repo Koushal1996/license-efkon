@@ -12,6 +12,11 @@ declare let $: any;
 })
 export class MainComponent implements OnInit {
   pages: any[] = [
+    {
+      route: "/dashboard",
+      title: "Dashboard",
+      privilege: "PROJECT_PRODUCT_FETCH",
+    },
     { route: "/projects", title: "Projects", privilege: "PROJECT_FETCH" },
     {
       route: "/products/family",

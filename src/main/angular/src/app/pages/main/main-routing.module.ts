@@ -19,6 +19,7 @@ import { ProjectProductComponent } from "./project-product/project-product.compo
 import { CreateFamilyComponent } from "./product/family/create-family/create-family.component";
 import { SelectedLicensesComponent } from "./project/selected-licenses/selected-licenses.component";
 import { RenewConfigurationComponent } from "./product/renew-configuration/renew-configuration.component";
+import { DeshboardComponent } from "./deshboard/deshboard.component";
 
 const routes: Routes = [
   {
@@ -66,6 +67,7 @@ const routes: Routes = [
       },
       { path: "profile", component: ProfileComponent },
       { path: "projectproduct", component: ProjectProductComponent },
+      { path: "dashboard", component: DeshboardComponent },
     ],
   },
 ];

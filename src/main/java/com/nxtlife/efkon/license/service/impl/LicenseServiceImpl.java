@@ -25,6 +25,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
@@ -39,12 +44,16 @@ import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.util.DateUtil;
+import com.nxtlife.efkon.license.util.ITextPdfUtil;
+import com.nxtlife.efkon.license.util.PdfHeaderFooterPageEvent;
+import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
+import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
-import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
 @Service("licenseServiceImpl")
 @Transactional
@@ -63,7 +72,10 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	private ProjectJpaDao projectDao;
 
 	@Autowired
-	private ProductDetailJpaDao productDetailJpaDao;
+	private ProductDetailJpaDao productDetailDao;
+
+	@Value("${file.upload-pdf-dir}")
+	private String pdfDirectory;
 
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
@@ -89,7 +101,21 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			WorkBookUtil.createRow(headerStyle, sheet, columnHeaders, 0);
 			Integer row = 1;
 			for (LicenseResponse iterate : licenseResponseList) {
-				WorkBookUtil.createRow(sheet, iterate.columnValues(), row++);
+				List<String> columnValues = iterate.columnValues();
+				columnValues
+						.add(iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName() == null
+								? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName());
+				columnValues.add(
+						iterate.getProjectProductResponse().getProductDetailResponse().getProductFamilyName() == null
+								? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse()
+										.getProductFamilyName());
+				columnValues.add(
+						iterate.getProjectProductResponse().getProductDetailResponse().getVersionName() == null ? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse().getVersionName());
+				columnValues.add(iterate.getName() == null ? "NA" : iterate.getName());
+				WorkBookUtil.createRow(sheet, columnValues, row++);
 			}
 			FileOutputStream fout = new FileOutputStream(fileName);
 			workbook.write(fout);
@@ -99,6 +125,51 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ValidationException(String.format("Couldn't create excel file because of %s", e.getMessage()));
+		}
+
+	}
+
+	private void createPdf(List<LicenseResponse> licenseResponseList, String fileName, String heading) {
+
+		Document document = new Document(PageSize.A4, 10f, 10f, 10f, 30f);
+		try {
+			FileOutputStream fout = new FileOutputStream(fileName);
+			PdfWriter pdfWriter = PdfWriter.getInstance(document, fout);
+			List<String> columnHeaders = LicenseResponse.licenseColumnHeaders();
+			int length = columnHeaders.size();
+			PdfPTable headerPdfTable = new PdfPTable(length);
+			headerPdfTable.setTotalWidth(LicenseResponse.columnWidth());
+			PdfTableUtil.addTableHeader(headerPdfTable, columnHeaders);
+			String generatedDate = DateUtil.get(new Date(), "dd-MM-yyyy HH:mm:ss");
+			pdfWriter.setPageEvent(new PdfHeaderFooterPageEvent(heading, headerPdfTable, generatedDate));
+			document.open();
+			ITextPdfUtil.setDocumentProperties(document);
+			PdfPTable pdfTable = new PdfPTable(length);
+			pdfTable.setTotalWidth(LicenseResponse.columnWidth());
+
+			for (LicenseResponse iterate : licenseResponseList) {
+				List<String> columnValues = iterate.columnValues();
+				columnValues
+						.add(iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName() == null
+								? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName());
+				columnValues.add(
+						iterate.getProjectProductResponse().getProductDetailResponse().getProductFamilyName() == null
+								? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse()
+										.getProductFamilyName());
+				columnValues.add(
+						iterate.getProjectProductResponse().getProductDetailResponse().getVersionName() == null ? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse().getVersionName());
+				columnValues.add(iterate.getName() == null ? "NA" : iterate.getName());
+				PdfTableUtil.addTableRows(pdfTable, columnValues);
+			}
+			pdfTable.setWidthPercentage(95f);
+			document.add(pdfTable);
+			document.close();
+			fout.close();
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -148,7 +219,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 
 		if (response != null) {
-			response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
+			response.setProjectProductResponse(projectProductService.findById(response.getProjectProductId()));
 		} else {
 			throw new NotFoundException(String.format("License didn't exist having id [%s]", id));
 		}
@@ -162,6 +233,13 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		if (responseList.isEmpty() || responseList == null) {
 			throw new NotFoundException("no license found");
 		}
+		for (LicenseResponse iterate : responseList) {
+			iterate.setProjectProductResponse(
+					projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
+			iterate.getProjectProductResponse().setProductDetailResponse(productDetailDao
+					.findByIdAndActive(unmask(iterate.getProjectProductResponse().getProductDetailId()), true));
+		}
+
 		return responseList;
 	}
 
@@ -171,6 +249,15 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		List<LicenseResponse> licenseResponseList = findAll();
 		String fileName = excelDirectory + "AllLicenses.xlsx";
 		createExcel(licenseResponseList, fileName, "licenses");
+		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public Resource findAllPdf() {
+		List<LicenseResponse> licenseResponseList = findAll();
+		String fileName = pdfDirectory + "AllLicenses.pdf";
+		createPdf(licenseResponseList, fileName, "licenses");
 		return FileStorageService.fetchFile(fileName);
 	}
 
@@ -196,7 +283,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			logger.info(" License {} updated successfully", unmaskId);
 		}
 		LicenseResponse response = licenseDao.findResponseByIdAndActive(unmaskId, true);
-		response.setProjectProduct(projectProductDao.findResponseById(unmask(response.getProjectProductId())));
+		response.setProjectProductResponse(projectProductDao.findResponseById(unmask(response.getProjectProductId())));
 		return response;
 	}
 
@@ -208,12 +295,11 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		Long unmaskedProductId = unmask(productDetailId);
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		validate(unmaskProjectId, unmaskedProductId);
-		List<ProjectProductResponse> projectProductResponseList;
 		List<LicenseResponse> responseList = new ArrayList<LicenseResponse>();
 		if (roles.contains("Customer")) {
-			projectProductResponseList = projectProductDao
-					.findByProductDetailIdAndProjectIdAndProjectCustomerEmailAndActive(unmaskedProductId,
-							unmaskProjectId, user.getEmail(), true);
+			responseList = licenseDao
+					.findByProjectProductProductDetailIdAndProjectProductProjectIdAndProjectProductProjectCustomerEmailAndActive(
+							unmaskedProductId, unmaskProjectId, user.getEmail(), true);
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -221,17 +307,21 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				roles.remove("Project Manager");
 			}
 			if (roles.isEmpty() && isProjectManager) {
-				projectProductResponseList = projectProductDao
-						.findByProductDetailIdAndProjectIdAndProjectProjectManagerIdAndActive(unmaskedProductId,
-								unmaskProjectId, user.getUserId(), true);
+				responseList = licenseDao
+						.findByProjectProductProductDetailIdAndProjectProductProjectIdAndProjectProductProjectProjectManagerIdAndActive(
+								unmaskedProductId, unmaskProjectId, user.getUserId(), true);
 
 			} else {
-				projectProductResponseList = projectProductDao
-						.findByProjectIdAndProductDetailIdAndActiveTrue(unmask(projectId), unmask(productDetailId));
+				responseList = licenseDao.findByProjectProductProductDetailIdAndProjectProductProjectIdAndActive(
+						unmaskedProductId, unmaskProjectId, true);
 			}
 		}
-		for (ProjectProductResponse iterate : projectProductResponseList) {
-			responseList.addAll(licenseDao.findByProjectProductIdAndActiveTrue(unmask(iterate.getId())));
+
+		for (LicenseResponse iterate1 : responseList) {
+			iterate1.setProjectProductResponse(
+					projectProductDao.findByIdAndActive(unmask(iterate1.getProjectProductId()), true));
+			iterate1.getProjectProductResponse().setProductDetailResponse(productDetailDao
+					.findByIdAndActive(unmask(iterate1.getProjectProductResponse().getProductDetailId()), true));
 		}
 		return responseList;
 	}
@@ -240,9 +330,33 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	@Secured(AuthorityUtils.LICENSE_FETCH)
 	public Resource findLicensesByProjectIdAndProductIdExcel(Long projectId, Long productId) {
 		List<LicenseResponse> licenseResponseList = findByProjectIdAndProductId(projectId, productId);
-		String fileName = excelDirectory + "LicensesByProjectIdandProductId.xlsx";
+		ProjectResponse projectResponse = projectDao.findByIdAndActive(unmask(projectId), true);
+		ProductDetailResponse productDetailResponse = productDetailDao.findByIdAndActive(unmask(productId), true);
+
+		String fileName = excelDirectory + projectResponse.getProjectTypeName().replaceAll("\\s", "") + "_"
+				+ projectResponse.getCustomerName() + "(" + projectResponse.getCustomerEmail() + ")" + "_"
+				+ productDetailResponse.getProductCodeName() + "_" + productDetailResponse.getProductFamilyName() + "_"
+				+ productDetailResponse.getVersionName() + ".xlsx";
+
 		createExcel(licenseResponseList, fileName, "licenses");
 		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public Resource findLicensesByProjectIdAndProductIdPdf(Long projectId, Long productId) {
+		List<LicenseResponse> licenseResponseList = findByProjectIdAndProductId(projectId, productId);
+		ProjectResponse projectResponse = projectDao.findByIdAndActive(unmask(projectId), true);
+		ProductDetailResponse productDetailResponse = productDetailDao.findByIdAndActive(unmask(productId), true);
+
+		String fileName = pdfDirectory + projectResponse.getProjectTypeName().replaceAll("\\s", "") + "_"
+				+ projectResponse.getCustomerName() + "(" + projectResponse.getCustomerEmail() + ")" + "_"
+				+ productDetailResponse.getProductCodeName() + "_" + productDetailResponse.getProductFamilyName() + "_"
+				+ productDetailResponse.getVersionName() + ".pdf";
+
+		createPdf(licenseResponseList, fileName, "licenses");
+		return FileStorageService.fetchFile(fileName);
+
 	}
 
 	@Override
@@ -265,7 +379,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				request.getAccessId().concat(license.getCode()).concat(UUID.randomUUID().toString()), request.getName(),
 				LicenseStatus.ACTIVE, unmask(license.getProjectProductId())));
 		LicenseResponse response = licenseDao.findResponseByIdAndActive(newLicense.getId(), true);
-		response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
+		response.setProjectProductResponse(projectProductService.findById(response.getProjectProductId()));
 		return response;
 	}
 
@@ -304,10 +418,12 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 					String.format("No license is generated for the project having id [%s]", projectId));
 		}
 		for (LicenseResponse iterate : responseList) {
-			iterate.setProjectProduct(projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
-			if (iterate.getProjectProduct() != null && iterate.getProjectProduct().getProductDetailId() != null)
-				iterate.getProjectProduct().setProductDetailResponse(
-						productDetailJpaDao.findResponseById(unmask(iterate.getProjectProduct().getProductDetailId())));
+
+			iterate.setProjectProductResponse(
+					projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
+			iterate.getProjectProductResponse().setProductDetailResponse(productDetailDao
+					.findByIdAndActive(unmask(iterate.getProjectProductResponse().getProductDetailId()), true));
+
 		}
 
 		return responseList;
@@ -317,8 +433,23 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	@Secured(AuthorityUtils.LICENSE_FETCH)
 	public Resource findLicensesByProjectIdExcel(Long projectId) {
 		List<LicenseResponse> licenseResponseList = findByProjectId(projectId);
-		String fileName = excelDirectory + "LicensesByProjectId.xlsx";
+		ProjectResponse projectResponse = projectDao.findByIdAndActive(unmask(projectId), true);
+
+		String fileName = excelDirectory + projectResponse.getProjectTypeName().replaceAll("\\s", "") + "_"
+				+ projectResponse.getCustomerName() + "(" + projectResponse.getCustomerEmail() + ")" + ".xlsx";
 		createExcel(licenseResponseList, fileName, "licenses");
+		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public Resource findLicensesByProjectIdPdf(Long projectId) {
+
+		List<LicenseResponse> licenseResponseList = findByProjectId(projectId);
+		ProjectResponse projectResponse = projectDao.findByIdAndActive(unmask(projectId), true);
+		String fileName = pdfDirectory + projectResponse.getProjectTypeName().replaceAll("\\s", "") + "_"
+				+ projectResponse.getCustomerName() + "(" + projectResponse.getCustomerEmail() + ")" + ".pdf";
+		createPdf(licenseResponseList, fileName, "licenses");
 		return FileStorageService.fetchFile(fileName);
 	}
 

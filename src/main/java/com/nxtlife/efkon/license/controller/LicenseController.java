@@ -86,6 +86,18 @@ public class LicenseController {
 
 	}
 
+	@GetMapping(value = "licenses/pdf", produces = { "application/json" })
+	@Operation(summary = "Find all licenses and create pdf", description = "return a pdf file of licenses", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "pdf file of license", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findAllLicensesPdf(HttpServletResponse response) throws IOException {
+		Resource resource = licenseService.findAllPdf();
+		Response.setFileResponseHeader(resource, "application/pdf", response);
+	}
+
 	@GetMapping(value = "project/{projectId}/product/{productId}/licenses", produces = { "application/json" })
 	@Operation(summary = "Find all licenses of a product of a project", description = "return a list of license", tags = {
 			"License" })
@@ -112,6 +124,19 @@ public class LicenseController {
 
 	}
 
+	@GetMapping(value = "project/{projectId}/product/{productId}/licenses/pdf", produces = { "application/json" })
+	@Operation(summary = "Find all licenses of product of a project and create pdf", description = "return a pdf file of licenses", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "pdf file of license", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findLicensesByProjectIdandProductIdPdf(@PathVariable Long projectId, @PathVariable Long productId,
+			HttpServletResponse response) throws IOException {
+		Resource resource = licenseService.findLicensesByProjectIdAndProductIdPdf(projectId, productId);
+		Response.setFileResponseHeader(resource, "application/pdf", response);
+	}
+
 	@GetMapping(value = "project/{projectId}/licenses", produces = { "application/json" })
 	@Operation(summary = "Find all licenses of a project", description = "return a list of licenses", tags = {
 			"License" })
@@ -135,6 +160,19 @@ public class LicenseController {
 		Resource resource = licenseService.findLicensesByProjectIdExcel(projectId);
 		Response.setFileResponseHeader(resource, "application/octet-stream", response);
 
+	}
+
+	@GetMapping(value = "project/{projectId}/licenses/pdf", produces = { "application/json" })
+	@Operation(summary = "Find all licenses of a project and create pdf", description = "return a pdf file of licenses", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "pdf file of license", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findLicensesByProjectIdPdf(@PathVariable Long projectId, HttpServletResponse response)
+			throws IOException {
+		Resource resource = licenseService.findLicensesByProjectIdPdf(projectId);
+		Response.setFileResponseHeader(resource, "application/pdf", response);
 	}
 
 	@GetMapping(value = "license/{licenseId}", produces = { "application/json" })

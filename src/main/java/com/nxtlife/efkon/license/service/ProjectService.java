@@ -11,8 +11,8 @@ public interface ProjectService {
 	/**
 	 * this method used to save the project
 	 *
-	 * @throws ValidationException
-	 *             if project type id or project manager id not found
+	 * @throws ValidationException if project type id or project manager id not
+	 *                             found
 	 *
 	 * @return {@Link ProjectResponse}
 	 */
@@ -25,5 +25,14 @@ public interface ProjectService {
 	 * @return list of <tt>ProjectResponse</tt>
 	 */
 	public List<ProjectResponse> findAll();
+
+	/**
+	 * this method is used to update project
+	 * 
+	 * @param id
+	 * @param request
+	 * @return {@link ProjectResponse}
+	 */
+	public ProjectResponse update(Long id, ProjectRequest request);
 
 }

@@ -61,4 +61,6 @@ public interface UserJpaDao extends JpaRepository<User, Long> {
 	@Query(value = "update User set active=false, modified_by =?2, modified_at =?3 where id =?1")
 	public int delete(Long id, Long userId, Date date);
 
+	public UserResponse findByContactNoAndActive(String customerContactNo, Boolean active);
+
 }

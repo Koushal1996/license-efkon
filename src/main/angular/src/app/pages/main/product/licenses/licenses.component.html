@@ -29,16 +29,6 @@
                 #maxMonthCount="ngModel"
                 [(ngModel)]="license.maxMonthCount"
               />
-              <!-- <div
-                *ngIf="
-                  maxMonthCount.invalid &&
-                  (maxMonthCount.touched || maxMonthCount.dirty)
-                "
-              >
-                <div *ngIf="maxMonthCount.errors.min" class="red">
-                  1 is required
-                </div>
-              </div> -->
             </td>
             <td *ngIf="!license.edit">
               <button
@@ -62,6 +52,88 @@
               <button
                 type="submit"
                 (click)="onBack(license)"
+                class="ml-2 t_save_btn bg-danger top_tooltip"
+              >
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h4>Renew Configuration</h4>
+    <div class="col-12">
+      <table>
+        <thead class="users_table_hader">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Show Before Days</th>
+            <th scope="col">Start Date Change</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td *ngIf="isBeforeDaysEdit">{{ showBeforeDays }}</td>
+            <td *ngIf="!isBeforeDaysEdit">
+              <input
+                type="text"
+                name="showBeforeDays"
+                id="showBeforeDays"
+                [(ngModel)]="showBeforeDays"
+              />
+            </td>
+            <td *ngIf="isBeforeDaysEdit">
+              {{ startDateChange }}
+            </td>
+            <td *ngIf="!isBeforeDaysEdit">
+              <!-- <input
+                type="text"
+                name="startDateChange"
+                id="startDateChange"
+                [(ngModel)]="startDateChange"
+              /> -->
+              <select
+                class="form-control"
+                name="startDateChange"
+                id="startDateChange"
+                [(ngModel)]="startDateChange"
+              >
+                <option>true</option>
+                <option>false </option>
+              </select>
+
+              <!-- <input
+                type="checkbox"
+                id="startDateChange"
+                [(ngModel)]="startDateChange"
+                checked
+                data-toggle="toggle"
+              /> -->
+            </td>
+            <td *ngIf="isBeforeDaysEdit">
+              <button
+                type="submit"
+                (click)="editshowBeforeDays()"
+                class="ml-2 t_save_btn bg-danger top_tooltip"
+              >
+                Edit
+              </button>
+            </td>
+            <td *ngIf="!isBeforeDaysEdit">
+              <button
+                type="submit"
+                (click)="
+                  onSubmitRenewConfiguration(startDateChange, showBeforeDays)
+                "
+                class="t_save_btn top_tooltip"
+              >
+                Submit
+              </button>
+              <button
+                type="submit"
+                (click)="onBackRenew()"
                 class="ml-2 t_save_btn bg-danger top_tooltip"
               >
                 Cancel

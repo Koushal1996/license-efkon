@@ -16,22 +16,22 @@ export class LicensesComponent implements OnInit {
   monthCount;
   showForm: boolean = false;
   isloader: boolean = true;
-
+  showBeforeDays: any;
+  startDateChange: any;
+  isBeforeDaysEdit: boolean = true;
+  startRenewDateChange: any;
+  showBeforeRenewDays: any;
+  configuration;
   constructor(
     private fb: FormBuilder,
     private projectservice: ProjectService
   ) {}
 
   ngOnInit() {
-    // this.LicenseForm = this.initLicenseForm();
     this.getLicenseType();
+    this.getrenewConfiguration();
   }
-  // initLicenseForm() {
-  //   return this.fb.group({
-  //     name: [""],
-  //     monthCount: ["", [Validators.required]],
-  //   });
-  // }
+
   getLicenseType() {
     this.projectservice.getLicenseType().subscribe((data) => {
       this.licenseType = data;
@@ -65,38 +65,39 @@ export class LicensesComponent implements OnInit {
     license.edit = false;
     this.getLicenseType();
   }
+  ////// for renew configuration
 
-  // editMonthCount(license) {
-  //   console.log(license);
-  //   this.selectedLicenseTypeId = license.id;
-  //   console.log(license);
-  //   this.showForm = true;
-  //   this.LicenseForm.patchValue({
-  //     monthCount: license.maxMonthCount,
-  //     name: license.name,
-  //   });
-  //   this.LicenseForm.controls["name"].disable();
-  //   // if (license.name == "COMMERCIAL") {
-  //   //   this.LicenseForm.controls["monthCount"].setValidators(
-  //   //     Validators.max(240)
-  //   //   );
-  //   // } else if (license.name == "DEMO") {
-  //   //   this.LicenseForm.controls["monthCount"].setValidators(Validators.max(2));
-  //   // }
-  // }
-  // onSubmit(license) {
-  //   console.log(this.LicenseForm.value);
-  //   console.log(this.selectedLicenseTypeId);
-  //   this.projectservice
-  //     .updateLicenseType(this.selectedLicenseTypeId, this.LicenseForm.value)
-  //     .subscribe(
-  //       (data) => {
-  //         console.log(data);
-  //         this.showForm = false;
-  //       },
-  //       (error) => {
-  //         this.showForm = false;
-  //       }
-  //     );
-  // }
+  getrenewConfiguration() {
+    this.projectservice.renewConfiguration().subscribe((data) => {
+      console.log("getrenewConfiguration");
+      console.log(data);
+      this.showBeforeDays = data.showBeforeDays;
+      this.startDateChange = data.startDateChange;
+    });
+  }
+  editshowBeforeDays() {
+    this.isBeforeDaysEdit = false;
+  }
+  onSubmitRenewConfiguration(startDateChange, showBeforeDays) {
+    console.log(startDateChange);
+    console.log(showBeforeDays);
+    const object = {
+      showBeforeDays: showBeforeDays,
+      startDateChange: startDateChange,
+    };
+    if (object) {
+      this.projectservice.updaterenewConfiguration(object).subscribe(
+        (data) => {
+          console.log(data);
+          swal("Configuration Update successfully!");
+          this.isBeforeDaysEdit = true;
+        },
+        (error) => {}
+      );
+    }
+  }
+  onBackRenew() {
+    this.isBeforeDaysEdit = true;
+    this.getrenewConfiguration();
+  }
 }
