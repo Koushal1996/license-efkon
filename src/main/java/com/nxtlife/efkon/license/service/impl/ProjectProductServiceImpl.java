@@ -516,7 +516,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				throw new ValidationException(
 						String.format("You can't renew if project product(%s) not approved", projectProduct.getId()));
 			}
-			if (projectProduct.getEndDate().compareTo(request.getStartDate()) > 1) {
+			if (request.getStartDate() != null && projectProduct.getEndDate().compareTo(request.getStartDate()) > 1) {
 				throw new ValidationException(
 						"Start date of renewal license should be greater than end date of previous");
 			}
@@ -532,7 +532,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					unmask(projectProduct.getLicenseTypeId()), projectProduct.getExpirationPeriodType(),
 					request.getExpirationMonthCount(),
 					request.getStartDate() == null ? projectProduct.getEndDate() : request.getStartDate(),
-					setEndDate(request.getStartDate(), request.getExpirationMonthCount()), ProjectProductStatus.SUBMIT);
+					setEndDate(request.getStartDate() == null ? projectProduct.getEndDate() : request.getStartDate(),
+							request.getExpirationMonthCount()),
+					ProjectProductStatus.SUBMIT);
 			renewedProjectProduct.settProductDetailId(unmask(projectProduct.getProductDetailId()));
 			renewedProjectProduct.settProjectId(unmask(projectProduct.getProjectId()));
 			renewedProjectProduct.settPastProjectProductId(unmaskId);
