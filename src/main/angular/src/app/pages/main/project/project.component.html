@@ -238,7 +238,7 @@
                             <br />
                             <a
                               class="comemt_link"
-                              *ngIf="pro.status !== 'DRAFT'"
+                              *ngIf="pro.comments.length"
                               (click)="showComments(pro)"
                               >comments
                             </a>
@@ -320,9 +320,10 @@
                               class="roleactive"
                               *ngIf="
                                 hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                                hasRenewDays(pro)
+                                hasRenewDays(pro) &&
+                                pro.licenseTypeName == 'COMMERCIAL'
                               "
-                              (click)="renewProductStatus(pro)"
+                              (click)="renewProductStatus(pro, project)"
                             >
                               Renew
                             </button>
@@ -336,9 +337,10 @@
                               class="roleactive"
                               *ngIf="
                                 hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                                hasRenewDays(pro)
+                                hasRenewDays(pro) &&
+                                pro.licenseTypeName == 'COMMERCIAL'
                               "
-                              (click)="renewProductStatus(pro)"
+                              (click)="renewProductStatus(pro, project)"
                             >
                               Renew
                             </button>
@@ -381,14 +383,15 @@
         </button>
       </div>
 
-      
       <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
         <div class="modal-body p-3">
           <div class="product_details_popup">
-            <label >Product Details:</label>
-            <span>{{ selectedProductCode }}
+            <label>Product Details:</label>
+            <span
+              >{{ selectedProductCode }}
               {{ selectedProductFamily }}
-              {{ selectedProductVersion }}</span>
+              {{ selectedProductVersion }}</span
+            >
           </div>
           <div class="form-group mb-0">
             <textarea
@@ -451,10 +454,12 @@
       </div>
       <div class="modal-body overflow-hidden p-3 mb-3">
         <div class="product_details_popup text-center">
-          <label >Product Details:</label>
-          <span>{{ selectedProductCode }}
+          <label>Product Details:</label>
+          <span
+            >{{ selectedProductCode }}
             {{ selectedProductFamily }}
-            {{ selectedProductVersion }}</span>
+            {{ selectedProductVersion }}</span
+          >
         </div>
         <!-- <div class="coment_list_content">
           <ul *ngFor="let c of comments">
@@ -555,6 +560,8 @@
                 class="form-control"
                 formControlName="startDate"
                 name="startDate"
+                [min]="getToday()"
+                [readonly]="startDateChange == false"
               />
               <span
                 *ngIf="
