@@ -116,7 +116,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
 		response.setProjectProductResponse(projectProductDao.findByIdAndActive(unmask(projectProductId), true));
 		if (response.getProjectProductResponse() != null)
-			response.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+			response.getProjectProductResponse().setProductDetail(productDetailJpaDao
 					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
 		response.setComments(
 				projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(response.getId())));
@@ -147,7 +147,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		response.setProjectProductResponse(
 				projectProductDao.findByIdAndActive(unmask(response.getProjectProductId()), true));
 		if (response.getProjectProductResponse() != null)
-			response.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+			response.getProjectProductResponse().setProductDetail(productDetailJpaDao
 					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
 		return response;
 	}
@@ -179,7 +179,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
 			if (pplrResponse.getProjectProductResponse() != null)
-				pplrResponse.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+				pplrResponse.getProjectProductResponse().setProductDetail(productDetailJpaDao
 						.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProductDetailId())));
 			pplrResponse.setComments(
 					projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(pplrResponse.getId())));
@@ -218,7 +218,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 				iterate.setProjectProductResponse(
 						projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
 				if (iterate.getProjectProductResponse() != null)
-					iterate.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+					iterate.getProjectProductResponse().setProductDetail(productDetailJpaDao
 							.findResponseById(unmask(iterate.getProjectProductResponse().getProductDetailId())));
 				iterate.setComments(
 						projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(iterate.getId())));

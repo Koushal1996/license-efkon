@@ -29,7 +29,7 @@ public class LicenseResponse implements Response {
 
 	private Long projectProductId;
 
-	private ProjectProductResponse projectProductResponse;
+	private ProjectProductResponse projectProduct;
 
 	public LicenseResponse get(License license) {
 		if (license != null) {
@@ -66,12 +66,12 @@ public class LicenseResponse implements Response {
 		this.name = name;
 	}
 
-	public ProjectProductResponse getProjectProductResponse() {
-		return projectProductResponse;
+	public ProjectProductResponse getProjectProduct() {
+		return projectProduct;
 	}
 
-	public void setProjectProductResponse(ProjectProductResponse projectProduct) {
-		this.projectProductResponse = projectProduct;
+	public void setProjectProduct(ProjectProductResponse projectProduct) {
+		this.projectProduct = projectProduct;
 	}
 
 	public String getCode() {
