@@ -32,11 +32,11 @@ public class ProjectProductResponse implements Response {
 
 	private Long projectId;
 
-	private ProjectResponse projectResponse;
+	private ProjectResponse project;
 
 	private Long productDetailId;
 
-	private ProductDetailResponse productDetailResponse;
+	private ProductDetailResponse productDetail;
 
 	@Schema(description = "No of license", example = "4")
 	private Integer licenseCount;
@@ -170,20 +170,28 @@ public class ProjectProductResponse implements Response {
 		this.status = status;
 	}
 
-	public ProjectResponse getProjectResponse() {
-		return projectResponse;
+	public ProjectResponse getProject() {
+		return project;
 	}
 
-	public void setProjectResponse(ProjectResponse projectResponse) {
-		this.projectResponse = projectResponse;
+	public void setProject(ProjectResponse project) {
+		this.project = project;
 	}
 
-	public ProductDetailResponse getProductDetailResponse() {
-		return productDetailResponse;
+	public ProductDetailResponse getProductDetail() {
+		return productDetail;
 	}
 
-	public void setProductDetailResponse(ProductDetailResponse productDetailResponse) {
-		this.productDetailResponse = productDetailResponse;
+	public void setProductDetail(ProductDetailResponse productDetail) {
+		this.productDetail = productDetail;
+	}
+
+	public Long getPastProjectProductId() {
+		return pastProjectProductId;
+	}
+
+	public void setPastProjectProductId(Long pastProjectProductId) {
+		this.pastProjectProductId = pastProjectProductId;
 	}
 
 	public String getEndDate() {

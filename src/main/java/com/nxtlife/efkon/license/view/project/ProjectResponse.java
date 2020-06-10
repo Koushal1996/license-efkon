@@ -45,7 +45,7 @@ public class ProjectResponse implements Response {
 	@Schema(example = "Mr. Kumar")
 	private String projectManagerName;
 
-	private ProjectTypeResponse projectTypeResponse;
+	private ProjectTypeResponse projectType;
 
 	private List<ProjectProductResponse> products;
 
@@ -125,12 +125,12 @@ public class ProjectResponse implements Response {
 		this.customerContactNo = customerContactNo;
 	}
 
-	public ProjectTypeResponse getProjectTypeResponse() {
-		return projectTypeResponse;
+	public ProjectTypeResponse getProjectType() {
+		return projectType;
 	}
 
-	public void setProjectTypeResponse(ProjectTypeResponse projectTypeResponse) {
-		this.projectTypeResponse = projectTypeResponse;
+	public void setProjectType(ProjectTypeResponse projectType) {
+		this.projectType = projectType;
 	}
 
 	public List<ProjectProductResponse> getProducts() {
@@ -186,7 +186,7 @@ public class ProjectResponse implements Response {
 			ProjectResponse response = new ProjectResponse(project.getId(), project.getCreatedAt(),
 					project.getCustomerCode(), project.getCustomerName(), project.getCustomerEmail(),
 					project.getIsEmailSend(), project.getCustomerContactNo(), null, null, null, null);
-			response.setProjectTypeResponse(new ProjectTypeResponse(project.getProjectType()));
+			response.setProjectType(new ProjectTypeResponse(project.getProjectType()));
 			return response;
 		}
 		return null;
