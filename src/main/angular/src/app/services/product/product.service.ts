@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { ApiService } from "../api/api.service";
 import { BehaviorSubject } from "rxjs";
+import { HttpParams } from "@angular/common/http";
 
 @Injectable({
   providedIn: "root",
@@ -47,5 +48,18 @@ export class ProductService {
   }
   deleteProductFamily(Id) {
     return this.api.delete(`api/product/family/${Id}`);
+  }
+  viewRequest(status: any) {
+    //debugger;
+    return this.api.get(`api/project-requests`, { status: status });
+  }
+  viewRequestPending() {
+    return this.api.get("api/project-requests?status=" + "PENDING");
+  }
+  viewRequestAccepted() {
+    return this.api.get("api/project-requests?status=" + "ACCEPTED");
+  }
+  viewRequestRejected() {
+    return this.api.get("api/project-requests?status=" + "REJECTED");
   }
 }

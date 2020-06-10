@@ -1,3 +1,20 @@
+<form [formGroup]="filterStatusForm">
+  <div class="form-group">
+    <!-- <label>Product Status </label> -->
+    <select
+      class="form-control"
+      name="productStatus"
+      formControlName="productStatus"
+      (ngModelChange)="getStatus($event)"
+    >
+      <option value="" disabled>Select Status</option>
+      <option>All</option>
+      <option *ngFor="let project of productCountsStatus">
+        {{ project.status }}
+      </option>
+    </select>
+  </div>
+</form>
 <div class="col-12 p-0">
   <div class="site_main">
     <div class="table_scroll">
@@ -41,9 +58,9 @@
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
               <td>
-                {{ project.productDetailResponse.productCodeName }}
-                {{ project.productDetailResponse.productFamilyName }}
-                {{ project.productDetailResponse.versionName }}
+                {{ project.productDetail.productCodeName }}
+                {{ project.productDetail.productFamilyName }}
+                {{ project.productDetail.versionName }}
               </td>
               <td>
                 {{ project.licenseCount }}
@@ -65,11 +82,11 @@
               <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
 
               <td>
-                {{ project.projectResponse.customerName }}
+                {{ project.project.customerName }}
                 <br />
-                ({{ project.projectResponse.customerEmail }})
+                ({{ project.project.customerEmail }})
               </td>
-              <td>{{ project.projectResponse.projectTypeName }}</td>
+              <td>{{ project.project.projectTypeName }}</td>
               <td>
                 {{ project.status }}
                 <br />
@@ -144,7 +161,8 @@
                   class="roleactive mb-2"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                    hasRenewDays(project)
+                    hasRenewDays(project) &&
+                    project.licenseTypeName == 'COMMERCIAL'
                   "
                   (click)="
                     renewProductStatus(project); $event.stopPropagation()
@@ -164,7 +182,7 @@
                 </button>
                 <button
                   type="button"
-                  class=" mt-1 roleactive"
+                  class="mt-1 roleactive"
                   *ngIf="hasAuthority('LICENSE_REQUEST_CREATE')"
                   (click)="saveProjectLicenseById(project)"
                 >
@@ -176,7 +194,8 @@
                   type="button"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                    hasRenewDays(project)
+                    hasRenewDays(project) &&
+                    project.licenseTypeName == 'COMMERCIAL'
                   "
                   class="roleactive mb-2"
                   (click)="
@@ -337,14 +356,16 @@
             &times;
           </button>
         </div>
-    
+
         <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
           <div class="modal-body p-3">
             <div class="product_details_popup">
               <label>Product Details:</label>
-              <span>{{ selectedProductCode }}
+              <span
+                >{{ selectedProductCode }}
                 {{ selectedProductFamily }}
-                {{ selectedProductVersion }}</span>
+                {{ selectedProductVersion }}</span
+              >
             </div>
             <div class="form-group mb-0">
               <textarea
@@ -405,14 +426,14 @@
             &times;
           </button>
         </div>
-    
+
         <div class="modal-body overflow-hidden mb-3">
           <div class="product_details_popup text-center">
             <label>Product Details:</label>
             <span>
               {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }}
             </span>
           </div>
           <!-- <div class="coment_list_content">
@@ -513,13 +534,15 @@
             [formGroup]="popUpStartDateForm"
           >
             <div class="modal-body">
-              <div class="form-group" *ngIf="startDateChange == true">
+              <div class="form-group">
                 <label>Start Date</label>
                 <input
                   type="date"
                   class="form-control"
                   formControlName="startDate"
                   name="startDate"
+                  [min]="getToday()"
+                  [readonly]="startDateChange == false"
                 />
                 <span
                   *ngIf="

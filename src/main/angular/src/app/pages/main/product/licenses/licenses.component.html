@@ -1,4 +1,7 @@
 <div class="site_main">
+  <div *ngIf="isloader" class="loader">
+    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+  </div>
   <div class="row">
     <div class="col-12">
       <table>
@@ -61,7 +64,7 @@
         </tbody>
       </table>
     </div>
-    
+
     <div class="col-12">
       <div class="table_header">
         <h4>Renew Configuration</h4>
@@ -80,7 +83,8 @@
             <td>1</td>
             <td *ngIf="isBeforeDaysEdit">{{ showBeforeDays }}</td>
             <td *ngIf="!isBeforeDaysEdit">
-              <input class="tableinput"
+              <input
+                class="tableinput"
                 type="text"
                 name="showBeforeDays"
                 id="showBeforeDays"
@@ -121,8 +125,8 @@
                 (click)="editshowBeforeDays()"
                 class="edit_button top_tooltip"
               >
-              <span>Edit</span>
-              <i class="fa fa-edit"></i>
+                <span>Edit</span>
+                <i class="fa fa-edit"></i>
               </button>
             </td>
             <td *ngIf="!isBeforeDaysEdit">
@@ -147,8 +151,5 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <div *ngIf="isloader" class="loader">
-    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
   </div>
 </div>

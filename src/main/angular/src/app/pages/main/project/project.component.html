@@ -81,6 +81,13 @@
                     </button>
                     <span>Add Product</span>
                   </div>
+                  <button
+                    class="roleactive"
+                    (click)="editProject(project)"
+                    *ngIf="hasAuthority('PROJECT_UPDATE')"
+                  >
+                    Edit Product
+                  </button>
                   <div class="info top_tooltip">
                     <label
                       class="badge custom_badge"
@@ -108,6 +115,13 @@
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
                     Export Licenses
+                  </button>
+                  <button
+                    class="save_btn_tbl"
+                    (click)="createPdfLicense(project)"
+                    *ngIf="hasAuthority('LICENSE_FETCH')"
+                  >
+                    PDF Download
                   </button>
                 </td>
               </tr>
@@ -215,9 +229,9 @@
                         >
                           <td>{{ i + 1 }}</td>
                           <td>
-                            {{ pro.productDetailResponse.productCodeName }}
-                            {{ pro.productDetailResponse.productFamilyName }}
-                            {{ pro.productDetailResponse.versionName }}
+                            {{ pro.productDetail.productCodeName }}
+                            {{ pro.productDetail.productFamilyName }}
+                            {{ pro.productDetail.versionName }}
                           </td>
                           <td>{{ pro.licenseCount }}</td>
                           <!-- <td>{{ pro.licenseTypeName }}</td> -->

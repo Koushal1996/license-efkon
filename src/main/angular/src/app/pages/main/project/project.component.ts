@@ -49,6 +49,9 @@ export class ProjectComponent implements OnInit {
   showBeforeDays: any;
   startDateChange: any;
   sDate: any;
+  renewStartDate: string;
+  totolProductsCount: any;
+  iProductCount: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -115,8 +118,8 @@ export class ProjectComponent implements OnInit {
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     }
-    console.log(convert(d));
-    console.log(currentDate);
+    //console.log(convert(d));
+    //console.log(currentDate);
     if (currentDate >= convert(d)) {
       return true;
     } else {
@@ -130,7 +133,7 @@ export class ProjectComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: [""],
+      startDate: ["", [Validators.required]],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
@@ -148,7 +151,10 @@ export class ProjectComponent implements OnInit {
   createpProject() {
     this.route.navigate(["projects/create"]);
   }
-
+  editProject(project) {
+    this.projectservice.selecetedProject.next(project);
+    this.route.navigate([`projects/${project.id}`]);
+  }
   addProduct(project) {
     this.route.navigate([`projects/${project.id}/product`]);
   }
@@ -185,21 +191,16 @@ export class ProjectComponent implements OnInit {
   }
   getProductsByProjectId(event, project) {
     if ($(event)[0].ariaExpanded == null || $(event).hasClass("collapsed")) {
-      project.productLoader = true;
-      this.projectservice.getProductsByProjectId(project.id).subscribe(
-        (data) => {
-          project.products = data;
-          // let count = 0;
-          // for (var c in project.products) {
-          //   count = count + 1;
-          // }
-          // this.projectProductCount = c;
-          project.productLoader = false;
-        },
-        (error) => {
-          project.productLoader = false;
-        }
-      );
+      // project.productLoader = true;
+      // this.projectservice.getProductsByProjectId(project.id).subscribe(
+      //   (data) => {
+      //     project.products = data;
+      //     project.productLoader = false;
+      //   },
+      //   (error) => {
+      //     project.productLoader = false;
+      //   }
+      // );
     }
   }
   onSubmitComment() {
@@ -378,9 +379,29 @@ export class ProjectComponent implements OnInit {
       return false;
     }
   }
-  renewProductStatus(pro) {
+  renewProductStatus(pro, project) {
+    // console.log(project.productsCount);
+    // this.iProductCount = project.productsCount;
     this.selectedProduct = pro;
+    console.log(this.selectedProduct.endDate);
+    let renewEndDate = this.selectedProduct.endDate;
+    //this.sDate = project.endDate;
+    let renewD = new Date(renewEndDate);
+    renewD.setDate(renewD.getDate() + 1);
+    console.log(renewD);
+    function convert(renewd) {
+      var renewdate = new Date(renewD),
+        mnth = ("0" + (renewdate.getMonth() + 1)).slice(-2),
+        day = ("0" + renewdate.getDate()).slice(-2);
+      return [renewdate.getFullYear(), mnth, day].join("-");
+    }
+    console.log(convert(renewD));
+    this.renewStartDate = convert(renewD);
+    this.popUpStartDateForm.controls["startDate"].patchValue(convert(renewD));
     this.showRenewModal = true;
+  }
+  getToday(): string {
+    return this.renewStartDate;
   }
   hideRenewModel() {
     this.showRenewModal = false;
@@ -401,6 +422,9 @@ export class ProjectComponent implements OnInit {
           this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
           this.showRenewModal = false;
           this.popUpStartDateForm.reset();
+          this.productsCount(this.totolProductsCount);
+          this.getProjects();
+          swal("Product Renewed successfully!");
         },
         (error) => {
           this.popUpStartDateForm.reset();
@@ -408,20 +432,8 @@ export class ProjectComponent implements OnInit {
         }
       );
   }
-  sortAphabetically() {
-    console.log(this.projects);
-    this.projects.sort(function (a, b) {
-      var nameA = a.customerName.toLowerCase(),
-        nameB = b.customerName.toLowerCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      return 0;
-    });
-  }
-  reverseAphabetically() {
-    this.projects.reverse();
-  }
-  viewLicenses(project, event) {
+
+  viewLicenses(project) {
     project.productLoader = true;
     console.log(project.id);
     this.projectservice.getProjectLicenseById(project.id).subscribe(
@@ -439,8 +451,36 @@ export class ProjectComponent implements OnInit {
     );
   }
   productsCount(project) {
+    this.totolProductsCount = project;
     project.licenceActive = false;
     project.ProductActive = true;
+    project.productLoader = true;
+    this.projectservice.getProductsByProjectId(project.id).subscribe(
+      (data) => {
+        // console.log("data.length");
+        // console.log(data.length);
+        this.iProductCount = data.length;
+        project.products = data;
+
+        project.productLoader = false;
+      },
+      (error) => {
+        project.productLoader = false;
+      }
+    );
+  }
+  sortAphabetically() {
+    console.log(this.projects);
+    this.projects.sort(function (a, b) {
+      var nameA = a.customerName.toLowerCase(),
+        nameB = b.customerName.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+  }
+  reverseAphabetically() {
+    this.projects.reverse();
   }
   createExcelLicense(project) {
     // var FileSaver = require("file-saver");
@@ -455,6 +495,16 @@ export class ProjectComponent implements OnInit {
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       //FileSaver.saveAs(blob, data.headers.get("fileName"));
+      FileSaver.saveAs(blob, project.customerName);
+    });
+  }
+  createPdfLicense(project) {
+    this.projectservice.createPdfbyProjectId(project.id).subscribe((data) => {
+      console.log(data);
+      const blob = new Blob([data.body], {
+        // type: "application/pdf;charset=utf-8",
+        type: "  application/pdf;base64",
+      });
       FileSaver.saveAs(blob, project.customerName);
     });
   }

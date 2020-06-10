@@ -1,4 +1,4 @@
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import { AdminService } from "./../../../../services/admin/admin.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProjectService } from "./../../../../services/project/project.service";
@@ -16,12 +16,14 @@ export class CreateProjectComponent implements OnInit {
   projectManager: any[] = [];
   projectcustomers: any[] = [];
   loaderbutton: boolean = false;
+  projectId: any;
 
   constructor(
     private fb: FormBuilder,
     private _projectService: ProjectService,
     private _adminService: AdminService,
-    private route: Router
+    private route: Router,
+    private routeparam: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -29,8 +31,22 @@ export class CreateProjectComponent implements OnInit {
     this.getProjectManagers();
     this.getCustomer();
     this.projectForm = this.initProjectForm();
+    this.routeparam.params.subscribe((params) => {
+      this.projectId = params["id"];
+    });
+    console.log(this.projectId);
+    this.patchavalue();
   }
-
+  patchavalue() {
+    if (this.projectId) {
+      this._projectService.selecetedProject.subscribe((data) => {
+        if (Object.keys(data).length) {
+          console.log(data);
+          this.projectForm.patchValue(data);
+        }
+      });
+    }
+  }
   initProjectForm() {
     return this.fb.group({
       customerName: ["", [Validators.required]],
@@ -70,26 +86,42 @@ export class CreateProjectComponent implements OnInit {
 
   onSubmit() {
     this.loaderbutton = true;
-    this._projectService.addProject(this.projectForm.value).subscribe(
-      (data) => {
-        this.route.navigate(["projects"]);
-        swal("New Project Added successfully!");
-      },
-      (error) => {
-        this.loaderbutton = false;
-      }
-    );
+    if (this.projectId) {
+      this._projectService
+        .updateProject(this.projectId, this.projectForm.value)
+        .subscribe(
+          (data) => {
+            this.route.navigate(["projects"]);
+            swal(" Project Edit successfully!");
+          },
+          (error) => {
+            this.loaderbutton = false;
+          }
+        );
+    } else {
+      this._projectService.addProject(this.projectForm.value).subscribe(
+        (data) => {
+          this.route.navigate(["projects"]);
+          swal("New Project Added successfully!");
+        },
+        (error) => {
+          this.loaderbutton = false;
+        }
+      );
+    }
   }
 
   selectSearchTerm(name) {
-    const customer = this.projectcustomers.find((c) => c.name === name);
-    if (customer) {
-      this.projectForm.patchValue({
-        customerEmail: customer.email,
-        customerContactNo: customer.contactNo,
-      });
-    } else {
-      this.projectForm.reset();
+    if (!this.projectId) {
+      const customer = this.projectcustomers.find((c) => c.name === name);
+      if (customer) {
+        this.projectForm.patchValue({
+          customerEmail: customer.email,
+          customerContactNo: customer.contactNo,
+        });
+      } else {
+        this.projectForm.reset();
+      }
     }
   }
   backCreateProjectForm() {

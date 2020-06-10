@@ -20,7 +20,10 @@ import { CreateFamilyComponent } from "./product/family/create-family/create-fam
 import { SelectedLicensesComponent } from "./project/selected-licenses/selected-licenses.component";
 import { RenewConfigurationComponent } from "./product/renew-configuration/renew-configuration.component";
 import { DeshboardComponent } from "./deshboard/deshboard.component";
-
+import { ViewrequestComponent } from "./viewrequest/viewrequest.component";
+import { AcceptedComponent } from "./viewrequest/accepted/accepted.component";
+import { RejectedComponent } from "./viewrequest/rejected/rejected.component";
+import { PendingComponent } from "./viewrequest/pending/pending.component";
 const routes: Routes = [
   {
     path: "",
@@ -43,6 +46,7 @@ const routes: Routes = [
       { path: "users/:id", component: CreateUserComponent },
       { path: "projects", component: ProjectComponent },
       { path: "projects/create", component: CreateProjectComponent },
+      { path: "projects/:id", component: CreateProjectComponent },
       { path: "projects/:id/product", component: AddProductComponent },
       { path: "projects/:id/licenses", component: SelectedLicensesComponent },
       {
@@ -63,6 +67,15 @@ const routes: Routes = [
             path: "renewconfiguration",
             component: RenewConfigurationComponent,
           },
+        ],
+      },
+      {
+        path: "viewrequest",
+        component: ViewrequestComponent,
+        children: [
+          { path: "accepted", component: AcceptedComponent },
+          { path: "rejected", component: RejectedComponent },
+          { path: "pending", component: PendingComponent },
         ],
       },
       { path: "profile", component: ProfileComponent },

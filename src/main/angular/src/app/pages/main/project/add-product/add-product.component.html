@@ -37,7 +37,12 @@
         <h3 class="m-0">Added Product</h3>
         <div class="added_pct_scl">
           <div *ngIf="selectedProductLoader" class="loader">
-            <img width="100px" class="loader_gif" src="assets/images/loader3.gif" alt="" />
+            <img
+              width="100px"
+              class="loader_gif"
+              src="assets/images/loader3.gif"
+              alt=""
+            />
           </div>
           <h4
             class="nodata"
@@ -59,9 +64,9 @@
             <tr *ngFor="let pro of selectedproducts; index as i">
               <td>{{ i + 1 }}</td>
               <td>
-                {{ pro.productDetailResponse.productCodeName }}
-                {{ pro.productDetailResponse.productFamilyName }}
-                {{ pro.productDetailResponse.versionName }}
+                {{ pro.productDetail.productCodeName }}
+                {{ pro.productDetail.productFamilyName }}
+                {{ pro.productDetail.versionName }}
               </td>
               <td>{{ pro.licenseCount }}</td>
               <td>{{ pro.licenseTypeName }}</td>
