@@ -204,7 +204,7 @@ export class AddProductComponent implements OnInit, OnChanges {
           this.getProductsByProjectId();
           swal({
             text:
-              "New Product details Added successfully, Do you want to add add more products?",
+              "New Product details added successfully, Do you want to add more products?",
             closeOnClickOutside: false,
             buttons: ["Yes", "No"],
             dangerMode: true,

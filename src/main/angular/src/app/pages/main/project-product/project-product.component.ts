@@ -2,7 +2,7 @@ import { StorageService } from "./../../../services/storage/storage.service";
 import { MainService } from "./../../../services/main/main.service";
 import { ProjectService } from "src/app/services/project/project.service";
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
@@ -17,7 +17,7 @@ declare let $: any;
   styleUrls: ["./project-product.component.scss"],
 })
 export class ProjectProductComponent implements OnInit {
-  projectProduct;
+  projectProducts;
   isloader: boolean = true;
   showModal: boolean = false;
   showCommentModal: boolean = false;
@@ -44,13 +44,15 @@ export class ProjectProductComponent implements OnInit {
   renewStartDate: string;
   productCountsStatus: any;
   filterStatusForm: FormGroup;
-  projectProductCopy: any;
+  projectProductsCopy: any;
+  productStatus: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
     private mainService: MainService,
     private route: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activate: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -65,6 +67,11 @@ export class ProjectProductComponent implements OnInit {
     this.getproductCountByStatus();
     this.filterStatusForm = this.fb.group({
       productStatus: [""],
+    });
+
+    this.activate.params.subscribe((params) => {
+      this.productStatus = params["status"];
+      //console.log(this.productStatus);
     });
   }
 
@@ -116,8 +123,9 @@ export class ProjectProductComponent implements OnInit {
   }
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe((data) => {
-      this.projectProduct = data;
-      this.projectProductCopy = data;
+      this.projectProducts = data;
+      this.projectProductsCopy = data;
+      this.filterStatusForm.get("productStatus").patchValue(this.productStatus);
       console.log(data);
       this.isloader = false;
     });
@@ -163,11 +171,11 @@ export class ProjectProductComponent implements OnInit {
         this._projectService.deleteProduct(project.id).subscribe(
           (data) => {
             swal(
-              `${project.productDetail.productCodeName}  ${project.productDetail.productFamilyName} ${project.productDetail.versionName} Delete successfully!`
+              `${project.productDetail.productCodeName}  ${project.productDetail.productFamilyName} ${project.productDetail.versionName} deleted successfully!`
             );
             // this.getProjectProducts();
-            this.projectProduct.splice(
-              this.projectProduct.findIndex((pd) => pd.id == project.id),
+            this.projectProducts.splice(
+              this.projectProducts.findIndex((pd) => pd.id == project.id),
               1
             );
           },
@@ -191,8 +199,8 @@ export class ProjectProductComponent implements OnInit {
     switch (this.commentSubmitButton) {
       case "Submit":
         swal({
-          title: "Are you sure?",
-          text: "You want to Submit this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Submit this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -210,7 +218,7 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Submitted successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Submitted successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
                 );
               });
           }
@@ -218,8 +226,8 @@ export class ProjectProductComponent implements OnInit {
         break;
       case "Reject":
         swal({
-          title: "Are you sure?",
-          text: "You want to Reject this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Reject this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -237,7 +245,7 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Rejected successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Rejected successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
                 );
               });
           }
@@ -245,8 +253,8 @@ export class ProjectProductComponent implements OnInit {
         break;
       case "Review":
         swal({
-          title: "Are you sure?",
-          text: "You want to Review this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Review this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -260,13 +268,12 @@ export class ProjectProductComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
+                console.log(data);
                 this.selectedProduct.status = "REVIEWED";
                 this.selectedProduct.comments = data.comments;
                 // swal("Product Reviewed successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName}
-                    ${this.selectedProduct.productDetailResponse.productFamilyName}
-                    ${this.selectedProduct.productDetailResponse.versionName}) Reviewed successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
                 );
               });
           }
@@ -274,8 +281,8 @@ export class ProjectProductComponent implements OnInit {
         break;
       case "Approved":
         swal({
-          title: "Are you sure?",
-          text: "You want to Approve this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Approve this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -293,7 +300,7 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Approved successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Approved successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
                 );
               });
           }
@@ -310,6 +317,7 @@ export class ProjectProductComponent implements OnInit {
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Submit";
+    this.selectedProduct = project;
   }
   reviewProductStatus(project) {
     this.selectedProductCode = project.productDetail.productCodeName;
@@ -378,7 +386,7 @@ export class ProjectProductComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         license.generatedKey = data.generatedKey;
-        swal("License Key Generated successfully!");
+        swal("License Key generated successfully!");
       });
   }
   updateLicensekey(license) {
@@ -395,7 +403,7 @@ export class ProjectProductComponent implements OnInit {
             license.edit = false;
             console.log(data);
             license.generatedKey = data.generatedKey;
-            swal("License Key Updated successfully!");
+            swal("License Key updated successfully!");
           },
           (error) => {
             license.edit = false;
@@ -458,8 +466,8 @@ export class ProjectProductComponent implements OnInit {
       );
   }
   sortAphabetically() {
-    console.log(this.projectProduct);
-    this.projectProduct.sort(function (a, b) {
+    console.log(this.projectProducts);
+    this.projectProducts.sort(function (a, b) {
       var statusA = a.status.toLowerCase(),
         statusB = b.status.toLowerCase();
       if (statusA < statusB) return -1;
@@ -468,7 +476,7 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   reverseAphabetically() {
-    this.projectProduct.reverse();
+    this.projectProducts.reverse();
   }
   hideRequestModel() {
     this.showRequestModal = false;
@@ -519,19 +527,19 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   getStatus() {
-    this.projectProduct = this.projectProductCopy;
-    console.log(this.filterStatusForm.controls["productStatus"].value);
+    this.projectProducts = this.projectProductsCopy;
+    //console.log(this.filterStatusForm.controls["productStatus"].value);
     let key = this.filterStatusForm.controls["productStatus"].value;
-    if (this.filterStatusForm.get("productStatus").value) {
-      this.projectProduct = this.projectProduct.filter(
-        (item) =>
-          item.status == this.filterStatusForm.get("productStatus").value
+    //console.log("Filter Key : " + this.projectProducts);
+    if (key) {
+      this.projectProducts = this.projectProducts.filter(
+        (item) => item.status == key
       );
     } else {
-      this.projectProduct = this.projectProductCopy;
+      this.projectProducts = this.projectProductsCopy;
     }
     if (key == "All") {
-      this.projectProduct = this.projectProductCopy;
+      this.projectProducts = this.projectProductsCopy;
     }
   }
 }

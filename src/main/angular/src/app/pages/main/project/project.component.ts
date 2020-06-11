@@ -51,7 +51,6 @@ export class ProjectComponent implements OnInit {
   sDate: any;
   renewStartDate: string;
   totolProductsCount: any;
-  iProductCount: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -208,8 +207,8 @@ export class ProjectComponent implements OnInit {
     switch (this.commentSubmitButton) {
       case "Submit":
         swal({
-          title: "Are you sure?",
-          text: "You want to Submit this?",
+          //title: "Are you sure?",
+          text: "Are you sure, You want to Submit this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -227,7 +226,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Submitted successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Submitted successfully!`
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) submitted successfully!`
                 );
               });
           }
@@ -235,8 +234,8 @@ export class ProjectComponent implements OnInit {
         break;
       case "Reject":
         swal({
-          title: "Are you sure?",
-          text: "You want to Reject this?",
+          //title: "Are you sure?",
+          text: "Are you sure, You want to Reject this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -254,7 +253,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Rejected successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Rejected successfully!`
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) rejected successfully!`
                 );
               });
           }
@@ -262,8 +261,8 @@ export class ProjectComponent implements OnInit {
         break;
       case "Review":
         swal({
-          title: "Are you sure?",
-          text: "You want to Review this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Review this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -281,7 +280,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Reviewed successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Reviewed successfully!`
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) reviewed successfully!`
                 );
               });
           }
@@ -289,8 +288,8 @@ export class ProjectComponent implements OnInit {
         break;
       case "Approved":
         swal({
-          title: "Are you sure?",
-          text: "You want to Approve this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Approve this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -308,7 +307,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Approved successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Approved successfully!`
+                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) approved successfully!`
                 );
               });
           }
@@ -381,7 +380,6 @@ export class ProjectComponent implements OnInit {
   }
   renewProductStatus(pro, project) {
     // console.log(project.productsCount);
-    // this.iProductCount = project.productsCount;
     this.selectedProduct = pro;
     console.log(this.selectedProduct.endDate);
     let renewEndDate = this.selectedProduct.endDate;
@@ -457,11 +455,8 @@ export class ProjectComponent implements OnInit {
     project.productLoader = true;
     this.projectservice.getProductsByProjectId(project.id).subscribe(
       (data) => {
-        // console.log("data.length");
-        // console.log(data.length);
-        this.iProductCount = data.length;
+        console.log(data);
         project.products = data;
-
         project.productLoader = false;
       },
       (error) => {

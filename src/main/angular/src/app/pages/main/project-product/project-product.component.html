@@ -51,10 +51,10 @@
         </thead>
 
         <tbody id="accordion">
-          <!-- <div *ngIf="!projectProduct?.length">
+          <!-- <div *ngIf="!projectProducts?.length">
             No products Available Now
           </div> -->
-          <ng-container *ngFor="let project of projectProduct; index as i">
+          <ng-container *ngFor="let project of projectProducts; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
               <td>
@@ -263,7 +263,7 @@
                           <input
                             class="tableinput"
                             type="text"
-                            placeholder="name"
+                            placeholder="Name"
                             name="name"
                             [(ngModel)]="license.name"
                           />

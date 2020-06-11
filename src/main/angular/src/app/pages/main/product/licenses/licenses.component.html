@@ -29,6 +29,7 @@
                 name="Expiry Period Limit"
                 required
                 min="1"
+                onkeypress="return event.charCode >= 48"
                 #maxMonthCount="ngModel"
                 [(ngModel)]="license.maxMonthCount"
               />
@@ -88,6 +89,7 @@
                 type="text"
                 name="showBeforeDays"
                 id="showBeforeDays"
+                onkeypress="return event.charCode >= 48"
                 [(ngModel)]="showBeforeDays"
               />
             </td>

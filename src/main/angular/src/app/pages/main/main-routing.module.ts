@@ -81,6 +81,7 @@ const routes: Routes = [
       { path: "profile", component: ProfileComponent },
       { path: "projectproduct", component: ProjectProductComponent },
       { path: "dashboard", component: DeshboardComponent },
+      { path: "dashboard/:status", component: ProjectProductComponent },
     ],
   },
 ];

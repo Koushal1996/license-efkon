@@ -40,6 +40,11 @@
                       class="field_error"
                       >Name is required</span
                     >
+                    <span
+                      *ngIf="projectForm.get('customerName').errors.pattern"
+                      class="field_error"
+                      >only alphabets are allowed</span
+                    >
                   </span>
                 </div>
               </div>
@@ -64,6 +69,11 @@
                       *ngIf="projectForm.get('customerEmail').errors.required"
                       class="field_error"
                       >Email is required</span
+                    >
+                    <span
+                      *ngIf="projectForm.get('customerEmail').errors.pattern"
+                      class="field_error"
+                      >Enter a valid Email</span
                     >
                   </span>
                 </div>

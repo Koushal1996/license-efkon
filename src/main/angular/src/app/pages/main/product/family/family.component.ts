@@ -47,7 +47,7 @@ export class FamilyComponent implements OnInit {
               this.family.findIndex((pd) => pd.id == family.id),
               1
             );
-            swal("Product family delete successfully!");
+            swal("Product family deleted successfully!");
           });
         $("#" + family.id).removeClass("highlight");
       }

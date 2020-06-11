@@ -89,8 +89,8 @@ export class UserComponent implements OnInit {
 
   activateuser(item) {
     swal({
-      title: "Are you sure?",
-      text: `You want to activate ${item.name}?`,
+      //title: "Are you sure?",
+      text: `Are you sure,You want to activate ${item.name}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],

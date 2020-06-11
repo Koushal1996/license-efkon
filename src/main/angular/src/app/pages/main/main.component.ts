@@ -29,7 +29,7 @@ export class MainComponent implements OnInit {
       privilege: "PROJECT_PRODUCT_FETCH",
     },
     {
-      route: "/viewrequest",
+      route: "/viewrequest/pending",
       title: "View-Request",
       privilege: "LICENSE_REQUEST_FETCH",
     },

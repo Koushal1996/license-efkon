@@ -49,8 +49,17 @@ export class CreateProjectComponent implements OnInit {
   }
   initProjectForm() {
     return this.fb.group({
-      customerName: ["", [Validators.required]],
-      customerEmail: ["", [Validators.required]],
+      customerName: [
+        "",
+        [Validators.required, Validators.pattern("^[a-zA-Z]*$")],
+      ],
+      customerEmail: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("^[a-z0-9._%+-]+@[a-z.-]+\\.[a-z]{2,4}$"),
+        ],
+      ],
       isEmailSend: [""],
       customerContactNo: [
         "",

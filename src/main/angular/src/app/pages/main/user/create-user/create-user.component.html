@@ -37,6 +37,11 @@
                     class="error"
                     >Name is required</span
                   >
+                  <span
+                    *ngIf="createUserForm.get('name').errors.pattern"
+                    class="error"
+                    >only alphabets are allowed</span
+                  >
                 </span>
               </div>
             </div>
@@ -68,6 +73,11 @@
                     *ngIf="createUserForm.get('username').errors.required"
                     class="error"
                     >username is required</span
+                  >
+                  <span
+                    *ngIf="createUserForm.get('username').errors.pattern"
+                    class="error"
+                    >only alphabets are allowed</span
                   >
                 </span>
               </div>
@@ -101,9 +111,9 @@
                     >Email is required</span
                   >
                   <span
-                    *ngIf="createUserForm.get('email').errors.email"
+                    *ngIf="createUserForm.get('email').errors.pattern"
                     class="error"
-                    >Email is not valid</span
+                    >Enter a valid Email</span
                   >
                 </span>
               </div>

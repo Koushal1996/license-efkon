@@ -7,7 +7,7 @@
   </thead>
   <tbody>
     <tr *ngFor="let status of productCounts">
-      <td>{{ status.status }}</td>
+      <td (click)="getStatus(status)">{{ status.status }}</td>
       <td>{{ status.count }}</td>
     </tr>
   </tbody>
