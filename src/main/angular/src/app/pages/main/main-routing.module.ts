@@ -24,6 +24,8 @@ import { ViewrequestComponent } from "./viewrequest/viewrequest.component";
 import { AcceptedComponent } from "./viewrequest/accepted/accepted.component";
 import { RejectedComponent } from "./viewrequest/rejected/rejected.component";
 import { PendingComponent } from "./viewrequest/pending/pending.component";
+import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
+
 const routes: Routes = [
   {
     path: "",
@@ -76,6 +78,7 @@ const routes: Routes = [
           { path: "accepted", component: AcceptedComponent },
           { path: "rejected", component: RejectedComponent },
           { path: "pending", component: PendingComponent },
+          { path: "pending/:id", component: EditProductComponent },
         ],
       },
       { path: "profile", component: ProfileComponent },

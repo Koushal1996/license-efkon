@@ -7,8 +7,12 @@
   </thead>
   <tbody>
     <tr *ngFor="let status of productCounts">
-      <td (click)="getStatus(status)">{{ status.status }}</td>
-      <td>{{ status.count }}</td>
+      <td>{{ status.status }}</td>
+      <td>
+        <label class="badge custom_badge cursor" (click)="getStatus(status)">{{
+          status.count
+        }}</label>
+      </td>
     </tr>
   </tbody>
 </table>

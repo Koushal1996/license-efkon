@@ -308,7 +308,6 @@ export class AddProductComponent implements OnInit, OnChanges {
   }
   getToday(): string {
     console.log(new Date().toISOString().split("T")[0]);
-
     return new Date().toISOString().split("T")[0];
   }
   onStartDate(startDate) {
