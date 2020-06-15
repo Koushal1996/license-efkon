@@ -26,6 +26,6 @@ export class DeshboardComponent implements OnInit {
     console.log(status.status);
     //status.status.toLowerCase();
     //this.statusvalue = status.status.toLowerCase();
-    this.route.navigate(["dashboard", status.status]);
+    this.route.navigate(["dashboard", status.status.toLowerCase()]);
   }
 }

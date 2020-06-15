@@ -1,3 +1,6 @@
+<div *ngIf="isloader" class="loader">
+  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+</div>
 <table>
   <thead>
     <tr>
@@ -15,7 +18,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let product of productPendingRequests; index as i">
+    <tr
+      id="{{ product.id }}"
+      class=""
+      *ngFor="let product of productPendingRequests; index as i"
+    >
       <td>{{ i + 1 }}</td>
       <td>
         {{ product.projectProductResponse.productDetail.productCodeName }}
@@ -66,7 +73,7 @@
             type="button"
             class="close"
             data-dismiss="modal"
-            (click)="hideRejectModel()"
+            (click)="hide(selectedProduct.id)"
           >
             &times;
           </button>

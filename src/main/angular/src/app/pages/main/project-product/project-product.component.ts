@@ -72,6 +72,9 @@ export class ProjectProductComponent implements OnInit {
     this.activate.params.subscribe((params) => {
       this.productStatus = params["status"];
       //console.log(this.productStatus);
+      if (this.productStatus) {
+        this.productStatus = this.productStatus.toUpperCase();
+      }
     });
   }
 
@@ -207,6 +210,7 @@ export class ProjectProductComponent implements OnInit {
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .submitProductStatus(
@@ -220,6 +224,7 @@ export class ProjectProductComponent implements OnInit {
                 swal(
                   `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
@@ -234,6 +239,7 @@ export class ProjectProductComponent implements OnInit {
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .rejectProductStatus(
@@ -247,6 +253,7 @@ export class ProjectProductComponent implements OnInit {
                 swal(
                   `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
@@ -261,6 +268,7 @@ export class ProjectProductComponent implements OnInit {
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .reviewProductStatus(
@@ -275,6 +283,7 @@ export class ProjectProductComponent implements OnInit {
                 swal(
                   `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
@@ -289,6 +298,7 @@ export class ProjectProductComponent implements OnInit {
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .approveProductStatus(
@@ -302,6 +312,7 @@ export class ProjectProductComponent implements OnInit {
                 swal(
                   `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
@@ -309,6 +320,7 @@ export class ProjectProductComponent implements OnInit {
     }
   }
   submitProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     console.log(project);
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
@@ -320,6 +332,7 @@ export class ProjectProductComponent implements OnInit {
     this.selectedProduct = project;
   }
   reviewProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
@@ -329,6 +342,7 @@ export class ProjectProductComponent implements OnInit {
     this.selectedProduct = project;
   }
   approveProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
@@ -338,6 +352,7 @@ export class ProjectProductComponent implements OnInit {
     this.selectedProduct = project;
   }
   rejectProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
@@ -348,8 +363,9 @@ export class ProjectProductComponent implements OnInit {
     this.popUpForm.reset();
   }
 
-  hide() {
+  hide(selectedProduct) {
     this.showModal = false;
+    $("#" + selectedProduct).removeClass("highlight");
   }
 
   hideCommentModel() {

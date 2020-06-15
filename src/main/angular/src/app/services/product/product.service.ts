@@ -69,4 +69,7 @@ export class ProductService {
   updateProductLicenseAccept(Id, data) {
     return this.api.put(`api/project-request/${Id}/accept`, data);
   }
+  viewRequestById(id) {
+    return this.api.get(`api/project-request/${id}`);
+  }
 }

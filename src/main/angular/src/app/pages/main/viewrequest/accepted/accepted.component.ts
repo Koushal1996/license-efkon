@@ -16,6 +16,7 @@ export class AcceptedComponent implements OnInit {
   selectedProductFamily: any;
   selectedProductCode: any;
   userId: any;
+  isloader: boolean = true;
 
   constructor(
     private productservice: ProductService,
@@ -26,6 +27,7 @@ export class AcceptedComponent implements OnInit {
     this.productservice.viewRequestAccepted().subscribe((data) => {
       console.log(data);
       this.productAcceptedRequests = data;
+      this.isloader = false;
     });
     this.mainService.getLoginUser().subscribe((data) => {
       this.userId = data.id;

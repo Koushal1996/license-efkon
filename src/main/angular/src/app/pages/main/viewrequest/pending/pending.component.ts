@@ -10,6 +10,7 @@ import {
 import swal from "sweetalert";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MainService } from "src/app/services/main/main.service";
+declare let $: any;
 
 @Component({
   selector: "app-pending",
@@ -28,6 +29,8 @@ export class PendingComponent implements OnInit {
   selectedProductFamily: any;
   selectedProductCode: any;
   userId: any;
+  isloader: boolean = true;
+  selectedProduct: any;
 
   constructor(
     private productservice: ProductService,
@@ -54,6 +57,7 @@ export class PendingComponent implements OnInit {
     this.productservice.viewRequestPending().subscribe((data) => {
       console.log(data);
       this.productPendingRequests = data;
+      this.isloader = false;
     });
   }
   initpopUpRejectForm() {
@@ -62,6 +66,9 @@ export class PendingComponent implements OnInit {
     });
   }
   updateProductLicenseReject(product) {
+    $("#" + product.id).addClass("highlight");
+
+    this.selectedProduct = product;
     this.selectedRejectProductId = product.id;
     this.showRejectModal = true;
   }
@@ -70,8 +77,9 @@ export class PendingComponent implements OnInit {
     this.route.navigate(["/viewrequest/pending", product.id]);
   }
 
-  hideRejectModel() {
+  hide(selectedProduct) {
     this.showRejectModal = false;
+    $("#" + selectedProduct).removeClass("highlight");
   }
   onSubmitComment() {
     console.log(this.popUpRejectForm.value);
@@ -85,6 +93,7 @@ export class PendingComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + this.selectedProduct.id).removeClass("highlight");
       } else {
         this.productservice
           .updateProductLicenseReject(
@@ -97,6 +106,8 @@ export class PendingComponent implements OnInit {
               swal(
                 "update product license request status to rejected successfully!"
               );
+              $("#" + this.selectedProduct.id).removeClass("highlight");
+
               this.showRejectModal = false;
               this.popUpRejectForm.reset();
               this.viewRequestPending();

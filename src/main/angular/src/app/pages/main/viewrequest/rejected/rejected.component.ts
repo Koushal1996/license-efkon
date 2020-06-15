@@ -16,6 +16,8 @@ export class RejectedComponent implements OnInit {
   selectedProductFamily: any;
   selectedProductCode: any;
   userId: any;
+  isloader: boolean = true;
+
   constructor(
     private productservice: ProductService,
     private mainService: MainService
@@ -25,6 +27,7 @@ export class RejectedComponent implements OnInit {
     this.productservice.viewRequestRejected().subscribe((data) => {
       console.log(data);
       this.productRejectRequests = data;
+      this.isloader = false;
     });
     this.mainService.getLoginUser().subscribe((data) => {
       this.userId = data.id;

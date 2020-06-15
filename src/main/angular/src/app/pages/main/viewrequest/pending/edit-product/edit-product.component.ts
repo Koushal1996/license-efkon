@@ -86,7 +86,7 @@ export class EditProductComponent implements OnInit {
       this._productService.selecetedProductPending.subscribe((data) => {
         //this.productForm.patchValue(data);
         //console.log(data.projectProductResponse.startDate);
-        console.log(data);
+        //console.log(data);
         if (Object.keys(data).length) {
           console.log(data);
           this.productForm.patchValue(data);
@@ -128,22 +128,69 @@ export class EditProductComponent implements OnInit {
           } else {
             this.productForm.controls["expirationPeriodType"].enable();
           }
+        } else {
+          this._productService
+            .viewRequestById(this.productId)
+            .subscribe((data) => {
+              console.log(data);
+              this.productForm.patchValue(data);
+              const productDetaill = this.productDetail.find(
+                (pd) =>
+                  pd.id ==
+                  data.projectProductResponse.productDetail.productFamilyId
+              );
+              if (productDetaill) {
+                this.productForm.patchValue({
+                  productFamily: productDetaill,
+                });
+              }
+              const productCodess = this.productCodes.find(
+                (pc) =>
+                  pc.id ==
+                  data.projectProductResponse.productDetail.productCodeId
+              );
+              if (productCodess) {
+                this.productForm.patchValue({
+                  productCode: productCodess,
+                });
+              }
+              this.productForm.patchValue({
+                startDate: data.projectProductResponse.startDate,
+                EndDate: data.projectProductResponse.endDate,
+                licenseTypeId: data.projectProductResponse.licenseTypeId,
+                expirationPeriodType:
+                  data.projectProductResponse.expirationPeriodType,
+                expirationMonthCount:
+                  data.projectProductResponse.expirationMonthCount,
+              });
+              this.productForm.controls["productDetailId"].patchValue(
+                data.projectProductResponse.productDetailId
+              );
+              this.productForm.controls["projectId"].patchValue(
+                data.projectProductResponse.projectId
+              );
+              if (data.projectProductResponse.licenseTypeName == "DEMO") {
+                this.productForm.controls["expirationPeriodType"].disable();
+              } else {
+                this.productForm.controls["expirationPeriodType"].enable();
+              }
+            });
         }
       });
     }
   }
   getVersions(c) {
-    console.log(c);
+    //console.log(c);
     this.versions = c.versions;
   }
   getLicenseType() {
     this.projectservice.getLicenseType().subscribe((data) => {
       this.licenseType = data;
-      console.log(this.licenseType);
+      //console.log(this.licenseType);
     });
   }
   getToday(): string {
-    console.log(new Date().toISOString().split("T")[0]);
+    //console.log(new Date().toISOString().split("T")[0]);
     return new Date().toISOString().split("T")[0];
   }
   onStartDate(startDate) {
@@ -175,7 +222,7 @@ export class EditProductComponent implements OnInit {
     this.foundlicenseTypeId = this.licenseType.find((item) => {
       return item.id == licenseTypeId;
     });
-    console.log(this.foundlicenseTypeId);
+    //console.log(this.foundlicenseTypeId);
     if (this.foundlicenseTypeId) {
       if (this.foundlicenseTypeId.name == "DEMO") {
         this.productForm.controls["expirationPeriodType"].patchValue("LIMITED");
@@ -225,16 +272,23 @@ export class EditProductComponent implements OnInit {
     }
   }
   onSubmit() {
-    console.log(this.productForm.value);
+    //console.log(this.productForm.value);
+    this.loaderbutton = true;
     this._productService
       .updateProductLicenseAccept(this.productId, this.productForm.value)
-      .subscribe((data) => {
-        console.log(data);
-        swal("update product license request status to accepted successfully!");
-
-        this.route.navigate(["viewrequest/pending"]);
-        this.productForm.reset();
-      });
+      .subscribe(
+        (data) => {
+          console.log(data);
+          swal(
+            "update product license request status to accepted successfully!"
+          );
+          this.route.navigate(["viewrequest/pending"]);
+          this.productForm.reset();
+        },
+        (error) => {
+          this.loaderbutton = false;
+        }
+      );
   }
   close() {
     this.route.navigate(["viewrequest/pending"]);
