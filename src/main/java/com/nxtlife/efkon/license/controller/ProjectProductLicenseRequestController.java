@@ -81,7 +81,7 @@ public class ProjectProductLicenseRequestController {
 	}
 
 	@PutMapping(value = "project-request/{id}", produces = { "application/json" }, consumes = { "application/json" })
-	@Operation(summary = "update product product license request in project ", description = "return project product license request response after updating the license in project product license request", tags = {
+	@Operation(summary = "update project product license request in project ", description = "return project product license request response after updating the license in project product license request", tags = {
 			"Project Product", "Project Product License Request" })
 	@ApiResponses(value = {
 			@ApiResponse(description = "Project Product License Request response after successfully updating license request in Project Product License Request", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
@@ -93,7 +93,7 @@ public class ProjectProductLicenseRequestController {
 	}
 
 	@GetMapping(value = "project-request/{id}", produces = { "application/json" })
-	@Operation(summary = "fetch product product license request detail ", description = "return product product license response", tags = {
+	@Operation(summary = "fetch project product license request detail ", description = "return product product license response", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {
 			@ApiResponse(description = "Project Product License Request response", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
@@ -105,7 +105,7 @@ public class ProjectProductLicenseRequestController {
 	}
 
 	@GetMapping(value = "project-requests", produces = { "application/json" })
-	@Operation(summary = "fetch pending product product license request detail ", description = "return product product license response", tags = {
+	@Operation(summary = "fetch pending project product license request detail ", description = "return product product license response", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {
 			@ApiResponse(description = "Project Product License Request response", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
@@ -117,7 +117,7 @@ public class ProjectProductLicenseRequestController {
 	}
 
 	@DeleteMapping(value = "project-request/{id}", produces = { "application/json" })
-	@Operation(summary = "Delete product product license request detail ", description = "return success response after successfully deleting the product product license request", tags = {
+	@Operation(summary = "Delete project product license request detail ", description = "return success response after successfully deleting the product product license request", tags = {
 			"Project Product License Request", "Project Product" })
 	@ApiResponses(value = {
 			@ApiResponse(description = "product license request successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),

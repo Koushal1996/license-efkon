@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import com.nxtlife.efkon.license.dao.jpa.LicenseTypeJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductCommentJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductLicenseRequestJpaDao;
@@ -55,6 +56,9 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 	@Autowired
 	private ProductDetailJpaDao productDetailJpaDao;
+
+	@Autowired
+	private ProjectJpaDao projectDao;
 
 	@Autowired
 	private ProjectProductCommentJpaDao projectProductCommentJpaDao;
@@ -115,9 +119,14 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		}
 		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
 		response.setProjectProductResponse(projectProductDao.findByIdAndActive(unmask(projectProductId), true));
-		if (response.getProjectProductResponse() != null)
+
+		if (response.getProjectProductResponse() != null) {
 			response.getProjectProductResponse().setProductDetail(productDetailJpaDao
 					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
+			response.getProjectProductResponse().setProject(
+					projectDao.findResponseById(unmask(response.getProjectProductResponse().getProjectId())));
+		}
+
 		response.setComments(
 				projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(response.getId())));
 		return response;
@@ -146,9 +155,14 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		ProjectProductLicenseRequestResponse response = projectProductLicenseRequestDao.findResponseById(unmaskId);
 		response.setProjectProductResponse(
 				projectProductDao.findByIdAndActive(unmask(response.getProjectProductId()), true));
-		if (response.getProjectProductResponse() != null)
+
+		if (response.getProjectProductResponse() != null) {
 			response.getProjectProductResponse().setProductDetail(productDetailJpaDao
 					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
+			response.getProjectProductResponse().setProject(
+					projectDao.findResponseById(unmask(response.getProjectProductResponse().getProjectId())));
+		}
+
 		return response;
 	}
 
@@ -178,9 +192,14 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		if (pplrResponse != null) {
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
-			if (pplrResponse.getProjectProductResponse() != null)
+
+			if (pplrResponse.getProjectProductResponse() != null) {
 				pplrResponse.getProjectProductResponse().setProductDetail(productDetailJpaDao
 						.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProductDetailId())));
+				pplrResponse.getProjectProductResponse().setProject(
+						projectDao.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProjectId())));
+			}
+
 			pplrResponse.setComments(
 					projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(pplrResponse.getId())));
 		} else {
@@ -217,9 +236,12 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			for (ProjectProductLicenseRequestResponse iterate : pplrResponse) {
 				iterate.setProjectProductResponse(
 						projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
-				if (iterate.getProjectProductResponse() != null)
+				if (iterate.getProjectProductResponse() != null) {
 					iterate.getProjectProductResponse().setProductDetail(productDetailJpaDao
 							.findResponseById(unmask(iterate.getProjectProductResponse().getProductDetailId())));
+					iterate.getProjectProductResponse().setProject(
+							projectDao.findResponseById(unmask(iterate.getProjectProductResponse().getProjectId())));
+				}
 				iterate.setComments(
 						projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmask(iterate.getId())));
 			}
@@ -267,12 +289,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration
-	 * month count
+	 * this method used to set end date according to start date and expiration month
+	 * count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater
-	 * than 12 then year will be incremented and month will be add result minus
-	 * 12.
+	 * if addition of month of start date and expiration month count greater than 12
+	 * then year will be incremented and month will be add result minus 12.
 	 *
 	 * @return String
 	 */
@@ -383,6 +404,9 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId, true);
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
+			pplrResponse.getProjectProductResponse().setProject(
+					projectDao.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProjectId())));
+
 			return pplrResponse;
 		} else {
 			throw new NotFoundException(String.format("Project product license Request (%s) not found", id));
@@ -447,6 +471,8 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			if (pplrResponse != null) {
 				pplrResponse.setProjectProductResponse(
 						projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
+				pplrResponse.getProjectProductResponse().setProject(
+						projectDao.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProjectId())));
 				pplrResponse
 						.setComments(projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmaskId));
 			}

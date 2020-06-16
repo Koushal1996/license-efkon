@@ -1,3 +1,4 @@
+import { Router } from "@angular/router";
 import { ProjectService } from "src/app/services/project/project.service";
 import { Component, OnInit } from "@angular/core";
 
@@ -8,7 +9,8 @@ import { Component, OnInit } from "@angular/core";
 })
 export class DeshboardComponent implements OnInit {
   productCounts;
-  constructor(private _projectService: ProjectService) {}
+  statusvalue: any;
+  constructor(private _projectService: ProjectService, private route: Router) {}
 
   ngOnInit() {
     this.getproductCountByStatus();
@@ -18,5 +20,12 @@ export class DeshboardComponent implements OnInit {
       console.log(data);
       this.productCounts = data;
     });
+  }
+  getStatus(status) {
+    //console.log(status);
+    console.log(status.status);
+    //status.status.toLowerCase();
+    //this.statusvalue = status.status.toLowerCase();
+    this.route.navigate(["dashboard", status.status.toLowerCase()]);
   }
 }

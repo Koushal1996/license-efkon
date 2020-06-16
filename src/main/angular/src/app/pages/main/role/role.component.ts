@@ -73,7 +73,7 @@ export class RoleComponent implements OnInit {
         this._adminService.deleteRole(item.id).subscribe(
           (data) => {
             item.active = false;
-            swal(`${item.name} Delete successfully!`);
+            swal(`${item.name} deleted successfully!`);
             $("#" + item.id).removeClass("highlight");
           },
           (error) => {
@@ -85,6 +85,7 @@ export class RoleComponent implements OnInit {
     });
   }
   activaterole(item) {
+    $("#" + item.id).addClass("highlight");
     swal({
       //title: "Are you sure?",
       text: `Are you sure, You want to activate ${item.name}?`,
@@ -94,13 +95,16 @@ export class RoleComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + item.id).removeClass("highlight");
       } else {
         this._adminService.activateRole(item.id).subscribe(
           (data) => {
             item.active = true;
-            swal(`${item.name} Activate successfully!`);
+            swal(`${item.name} activated successfully!`);
+            $("#" + item.id).removeClass("highlight");
           },
           (error) => {
+            $("#" + item.id).removeClass("highlight");
             console.log(error);
           }
         );

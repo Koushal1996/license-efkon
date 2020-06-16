@@ -49,6 +49,8 @@ export class ProjectComponent implements OnInit {
   showBeforeDays: any;
   startDateChange: any;
   sDate: any;
+  renewStartDate: string;
+  totolProductsCount: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -115,8 +117,8 @@ export class ProjectComponent implements OnInit {
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     }
-    console.log(convert(d));
-    console.log(currentDate);
+    //console.log(convert(d));
+    //console.log(currentDate);
     if (currentDate >= convert(d)) {
       return true;
     } else {
@@ -130,7 +132,7 @@ export class ProjectComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: [""],
+      startDate: ["", [Validators.required]],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
@@ -148,7 +150,10 @@ export class ProjectComponent implements OnInit {
   createpProject() {
     this.route.navigate(["projects/create"]);
   }
-
+  editProject(project) {
+    this.projectservice.selecetedProject.next(project);
+    this.route.navigate([`projects/${project.id}`]);
+  }
   addProduct(project) {
     this.route.navigate([`projects/${project.id}/product`]);
   }
@@ -156,7 +161,7 @@ export class ProjectComponent implements OnInit {
     $("#" + pro.id).addClass("highlight");
     swal({
       //title: "You sure?",
-      text: `Are you sure, You want to delete ${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} product?`,
+      text: `Are you sure, You want to delete ${pro.productDetail.productCodeName}  ${pro.productDetail.productFamilyName} ${pro.productDetail.versionName} product?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -168,7 +173,7 @@ export class ProjectComponent implements OnInit {
         this.projectservice.deleteProduct(pro.id).subscribe(
           (data) => {
             swal(
-              `${pro.productDetailResponse.productCodeName}  ${pro.productDetailResponse.productFamilyName} ${pro.productDetailResponse.versionName} Delete successfully!`
+              `${pro.productDetail.productCodeName}  ${pro.productDetail.productFamilyName} ${pro.productDetail.versionName} Delete successfully!`
             );
             this.getProjects();
           },
@@ -185,21 +190,16 @@ export class ProjectComponent implements OnInit {
   }
   getProductsByProjectId(event, project) {
     if ($(event)[0].ariaExpanded == null || $(event).hasClass("collapsed")) {
-      project.productLoader = true;
-      this.projectservice.getProductsByProjectId(project.id).subscribe(
-        (data) => {
-          project.products = data;
-          // let count = 0;
-          // for (var c in project.products) {
-          //   count = count + 1;
-          // }
-          // this.projectProductCount = c;
-          project.productLoader = false;
-        },
-        (error) => {
-          project.productLoader = false;
-        }
-      );
+      // project.productLoader = true;
+      // this.projectservice.getProductsByProjectId(project.id).subscribe(
+      //   (data) => {
+      //     project.products = data;
+      //     project.productLoader = false;
+      //   },
+      //   (error) => {
+      //     project.productLoader = false;
+      //   }
+      // );
     }
   }
   onSubmitComment() {
@@ -207,14 +207,15 @@ export class ProjectComponent implements OnInit {
     switch (this.commentSubmitButton) {
       case "Submit":
         swal({
-          title: "Are you sure?",
-          text: "You want to Submit this?",
+          //title: "Are you sure?",
+          text: "Are you sure, You want to Submit this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this.projectservice
               .submitProductStatus(
@@ -226,22 +227,24 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Submitted successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Submitted successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
         break;
       case "Reject":
         swal({
-          title: "Are you sure?",
-          text: "You want to Reject this?",
+          //title: "Are you sure?",
+          text: "Are you sure, You want to Reject this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this.projectservice
               .rejectProductStatus(
@@ -253,22 +256,24 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Rejected successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Rejected successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
         break;
       case "Review":
         swal({
-          title: "Are you sure?",
-          text: "You want to Review this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Review this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this.projectservice
               .reviewProductStatus(
@@ -280,22 +285,24 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Reviewed successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Reviewed successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
         break;
       case "Approved":
         swal({
-          title: "Are you sure?",
-          text: "You want to Approve this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Approve this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this.projectservice
               .approveProductStatus(
@@ -307,8 +314,9 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Approved successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Approved successfully!`
+                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
                 );
+                $("#" + this.selectedProduct.id).removeClass("highlight");
               });
           }
         });
@@ -316,44 +324,49 @@ export class ProjectComponent implements OnInit {
     }
   }
   submitProductStatus(pro) {
-    this.selectedProductCode = pro.productDetailResponse.productCodeName;
-    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = pro.productDetailResponse.versionName;
+    $("#" + pro.id).addClass("highlight");
+    this.selectedProductCode = pro.productDetail.productCodeName;
+    this.selectedProductFamily = pro.productDetail.productFamilyName;
+    this.selectedProductVersion = pro.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Submit";
     this.selectedProduct = pro;
   }
   reviewProductStatus(pro) {
-    this.selectedProductCode = pro.productDetailResponse.productCodeName;
-    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = pro.productDetailResponse.versionName;
+    $("#" + pro.id).addClass("highlight");
+    this.selectedProductCode = pro.productDetail.productCodeName;
+    this.selectedProductFamily = pro.productDetail.productFamilyName;
+    this.selectedProductVersion = pro.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Review";
     this.selectedProduct = pro;
   }
   approveProductStatus(pro) {
-    this.selectedProductCode = pro.productDetailResponse.productCodeName;
-    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = pro.productDetailResponse.versionName;
+    $("#" + pro.id).addClass("highlight");
+    this.selectedProductCode = pro.productDetail.productCodeName;
+    this.selectedProductFamily = pro.productDetail.productFamilyName;
+    this.selectedProductVersion = pro.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Approved";
     this.selectedProduct = pro;
   }
   rejectProductStatus(pro) {
-    this.selectedProductCode = pro.productDetailResponse.productCodeName;
-    this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = pro.productDetailResponse.versionName;
+    $("#" + pro.id).addClass("highlight");
+    this.selectedProductCode = pro.productDetail.productCodeName;
+    this.selectedProductFamily = pro.productDetail.productFamilyName;
+    this.selectedProductVersion = pro.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.controls["comment"].setValidators(Validators.required);
     this.commentSubmitButton = "Reject";
     this.selectedProduct = pro;
     this.popUpForm.reset();
   }
-  hide() {
+  hide(selectedProduct) {
     this.showModal = false;
+    $("#" + selectedProduct).removeClass("highlight");
   }
   hideCommentModel() {
     this.showCommentModal = false;
@@ -363,9 +376,9 @@ export class ProjectComponent implements OnInit {
     this.comments = pro.comments;
     if (this.comments.length > 0) {
       this.showCommentModal = true;
-      this.selectedProductCode = pro.productDetailResponse.productCodeName;
-      this.selectedProductFamily = pro.productDetailResponse.productFamilyName;
-      this.selectedProductVersion = pro.productDetailResponse.versionName;
+      this.selectedProductCode = pro.productDetail.productCodeName;
+      this.selectedProductFamily = pro.productDetail.productFamilyName;
+      this.selectedProductVersion = pro.productDetail.versionName;
     } else {
       swal("No Comments Found");
     }
@@ -378,12 +391,36 @@ export class ProjectComponent implements OnInit {
       return false;
     }
   }
-  renewProductStatus(pro) {
+  renewProductStatus(pro, project) {
+    $("#" + pro.id).addClass("highlight");
+    // console.log(project.productsCount);
     this.selectedProduct = pro;
+    this.selectedProductCode = pro.productDetail.productCodeName;
+    this.selectedProductFamily = pro.productDetail.productFamilyName;
+    this.selectedProductVersion = pro.productDetail.versionName;
+    console.log(this.selectedProduct.endDate);
+    let renewEndDate = this.selectedProduct.endDate;
+    //this.sDate = project.endDate;
+    let renewD = new Date(renewEndDate);
+    renewD.setDate(renewD.getDate() + 1);
+    console.log(renewD);
+    function convert(renewd) {
+      var renewdate = new Date(renewD),
+        mnth = ("0" + (renewdate.getMonth() + 1)).slice(-2),
+        day = ("0" + renewdate.getDate()).slice(-2);
+      return [renewdate.getFullYear(), mnth, day].join("-");
+    }
+    console.log(convert(renewD));
+    this.renewStartDate = convert(renewD);
+    this.popUpStartDateForm.controls["startDate"].patchValue(convert(renewD));
     this.showRenewModal = true;
   }
-  hideRenewModel() {
+  getToday(): string {
+    return this.renewStartDate;
+  }
+  hideRenewModel(selectedProduct) {
     this.showRenewModal = false;
+    $("#" + selectedProduct).removeClass("highlight");
   }
   onSubmitStartDate() {
     console.log(this.popUpStartDateForm.value);
@@ -401,27 +438,20 @@ export class ProjectComponent implements OnInit {
           this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
           this.showRenewModal = false;
           this.popUpStartDateForm.reset();
+          this.productsCount(this.totolProductsCount);
+          this.getProjects();
+          swal("Product Renewed successfully!");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         },
         (error) => {
           this.popUpStartDateForm.reset();
           this.showRenewModal = false;
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
   }
-  sortAphabetically() {
-    console.log(this.projects);
-    this.projects.sort(function (a, b) {
-      var nameA = a.customerName.toLowerCase(),
-        nameB = b.customerName.toLowerCase();
-      if (nameA < nameB) return -1;
-      if (nameA > nameB) return 1;
-      return 0;
-    });
-  }
-  reverseAphabetically() {
-    this.projects.reverse();
-  }
-  viewLicenses(project, event) {
+
+  viewLicenses(project) {
     project.productLoader = true;
     console.log(project.id);
     this.projectservice.getProjectLicenseById(project.id).subscribe(
@@ -439,8 +469,33 @@ export class ProjectComponent implements OnInit {
     );
   }
   productsCount(project) {
+    this.totolProductsCount = project;
     project.licenceActive = false;
     project.ProductActive = true;
+    project.productLoader = true;
+    this.projectservice.getProductsByProjectId(project.id).subscribe(
+      (data) => {
+        console.log(data);
+        project.products = data;
+        project.productLoader = false;
+      },
+      (error) => {
+        project.productLoader = false;
+      }
+    );
+  }
+  sortAphabetically() {
+    console.log(this.projects);
+    this.projects.sort(function (a, b) {
+      var nameA = a.customerName.toLowerCase(),
+        nameB = b.customerName.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+  }
+  reverseAphabetically() {
+    this.projects.reverse();
   }
   createExcelLicense(project) {
     // var FileSaver = require("file-saver");
@@ -455,6 +510,16 @@ export class ProjectComponent implements OnInit {
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       //FileSaver.saveAs(blob, data.headers.get("fileName"));
+      FileSaver.saveAs(blob, project.customerName);
+    });
+  }
+  createPdfLicense(project) {
+    this.projectservice.createPdfbyProjectId(project.id).subscribe((data) => {
+      console.log(data);
+      const blob = new Blob([data.body], {
+        // type: "application/pdf;charset=utf-8",
+        type: "  application/pdf;base64",
+      });
       FileSaver.saveAs(blob, project.customerName);
     });
   }

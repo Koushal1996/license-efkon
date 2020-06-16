@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-12 p-0">
       <form (ngSubmit)="onSubmit()" [formGroup]="projectForm" class="form_main">
-        <h3>Create Project</h3>
+        <h3>{{ projectId ? "Edit" : "Create" }} Project</h3>
         <div class="input_feild">
           <div class="category_col">
             <div class="row">
@@ -40,6 +40,11 @@
                       class="field_error"
                       >Name is required</span
                     >
+                    <span
+                      *ngIf="projectForm.get('customerName').errors.pattern"
+                      class="field_error"
+                      >only alphabets are allowed</span
+                    >
                   </span>
                 </div>
               </div>
@@ -51,6 +56,7 @@
                     class="form-control"
                     formControlName="customerEmail"
                     name="customerEmail"
+                    [readonly]="projectId"
                   />
                   <span
                     *ngIf="
@@ -63,6 +69,11 @@
                       *ngIf="projectForm.get('customerEmail').errors.required"
                       class="field_error"
                       >Email is required</span
+                    >
+                    <span
+                      *ngIf="projectForm.get('customerEmail').errors.pattern"
+                      class="field_error"
+                      >Enter a valid Email</span
                     >
                   </span>
                 </div>
@@ -126,6 +137,7 @@
                     <option
                       *ngFor="let type of projectTypes"
                       value="{{ type.id }}"
+                      [disabled]="projectId"
                     >
                       {{ type.name }}
                     </option>
@@ -213,10 +225,10 @@
             }"
             [disabled]="!projectForm.valid"
           >
-            Submit
+            {{ projectId ? "Update" : "Submit" }}
           </button>
           <button class="saveBtn mr-3" *ngIf="loaderbutton">
-            Submitting....
+            {{ projectId ? "Updating...." : "Submitting...." }}
           </button>
         </div>
       </form>

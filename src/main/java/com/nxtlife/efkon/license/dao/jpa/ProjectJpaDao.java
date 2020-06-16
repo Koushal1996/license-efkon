@@ -30,11 +30,15 @@ public interface ProjectJpaDao extends JpaRepository<Project, Long> {
 
 	public ProjectResponse findByIdAndActive(Long unmaskProjectId, Boolean active);
 
-	public ProjectResponse findByCustomerContactNoAndActive(String customerContactNo, boolean b);
+	public ProjectResponse findByCustomerContactNoAndActive(String customerContactNo, Boolean active);
 
 	@Modifying
 	@Query(value = "update Project set customerContactNo=?2, isEmailSend=?3, customerName=?4, projectManager.id=?5, modifiedBy.id =?6, modifiedAt =?7 where id =?1")
 	public int update(Long unmaskId, String customerContactNo, Boolean isEmailSend,
 			String customerName, Long projectManagerId, Long userId, Date date);
+
+	public ProjectResponse findByIdAndCustomerEmailAndActive(Long unmaskId, String email, Boolean active);
+
+	public ProjectResponse findByIdAndProjectManagerIdAndActive(Long unmaskId, Long userId, Boolean active);
 
 }

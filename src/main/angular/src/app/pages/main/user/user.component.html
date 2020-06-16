@@ -85,7 +85,7 @@
               <td>{{ item.contactNo }}</td>
               <td>
                 <span
-                  (click)="showRoleAuthoities(role)"
+                  (click)="showRoleAuthoities(role, item)"
                   class="badge-light cursor-pointer"
                   *ngFor="let role of item.roles; index as index"
                 >

@@ -93,11 +93,11 @@ export class AddProductComponent implements OnInit, OnChanges {
           this.productForm.patchValue(data);
           // this.productForm.patchValue({
           //   productFamily: this.productDetail.find(
-          //     (pd) => pd.id == data.productDetailResponse.productFamilyId
+          //     (pd) => pd.id == data.productDetail.productFamilyId
           //   ),
           // });
           const productDetaill = this.productDetail.find(
-            (pd) => pd.id == data.productDetailResponse.productFamilyId
+            (pd) => pd.id == data.productDetail.productFamilyId
           );
           if (productDetaill) {
             this.productForm.patchValue({
@@ -106,11 +106,11 @@ export class AddProductComponent implements OnInit, OnChanges {
           }
           // this.productForm.patchValue({
           //   productCode: this.productCodes.find(
-          //     (pc) => pc.id == data.productDetailResponse.productCodeId
+          //     (pc) => pc.id == data.productDetail.productCodeId
           //   ),
           // });
           const productCodess = this.productCodes.find(
-            (pc) => pc.id == data.productDetailResponse.productCodeId
+            (pc) => pc.id == data.productDetail.productCodeId
           );
           if (productCodess) {
             this.productForm.patchValue({
@@ -129,7 +129,7 @@ export class AddProductComponent implements OnInit, OnChanges {
               //console.log(data);
               this.productForm.patchValue(data);
               const productDetaill = this.productDetail.find(
-                (pd) => pd.id == data.productDetailResponse.productFamilyId
+                (pd) => pd.id == data.productDetail.productFamilyId
               );
               if (productDetaill) {
                 this.productForm.patchValue({
@@ -137,7 +137,7 @@ export class AddProductComponent implements OnInit, OnChanges {
                 });
               }
               const productCodess = this.productCodes.find(
-                (pc) => pc.id == data.productDetailResponse.productCodeId
+                (pc) => pc.id == data.productDetail.productCodeId
               );
               if (productCodess) {
                 this.productForm.patchValue({
@@ -204,7 +204,7 @@ export class AddProductComponent implements OnInit, OnChanges {
           this.getProductsByProjectId();
           swal({
             text:
-              "New Product details Added successfully, Do you want to add add more products?",
+              "New Product details added successfully, Do you want to add more products?",
             closeOnClickOutside: false,
             buttons: ["Yes", "No"],
             dangerMode: true,
@@ -307,7 +307,7 @@ export class AddProductComponent implements OnInit, OnChanges {
     this.productForm.controls["EndDate"].patchValue(convert(d));
   }
   getToday(): string {
-    console.log(new Date().toISOString().split("T")[1]);
+    console.log(new Date().toISOString().split("T")[0]);
     return new Date().toISOString().split("T")[0];
   }
   onStartDate(startDate) {

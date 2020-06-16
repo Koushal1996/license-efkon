@@ -38,6 +38,11 @@
                       class="field_error"
                       >name is required</span
                     >
+                    <span
+                      *ngIf="createRoleForm.get('name').errors.pattern"
+                      class="field_error"
+                      >only alphabets are allowed.</span
+                    >
                   </span>
                 </div>
               </div>

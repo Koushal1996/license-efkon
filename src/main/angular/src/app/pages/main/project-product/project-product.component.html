@@ -1,7 +1,27 @@
+
 <div class="col-12 p-0">
   <div class="site_main">
+    <form [formGroup]="filterStatusForm">
+      <div class="search_bar">
+        <!-- <label>Product Status </label> -->
+        <span class="fa fa-filter" aria-hidden="true"></span>
+ <label>Filter</label>
+        <select
+          class="form-control"
+          name="productStatus"
+          formControlName="productStatus"
+          (ngModelChange)="getStatus($event)"
+        >
+          <option value="" disabled>Select Status</option>
+          <option>All</option>
+          <option *ngFor="let project of productCountsStatus">
+            {{ project.status }}
+          </option>
+        </select>
+      </div>
+    </form>
     <div class="table_scroll">
-      <table>
+      <table class="m-0">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -34,16 +54,16 @@
         </thead>
 
         <tbody id="accordion">
-          <!-- <div *ngIf="!projectProduct?.length">
+          <!-- <div *ngIf="!projectProducts?.length">
             No products Available Now
           </div> -->
-          <ng-container *ngFor="let project of projectProduct; index as i">
+          <ng-container *ngFor="let project of projectProducts; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
               <td>
-                {{ project.productDetailResponse.productCodeName }}
-                {{ project.productDetailResponse.productFamilyName }}
-                {{ project.productDetailResponse.versionName }}
+                {{ project.productDetail.productCodeName }}
+                {{ project.productDetail.productFamilyName }}
+                {{ project.productDetail.versionName }}
               </td>
               <td>
                 {{ project.licenseCount }}
@@ -65,16 +85,16 @@
               <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td>
 
               <td>
-                {{ project.projectResponse.customerName }}
+                {{ project.project.customerName }}
                 <br />
-                ({{ project.projectResponse.customerEmail }})
+                ({{ project.project.customerEmail }})
               </td>
-              <td>{{ project.projectResponse.projectTypeName }}</td>
+              <td>{{ project.project.projectTypeName }}</td>
               <td>
                 {{ project.status }}
                 <br />
                 <a
-                  class="cursor text-danger"
+                  class="comments"
                   *ngIf="project.comments.length"
                   (click)="showComments(project); $event.stopPropagation()"
                   >comments
@@ -97,7 +117,7 @@
                 </a>
                 <button
                   type="button"
-                  class="t_save_btn mt-2"
+                  class="t_save_btn "
                   *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                   (click)="submitProductStatus(project)"
                 >
@@ -107,7 +127,7 @@
               <td *ngIf="project.status == 'SUBMIT'">
                 <button
                   type="button"
-                  class="t_save_btn mb-2"
+                  class="t_save_btn "
                   *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                   (click)="reviewProductStatus(project)"
                 >
@@ -115,7 +135,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger ml-2"
+                  class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                 >
                   Reject
@@ -132,7 +152,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger mt-2"
+                  class="t_save_btn bg-danger "
                   (click)="rejectProductStatus(project)"
                 >
                   Reject
@@ -141,10 +161,11 @@
               <td *ngIf="project.status == 'APPROVED'">
                 <button
                   type="button"
-                  class="roleactive mb-2"
+                  class="roleactive"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                    hasRenewDays(project)
+                    hasRenewDays(project) &&
+                    project.licenseTypeName == 'COMMERCIAL'
                   "
                   (click)="
                     renewProductStatus(project); $event.stopPropagation()
@@ -164,7 +185,7 @@
                 </button>
                 <button
                   type="button"
-                  class=" mt-1 roleactive"
+                  class="mt-1 roleactive"
                   *ngIf="hasAuthority('LICENSE_REQUEST_CREATE')"
                   (click)="saveProjectLicenseById(project)"
                 >
@@ -176,7 +197,8 @@
                   type="button"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                    hasRenewDays(project)
+                    hasRenewDays(project) &&
+                    project.licenseTypeName == 'COMMERCIAL'
                   "
                   class="roleactive mb-2"
                   (click)="
@@ -244,7 +266,7 @@
                           <input
                             class="tableinput"
                             type="text"
-                            placeholder="name"
+                            placeholder="Name"
                             name="name"
                             [(ngModel)]="license.name"
                           />
@@ -332,19 +354,21 @@
             type="button"
             class="close"
             data-dismiss="modal"
-            (click)="hide()"
+            (click)="hide(selectedProduct.id)"
           >
             &times;
           </button>
         </div>
-    
+
         <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
           <div class="modal-body p-3">
             <div class="product_details_popup">
               <label>Product Details:</label>
-              <span>{{ selectedProductCode }}
+              <span
+                >{{ selectedProductCode }}
                 {{ selectedProductFamily }}
-                {{ selectedProductVersion }}</span>
+                {{ selectedProductVersion }}</span
+              >
             </div>
             <div class="form-group mb-0">
               <textarea
@@ -405,14 +429,14 @@
             &times;
           </button>
         </div>
-    
+
         <div class="modal-body overflow-hidden mb-3">
           <div class="product_details_popup text-center">
             <label>Product Details:</label>
             <span>
               {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }}
             </span>
           </div>
           <!-- <div class="coment_list_content">
@@ -497,12 +521,17 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Enter Start Date</h4>
+          <h4 class="modal-title">
+            Renew for
+            {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }}
+          </h4>
           <button
             type="button"
             class="close"
             data-dismiss="modal"
-            (click)="hideRenewModel()"
+            (click)="hideRenewModel(selectedProduct.id)"
           >
             &times;
           </button>
@@ -513,13 +542,15 @@
             [formGroup]="popUpStartDateForm"
           >
             <div class="modal-body">
-              <div class="form-group" *ngIf="startDateChange == true">
+              <div class="form-group">
                 <label>Start Date</label>
                 <input
                   type="date"
                   class="form-control"
                   formControlName="startDate"
                   name="startDate"
+                  [min]="getToday()"
+                  [readonly]="startDateChange == false"
                 />
                 <span
                   *ngIf="
@@ -590,12 +621,17 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Enter License Count</h4>
+          <h4 class="modal-title">
+            License for
+            {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }} Product
+          </h4>
           <button
             type="button"
             class="close"
             data-dismiss="modal"
-            (click)="hideRequestModel()"
+            (click)="hideRequestModel(selectedProduct.id)"
           >
             &times;
           </button>

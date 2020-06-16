@@ -1,4 +1,7 @@
 <div class="site_main">
+  <div *ngIf="isloader" class="loader">
+    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+  </div>
   <div class="row">
     <div class="col-12">
       <table>
@@ -26,6 +29,7 @@
                 name="Expiry Period Limit"
                 required
                 min="1"
+                onkeypress="return event.charCode >= 48"
                 #maxMonthCount="ngModel"
                 [(ngModel)]="license.maxMonthCount"
               />
@@ -61,7 +65,7 @@
         </tbody>
       </table>
     </div>
-    
+
     <div class="col-12">
       <div class="table_header">
         <h4>Renew Configuration</h4>
@@ -80,10 +84,12 @@
             <td>1</td>
             <td *ngIf="isBeforeDaysEdit">{{ showBeforeDays }}</td>
             <td *ngIf="!isBeforeDaysEdit">
-              <input class="tableinput"
+              <input
+                class="tableinput"
                 type="text"
                 name="showBeforeDays"
                 id="showBeforeDays"
+                onkeypress="return event.charCode >= 48"
                 [(ngModel)]="showBeforeDays"
               />
             </td>
@@ -121,8 +127,8 @@
                 (click)="editshowBeforeDays()"
                 class="edit_button top_tooltip"
               >
-              <span>Edit</span>
-              <i class="fa fa-edit"></i>
+                <span>Edit</span>
+                <i class="fa fa-edit"></i>
               </button>
             </td>
             <td *ngIf="!isBeforeDaysEdit">
@@ -147,8 +153,5 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <div *ngIf="isloader" class="loader">
-    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
   </div>
 </div>

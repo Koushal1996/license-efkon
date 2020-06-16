@@ -7,12 +7,16 @@ import { BehaviorSubject } from "rxjs";
 })
 export class ProjectService {
   selecetedProduct: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  selecetedProject: BehaviorSubject<any> = new BehaviorSubject<any>({});
   constructor(private api: ApiService) {}
   getProjects() {
     return this.api.get("api/projects");
   }
   addProject(data) {
     return this.api.post("api/project", data);
+  }
+  updateProject(Id, data) {
+    return this.api.put(`api​/project​/${Id}`, data);
   }
   getProduct() {
     return this.api.get("api/project/product");
@@ -73,6 +77,9 @@ export class ProjectService {
   }
   createExcelbyProjectId(projectId) {
     return this.api.getFile(`api/project/${projectId}/licenses/excel`);
+  }
+  createPdfbyProjectId(projectId) {
+    return this.api.getFile(`api/project/${projectId}/licenses/pdf`);
   }
   productCountByStatus() {
     return this.api.get("api/dashboard/product-status");
