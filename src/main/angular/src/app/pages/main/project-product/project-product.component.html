@@ -1,24 +1,27 @@
-<form [formGroup]="filterStatusForm">
-  <div class="form-group">
-    <!-- <label>Product Status </label> -->
-    <select
-      class="form-control"
-      name="productStatus"
-      formControlName="productStatus"
-      (ngModelChange)="getStatus($event)"
-    >
-      <option value="" disabled>Select Status</option>
-      <option>All</option>
-      <option *ngFor="let project of productCountsStatus">
-        {{ project.status }}
-      </option>
-    </select>
-  </div>
-</form>
+
 <div class="col-12 p-0">
   <div class="site_main">
+    <form [formGroup]="filterStatusForm">
+      <div class="search_bar">
+        <!-- <label>Product Status </label> -->
+        <span class="fa fa-filter" aria-hidden="true"></span>
+ <label>Filter</label>
+        <select
+          class="form-control"
+          name="productStatus"
+          formControlName="productStatus"
+          (ngModelChange)="getStatus($event)"
+        >
+          <option value="" disabled>Select Status</option>
+          <option>All</option>
+          <option *ngFor="let project of productCountsStatus">
+            {{ project.status }}
+          </option>
+        </select>
+      </div>
+    </form>
     <div class="table_scroll">
-      <table>
+      <table class="m-0">
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -91,7 +94,7 @@
                 {{ project.status }}
                 <br />
                 <a
-                  class="cursor text-danger"
+                  class="comments"
                   *ngIf="project.comments.length"
                   (click)="showComments(project); $event.stopPropagation()"
                   >comments
@@ -114,7 +117,7 @@
                 </a>
                 <button
                   type="button"
-                  class="t_save_btn mt-2"
+                  class="t_save_btn "
                   *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                   (click)="submitProductStatus(project)"
                 >
@@ -124,7 +127,7 @@
               <td *ngIf="project.status == 'SUBMIT'">
                 <button
                   type="button"
-                  class="t_save_btn mb-2"
+                  class="t_save_btn "
                   *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                   (click)="reviewProductStatus(project)"
                 >
@@ -132,7 +135,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger ml-2"
+                  class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                 >
                   Reject
@@ -149,7 +152,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger mt-2"
+                  class="t_save_btn bg-danger "
                   (click)="rejectProductStatus(project)"
                 >
                   Reject
@@ -158,7 +161,7 @@
               <td *ngIf="project.status == 'APPROVED'">
                 <button
                   type="button"
-                  class="roleactive mb-2"
+                  class="roleactive"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
                     hasRenewDays(project) &&

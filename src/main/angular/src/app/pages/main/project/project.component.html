@@ -87,7 +87,8 @@
                     (click)="editProject(project)"
                     *ngIf="hasAuthority('PROJECT_UPDATE')"
                   >
-                    Edit Project
+                  <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
+                  Edit Project
                   </button>
                   <div class="info top_tooltip">
                     <label
@@ -109,7 +110,7 @@
                     [attr.data-target]="'#collapse' + i"
                     #c
                     (click)="viewLicenses(project)"
-                    class="info_btn_tbl mr-1 ml-1"
+                    class="info_btn_tbl"
                   >
                     View Licenses
                   </button>
@@ -121,11 +122,12 @@
                     Export Licenses
                   </button>
                   <button
-                    class="save_btn_tbl"
+                    class="save_btn_tbl bg-secondary"
                     (click)="createPdfLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                    PDF Download
+                  <i class="fa fa-download" aria-hidden="true"></i>
+                  PDF Download
                   </button>
                 </td>
               </tr>
@@ -255,7 +257,7 @@
                             {{ pro.status }}
                             <br />
                             <a
-                              class="comemt_link"
+                              class="comments"
                               *ngIf="pro.comments.length"
                               (click)="showComments(pro)"
                               >comments
@@ -300,7 +302,7 @@
                           </td>
                           <td *ngIf="pro.status == 'SUBMIT'">
                             <button
-                              class="t_save_btn mr-2"
+                              class="t_save_btn"
                               type="button"
                               *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                               (click)="reviewProductStatus(pro)"
