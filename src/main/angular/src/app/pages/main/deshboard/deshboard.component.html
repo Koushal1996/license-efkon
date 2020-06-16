@@ -1,4 +1,4 @@
-<table>
+<!-- <table>
   <thead>
     <tr>
       <th scope="col">status</th>
@@ -15,4 +15,28 @@
       </td>
     </tr>
   </tbody>
-</table>
+</table> -->
+
+<div class="row">
+  <div class="header_bottom">
+    <div class="header_title">
+        <h3>DASHBOARD</h3>
+    </div>
+</div> 
+</div>
+<div class="dashboard">
+<div class="row">
+  <div *ngFor="let status of productCounts" class="col-4 mb-4"> 
+    <div class="col-main" (click)="getStatus(status)">
+      <div class="text_content">
+        <h4>{{ status.count }}</h4>
+        <h3>{{ status.status }}</h3>
+      </div>
+   <div class="icon">
+     <!-- <img src="assets/images/approped.svg" alt=""> -->
+     <i class="fa fa-tags" aria-hidden="true"></i>
+   </div>
+    </div>
+  </div>
+</div>
+</div>
