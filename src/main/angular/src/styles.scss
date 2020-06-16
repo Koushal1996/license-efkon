@@ -617,18 +617,18 @@ table {
   .modal-dialog{
   max-width: 600px;
   .modal-header {
-    padding: 14px 15px;
+    padding: 11px 15px;
     background: #29aba4;
     margin-bottom: 12px;
     h4 {
-      font-size: 17px;
+      font-size: 15px;
       font-weight: bold;
-      color: white;
+      color: white; 
   }
   .close {
     padding: 1rem 1rem;
     margin: -1rem -1rem -1rem auto;
-    font-size: 33px;
+    font-size: 23px;
     line-height: 0;
     position: relative;
     top: 10px;
@@ -723,10 +723,10 @@ table {
 
 // btn css
 .saveBtn {
-    line-height: 26px;
-    padding: 5px 23px;
+    line-height: normal;
+    padding:8px 23px 9px 23px;
     letter-spacing: .4px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 3px;
     background: #304c5f;
     color: white;
@@ -739,10 +739,10 @@ table {
     }
 }
 .cancelBtn{
-  line-height: 26px;
-  padding: 5px 23px;
+  line-height: normal;
+  padding:8px 23px 9px 23px;
   letter-spacing: .4px;
-  font-size: 14px;
+  font-size: 13px;
   border-radius: 3px;
   background: #dc3545;
   color: white;
@@ -754,10 +754,10 @@ table {
   }
 }
 .addlBtn{
-  line-height: 26px;
-  padding: 5px 23px;
+  line-height: normal;
+  padding:8px 23px 9px 23px;
   letter-spacing: .4px;
-  font-size: 14px;
+  font-size: 13px;
   border-radius: 3px;
   background: #17a2b8;
   color: white;
