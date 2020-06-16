@@ -47,7 +47,7 @@ public interface ProjectProductLicenseRequestJpaDao extends JpaRepository<Projec
 	public Integer findLicenseCountById(Long unmaskId);
 
 	public List<ProjectProductLicenseRequestResponse> findByStatusAndProjectProductProjectCustomerEmailAndActive(
-			LicenseRequestStatus pending, Long id, Boolean active);
+			LicenseRequestStatus status, String email, Boolean active);
 
 	public List<ProjectProductLicenseRequestResponse> findByStatusAndProjectProductProjectProjectManagerIdAndActive(
 			LicenseRequestStatus pending, Long userId, boolean b);
