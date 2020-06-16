@@ -129,4 +129,6 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 			+ "group by (case when projectProduct.endDate >=curdate() then 'active' else 'expired' end)")
 	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenseCountByProjectManagerId(Long userId);
 
+	public Long countByProjectIdAndActive(Long unmaskId, boolean b);
+
 }

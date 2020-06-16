@@ -17,6 +17,7 @@ import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProjectService;
 import com.nxtlife.efkon.license.view.project.ProjectRequest;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductLicenseRequestResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -66,7 +67,17 @@ public class ProjectController {
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch projects ", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectResponse> findAll() {
 		return projectService.findAll();
+	}
 
+	@GetMapping(value = "project/{id}", produces = { "application/json" })
+	@Operation(summary = "fetch project detail", description = "return project response", tags = { "Project" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Project response", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to fetch Project details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If Project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If required field are not filled properly or project doesn't exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public ProjectResponse findById(@PathVariable Long id) {
+		return projectService.findById(id);
 	}
 
 }

@@ -206,4 +206,32 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		return projects;
 	}
 
+	@Override
+	@Secured(AuthorityUtils.PROJECT_FETCH)
+	public ProjectResponse findById(Long id) {
+		User user = getUser();
+		Long unmaskId = unmask(id);
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		ProjectResponse response;
+		Long projectProductCount;
+		if (roles.contains("Customer")) {
+			response = projectDao.findByIdAndCustomerEmailAndActive(unmaskId, user.getEmail(), true);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				response = projectDao.findByIdAndProjectManagerIdAndActive(unmaskId, user.getUserId(), true);
+			} else {
+				response = projectDao.findByIdAndActive(unmaskId, true);
+			}
+		}
+
+		projectProductCount = projectProductDao.countByProjectIdAndActive(unmaskId, true);
+		response.setProductsCount(projectProductCount);
+		return response;
+	}
+
 }
