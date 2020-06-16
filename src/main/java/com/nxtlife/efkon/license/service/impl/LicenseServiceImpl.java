@@ -103,17 +103,17 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			for (LicenseResponse iterate : licenseResponseList) {
 				List<String> columnValues = iterate.columnValues();
 				columnValues
-						.add(iterate.getProjectProduct().getProductDetail().getProductCodeName() == null
+						.add(iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName() == null
 								? "NA"
-								: iterate.getProjectProduct().getProductDetail().getProductCodeName());
+								: iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName());
 				columnValues.add(
-						iterate.getProjectProduct().getProductDetail().getProductFamilyName() == null
+						iterate.getProjectProductResponse().getProductDetailResponse().getProductFamilyName() == null
 								? "NA"
-								: iterate.getProjectProduct().getProductDetail()
+								: iterate.getProjectProductResponse().getProductDetailResponse()
 										.getProductFamilyName());
 				columnValues.add(
-						iterate.getProjectProduct().getProductDetail().getVersionName() == null ? "NA"
-								: iterate.getProjectProduct().getProductDetail().getVersionName());
+						iterate.getProjectProductResponse().getProductDetailResponse().getVersionName() == null ? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse().getVersionName());
 				columnValues.add(iterate.getName() == null ? "NA" : iterate.getName());
 				WorkBookUtil.createRow(sheet, columnValues, row++);
 			}
@@ -150,17 +150,17 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			for (LicenseResponse iterate : licenseResponseList) {
 				List<String> columnValues = iterate.columnValues();
 				columnValues
-						.add(iterate.getProjectProduct().getProductDetail().getProductCodeName() == null
+						.add(iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName() == null
 								? "NA"
-								: iterate.getProjectProduct().getProductDetail().getProductCodeName());
+								: iterate.getProjectProductResponse().getProductDetailResponse().getProductCodeName());
 				columnValues.add(
-						iterate.getProjectProduct().getProductDetail().getProductFamilyName() == null
+						iterate.getProjectProductResponse().getProductDetailResponse().getProductFamilyName() == null
 								? "NA"
-								: iterate.getProjectProduct().getProductDetail()
+								: iterate.getProjectProductResponse().getProductDetailResponse()
 										.getProductFamilyName());
 				columnValues.add(
-						iterate.getProjectProduct().getProductDetail().getVersionName() == null ? "NA"
-								: iterate.getProjectProduct().getProductDetail().getVersionName());
+						iterate.getProjectProductResponse().getProductDetailResponse().getVersionName() == null ? "NA"
+								: iterate.getProjectProductResponse().getProductDetailResponse().getVersionName());
 				columnValues.add(iterate.getName() == null ? "NA" : iterate.getName());
 				PdfTableUtil.addTableRows(pdfTable, columnValues);
 			}
@@ -219,7 +219,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 
 		if (response != null) {
-			response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
+			response.setProjectProductResponse(projectProductService.findById(response.getProjectProductId()));
 		} else {
 			throw new NotFoundException(String.format("License didn't exist having id [%s]", id));
 		}
@@ -234,10 +234,10 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			throw new NotFoundException("no license found");
 		}
 		for (LicenseResponse iterate : responseList) {
-			iterate.setProjectProduct(
+			iterate.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
-			iterate.getProjectProduct().setProductDetail(productDetailDao
-					.findByIdAndActive(unmask(iterate.getProjectProduct().getProductDetailId()), true));
+			iterate.getProjectProductResponse().setProductDetailResponse(productDetailDao
+					.findByIdAndActive(unmask(iterate.getProjectProductResponse().getProductDetailId()), true));
 		}
 
 		return responseList;
@@ -283,7 +283,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			logger.info(" License {} updated successfully", unmaskId);
 		}
 		LicenseResponse response = licenseDao.findResponseByIdAndActive(unmaskId, true);
-		response.setProjectProduct(projectProductDao.findResponseById(unmask(response.getProjectProductId())));
+		response.setProjectProductResponse(projectProductDao.findResponseById(unmask(response.getProjectProductId())));
 		return response;
 	}
 
@@ -318,10 +318,10 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 
 		for (LicenseResponse iterate1 : responseList) {
-			iterate1.setProjectProduct(
+			iterate1.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(iterate1.getProjectProductId()), true));
-			iterate1.getProjectProduct().setProductDetail(productDetailDao
-					.findByIdAndActive(unmask(iterate1.getProjectProduct().getProductDetailId()), true));
+			iterate1.getProjectProductResponse().setProductDetailResponse(productDetailDao
+					.findByIdAndActive(unmask(iterate1.getProjectProductResponse().getProductDetailId()), true));
 		}
 		return responseList;
 	}
@@ -379,7 +379,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				request.getAccessId().concat(license.getCode()).concat(UUID.randomUUID().toString()), request.getName(),
 				LicenseStatus.ACTIVE, unmask(license.getProjectProductId())));
 		LicenseResponse response = licenseDao.findResponseByIdAndActive(newLicense.getId(), true);
-		response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
+		response.setProjectProductResponse(projectProductService.findById(response.getProjectProductId()));
 		return response;
 	}
 
@@ -419,10 +419,10 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 		for (LicenseResponse iterate : responseList) {
 
-			iterate.setProjectProduct(
+			iterate.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
-			iterate.getProjectProduct().setProductDetail(productDetailDao
-					.findByIdAndActive(unmask(iterate.getProjectProduct().getProductDetailId()), true));
+			iterate.getProjectProductResponse().setProductDetailResponse(productDetailDao
+					.findByIdAndActive(unmask(iterate.getProjectProductResponse().getProductDetailId()), true));
 
 		}
 

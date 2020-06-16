@@ -35,4 +35,12 @@ public interface ProjectService {
 	 */
 	public ProjectResponse update(Long id, ProjectRequest request);
 
+	/**
+	 * this method is used to fetch project details by project id
+	 * 
+	 * @param id
+	 * @return {@link ProjectResponse}
+	 */
+	public ProjectResponse findById(Long id);
+
 }

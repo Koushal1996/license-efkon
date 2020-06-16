@@ -78,7 +78,7 @@ public class LicenseController {
 	@Operation(summary = "Find all licenses and create excel", description = "return a excel file of licenses", tags = {
 			"License" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "License excel file successfully created", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "200", description = "License excel file successfully created", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch license", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public void findAllLicensesExcel(HttpServletResponse response) throws IOException {
 		Resource resource = licenseService.findAllExcel();
@@ -90,7 +90,7 @@ public class LicenseController {
 	@Operation(summary = "Find all licenses and create pdf", description = "return a pdf file of licenses", tags = {
 			"License" })
 	@ApiResponses(value = {
-			@ApiResponse(description = "pdf file of license", responseCode = "200", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(description = "pdf file of license", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
 			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public void findAllLicensesPdf(HttpServletResponse response) throws IOException {
