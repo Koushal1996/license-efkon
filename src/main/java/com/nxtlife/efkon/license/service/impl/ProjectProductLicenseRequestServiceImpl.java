@@ -119,10 +119,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		}
 		ProjectProductLicenseRequestResponse response = ProjectProductLicenseRequestResponse.get(pplRequest);
 		response.setProjectProductResponse(projectProductDao.findByIdAndActive(unmask(projectProductId), true));
+
 		if (response.getProjectProductResponse() != null) {
-			response.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+			response.getProjectProductResponse().setProductDetail(productDetailJpaDao
 					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
-			response.getProjectProductResponse().setProjectResponse(
+			response.getProjectProductResponse().setProject(
 					projectDao.findResponseById(unmask(response.getProjectProductResponse().getProjectId())));
 		}
 
@@ -132,7 +133,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	@Override
-//	@Secured(AuthorityUtils.LICENSE_REQUEST_UPDATE)
+	@Secured(AuthorityUtils.LICENSE_REQUEST_UPDATE)
 	public ProjectProductLicenseRequestResponse update(Long id, ProjectProductLicenseRequestRequest request) {
 		Long unmaskId = unmask(id);
 		ProjectProductLicenseRequestResponse pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId,
@@ -154,10 +155,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		ProjectProductLicenseRequestResponse response = projectProductLicenseRequestDao.findResponseById(unmaskId);
 		response.setProjectProductResponse(
 				projectProductDao.findByIdAndActive(unmask(response.getProjectProductId()), true));
+
 		if (response.getProjectProductResponse() != null) {
-			response.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+			response.getProjectProductResponse().setProductDetail(productDetailJpaDao
 					.findResponseById(unmask(response.getProjectProductResponse().getProductDetailId())));
-			response.getProjectProductResponse().setProjectResponse(
+			response.getProjectProductResponse().setProject(
 					projectDao.findResponseById(unmask(response.getProjectProductResponse().getProjectId())));
 		}
 
@@ -165,7 +167,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	@Override
-//	@Secured(AuthorityUtils.LICENSE_REQUEST_FETCH)
+	@Secured(AuthorityUtils.LICENSE_REQUEST_FETCH)
 	public ProjectProductLicenseRequestResponse findById(Long id) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
@@ -190,10 +192,11 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		if (pplrResponse != null) {
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
+
 			if (pplrResponse.getProjectProductResponse() != null) {
-				pplrResponse.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+				pplrResponse.getProjectProductResponse().setProductDetail(productDetailJpaDao
 						.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProductDetailId())));
-				pplrResponse.getProjectProductResponse().setProjectResponse(
+				pplrResponse.getProjectProductResponse().setProject(
 						projectDao.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProjectId())));
 			}
 
@@ -207,7 +210,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	@Override
-//	@Secured(AuthorityUtils.LICENSE_REQUEST_FETCH)
+	@Secured(AuthorityUtils.LICENSE_REQUEST_FETCH)
 	public List<ProjectProductLicenseRequestResponse> findByStatus(LicenseRequestStatus status) {
 		User user = getUser();
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
@@ -234,9 +237,9 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 				iterate.setProjectProductResponse(
 						projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
 				if (iterate.getProjectProductResponse() != null) {
-					iterate.getProjectProductResponse().setProductDetailResponse(productDetailJpaDao
+					iterate.getProjectProductResponse().setProductDetail(productDetailJpaDao
 							.findResponseById(unmask(iterate.getProjectProductResponse().getProductDetailId())));
-					iterate.getProjectProductResponse().setProjectResponse(
+					iterate.getProjectProductResponse().setProject(
 							projectDao.findResponseById(unmask(iterate.getProjectProductResponse().getProjectId())));
 				}
 				iterate.setComments(
@@ -248,7 +251,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	@Override
-//	@Secured(AuthorityUtils.LICENSE_REQUEST_DELETE)
+	@Secured(AuthorityUtils.LICENSE_REQUEST_DELETE)
 	public SuccessResponse delete(Long id) {
 		Long unmaskId = unmask(id);
 		ProjectProductLicenseRequestResponse pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId,
@@ -313,7 +316,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	@Override
-//	@Secured(AuthorityUtils.LICENSE_REQUEST_ACCEPT)
+	@Secured(AuthorityUtils.LICENSE_REQUEST_ACCEPT)
 	public ProjectProductLicenseRequestResponse accept(Long id, LicenseRequestStatus status,
 			ProjectProductRequest request) {
 		User user = getUser();
@@ -401,7 +404,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId, true);
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
-			pplrResponse.getProjectProductResponse().setProjectResponse(
+			pplrResponse.getProjectProductResponse().setProject(
 					projectDao.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProjectId())));
 
 			return pplrResponse;
@@ -412,7 +415,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 	}
 
 	@Override
-//	@Secured(AuthorityUtils.LICENSE_REQUEST_REJECT)
+	@Secured(AuthorityUtils.LICENSE_REQUEST_REJECT)
 	public ProjectProductLicenseRequestResponse reject(Long id, LicenseRequestStatus status, String comment) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
@@ -468,7 +471,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			if (pplrResponse != null) {
 				pplrResponse.setProjectProductResponse(
 						projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));
-				pplrResponse.getProjectProductResponse().setProjectResponse(
+				pplrResponse.getProjectProductResponse().setProject(
 						projectDao.findResponseById(unmask(pplrResponse.getProjectProductResponse().getProjectId())));
 				pplrResponse
 						.setComments(projectProductRequestCommentDao.findByProjectProductLicenseRequestId(unmaskId));

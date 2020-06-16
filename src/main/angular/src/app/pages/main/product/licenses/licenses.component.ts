@@ -55,7 +55,7 @@ export class LicensesComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log(data);
-          swal("Expiry Period Limit Updated Successfully");
+          swal("Expiry Period Limit updated successfully!");
           license.edit = false;
         },
         (error) => {}

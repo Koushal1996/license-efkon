@@ -2,7 +2,7 @@ import { StorageService } from "./../../../services/storage/storage.service";
 import { MainService } from "./../../../services/main/main.service";
 import { ProjectService } from "src/app/services/project/project.service";
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
@@ -17,7 +17,7 @@ declare let $: any;
   styleUrls: ["./project-product.component.scss"],
 })
 export class ProjectProductComponent implements OnInit {
-  projectProduct;
+  projectProducts;
   isloader: boolean = true;
   showModal: boolean = false;
   showCommentModal: boolean = false;
@@ -41,12 +41,18 @@ export class ProjectProductComponent implements OnInit {
   sDate: any;
   startDateChange: any;
   selectedRequestProjectId: any;
+  renewStartDate: string;
+  productCountsStatus: any;
+  filterStatusForm: FormGroup;
+  projectProductsCopy: any;
+  productStatus: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
     private mainService: MainService,
     private route: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private activate: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -58,6 +64,18 @@ export class ProjectProductComponent implements OnInit {
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
     this.popUpRequestForm = this.initpopUpRequestForm();
+    this.getproductCountByStatus();
+    this.filterStatusForm = this.fb.group({
+      productStatus: [""],
+    });
+
+    this.activate.params.subscribe((params) => {
+      this.productStatus = params["status"];
+      //console.log(this.productStatus);
+      if (this.productStatus) {
+        this.productStatus = this.productStatus.toUpperCase();
+      }
+    });
   }
 
   getrenewConfiguration() {
@@ -108,7 +126,9 @@ export class ProjectProductComponent implements OnInit {
   }
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe((data) => {
-      this.projectProduct = data;
+      this.projectProducts = data;
+      this.projectProductsCopy = data;
+      this.filterStatusForm.get("productStatus").patchValue(this.productStatus);
       console.log(data);
       this.isloader = false;
     });
@@ -127,7 +147,7 @@ export class ProjectProductComponent implements OnInit {
   }
   initpopUpStartDateForm() {
     return this.fb.group({
-      startDate: [""],
+      startDate: ["", [Validators.required]],
       expirationMonthCount: ["", [Validators.min(1), Validators.required]],
     });
   }
@@ -142,7 +162,7 @@ export class ProjectProductComponent implements OnInit {
     swal({
       //title: "You sure?",
       // text: "You want to go ahead with deletion?",
-      text: `Are you sure, You want to delete ${project.productDetailResponse.productCodeName}  ${project.productDetailResponse.productFamilyName} ${project.productDetailResponse.versionName} Product`,
+      text: `Are you sure, You want to delete ${project.productDetail.productCodeName}  ${project.productDetail.productFamilyName} ${project.productDetail.versionName} Product`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -154,11 +174,11 @@ export class ProjectProductComponent implements OnInit {
         this._projectService.deleteProduct(project.id).subscribe(
           (data) => {
             swal(
-              `${project.productDetailResponse.productCodeName}  ${project.productDetailResponse.productFamilyName} ${project.productDetailResponse.versionName} Delete successfully!`
+              `${project.productDetail.productCodeName}  ${project.productDetail.productFamilyName} ${project.productDetail.versionName} deleted successfully!`
             );
             // this.getProjectProducts();
-            this.projectProduct.splice(
-              this.projectProduct.findIndex((pd) => pd.id == project.id),
+            this.projectProducts.splice(
+              this.projectProducts.findIndex((pd) => pd.id == project.id),
               1
             );
           },
@@ -182,152 +202,180 @@ export class ProjectProductComponent implements OnInit {
     switch (this.commentSubmitButton) {
       case "Submit":
         swal({
-          title: "Are you sure?",
-          text: "You want to Submit this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Submit this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .submitProductStatus(
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = "SUBMIT";
-                this.selectedProduct.comments = data.comments;
-                //swal("Product Submitted successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Submitted successfully!`
-                );
-              });
+              .subscribe(
+                (data) => {
+                  this.selectedProduct.status = "SUBMIT";
+                  this.selectedProduct.comments = data.comments;
+                  //swal("Product Submitted successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
       case "Reject":
         swal({
-          title: "Are you sure?",
-          text: "You want to Reject this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Reject this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .rejectProductStatus(
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = data.status;
-                this.selectedProduct.comments = data.comments;
-                //swal("Product Rejected successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Rejected successfully!`
-                );
-              });
+              .subscribe(
+                (data) => {
+                  this.selectedProduct.status = data.status;
+                  this.selectedProduct.comments = data.comments;
+                  //swal("Product Rejected successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
       case "Review":
         swal({
-          title: "Are you sure?",
-          text: "You want to Review this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Review this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .reviewProductStatus(
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = "REVIEWED";
-                this.selectedProduct.comments = data.comments;
-                // swal("Product Reviewed successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName}
-                    ${this.selectedProduct.productDetailResponse.productFamilyName}
-                    ${this.selectedProduct.productDetailResponse.versionName}) Reviewed successfully!`
-                );
-              });
+              .subscribe(
+                (data) => {
+                  console.log(data);
+                  this.selectedProduct.status = "REVIEWED";
+                  this.selectedProduct.comments = data.comments;
+                  // swal("Product Reviewed successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
       case "Approved":
         swal({
-          title: "Are you sure?",
-          text: "You want to Approve this?",
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Approve this?",
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
           dangerMode: true,
         }).then((willDelete) => {
           if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
           } else {
             this._projectService
               .approveProductStatus(
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = "APPROVED";
-                this.selectedProduct.comments = data.comments;
-                //swal("Product Approved successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetailResponse.productCodeName} ${this.selectedProduct.productDetailResponse.productFamilyName} ${this.selectedProduct.productDetailResponse.versionName}) Approved successfully!`
-                );
-              });
+              .subscribe(
+                (data) => {
+                  this.selectedProduct.status = "APPROVED";
+                  this.selectedProduct.comments = data.comments;
+                  //swal("Product Approved successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
     }
   }
   submitProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     console.log(project);
-    this.selectedProductCode = project.productDetailResponse.productCodeName;
-    this.selectedProductFamily =
-      project.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = project.productDetailResponse.versionName;
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
     console.log(this.selectedProductStatus);
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Submit";
+    this.selectedProduct = project;
   }
   reviewProductStatus(project) {
-    this.selectedProductCode = project.productDetailResponse.productCodeName;
-    this.selectedProductFamily =
-      project.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = project.productDetailResponse.versionName;
+    $("#" + project.id).addClass("highlight");
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Review";
     this.selectedProduct = project;
   }
   approveProductStatus(project) {
-    this.selectedProductCode = project.productDetailResponse.productCodeName;
-    this.selectedProductFamily =
-      project.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = project.productDetailResponse.versionName;
+    $("#" + project.id).addClass("highlight");
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Approved";
     this.selectedProduct = project;
   }
   rejectProductStatus(project) {
-    this.selectedProductCode = project.productDetailResponse.productCodeName;
-    this.selectedProductFamily =
-      project.productDetailResponse.productFamilyName;
-    this.selectedProductVersion = project.productDetailResponse.versionName;
+    $("#" + project.id).addClass("highlight");
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.controls["comment"].setValidators(Validators.required);
     this.commentSubmitButton = "Reject";
@@ -335,20 +383,21 @@ export class ProjectProductComponent implements OnInit {
     this.popUpForm.reset();
   }
 
-  hide() {
+  hide(selectedProduct) {
     this.showModal = false;
+    $("#" + selectedProduct).removeClass("highlight");
   }
 
   hideCommentModel() {
     this.showCommentModal = false;
   }
   showComments(project) {
+    console.log(project.comments);
     this.comments = project.comments;
     if (this.comments.length > 0) {
-      this.selectedProductCode = project.productDetailResponse.productCodeName;
-      this.selectedProductFamily =
-        project.productDetailResponse.productFamilyName;
-      this.selectedProductVersion = project.productDetailResponse.versionName;
+      this.selectedProductCode = project.productDetail.productCodeName;
+      this.selectedProductFamily = project.productDetail.productFamilyName;
+      this.selectedProductVersion = project.productDetail.versionName;
       this.showCommentModal = true;
     } else {
       swal("No Comment Found");
@@ -373,7 +422,7 @@ export class ProjectProductComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         license.generatedKey = data.generatedKey;
-        swal("License Key Generated successfully!");
+        swal("License Key generated successfully!");
       });
   }
   updateLicensekey(license) {
@@ -390,7 +439,7 @@ export class ProjectProductComponent implements OnInit {
             license.edit = false;
             console.log(data);
             license.generatedKey = data.generatedKey;
-            swal("License Key Updated successfully!");
+            swal("License Key updated successfully!");
           },
           (error) => {
             license.edit = false;
@@ -402,11 +451,35 @@ export class ProjectProductComponent implements OnInit {
     license.edit = true;
   }
   renewProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     this.selectedProduct = project;
+    console.log(this.selectedProduct);
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
+    console.log(this.selectedProduct.endDate);
+    let renewEndDate = this.selectedProduct.endDate;
+    //this.sDate = project.endDate;
+    let renewD = new Date(renewEndDate);
+    renewD.setDate(renewD.getDate() + 1);
+    console.log(renewD);
+    function convert(renewd) {
+      var renewdate = new Date(renewD),
+        mnth = ("0" + (renewdate.getMonth() + 1)).slice(-2),
+        day = ("0" + renewdate.getDate()).slice(-2);
+      return [renewdate.getFullYear(), mnth, day].join("-");
+    }
+    console.log(convert(renewD));
+    this.renewStartDate = convert(renewD);
+    this.popUpStartDateForm.controls["startDate"].patchValue(convert(renewD));
     this.showRenewModal = true;
   }
-  hideRenewModel() {
+  hideRenewModel(selectedProduct) {
+    $("#" + selectedProduct).removeClass("highlight");
     this.showRenewModal = false;
+  }
+  getToday(): string {
+    return this.renewStartDate;
   }
   onSubmitStartDate() {
     console.log(this.popUpStartDateForm.value);
@@ -425,17 +498,19 @@ export class ProjectProductComponent implements OnInit {
           this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
           this.showRenewModal = false;
           this.popUpStartDateForm.reset();
-          swal("Project Product Renew Successfully!");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
+          swal("Project Product Renewed Successfully!");
         },
         (error) => {
           this.popUpStartDateForm.reset();
           this.showRenewModal = false;
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
   }
   sortAphabetically() {
-    console.log(this.projectProduct);
-    this.projectProduct.sort(function (a, b) {
+    console.log(this.projectProducts);
+    this.projectProducts.sort(function (a, b) {
       var statusA = a.status.toLowerCase(),
         statusB = b.status.toLowerCase();
       if (statusA < statusB) return -1;
@@ -444,12 +519,14 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   reverseAphabetically() {
-    this.projectProduct.reverse();
+    this.projectProducts.reverse();
   }
-  hideRequestModel() {
+  hideRequestModel(selectedProduct) {
+    $("#" + selectedProduct).removeClass("highlight");
     this.showRequestModal = false;
   }
   onSubmitRequest() {
+    //$("#" + this.selectedProduct).removeClass("highlight");
     console.log(this.popUpRequestForm.value);
     this._projectService
       .saveProjectLicenseById(
@@ -462,30 +539,48 @@ export class ProjectProductComponent implements OnInit {
           swal("save product license request in project successfully!");
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
+          //$("#" + this.selectedProduct).removeClass("highlight");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         },
         (error) => {
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
+          //$("#" + this.selectedProduct).removeClass("highlight");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
   }
   saveProjectLicenseById(project) {
+    $("#" + project.id).addClass("highlight");
     console.log(project.id);
     this.selectedRequestProjectId = project.id;
     this.showRequestModal = true;
-    const object = {
-      licenseCount: project.licenseCount,
-      comment: project.comments,
-    };
-
-    // if (object) {
-    //   this._projectService.saveProjectLicenseById(project.id, object).subscribe(
-    //     (data) => {
-    //       console.log(data);
-    //       swal("Configuration Update successfully!");
-    //     },
-    //     (error) => {}
-    //   );
-    // }
+    this.selectedProduct = project;
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
+    console.log(this.selectedProduct);
+  }
+  getproductCountByStatus() {
+    this._projectService.productCountByStatus().subscribe((data) => {
+      console.log(data);
+      this.productCountsStatus = data;
+    });
+  }
+  getStatus() {
+    this.projectProducts = this.projectProductsCopy;
+    //console.log(this.filterStatusForm.controls["productStatus"].value);
+    let key = this.filterStatusForm.controls["productStatus"].value;
+    //console.log("Filter Key : " + this.projectProducts);
+    if (key) {
+      this.projectProducts = this.projectProducts.filter(
+        (item) => item.status == key
+      );
+    } else {
+      this.projectProducts = this.projectProductsCopy;
+    }
+    if (key == "All") {
+      this.projectProducts = this.projectProductsCopy;
+    }
   }
 }

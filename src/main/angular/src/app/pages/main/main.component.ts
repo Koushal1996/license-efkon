@@ -28,6 +28,11 @@ export class MainComponent implements OnInit {
       title: "Project-Products",
       privilege: "PROJECT_PRODUCT_FETCH",
     },
+    {
+      route: "/viewrequest/pending",
+      title: "View-Request",
+      privilege: "LICENSE_REQUEST_FETCH",
+    },
     { route: "/roles", title: "Roles", privilege: "ROLE_FETCH" },
     { route: "/users", title: "Users", privilege: "USER_FETCH" },
   ];
@@ -72,8 +77,7 @@ export class MainComponent implements OnInit {
 
   logout() {
     swal({
-      title: "Are you sure?",
-      text: "Are you sure that you want to logout?",
+      text: "Are you sure, You want to logout?",
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],

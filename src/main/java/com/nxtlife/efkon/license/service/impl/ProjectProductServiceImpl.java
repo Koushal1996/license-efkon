@@ -185,9 +185,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	private ProjectProductResponse getProjectProductResponse(ProjectProduct projectProduct, Long projectId,
 			Long productDetailId) {
 		ProjectProductResponse response = ProjectProductResponse.get(projectProduct);
-		response.setProjectResponse(projectDao.findResponseById(projectId));
+		response.setProject(projectDao.findResponseById(projectId));
 		ProductDetailResponse productDetailResponse = productDetailDao.findResponseById(productDetailId);
-		response.setProductDetailResponse(productDetailResponse);
+		response.setProductDetail(productDetailResponse);
 		return response;
 	}
 
@@ -288,10 +288,10 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			logger.info("Project product {} updated successfully", unmaskId);
 		}
 		ProjectProductResponse projectProductResponse = projectProductDao.findResponseById(unmaskId);
-		projectProductResponse.setProductDetailResponse(
+		projectProductResponse.setProductDetail(
 				productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 		projectProductResponse
-				.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+				.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 		return projectProductResponse;
 	}
 
@@ -321,9 +321,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						&& !projectProduct.getCreatedById().equals(getUserId())))
 				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
-			projectProduct.setProductDetailResponse(
+			projectProduct.setProductDetail(
 					productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
-			projectProduct.setProjectResponse(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
+			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
 			projectProduct
 					.setLicenses(licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()), true));
@@ -377,9 +377,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						&& !projectProduct.getCreatedById().equals(getUserId())))
 				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
-			projectProduct.setProductDetailResponse(
+			projectProduct.setProductDetail(
 					productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
-			projectProduct.setProjectResponse(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
+			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
 		});
 		return projectProductResponseList;
@@ -427,10 +427,10 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			}
 		}
 		if (projectProductResponse != null) {
-			projectProductResponse.setProductDetailResponse(
+			projectProductResponse.setProductDetail(
 					productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 			projectProductResponse
-					.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+					.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 			projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
 		} else {
 			throw new NotFoundException(String.format("Project product (%s) not found", id));
@@ -491,19 +491,19 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			}
 			ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
 			if (projectProductResponse != null) {
-				projectProductResponse.setProductDetailResponse(
+				projectProductResponse.setProductDetail(
 						productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 				projectProductResponse
-						.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+						.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 				if (status.equals(ProjectProductStatus.APPROVED) && rows > 0) {
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
 						licenseDao.save(new License(
 								String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
-										projectProductResponse.getProjectResponse().getCustomerCode(),
-										projectProductResponse.getProductDetailResponse().getProductFamilyCode(),
-										projectProductResponse.getProductDetailResponse().getProductCodeCode(),
+										projectProductResponse.getProject().getCustomerCode(),
+										projectProductResponse.getProductDetail().getProductFamilyCode(),
+										projectProductResponse.getProductDetail().getProductCodeCode(),
 										getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (i + 1),
 										projectProductResponse.getExpirationMonthCount() == null ? 0
 												: projectProductResponse.getExpirationMonthCount(),
@@ -600,10 +600,10 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					ProjectProductStatus.RENEWED.name(), renewedProjectProduct.getId()));
 			ProjectProductResponse projectProductResponse = projectProductDao
 					.findResponseById(renewedProjectProduct.getId());
-			projectProductResponse.setProductDetailResponse(
+			projectProductResponse.setProductDetail(
 					productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 			projectProductResponse
-					.setProjectResponse(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+					.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 			logger.info("Project product {} renewed successfully", unmaskId);
 			projectProductResponse
 					.setComments(projectProductCommentDao.findByProjectProductId(renewedProjectProduct.getId()));

@@ -22,6 +22,11 @@ import { LicensesComponent } from './product/licenses/licenses.component';
 import { SelectedLicensesComponent } from './project/selected-licenses/selected-licenses.component';
 import { RenewConfigurationComponent } from './product/renew-configuration/renew-configuration.component';
 import { DeshboardComponent } from './deshboard/deshboard.component';
+import { ViewrequestComponent } from './viewrequest/viewrequest.component';
+import { AcceptedComponent } from './viewrequest/accepted/accepted.component';
+import { RejectedComponent } from './viewrequest/rejected/rejected.component';
+import { PendingComponent } from './viewrequest/pending/pending.component';
+import { EditProductComponent } from './viewrequest/pending/edit-product/edit-product.component';
 
 
 @NgModule({
@@ -32,7 +37,7 @@ import { DeshboardComponent } from './deshboard/deshboard.component';
     NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [MainComponent, UserComponent,
-     CreateUserComponent, RoleComponent, CreateRoleComponent, ProjectComponent, CreateProjectComponent, ProductComponent, VersionComponent, FamilyComponent, DetailComponent, AddProductComponent, ProfileComponent, ProjectProductComponent, CreateFamilyComponent, LicensesComponent, SelectedLicensesComponent, RenewConfigurationComponent, DeshboardComponent,
+     CreateUserComponent, RoleComponent, CreateRoleComponent, ProjectComponent, CreateProjectComponent, ProductComponent, VersionComponent, FamilyComponent, DetailComponent, AddProductComponent, ProfileComponent, ProjectProductComponent, CreateFamilyComponent, LicensesComponent, SelectedLicensesComponent, RenewConfigurationComponent, DeshboardComponent, ViewrequestComponent, AcceptedComponent, RejectedComponent, PendingComponent, EditProductComponent,
      ]
 })
 export class MainModule { }

@@ -1,0 +1,37 @@
+<div class="container-fluid p-0">
+  <div class="tab_main">
+    <ul role="tablist">
+      <li class="nav-item" *ngIf="hasAuthority('LICENSE_REQUEST_FETCH')">
+        <a
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="pending"
+          data-toggle="tab"
+          >PENDING</a
+        >
+      </li>
+      <li class="nav-item" *ngIf="hasAuthority('LICENSE_REQUEST_FETCH')">
+        <a
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="accepted"
+          data-toggle="tab"
+          >ACCEPTED</a
+        >
+      </li>
+      <li class="nav-item" *ngIf="hasAuthority('LICENSE_REQUEST_FETCH')">
+        <a
+          class="nav-link"
+          routerLinkActive="active"
+          routerLink="rejected"
+          data-toggle="tab"
+          >REJECTED</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="tab-content">
+  <router-outlet></router-outlet>
+</div>

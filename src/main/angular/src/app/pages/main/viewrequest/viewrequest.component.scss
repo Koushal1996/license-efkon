@@ -1,0 +1,24 @@
+.tab_main {
+  width: 100%;
+  display: inline-block;
+  background: #364150;
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    li {
+      display: inline-block;
+      a {
+        color: #b4bcc8;
+        text-transform: uppercase;
+        font-size: 14px;
+        &.active {
+          background: #29aba4;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+
