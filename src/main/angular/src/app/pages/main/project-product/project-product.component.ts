@@ -217,15 +217,20 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = "SUBMIT";
-                this.selectedProduct.comments = data.comments;
-                //swal("Product Submitted successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
-                );
-                $("#" + this.selectedProduct.id).removeClass("highlight");
-              });
+              .subscribe(
+                (data) => {
+                  this.selectedProduct.status = "SUBMIT";
+                  this.selectedProduct.comments = data.comments;
+                  //swal("Product Submitted successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
@@ -246,15 +251,20 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = data.status;
-                this.selectedProduct.comments = data.comments;
-                //swal("Product Rejected successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
-                );
-                $("#" + this.selectedProduct.id).removeClass("highlight");
-              });
+              .subscribe(
+                (data) => {
+                  this.selectedProduct.status = data.status;
+                  this.selectedProduct.comments = data.comments;
+                  //swal("Product Rejected successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
@@ -275,16 +285,21 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                console.log(data);
-                this.selectedProduct.status = "REVIEWED";
-                this.selectedProduct.comments = data.comments;
-                // swal("Product Reviewed successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
-                );
-                $("#" + this.selectedProduct.id).removeClass("highlight");
-              });
+              .subscribe(
+                (data) => {
+                  console.log(data);
+                  this.selectedProduct.status = "REVIEWED";
+                  this.selectedProduct.comments = data.comments;
+                  // swal("Product Reviewed successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
@@ -305,15 +320,20 @@ export class ProjectProductComponent implements OnInit {
                 this.selectedProduct.id,
                 this.popUpForm.value
               )
-              .subscribe((data) => {
-                this.selectedProduct.status = "APPROVED";
-                this.selectedProduct.comments = data.comments;
-                //swal("Product Approved successfully!");
-                swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
-                );
-                $("#" + this.selectedProduct.id).removeClass("highlight");
-              });
+              .subscribe(
+                (data) => {
+                  this.selectedProduct.status = "APPROVED";
+                  this.selectedProduct.comments = data.comments;
+                  //swal("Product Approved successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
           }
         });
         break;
@@ -431,8 +451,12 @@ export class ProjectProductComponent implements OnInit {
     license.edit = true;
   }
   renewProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
     this.selectedProduct = project;
     console.log(this.selectedProduct);
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
     console.log(this.selectedProduct.endDate);
     let renewEndDate = this.selectedProduct.endDate;
     //this.sDate = project.endDate;
@@ -450,7 +474,8 @@ export class ProjectProductComponent implements OnInit {
     this.popUpStartDateForm.controls["startDate"].patchValue(convert(renewD));
     this.showRenewModal = true;
   }
-  hideRenewModel() {
+  hideRenewModel(selectedProduct) {
+    $("#" + selectedProduct).removeClass("highlight");
     this.showRenewModal = false;
   }
   getToday(): string {
@@ -473,11 +498,13 @@ export class ProjectProductComponent implements OnInit {
           this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
           this.showRenewModal = false;
           this.popUpStartDateForm.reset();
+          $("#" + this.selectedProduct.id).removeClass("highlight");
           swal("Project Product Renewed Successfully!");
         },
         (error) => {
           this.popUpStartDateForm.reset();
           this.showRenewModal = false;
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
   }
@@ -494,10 +521,12 @@ export class ProjectProductComponent implements OnInit {
   reverseAphabetically() {
     this.projectProducts.reverse();
   }
-  hideRequestModel() {
+  hideRequestModel(selectedProduct) {
+    $("#" + selectedProduct).removeClass("highlight");
     this.showRequestModal = false;
   }
   onSubmitRequest() {
+    //$("#" + this.selectedProduct).removeClass("highlight");
     console.log(this.popUpRequestForm.value);
     this._projectService
       .saveProjectLicenseById(
@@ -510,31 +539,27 @@ export class ProjectProductComponent implements OnInit {
           swal("save product license request in project successfully!");
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
+          //$("#" + this.selectedProduct).removeClass("highlight");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         },
         (error) => {
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
+          //$("#" + this.selectedProduct).removeClass("highlight");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
   }
   saveProjectLicenseById(project) {
+    $("#" + project.id).addClass("highlight");
     console.log(project.id);
     this.selectedRequestProjectId = project.id;
     this.showRequestModal = true;
-    const object = {
-      licenseCount: project.licenseCount,
-      comment: project.comments,
-    };
-
-    // if (object) {
-    //   this._projectService.saveProjectLicenseById(project.id, object).subscribe(
-    //     (data) => {
-    //       console.log(data);
-    //       swal("Configuration Update successfully!");
-    //     },
-    //     (error) => {}
-    //   );
-    // }
+    this.selectedProduct = project;
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
+    console.log(this.selectedProduct);
   }
   getproductCountByStatus() {
     this._projectService.productCountByStatus().subscribe((data) => {

@@ -392,8 +392,12 @@ export class ProjectComponent implements OnInit {
     }
   }
   renewProductStatus(pro, project) {
+    $("#" + pro.id).addClass("highlight");
     // console.log(project.productsCount);
     this.selectedProduct = pro;
+    this.selectedProductCode = pro.productDetail.productCodeName;
+    this.selectedProductFamily = pro.productDetail.productFamilyName;
+    this.selectedProductVersion = pro.productDetail.versionName;
     console.log(this.selectedProduct.endDate);
     let renewEndDate = this.selectedProduct.endDate;
     //this.sDate = project.endDate;
@@ -414,8 +418,9 @@ export class ProjectComponent implements OnInit {
   getToday(): string {
     return this.renewStartDate;
   }
-  hideRenewModel() {
+  hideRenewModel(selectedProduct) {
     this.showRenewModal = false;
+    $("#" + selectedProduct).removeClass("highlight");
   }
   onSubmitStartDate() {
     console.log(this.popUpStartDateForm.value);
@@ -436,10 +441,12 @@ export class ProjectComponent implements OnInit {
           this.productsCount(this.totolProductsCount);
           this.getProjects();
           swal("Product Renewed successfully!");
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         },
         (error) => {
           this.popUpStartDateForm.reset();
           this.showRenewModal = false;
+          $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
   }

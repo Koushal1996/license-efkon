@@ -558,12 +558,15 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Enter Start Date</h4>
+        <h4 class="modal-title">Renew for
+          {{ selectedProductCode }}
+          {{ selectedProductFamily }}
+          {{ selectedProductVersion }}</h4>
         <button
           type="button"
           class="close"
           data-dismiss="modal"
-          (click)="hideRenewModel()"
+          (click)="hideRenewModel(selectedProduct.id)"
         >
           &times;
         </button>
