@@ -22,6 +22,8 @@ export class EditProductComponent implements OnInit {
   todayDate: string;
   sDate: any;
   expirationMonthNo: any;
+  selectedProductDetail: any;
+  projects: any;
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -39,6 +41,7 @@ export class EditProductComponent implements OnInit {
       this.productId = params["id"];
     });
     this.patchaValue();
+    // this.getProjects();
   }
 
   initProductForm() {
@@ -293,4 +296,17 @@ export class EditProductComponent implements OnInit {
   close() {
     this.route.navigate(["viewrequest/pending"]);
   }
+  // getProjects() {
+  //   this.projectservice.getProjects().subscribe(
+  //     (data) => {
+  //       console.log(data);
+  //       this.projects = data;
+  //       this.selectedProductDetail = this.projects.find(
+  //         (item) => item.id == this.productId
+  //       );
+  //       console.log(this.selectedProductDetail);
+  //     },
+  //     (error) => {}
+  //   );
+  // }
 }
