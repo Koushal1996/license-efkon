@@ -1,3 +1,61 @@
 .cursor {
   cursor: pointer;
 }
+.col-main {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 25px 15px;
+  width: 100%;
+  float: left; 
+  box-shadow: 0 0 4px #c5c5c5;
+  .text_content {
+    width: calc(100% - 100px);
+    display: inline-block;
+    h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #364150;
+  }
+  h4 {
+    color: #29aba4;
+    font-size: 30px;
+    font-weight: bold;
+}
+}
+.icon {
+  width: 100px;
+  float: right;
+  margin-top: 15px;
+    text-align: right;
+  img {
+    width: 60%;
+}
+i {
+  font-size: 50px;
+  color: #29aba4;
+}
+}
+}
+
+
+.header_bottom {
+  background: #fff;
+  padding: 5px 15px;
+  box-shadow: 0px 2px 2px #e4e4e4;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 15px;
+  margin-top: -15px;
+
+  .header_title {
+      display: inline-block;
+      width: auto;
+      h3 {
+          font-size: 19px;
+          padding: 5px 0;
+          margin: 0;
+          color: #3f586a;
+          display: inline-block;
+      }
+  }
+}

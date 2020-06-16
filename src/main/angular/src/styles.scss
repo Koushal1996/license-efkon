@@ -201,6 +201,7 @@ h2.text-center {
   letter-spacing: 1px;
   padding: 3px 8px;
   font-size: 11px;
+  margin: 2px;
   // border: 1px solid #29aba4;
   &:hover{
     background: #2b3643;
@@ -216,12 +217,15 @@ h2.text-center {
   letter-spacing: 1px;
   padding: 3px 8px;
   font-size: 11px;
+  margin: 2px;
   // border: 1px solid #29aba4;
   &:hover{
     background: #449d44;
   }
 }
-
+.t_save_btn{
+  margin: 2px;
+}
 .info_btn_tbl{
   color: #ffffff;
   background: #117a8b;
@@ -232,6 +236,7 @@ h2.text-center {
   letter-spacing: 1px;
   padding: 3px 8px;
   font-size: 11px;
+  margin: 2px;
   // border: 1px solid #29aba4;
   &:hover{
     background: #0f5964;
