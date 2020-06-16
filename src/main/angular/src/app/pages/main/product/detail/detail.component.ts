@@ -154,6 +154,11 @@ export class DetailComponent implements OnInit {
     this.productVersion = code.versions;
   }
   deleteProductDetail(detail, code, productDetailId) {
+    // console.log(code.versions);
+    // const Selectedversion = code.versions.find((item) => {
+    //   return item.version ;
+    // });
+    // console.log(Selectedversion);
     $("#" + productDetailId).addClass("highlight");
     swal({
       text: `Are you sure, You want to delete ${detail.name} ${code.name}?`,

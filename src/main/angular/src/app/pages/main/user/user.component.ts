@@ -18,6 +18,7 @@ export class UserComponent implements OnInit {
   usersCopy: any[] = [];
   showModal: boolean = false;
   selectedAuthorites: any;
+  itemId: any;
 
   constructor(
     private _admin: AdminService,
@@ -88,6 +89,7 @@ export class UserComponent implements OnInit {
   }
 
   activateuser(item) {
+    $("#" + item.id).addClass("highlight");
     swal({
       //title: "Are you sure?",
       text: `Are you sure,You want to activate ${item.name}?`,
@@ -97,13 +99,17 @@ export class UserComponent implements OnInit {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
+        $("#" + item.id).removeClass("highlight");
       } else {
         this._admin.activateUser(item.id).subscribe(
           (data) => {
             item.active = true;
             swal(`${item.name} Activate successfully!`);
+            $("#" + item.id).removeClass("highlight");
           },
-          (error) => {}
+          (error) => {
+            $("#" + item.id).removeClass("highlight");
+          }
         );
       }
     });
@@ -149,13 +155,17 @@ export class UserComponent implements OnInit {
   reverseUserNameAphabetically() {
     this.users.reverse();
   }
-  showRoleAuthoities(role) {
-    console.log(role.id);
+  showRoleAuthoities(role, item) {
+    $("#" + item.id).addClass("highlight");
+    console.log(item.id);
+    this.itemId = item.id;
     console.log(role.authorities);
     this.selectedAuthorites = role.authorities;
     this.showModal = true;
   }
   hideModel() {
+    console.log(this.itemId);
+    $("#" + this.itemId).removeClass("highlight");
     this.showModal = false;
     console.log("hide");
     console.log(this.showModal);

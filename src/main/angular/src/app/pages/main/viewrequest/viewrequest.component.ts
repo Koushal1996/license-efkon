@@ -1,6 +1,7 @@
 import { ProductService } from "./../../../services/product/product.service";
 import { Component, OnInit } from "@angular/core";
 import { StorageService } from "src/app/services/storage/storage.service";
+declare let $: any;
 
 @Component({
   selector: "app-viewrequest",
@@ -26,5 +27,8 @@ export class ViewrequestComponent implements OnInit {
       .getData("userAuthorities")
       .map((a) => a.name);
     return authorities.includes(authority);
+  }
+  activeParentTab() {
+    $("#View-Request").addClass("active");
   }
 }

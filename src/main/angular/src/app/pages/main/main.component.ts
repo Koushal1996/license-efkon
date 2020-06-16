@@ -98,4 +98,8 @@ export class MainComponent implements OnInit {
   userProfile() {
     this.route.navigate(["profile"]);
   }
+  activeClass(id: string) {
+    $(".main-menu").removeClass("active");
+    $("#" + id).addClass("active");
+  }
 }

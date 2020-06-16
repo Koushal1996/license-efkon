@@ -16,4 +16,7 @@ export class ProductComponent implements OnInit {
       .map((a) => a.name);
     return authorities.includes(authority);
   }
+  activeParentTab() {
+    $("#Configuration").addClass("active");
+  }
 }
