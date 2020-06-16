@@ -38,7 +38,9 @@
         <div class="dropdown_sidebar" *ngIf="pageAuthority(p.privilege)">
           <a
             href="#"
-            class="list-group-item list-group-item-action"
+            class="list-group-item list-group-item-action main-menu"
+            id="{{ p.title }}"
+            (click)="activeClass(p.title)"
             [routerLink]="[p.route]"
             routerLinkActive="active"
           >
