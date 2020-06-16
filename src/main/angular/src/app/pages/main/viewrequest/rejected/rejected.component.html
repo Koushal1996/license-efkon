@@ -1,6 +1,7 @@
-<div *ngIf="isloader" class="loader">
-  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
-</div>
+<div class="site_main">
+  <div class="container-fluid p-0">
+    <div class="col-12 p-0">
+      <div class="table_scroll">
 <table>
   <thead>
     <tr>
@@ -31,7 +32,7 @@
 
       <td>{{ product.projectProductResponse.expirationPeriodType }}</td>
       <td>
-        <a class="cursor text-danger" (click)="showComments(product)"
+        <a class="comments" (click)="showComments(product)"
           >comments</a
         >
       </td>
@@ -39,6 +40,12 @@
     </tr>
   </tbody>
 </table>
+<div *ngIf="isloader" class="loader">
+  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+</div>
+</div>
+</div>
+</div>
 <div
   class=""
   id="myModal"
@@ -83,9 +90,9 @@
                       </div>
                       <div class="right_box">
                         <div class="img_box_main">
-                          <!-- <div class="img_box">
+                          <div class="img_box">
                             <img src="assets/images/profile1.jpg" />
-                          </div> -->
+                          </div>
                         </div>
                         <div class="text_box">
                           <h2 *ngIf="!hasUserId(c)">

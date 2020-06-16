@@ -1,6 +1,8 @@
-<div *ngIf="isloader" class="loader">
-  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
-</div>
+
+<div class="site_main">
+  <div class="container-fluid p-0">
+    <div class="col-12 p-0">
+      <div class="table_scroll">
 <table>
   <thead>
     <tr>
@@ -37,19 +39,20 @@
 
       <td>{{ product.projectProductResponse.expirationPeriodType }}</td>
       <td>
-        <a class="cursor text-danger" (click)="showComments(product)"
-          >comments</a
+        <a class="comments" (click)="showComments(product)"
+          >Comments</a
         >
       </td>
       <!-- <td>{{ product.status }}</td> -->
-      <td>
-        <button
+      <td style="min-width: 145px;
+  ">
+        <button class="t_save_btn mb-1 mr-2"
           *ngIf="hasAuthority('LICENSE_REQUEST_ACCEPT')"
           (click)="updateProductLicenseAccept(product)"
         >
           Accept
         </button>
-        <button
+        <button class="t_save_btn bg-danger"
           *ngIf="hasAuthority('LICENSE_REQUEST_REJECT')"
           (click)="updateProductLicenseReject(product)"
         >
@@ -59,6 +62,13 @@
     </tr>
   </tbody>
 </table>
+<div *ngIf="isloader" class="loader">
+  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+</div>
+</div>
+</div>
+</div>
+</div>
 <div
   class="modal"
   id="myModal"
@@ -152,9 +162,9 @@
                       </div>
                       <div class="right_box">
                         <div class="img_box_main">
-                          <!-- <div class="img_box">
+                          <div class="img_box">
                             <img src="assets/images/profile1.jpg" />
-                          </div> -->
+                          </div>
                         </div>
                         <div class="text_box">
                           <h2 *ngIf="!hasUserId(c)">
