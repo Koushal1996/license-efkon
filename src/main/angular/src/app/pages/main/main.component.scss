@@ -92,13 +92,14 @@ a.list-group-item i {
     background: #2b3643;
     z-index: 999;
     width: 100%;
-    padding: 10px 15px;
+    // padding: 10px 15px;
     top: 0;
 
     .logo {
       width: auto;
       display: inline-block;
       position: relative;
+      margin-left: 15px;
       img {
         width: 146px;
     }
@@ -114,6 +115,8 @@ a.list-group-item i {
       padding: 0;
       list-style: none;
       margin: 0;
+      margin-top: 8px;
+      padding-right: 15px;
       li {
         display: inline-block;
         width: 100%;
@@ -132,12 +135,12 @@ a.list-group-item i {
   .toggle_main {
     display: inline-block;
     width: auto;
-    padding: 5px 10px;
+    padding: 8px 10px;
     border: none;
-    background: no-repeat;
-    i.fa.fa-bars {
-      font-size: 30px;
-      color: #ef4000;
+    background: #364150;
+    img {
+      width: 23px;
+      filter: invert(0.7);
   }
   &:focus {
     outline: 0;

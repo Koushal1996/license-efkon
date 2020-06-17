@@ -1,11 +1,12 @@
 <div id="wrapper">
   <div class="header_main">
+    <button class="toggle_main" id="menu-toggle" (click)="menu()">
+      <img src="assets/images/nav.svg" alt="">
+    </button>
     <div class="logo">
       <img src="assets/logo-name.png" alt="" />
     </div>
-    <!-- <button class="toggle_main" id="menu-toggle" (click)="menu()"><span class="material-icons">
-      menu
-      </span></button> -->
+   
     <div class="menu" id="navbarSupportedContent">
       <ul>
         <li (click)="logout()" style="cursor: pointer;">
