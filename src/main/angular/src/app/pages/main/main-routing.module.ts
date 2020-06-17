@@ -78,7 +78,11 @@ const routes: Routes = [
           { path: "accepted", component: AcceptedComponent },
           { path: "rejected", component: RejectedComponent },
           { path: "pending", component: PendingComponent },
-          { path: "pending/:id", component: EditProductComponent },
+          // { path: "pending/:id", component: EditProductComponent },
+          {
+            path: "pending/:id/product/:productId",
+            component: EditProductComponent,
+          },
         ],
       },
       { path: "profile", component: ProfileComponent },
