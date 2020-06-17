@@ -217,7 +217,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 		List<ProjectProductLicenseRequestResponse> pplrResponse;
 		if (roles.contains("Customer")) {
 			pplrResponse = projectProductLicenseRequestDao
-					.findByStatusAndProjectProductProjectCustomerEmailAndActive(status, user.getUserId(), true);
+					.findByStatusAndProjectProductProjectCustomerEmailAndActive(status, user.getEmail(), true);
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
