@@ -51,6 +51,7 @@ export class ProjectComponent implements OnInit {
   sDate: any;
   renewStartDate: string;
   totolProductsCount: any;
+  selectedComment: any;
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -368,11 +369,14 @@ export class ProjectComponent implements OnInit {
     this.showModal = false;
     $("#" + selectedProduct).removeClass("highlight");
   }
-  hideCommentModel() {
+  hideCommentModel(selectedComment) {
     this.showCommentModal = false;
+    $("#" + selectedComment.id).removeClass("highlight");
   }
   showComments(pro) {
     console.log(pro.comments);
+    $("#" + pro.id).addClass("highlight");
+    this.selectedComment = pro;
     this.comments = pro.comments;
     if (this.comments.length > 0) {
       this.showCommentModal = true;

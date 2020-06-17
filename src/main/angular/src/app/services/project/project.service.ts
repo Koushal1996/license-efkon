@@ -12,6 +12,9 @@ export class ProjectService {
   getProjects() {
     return this.api.get("api/projects");
   }
+  getProjectById(Id) {
+    return this.api.get(`api/project​/${Id}`);
+  }
   addProject(data) {
     return this.api.post("api/project", data);
   }
@@ -59,6 +62,12 @@ export class ProjectService {
   }
   getProjectProducts() {
     return this.api.get("api/project/product");
+  }
+  getProjectProductsExcel() {
+    return this.api.getFile("api/project/product/excel");
+  }
+  getProjectProductsPdf() {
+    return this.api.getFile("api/project/product/pdf");
   }
   getLicenseType() {
     return this.api.get("api/license/types");

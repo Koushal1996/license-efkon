@@ -87,8 +87,8 @@
                     (click)="editProject(project)"
                     *ngIf="hasAuthority('PROJECT_UPDATE')"
                   >
-                  <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
-                  Edit Project
+                    <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
+                    Edit Project
                   </button>
                   <div class="info top_tooltip">
                     <label
@@ -126,8 +126,8 @@
                     (click)="createPdfLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                  <i class="fa fa-download" aria-hidden="true"></i>
-                  PDF Download
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    PDF Download
                   </button>
                 </td>
               </tr>
@@ -467,7 +467,7 @@
           type="button"
           class="close"
           data-dismiss="modal"
-          (click)="hideCommentModel()"
+          (click)="hideCommentModel(selectedComment)"
         >
           &times;
         </button>
@@ -544,7 +544,7 @@
           class="cancelBtn"
           type="button"
           data-dismiss="modal"
-          (click)="hideCommentModel()"
+          (click)="hideCommentModel(selectedComment)"
         >
           Close
         </button>
@@ -560,10 +560,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Renew for
+        <h4 class="modal-title">
+          Renew for
           {{ selectedProductCode }}
           {{ selectedProductFamily }}
-          {{ selectedProductVersion }}</h4>
+          {{ selectedProductVersion }}
+        </h4>
         <button
           type="button"
           class="close"
