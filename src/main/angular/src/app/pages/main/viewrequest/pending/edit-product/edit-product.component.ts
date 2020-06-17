@@ -22,8 +22,9 @@ export class EditProductComponent implements OnInit {
   todayDate: string;
   sDate: any;
   expirationMonthNo: any;
-  selectedProductDetail: any;
+  selectedProductDetail: any = {};
   projects: any;
+  selectedProjectId: any;
   constructor(
     private fb: FormBuilder,
     private activate: ActivatedRoute,
@@ -34,14 +35,18 @@ export class EditProductComponent implements OnInit {
 
   ngOnInit() {
     this.productForm = this.initProductForm();
-    this.getLicenseType();
-    this.getProductDetail();
     this.activate.params.subscribe((params) => {
       console.log(params);
-      this.productId = params["id"];
+      this.productId = params["productId"];
+      //this.selectedProjectId = params["Id"];
     });
+    this.activate.params.subscribe((params) => {
+      this.selectedProjectId = params["id"];
+    });
+    this.getLicenseType();
+    this.getProductDetail();
     this.patchaValue();
-    // this.getProjects();
+    this.getProjects();
   }
 
   initProductForm() {
@@ -58,31 +63,15 @@ export class EditProductComponent implements OnInit {
       EndDate: [""],
     });
   }
-  getProductDetail() {
-    this._productService.getProductDetails().subscribe((data) => {
-      this.productDetail = data;
-      this.patchaValue();
+  getVersions(c) {
+    //console.log(c);
+    this.versions = c.versions;
+  }
+  getLicenseType() {
+    this.projectservice.getLicenseType().subscribe((data) => {
+      this.licenseType = data;
+      //console.log(this.licenseType);
     });
-    var today = new Date();
-    var month = (today.getMonth() + 1).toString();
-    var currentMonth;
-    if (month.length > 1) {
-      currentMonth = parseInt(month);
-    } else {
-      currentMonth = "0" + parseInt(month);
-    }
-    var arDate = today.getDate().toString();
-    var currentDate;
-    if (arDate.length > 1) {
-      currentDate = parseInt(arDate);
-    } else {
-      currentDate = "0" + parseInt(arDate);
-    }
-
-    this.todayDate =
-      today.getFullYear() + "-" + currentMonth + "-" + currentDate;
-    console.log(this.todayDate);
-    this.productForm.controls["startDate"].patchValue(this.todayDate);
   }
   patchaValue() {
     if (this.productId) {
@@ -91,7 +80,9 @@ export class EditProductComponent implements OnInit {
         //console.log(data.projectProductResponse.startDate);
         //console.log(data);
         if (Object.keys(data).length) {
-          console.log(data);
+          //console.log(data);
+          // this.selectedProductProjectDetail =
+          //   data.projectProductResponse.project;
           this.productForm.patchValue(data);
           const productDetaill = this.productDetail.find(
             (pd) =>
@@ -135,7 +126,7 @@ export class EditProductComponent implements OnInit {
           this._productService
             .viewRequestById(this.productId)
             .subscribe((data) => {
-              console.log(data);
+              //console.log(data);
               this.productForm.patchValue(data);
               const productDetaill = this.productDetail.find(
                 (pd) =>
@@ -182,22 +173,39 @@ export class EditProductComponent implements OnInit {
       });
     }
   }
-  getVersions(c) {
-    //console.log(c);
-    this.versions = c.versions;
-  }
-  getLicenseType() {
-    this.projectservice.getLicenseType().subscribe((data) => {
-      this.licenseType = data;
-      //console.log(this.licenseType);
+  getProductDetail() {
+    this._productService.getProductDetails().subscribe((data) => {
+      this.productDetail = data;
+      this.patchaValue();
     });
+    var today = new Date();
+    var month = (today.getMonth() + 1).toString();
+    var currentMonth;
+    if (month.length > 1) {
+      currentMonth = parseInt(month);
+    } else {
+      currentMonth = "0" + parseInt(month);
+    }
+    var arDate = today.getDate().toString();
+    var currentDate;
+    if (arDate.length > 1) {
+      currentDate = parseInt(arDate);
+    } else {
+      currentDate = "0" + parseInt(arDate);
+    }
+
+    this.todayDate =
+      today.getFullYear() + "-" + currentMonth + "-" + currentDate;
+    //console.log(this.todayDate);
+    this.productForm.controls["startDate"].patchValue(this.todayDate);
   }
+
   getToday(): string {
     //console.log(new Date().toISOString().split("T")[0]);
     return new Date().toISOString().split("T")[0];
   }
   onStartDate(startDate) {
-    console.log(startDate);
+    //console.log(startDate);
     this.sDate = startDate;
     var d = new Date(this.sDate);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
@@ -220,6 +228,25 @@ export class EditProductComponent implements OnInit {
       return [date.getFullYear(), mnth, day].join("-");
     }
     this.productForm.controls["EndDate"].patchValue(convert(d));
+  }
+  onSubmit() {
+    //console.log(this.productForm.value);
+    this.loaderbutton = true;
+    this._productService
+      .updateProductLicenseAccept(this.productId, this.productForm.value)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          swal(
+            "update product license request status to accepted successfully!"
+          );
+          this.route.navigate(["viewrequest/pending"]);
+          this.productForm.reset();
+        },
+        (error) => {
+          this.loaderbutton = false;
+        }
+      );
   }
   onLicenseChange(licenseTypeId) {
     this.foundlicenseTypeId = this.licenseType.find((item) => {
@@ -274,39 +301,22 @@ export class EditProductComponent implements OnInit {
       this.productForm.controls["EndDate"].disable();
     }
   }
-  onSubmit() {
-    //console.log(this.productForm.value);
-    this.loaderbutton = true;
-    this._productService
-      .updateProductLicenseAccept(this.productId, this.productForm.value)
-      .subscribe(
-        (data) => {
-          console.log(data);
-          swal(
-            "update product license request status to accepted successfully!"
-          );
-          this.route.navigate(["viewrequest/pending"]);
-          this.productForm.reset();
-        },
-        (error) => {
-          this.loaderbutton = false;
-        }
-      );
-  }
+
   close() {
     this.route.navigate(["viewrequest/pending"]);
   }
-  // getProjects() {
-  //   this.projectservice.getProjects().subscribe(
-  //     (data) => {
-  //       console.log(data);
-  //       this.projects = data;
-  //       this.selectedProductDetail = this.projects.find(
-  //         (item) => item.id == this.productId
-  //       );
-  //       console.log(this.selectedProductDetail);
-  //     },
-  //     (error) => {}
-  //   );
-  // }
+  getProjects() {
+    this.projectservice.getProjects().subscribe(
+      (data) => {
+        console.log(data);
+        this.projects = data;
+        this.selectedProductDetail = this.projects.find(
+          (item) => item.id == this.selectedProjectId
+        );
+        console.log("this.selectedProductDetail");
+        console.log(this.selectedProductDetail);
+      },
+      (error) => {}
+    );
+  }
 }
