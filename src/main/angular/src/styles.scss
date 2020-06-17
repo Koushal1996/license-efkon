@@ -178,18 +178,20 @@ h2.text-center {
     border: 1px solid #28a745;
     padding: 1px 4px;
     font-size: 13px;
-    margin: 0 5px;
+    margin: 4px 2px;
     color: #28a745;
     border-radius: 3px;
+    display: inline-block;
 }
 .delete_button{
   background: transparent;
     border: 1px solid #dc3545;
     padding: 0px 5px;
     font-size: 14px;
-    margin: 0 5px;
+    margin: 4px 2px;
     color: #dc3545;
     border-radius: 3px;
+    display: inline-block;
 }
 .roleactive{
   color: #ffffff;
@@ -505,10 +507,10 @@ table {
         }
         }
         .edit_button{
-          font-size: 11px;
+          // font-size: 11px;
         }
         .delete_button{
-          font-size: 11px;
+          // font-size: 11px;
         }
       }
     }
@@ -1140,11 +1142,12 @@ span {
     padding-top: 3px;
 }
   input {
-    padding: 5px 30px 5px 15px;
+    padding: 5px 50px 5px 15px;
     height: auto;
     border: 1px solid #ddd;
     font-size: 14px;
     width: 250px;
+    border-radius: 0;
   }
   select {
     padding: 5px 30px 5px 15px;
@@ -1161,8 +1164,10 @@ span {
 }
   i {
     position: absolute;
-    top: 7px;
-    right: 11px;
-    color: #29aba4cf;
+    top: 0;
+    right: 0;
+    color: #ffffffcf;
+    background: #2b3643;
+    padding: 7px 13px;
   }
 }
