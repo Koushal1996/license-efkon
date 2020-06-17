@@ -2,10 +2,13 @@
   cursor: pointer;
 }
 .highlight {
-  background-color: #ccc;
+  background-color: #29aba4;
 }
 .highlight td {
   color: #fff;
+  a {
+    color: white !important;
+}
 }
 
 
@@ -15,4 +18,6 @@
   height: calc(100vh - 118px);
   overflow: auto;
 }
-
+.custom_modal_main {
+  background: rgba(0, 0, 0, 0.5);
+}

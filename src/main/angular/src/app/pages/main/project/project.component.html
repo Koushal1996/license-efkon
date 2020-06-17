@@ -447,9 +447,9 @@
             type="submit"
             class="saveBtn"
             [ngStyle]="{
-              'background-color': !popUpForm.valid
-                ? 'rgb(255, 162, 162)'
-                : '#dc3545'
+              'opacity': !popUpForm.valid
+                ? '0.6'
+                : '1'
             }"
             [disabled]="!popUpForm.valid"
           >
@@ -470,14 +470,14 @@
     <div class="modal-content">
       <div class="modal-header mb-0">
         <h4 class="modal-title">Comments</h4>
-        <button
+        <!-- <button
           type="button"
           class="close"
           data-dismiss="modal"
           (click)="hideCommentModel(selectedComment)"
         >
           &times;
-        </button>
+        </button> -->
       </div>
       <div class="modal-body overflow-hidden p-3 mb-3">
         <div class="product_details_popup text-center">
