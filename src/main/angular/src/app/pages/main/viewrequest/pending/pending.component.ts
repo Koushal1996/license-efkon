@@ -31,6 +31,7 @@ export class PendingComponent implements OnInit {
   userId: any;
   isloader: boolean = true;
   selectedProduct: any;
+  selectedComment: any;
 
   constructor(
     private productservice: ProductService,
@@ -123,10 +124,13 @@ export class PendingComponent implements OnInit {
       }
     });
   }
-  hideCommentModel() {
+  hideCommentModel(selectedComment) {
     this.showCommentModal = false;
+    $("#" + selectedComment.id).removeClass("highlight");
   }
   showComments(product) {
+    $("#" + product.id).addClass("highlight");
+    this.selectedComment = product;
     console.log(product);
     console.log(product.comments);
     this.comments = product.comments;

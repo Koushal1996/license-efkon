@@ -43,6 +43,12 @@ export class CreateProjectComponent implements OnInit {
         if (Object.keys(data).length) {
           console.log(data);
           this.projectForm.patchValue(data);
+        } else {
+          this._projectService
+            .getProjectById(this.projectId)
+            .subscribe((data) => {
+              this.projectForm.patchValue(data);
+            });
         }
       });
     }

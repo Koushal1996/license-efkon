@@ -140,7 +140,7 @@
             type="button"
             class="close"
             data-dismiss="modal"
-            (click)="hideCommentModel()"
+            (click)="hideCommentModel(selectedComment)"
           >
             &times;
           </button>
@@ -195,7 +195,7 @@
             class="cancelBtn"
             type="button"
             data-dismiss="modal"
-            (click)="hideCommentModel()"
+            (click)="hideCommentModel(selectedComment)"
           >
             Close
           </button>
