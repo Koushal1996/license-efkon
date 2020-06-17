@@ -1,73 +1,81 @@
-
 <div class="site_main">
   <div class="container-fluid p-0">
     <div class="col-12 p-0">
       <div class="table_scroll">
-<table>
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Product Detail</th>
-      <th scope="col">No of License</th>
-      <th scope="col">License Type</th>
-      <th scope="col" style="min-width: 100px;">Start Date</th>
-      <th scope="col" style="min-width: 100px;">End Date</th>
-      <th scope="col">Customer Details</th>
-      <th scope="col">Expiration Period Type</th>
-      <th scope="col">Comments</th>
-      <!-- <th scope="col">status</th> -->
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr
-      id="{{ product.id }}"
-      class=""
-      *ngFor="let product of productPendingRequests; index as i"
-    >
-      <td>{{ i + 1 }}</td>
-      <td>
-        {{ product.projectProductResponse.productDetail.productCodeName }}
-        {{ product.projectProductResponse.productDetail.productFamilyName }}
-        {{ product.projectProductResponse.productDetail.versionName }}
-      </td>
-      <td>{{ product.licenseCount }}</td>
-      <td>{{ product.projectProductResponse.licenseTypeName }}</td>
-      <td>{{ product.projectProductResponse.startDate }}</td>
-      <td>{{ product.projectProductResponse.endDate }}</td>
-      <td>{{ product.customerEmail }}</td>
-
-      <td>{{ product.projectProductResponse.expirationPeriodType }}</td>
-      <td>
-        <a class="comments" (click)="showComments(product)"
-          >Comments</a
-        >
-      </td>
-      <!-- <td>{{ product.status }}</td> -->
-      <td style="min-width: 145px;
-  ">
-        <button class="t_save_btn mb-1 mr-2"
-          *ngIf="hasAuthority('LICENSE_REQUEST_ACCEPT')"
-          (click)="updateProductLicenseAccept(product)"
-        >
-          Accept
-        </button>
-        <button class="t_save_btn bg-danger"
-          *ngIf="hasAuthority('LICENSE_REQUEST_REJECT')"
-          (click)="updateProductLicenseReject(product)"
-        >
-          Reject
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div *ngIf="isloader" class="loader">
-  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
-</div>
-</div>
-</div>
-</div>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Product Detail</th>
+              <th scope="col">No of License</th>
+              <th scope="col">License Type</th>
+              <th scope="col" style="min-width: 100px;">Start Date</th>
+              <th scope="col" style="min-width: 100px;">End Date</th>
+              <th scope="col">Customer Details</th>
+              <th scope="col">Project Type</th>
+              <th scope="col">Expiration Period Type</th>
+              <th scope="col">Comments</th>
+              <!-- <th scope="col">status</th> -->
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              id="{{ product.id }}"
+              class=""
+              *ngFor="let product of productPendingRequests; index as i"
+            >
+              <td>{{ i + 1 }}</td>
+              <td>
+                {{
+                  product.projectProductResponse.productDetail.productCodeName
+                }}
+                {{
+                  product.projectProductResponse.productDetail.productFamilyName
+                }}
+                {{ product.projectProductResponse.productDetail.versionName }}
+              </td>
+              <td>{{ product.licenseCount }}</td>
+              <td>{{ product.projectProductResponse.licenseTypeName }}</td>
+              <td>{{ product.projectProductResponse.startDate }}</td>
+              <td>{{ product.projectProductResponse.endDate }}</td>
+              <td>
+                {{ product.projectProductResponse.project.customerName }}
+                <br />{{ product.projectProductResponse.project.customerEmail }}
+              </td>
+              <td>
+                {{ product.projectProductResponse.project.projectTypeName }}
+              </td>
+              <td>{{ product.projectProductResponse.expirationPeriodType }}</td>
+              <td>
+                <a class="comments" (click)="showComments(product)">Comments</a>
+              </td>
+              <!-- <td>{{ product.status }}</td> -->
+              <td style="min-width: 145px;">
+                <button
+                  class="t_save_btn mb-1 mr-2"
+                  *ngIf="hasAuthority('LICENSE_REQUEST_ACCEPT')"
+                  (click)="updateProductLicenseAccept(product)"
+                >
+                  Accept
+                </button>
+                <button
+                  class="t_save_btn bg-danger"
+                  *ngIf="hasAuthority('LICENSE_REQUEST_REJECT')"
+                  (click)="updateProductLicenseReject(product)"
+                >
+                  Reject
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="isloader" class="loader">
+          <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div
   class="modal"

@@ -74,7 +74,10 @@ export class PendingComponent implements OnInit {
   }
   updateProductLicenseAccept(product) {
     this.productservice.selecetedProductPending.next(product);
-    this.route.navigate(["/viewrequest/pending", product.id]);
+    //this.route.navigate(["/viewrequest/pending", product.id]);
+    this.route.navigate([
+      `viewrequest/pending/${product.projectProductResponse.projectId}/product/${product.id}`,
+    ]);
   }
 
   hide(selectedProduct) {

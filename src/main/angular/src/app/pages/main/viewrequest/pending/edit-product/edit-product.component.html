@@ -1,3 +1,34 @@
+<div class="product_main">
+  <h3>Project Details</h3>
+  <div class="product_details">
+    <label>Customer Name</label>
+    <span>{{ selectedProductDetail.customerName }}</span>
+  </div>
+  <div class="product_details">
+    <label>Customer Email</label>
+    <span
+      >{{ selectedProductDetail.customerEmail }}
+
+      <i
+        *ngIf="selectedProductDetail.isEmailSend"
+        class="fa fa-check text-success"
+      ></i>
+    </span>
+  </div>
+  <div class="product_details">
+    <label>Customer Contact No</label>
+    <span>{{ selectedProductDetail.customerContactNo }}</span>
+  </div>
+  <div class="product_details">
+    <label>Project Type</label>
+    <span>{{ selectedProductDetail.projectTypeName }}</span>
+  </div>
+  <div class="product_details">
+    <label>Project Manager</label>
+    <span>{{ selectedProductDetail.projectManagerName }}</span>
+  </div>
+</div>
+
 <div class="col-6 p-0 card-body">
   <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form_main">
     <h3>
