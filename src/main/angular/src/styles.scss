@@ -631,6 +631,10 @@ table {
       font-size: 15px;
       font-weight: bold;
       color: white; 
+      span{
+        font-size: 13px;
+    vertical-align: text-bottom;
+      }
   }
   .close {
     padding: 1rem 1rem;
@@ -857,6 +861,7 @@ select{
   width: 100%;
   display: inline-block;
   position: relative;
+  text-align: center;
   top: -5px;
   label {
     font-size: 14px;
@@ -1170,4 +1175,14 @@ span {
     background: #2b3643;
     padding: 7px 13px;
   }
+}
+.modal{
+  overflow-y: auto !important;
+}
+
+.highlight {
+  background-color: #29aba4 !important;
+}
+.highlight td {
+  color: #fff;
 }

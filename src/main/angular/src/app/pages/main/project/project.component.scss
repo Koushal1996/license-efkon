@@ -391,15 +391,48 @@ section.main-slider {
   top: 0;
   left: 0;
   z-index: 1050;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   width: 100%;
   min-height: 100vh;
   transform: inherit;
 }
 
 .highlight {
-  background-color: #ccc;
+  background-color: #29aba4;
+  a{
+    color: white !important;
+  }
 }
 .highlight td {
   color: #fff;
+}
+.rahul {
+  padding: 0px 5px !important;
+  border: 1px solid #29aba4;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 21px;
+  background: transparent !important;
+  color: #29aba4;
+  border-radius: 3px;
+  margin: 2px 4px;
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 15px;
+    // vertical-align: bottom;
+    font-weight: bold;
+    line-height: normal;
+    vertical-align: text-top;
+  }
+}
+
+.view {
+  color: #795548;
+  border: 1px solid #795548;
+}
+.pdf{
+  color: #94969a;
+  border: 1px solid #94969a;
 }
