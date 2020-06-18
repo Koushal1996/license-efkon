@@ -394,10 +394,11 @@
   </div>
 </div>
 <div
-  class="custom_modal_main"
+  class=" modal"
   id="myModal"
   [style.display]="showModal ? 'block' : 'none'"
 >
+<div class="custom_modal_main">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header mb-0">
@@ -464,13 +465,15 @@
       </form>
     </div>
   </div>
+  </div>
 </div>
 
 <div
-  class="custom_modal_main"
+  class="modal"
   id="myModal"
   [style.display]="showCommentModal ? 'block' : 'none'"
 >
+<div class="custom_modal_main">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header mb-0">
@@ -564,11 +567,16 @@
     </div>
   </div>
 </div>
+</div>
+
+
+
 <div
-  class="custom_modal_main"
+  class="modal"
   id="myModal"
   [style.display]="showRenewModal ? 'block' : 'none'"
 >
+  <div class="custom_modal_main">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -646,9 +654,9 @@
               type="submit"
               class="saveBtn"
               [ngStyle]="{
-                'background-color': !popUpStartDateForm.valid
-                  ? 'rgb(255, 162, 162)'
-                  : '#dc3545'
+                'opacity': !popUpStartDateForm.valid
+                  ? '0.6'
+                  : '1'
               }"
               [disabled]="!popUpStartDateForm.valid"
             >
@@ -659,4 +667,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>
