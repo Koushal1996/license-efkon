@@ -391,37 +391,35 @@ section.main-slider {
   top: 0;
   left: 0;
   z-index: 1050;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   width: 100%;
   min-height: 100vh;
   transform: inherit;
 }
 
 .highlight {
-  background-color: #ccc;
+  background-color: #29aba4;
+  a{
+    color: white !important;
+  }
 }
 .highlight td {
   color: #fff;
 }
-.search_bar {
-  max-width: 250px;
-  float: right;
-  width: 100%;
-  margin: 10px;
-  position: relative;
-  input {
-    padding: 5px 30px 5px 15px;
-    height: auto;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    &:focus{
-      border: 1px solid #29aba4;
-    }
-  }
-  i {
-    position: absolute;
-    top: 7px;
-    right: 11px;
-    color: #29aba4cf;
-  }
+.rahul {
+  padding: 0px 5px !important;
+  border: 1px solid #676869;
+  font-size: 16px;
+  display: inline-block;
+  line-height: 23px;
+  background: transparent !important;
+  color: #676869;
+  border-radius: 3px;
+  margin: 2px 4px;
+  
+}
+
+.view {
+  color: #795548;
+  border: 1px solid #795548;
 }

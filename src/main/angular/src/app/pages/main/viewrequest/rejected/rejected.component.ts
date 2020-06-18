@@ -2,7 +2,7 @@ import { ProductService } from "./../../../../services/product/product.service";
 import { Component, OnInit } from "@angular/core";
 import { MainService } from "src/app/services/main/main.service";
 import swal from "sweetalert";
-
+declare let $: any;
 @Component({
   selector: "app-rejected",
   templateUrl: "./rejected.component.html",
@@ -17,6 +17,7 @@ export class RejectedComponent implements OnInit {
   selectedProductCode: any;
   userId: any;
   isloader: boolean = true;
+  selectedComment: any;
 
   constructor(
     private productservice: ProductService,
@@ -33,10 +34,13 @@ export class RejectedComponent implements OnInit {
       this.userId = data.id;
     });
   }
-  hideCommentModel() {
+  hideCommentModel(selectedComment) {
     this.showCommentModal = false;
+    $("#" + selectedComment.id).removeClass("highlight");
   }
   showComments(product) {
+    $("#" + product.id).addClass("highlight");
+    this.selectedComment = product;
     console.log(product);
     console.log(product.comments);
     this.comments = product.comments;
