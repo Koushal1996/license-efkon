@@ -1,11 +1,12 @@
-
 <div class="col-12 p-0">
   <div class="site_main">
+    <!-- <button (click)="exportProjectProducts()">Export ProjectProducts</button>
+    <button (click)="PdfProjectProducts()">PDF Download</button> -->
     <form [formGroup]="filterStatusForm">
       <div class="search_bar">
         <!-- <label>Product Status </label> -->
         <span class="fa fa-filter" aria-hidden="true"></span>
- <label>Filter</label>
+        <label>Filter</label>
         <select
           class="form-control"
           name="productStatus"
@@ -117,7 +118,7 @@
                 </a>
                 <button
                   type="button"
-                  class="t_save_btn "
+                  class="t_save_btn"
                   *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
                   (click)="submitProductStatus(project)"
                 >
@@ -127,7 +128,7 @@
               <td *ngIf="project.status == 'SUBMIT'">
                 <button
                   type="button"
-                  class="t_save_btn "
+                  class="t_save_btn"
                   *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
                   (click)="reviewProductStatus(project)"
                 >
@@ -152,7 +153,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger "
+                  class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                 >
                   Reject
@@ -424,7 +425,7 @@
             type="button"
             class="close"
             data-dismiss="modal"
-            (click)="hideCommentModel()"
+            (click)="hideCommentModel(selectedComment)"
           >
             &times;
           </button>
@@ -502,7 +503,7 @@
             class="cancelBtn"
             type="button"
             data-dismiss="modal"
-            (click)="hideCommentModel()"
+            (click)="hideCommentModel(selectedComment)"
           >
             Close
           </button>

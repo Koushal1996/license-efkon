@@ -10,6 +10,8 @@ import {
   Validators,
 } from "@angular/forms";
 import swal from "sweetalert";
+import * as FileSaver from "file-saver";
+
 declare let $: any;
 @Component({
   selector: "app-project-product",
@@ -46,6 +48,7 @@ export class ProjectProductComponent implements OnInit {
   filterStatusForm: FormGroup;
   projectProductsCopy: any;
   productStatus: any;
+  selectedComment: any;
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -388,11 +391,14 @@ export class ProjectProductComponent implements OnInit {
     $("#" + selectedProduct).removeClass("highlight");
   }
 
-  hideCommentModel() {
+  hideCommentModel(selectedComment) {
     this.showCommentModal = false;
+    $("#" + selectedComment.id).removeClass("highlight");
   }
   showComments(project) {
+    $("#" + project.id).addClass("highlight");
     console.log(project.comments);
+    this.selectedComment = project;
     this.comments = project.comments;
     if (this.comments.length > 0) {
       this.selectedProductCode = project.productDetail.productCodeName;
@@ -582,5 +588,26 @@ export class ProjectProductComponent implements OnInit {
     if (key == "All") {
       this.projectProducts = this.projectProductsCopy;
     }
+  }
+  exportProjectProducts() {
+    this._projectService.getProjectProductsExcel().subscribe((data) => {
+      console.log(data);
+      const blob = new Blob([data.body], {
+        type:
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      //FileSaver.saveAs(blob, data.headers.get("fileName"));
+      FileSaver.saveAs(blob, "ProjectProducts");
+    });
+  }
+  PdfProjectProducts() {
+    this._projectService.getProjectProductsPdf().subscribe((data) => {
+      console.log(data);
+      const blob = new Blob([data.body], {
+        type: "  application/pdf;base64",
+      });
+      //FileSaver.saveAs(blob, data.headers.get("fileName"));
+      FileSaver.saveAs(blob, "ProjectProducts");
+    });
   }
 }
