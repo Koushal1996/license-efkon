@@ -79,7 +79,12 @@
                       (click)="addProduct(project)"
                       *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
                     >
-                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                    <!-- <i class="fa fa-plus-square" aria-hidden="true"></i> -->
+                    <i class="material-icons">
+                      add
+                      </i>
+
 
                     </button>
                     <span>Add Product</span>
@@ -119,11 +124,11 @@
                     <span style="min-width: 120px;">Export Licenses</span>
                   </button>
                   <button
-                    class=" top_tooltip rahul border-secondary text-secondary"
+                    class=" top_tooltip rahul pdf"
                     (click)="createPdfLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                  <i class="fa fa-file-text" aria-hidden="true"></i>
                   <span style="min-width: 120px;">Download Pdf</span>
                   </button>
                 </td>
