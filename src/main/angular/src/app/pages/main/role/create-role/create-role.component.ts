@@ -41,7 +41,7 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.createRoleForm = this.fb.group({
-      name: ["", [Validators.required, Validators.pattern("^[a-zA-Z]*$")]],
+      name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
       authorityIds: this.fb.array([], [Validators.required]),
     });
     this._adminService.getauthorities().subscribe(

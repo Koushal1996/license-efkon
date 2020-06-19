@@ -49,6 +49,8 @@ export class ProjectProductComponent implements OnInit {
   projectProductsCopy: any;
   productStatus: any;
   selectedComment: any;
+  searchProjectProductsForm: FormGroup;
+
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -71,7 +73,9 @@ export class ProjectProductComponent implements OnInit {
     this.filterStatusForm = this.fb.group({
       productStatus: [""],
     });
-
+    this.searchProjectProductsForm = this.fb.group({
+      Search: [""],
+    });
     this.activate.params.subscribe((params) => {
       this.productStatus = params["status"];
       //console.log(this.productStatus);
@@ -157,7 +161,7 @@ export class ProjectProductComponent implements OnInit {
   initpopUpRequestForm() {
     return this.fb.group({
       licenseCount: ["", [Validators.required]],
-      comment: [""],
+      comment: ["", [Validators.required]],
     });
   }
   deleteProduct(project) {
@@ -327,6 +331,7 @@ export class ProjectProductComponent implements OnInit {
                 (data) => {
                   this.selectedProduct.status = "APPROVED";
                   this.selectedProduct.comments = data.comments;
+                  this.getProjectProducts();
                   //swal("Product Approved successfully!");
                   swal(
                     `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
@@ -532,7 +537,6 @@ export class ProjectProductComponent implements OnInit {
     this.showRequestModal = false;
   }
   onSubmitRequest() {
-    //$("#" + this.selectedProduct).removeClass("highlight");
     console.log(this.popUpRequestForm.value);
     this._projectService
       .saveProjectLicenseById(
@@ -542,16 +546,17 @@ export class ProjectProductComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log(data);
-          swal("save product license request in project successfully!");
+          // swal(
+          //   `save product license ${data.licenseCount}request in project successfully!`
+          // );
+          swal(` ${data.licenseCount} more License generated successfully!`);
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
-          //$("#" + this.selectedProduct).removeClass("highlight");
           $("#" + this.selectedProduct.id).removeClass("highlight");
         },
         (error) => {
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
-          //$("#" + this.selectedProduct).removeClass("highlight");
           $("#" + this.selectedProduct.id).removeClass("highlight");
         }
       );
@@ -586,6 +591,23 @@ export class ProjectProductComponent implements OnInit {
       this.projectProducts = this.projectProductsCopy;
     }
     if (key == "All") {
+      this.projectProducts = this.projectProductsCopy;
+    }
+  }
+
+  onsearchProjectProductsForm(key) {
+    console.log(key);
+    if (key) {
+      this.projectProducts = this.projectProducts.filter(
+        (
+          item //console.log(item)
+        ) =>
+          (item.project.customerName &&
+            item.project.customerName.toLowerCase().startsWith(key)) ||
+          (item.project.customerEmail &&
+            item.project.customerEmail.toLowerCase().startsWith(key))
+      );
+    } else {
       this.projectProducts = this.projectProductsCopy;
     }
   }

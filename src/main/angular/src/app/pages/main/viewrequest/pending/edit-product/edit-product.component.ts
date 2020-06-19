@@ -12,7 +12,7 @@ import swal from "sweetalert";
 })
 export class EditProductComponent implements OnInit {
   productForm: any;
-  licenseType: any;
+  licenseType: any[] = [];
   foundlicenseTypeId: any;
   productId: any;
   productDetail: any[] = [];
@@ -43,12 +43,21 @@ export class EditProductComponent implements OnInit {
     this.activate.params.subscribe((params) => {
       this.selectedProjectId = params["id"];
     });
-    this.getLicenseType();
     this.getProductDetail();
-    this.patchaValue();
+    this.getLicenseType();
     this.getProjects();
+    this.patchaValue();
   }
-
+  getVersions(c) {
+    //console.log(c);
+    this.versions = c.versions;
+  }
+  getLicenseType() {
+    this.projectservice.getLicenseType().subscribe((data) => {
+      this.licenseType = data;
+      //console.log(this.licenseType);
+    });
+  }
   initProductForm() {
     return this.fb.group({
       productFamily: [""],
@@ -63,22 +72,10 @@ export class EditProductComponent implements OnInit {
       EndDate: [""],
     });
   }
-  getVersions(c) {
-    //console.log(c);
-    this.versions = c.versions;
-  }
-  getLicenseType() {
-    this.projectservice.getLicenseType().subscribe((data) => {
-      this.licenseType = data;
-      //console.log(this.licenseType);
-    });
-  }
+
   patchaValue() {
     if (this.productId) {
       this._productService.selecetedProductPending.subscribe((data) => {
-        //this.productForm.patchValue(data);
-        //console.log(data.projectProductResponse.startDate);
-        //console.log(data);
         if (Object.keys(data).length) {
           //console.log(data);
           // this.selectedProductProjectDetail =
@@ -122,6 +119,9 @@ export class EditProductComponent implements OnInit {
           } else {
             this.productForm.controls["expirationPeriodType"].enable();
           }
+          this.productForm.controls["productFamily"].disable();
+          this.productForm.controls["productCode"].disable();
+          this.productForm.controls["productDetailId"].disable();
         } else {
           this._productService
             .viewRequestById(this.productId)
@@ -168,6 +168,9 @@ export class EditProductComponent implements OnInit {
               } else {
                 this.productForm.controls["expirationPeriodType"].enable();
               }
+              this.productForm.controls["productFamily"].disable();
+              this.productForm.controls["productCode"].disable();
+              this.productForm.controls["productDetailId"].disable();
             });
         }
       });
@@ -199,47 +202,17 @@ export class EditProductComponent implements OnInit {
     //console.log(this.todayDate);
     this.productForm.controls["startDate"].patchValue(this.todayDate);
   }
-
-  getToday(): string {
-    //console.log(new Date().toISOString().split("T")[0]);
-    return new Date().toISOString().split("T")[0];
-  }
-  onStartDate(startDate) {
-    //console.log(startDate);
-    this.sDate = startDate;
-    var d = new Date(this.sDate);
-    d.setMonth(d.getMonth() + this.expirationMonthNo);
-    function convert(d) {
-      var date = new Date(d),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("-");
-    }
-    this.productForm.controls["EndDate"].patchValue(convert(d));
-  }
-  onExpirationMonthCount(expirationMonthCount) {
-    this.expirationMonthNo = expirationMonthCount;
-    if (this.todayDate) var d = new Date(this.todayDate);
-    d.setMonth(d.getMonth() + this.expirationMonthNo);
-    function convert(d) {
-      var date = new Date(d),
-        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-        day = ("0" + date.getDate()).slice(-2);
-      return [date.getFullYear(), mnth, day].join("-");
-    }
-    this.productForm.controls["EndDate"].patchValue(convert(d));
-  }
   onSubmit() {
-    //console.log(this.productForm.value);
+    console.log(this.productForm.value);
+    const requestBody = this.productForm.getRawValue();
+    console.log(requestBody);
     this.loaderbutton = true;
     this._productService
-      .updateProductLicenseAccept(this.productId, this.productForm.value)
+      .updateProductLicenseAccept(this.productId, requestBody)
       .subscribe(
         (data) => {
           console.log(data);
-          swal(
-            "update product license request status to accepted successfully!"
-          );
+          swal(`product accepted successfully!`);
           this.route.navigate(["viewrequest/pending"]);
           this.productForm.reset();
         },
@@ -252,7 +225,7 @@ export class EditProductComponent implements OnInit {
     this.foundlicenseTypeId = this.licenseType.find((item) => {
       return item.id == licenseTypeId;
     });
-    //console.log(this.foundlicenseTypeId);
+    console.log(this.foundlicenseTypeId);
     if (this.foundlicenseTypeId) {
       if (this.foundlicenseTypeId.name == "DEMO") {
         this.productForm.controls["expirationPeriodType"].patchValue("LIMITED");
@@ -276,6 +249,7 @@ export class EditProductComponent implements OnInit {
       }
     }
   }
+
   onExpirationChange(expirationPeriodType) {
     if (expirationPeriodType == "LIFETIME") {
       this.productForm.controls["expirationMonthCount"].patchValue(
@@ -300,6 +274,36 @@ export class EditProductComponent implements OnInit {
       this.productForm.controls["expirationMonthCount"].reset();
       this.productForm.controls["EndDate"].disable();
     }
+  }
+  onExpirationMonthCount(expirationMonthCount) {
+    this.expirationMonthNo = expirationMonthCount;
+    if (this.todayDate) var d = new Date(this.todayDate);
+    d.setMonth(d.getMonth() + this.expirationMonthNo);
+    function convert(d) {
+      var date = new Date(d),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+    this.productForm.controls["EndDate"].patchValue(convert(d));
+  }
+
+  getToday(): string {
+    //console.log(new Date().toISOString().split("T")[0]);
+    return new Date().toISOString().split("T")[0];
+  }
+  onStartDate(startDate) {
+    //console.log(startDate);
+    this.sDate = startDate;
+    var d = new Date(this.sDate);
+    d.setMonth(d.getMonth() + this.expirationMonthNo);
+    function convert(d) {
+      var date = new Date(d),
+        mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+        day = ("0" + date.getDate()).slice(-2);
+      return [date.getFullYear(), mnth, day].join("-");
+    }
+    this.productForm.controls["EndDate"].patchValue(convert(d));
   }
 
   close() {

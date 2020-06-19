@@ -43,11 +43,13 @@ export class CreateProjectComponent implements OnInit {
         if (Object.keys(data).length) {
           console.log(data);
           this.projectForm.patchValue(data);
+          this.projectForm.controls["projectTypeId"].disable();
         } else {
           this._projectService
             .getProjectById(this.projectId)
             .subscribe((data) => {
               this.projectForm.patchValue(data);
+              this.projectForm.controls["projectTypeId"].disable();
             });
         }
       });
@@ -57,7 +59,7 @@ export class CreateProjectComponent implements OnInit {
     return this.fb.group({
       customerName: [
         "",
-        [Validators.required, Validators.pattern("^[a-zA-Z]*$")],
+        [Validators.required, Validators.pattern("^[a-zA-Z ]*$")],
       ],
       customerEmail: [
         "",
@@ -101,18 +103,19 @@ export class CreateProjectComponent implements OnInit {
 
   onSubmit() {
     this.loaderbutton = true;
+    // console.log(this.projectForm.value);
+    const requestBody = this.projectForm.getRawValue();
+    //console.log(requestBody);
     if (this.projectId) {
-      this._projectService
-        .updateProject(this.projectId, this.projectForm.value)
-        .subscribe(
-          (data) => {
-            this.route.navigate(["projects"]);
-            swal(" Project Edit successfully!");
-          },
-          (error) => {
-            this.loaderbutton = false;
-          }
-        );
+      this._projectService.updateProject(this.projectId, requestBody).subscribe(
+        (data) => {
+          this.route.navigate(["projects"]);
+          swal(" Project Updated successfully!");
+        },
+        (error) => {
+          this.loaderbutton = false;
+        }
+      );
     } else {
       this._projectService.addProject(this.projectForm.value).subscribe(
         (data) => {

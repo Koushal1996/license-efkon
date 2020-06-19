@@ -1,7 +1,6 @@
-
- <div class="container border pt-3 pb-3">
-     <div class="row">
-    <div class="col-5 ">
+<div class="container border pt-3 pb-3">
+  <div class="row">
+    <div class="col-5">
       <div class="product_main">
         <h3>Project Details</h3>
         <div class="product_details">
@@ -12,7 +11,7 @@
           <label>Customer Email</label>
           <span
             >{{ selectedProductDetail.customerEmail }}
-      
+
             <i
               *ngIf="selectedProductDetail.isEmailSend"
               class="fa fa-check text-success"
@@ -32,7 +31,6 @@
           <span>{{ selectedProductDetail.projectManagerName }}</span>
         </div>
       </div>
-      
     </div>
     <div class="col-7 pl-0">
       <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form_main">
@@ -56,7 +54,6 @@
                     <option
                       *ngFor="let product of productDetail"
                       [ngValue]="product"
-                      [disabled]="productId"
                     >
                       {{ product.name }}
                     </option>
@@ -73,11 +70,7 @@
                     (ngModelChange)="getVersions($event)"
                   >
                     <option value="" disabled>Product Code</option>
-                    <option
-                      *ngFor="let code of productCodes"
-                      [disabled]="productId"
-                      [ngValue]="code"
-                    >
+                    <option *ngFor="let code of productCodes" [ngValue]="code">
                       {{ code.name }}
                     </option>
                   </select>
@@ -95,7 +88,6 @@
                     <option
                       *ngFor="let v of versions"
                       [value]="v.productDetailId"
-                      [disabled]="productId"
                     >
                       {{ v.version }}
                     </option>
@@ -212,7 +204,7 @@
                   </span>
                 </div>
               </div>
-    
+
               <div class="col-6">
                 <div class="form-group">
                   <label>Expiry Period (in months) </label>
@@ -314,5 +306,4 @@
       </form>
     </div>
   </div>
- </div>
-
+</div>

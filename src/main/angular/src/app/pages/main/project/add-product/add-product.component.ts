@@ -183,18 +183,17 @@ export class AddProductComponent implements OnInit, OnChanges {
   }
   onSubmit() {
     this.loaderbutton = true;
+    const requestBody = this.productForm.getRawValue();
     if (this.productId) {
-      this.projectservice
-        .updateProduct(this.productId, this.productForm.value)
-        .subscribe(
-          (data) => {
-            this.route.navigate(["projects"]);
-            swal("Product details updated successfully!");
-          },
-          (error) => {
-            this.loaderbutton = false;
-          }
-        );
+      this.projectservice.updateProduct(this.productId, requestBody).subscribe(
+        (data) => {
+          this.route.navigate(["projects"]);
+          swal("Product details updated successfully!");
+        },
+        (error) => {
+          this.loaderbutton = false;
+        }
+      );
     } else {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(

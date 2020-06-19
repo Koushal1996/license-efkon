@@ -46,7 +46,7 @@
               <th scope="col">Project Manager</th>
               <th scope="col">Products</th>
               <th scope="col">Licenses</th>
-              <th scope="col">Edit</th>
+              <th scope="col" *ngIf="hasAuthority('PROJECT_UPDATE')">Edit</th>
             </tr>
           </thead>
           <!-- <div *ngIf="!projects?.length">
@@ -73,23 +73,21 @@
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
                 <td>
-                  <div class=" top_tooltip">
+                  <div class="top_tooltip">
                     <button
                       class="rahul"
                       (click)="addProduct(project)"
                       *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
                     >
-                    <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
-                    <!-- <i class="fa fa-plus-square" aria-hidden="true"></i> -->
-                    <i class="material-icons">
-                      add
+                      <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
+                      <!-- <i class="fa fa-plus-square" aria-hidden="true"></i> -->
+                      <i class="material-icons">
+                        add
                       </i>
-
-
                     </button>
                     <span>Add Product</span>
                   </div>
-                
+
                   <div class="info top_tooltip">
                     <label
                       class="badge custom_badge"
@@ -105,42 +103,41 @@
                 <td>
                   <button
                     *ngIf="hasAuthority('LICENSE_FETCH')"
-                    class="top_tooltip rahul "
+                    class="top_tooltip rahul"
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     #c
                     (click)="viewLicenses(project)"
-                    class=" top_tooltip rahul view"
+                    class="top_tooltip rahul view"
                   >
-                  <i class="fa fa-eye" aria-hidden="true"></i>
-                  <span style="min-width: 120px;">View Licenses</span>
+                    <i class="fa fa-eye" aria-hidden="true"></i>
+                    <span style="min-width: 120px;">View Licenses</span>
                   </button>
                   <button
-                    class=" top_tooltip rahul border-info text-info"
+                    class="top_tooltip rahul border-info text-info"
                     (click)="createExcelLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                  <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                    <i class="fa fa-id-card-o" aria-hidden="true"></i>
                     <span style="min-width: 120px;">Export Licenses</span>
                   </button>
                   <button
-                    class=" top_tooltip rahul pdf"
+                    class="top_tooltip rahul pdf"
                     (click)="createPdfLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                  <i class="fa fa-file-text" aria-hidden="true"></i>
-                  <span style="min-width: 120px;">Download Pdf</span>
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span style="min-width: 120px;">Download Pdf</span>
                   </button>
                 </td>
-                <td>
+                <td *ngIf="hasAuthority('PROJECT_UPDATE')">
                   <button
-                  class=" top_tooltip rahul text-success border-success"
-                  (click)="editProject(project)"
-                  *ngIf="hasAuthority('PROJECT_UPDATE')"
-                >
-              <i class="fa fa-edit" aria-hidden="true"></i> 
-              <span style="width: 100px;">Edit Project</span>
-                </button>
+                    class="top_tooltip rahul text-success border-success"
+                    (click)="editProject(project)"
+                  >
+                    <i class="fa fa-edit" aria-hidden="true"></i>
+                    <span style="width: 100px;">Edit Project</span>
+                  </button>
                 </td>
               </tr>
               <tr>
@@ -393,78 +390,72 @@
     </div>
   </div>
 </div>
-<div
-  class=" modal"
-  id="myModal"
-  [style.display]="showModal ? 'block' : 'none'"
->
-<div class="custom_modal_main">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header mb-0">
-        <h4 class="modal-title">
-          Enter Comment *
-          <!-- <span style="color: #f00;">*</span> -->
-        </h4>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          (click)="hide(selectedProduct.id)"
-        >
-          &times;
-        </button>
-      </div>
-
-      <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
-        <div class="modal-body p-3">
-          <div class="product_details_popup">
-            <label>Product Details:</label>
-            <span
-              >{{ selectedProductCode }}
-              {{ selectedProductFamily }}
-              {{ selectedProductVersion }}</span
-            >
-          </div>
-          <div class="form-group mb-0">
-            <textarea
-              class="form-control"
-              formControlName="comment"
-              name="comment"
-            ></textarea>
-            <span
-              *ngIf="
-                popUpForm.get('comment').errors &&
-                (popUpForm.get('comment').touched ||
-                  popUpForm.get('comment').dirty)
-              "
-            >
-              <span
-                *ngIf="popUpForm.get('comment').errors.required"
-                class="error"
-              >
-                Comment is required</span
-              >
-            </span>
-          </div>
-        </div>
-        <div class="modal-footer">
+<div class="modal" id="myModal" [style.display]="showModal ? 'block' : 'none'">
+  <div class="custom_modal_main">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header mb-0">
+          <h4 class="modal-title">
+            Enter Comment *
+            <!-- <span style="color: #f00;">*</span> -->
+          </h4>
           <button
-            type="submit"
-            class="saveBtn"
-            [ngStyle]="{
-              'opacity': !popUpForm.valid
-                ? '0.6'
-                : '1'
-            }"
-            [disabled]="!popUpForm.valid"
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            (click)="hide(selectedProduct.id)"
           >
-            {{ commentSubmitButton }}
+            &times;
           </button>
         </div>
-      </form>
+
+        <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
+          <div class="modal-body p-3">
+            <div class="product_details_popup">
+              <label>Product Details:</label>
+              <span
+                >{{ selectedProductCode }}
+                {{ selectedProductFamily }}
+                {{ selectedProductVersion }}</span
+              >
+            </div>
+            <div class="form-group mb-0">
+              <textarea
+                class="form-control"
+                formControlName="comment"
+                name="comment"
+              ></textarea>
+              <span
+                *ngIf="
+                  popUpForm.get('comment').errors &&
+                  (popUpForm.get('comment').touched ||
+                    popUpForm.get('comment').dirty)
+                "
+              >
+                <span
+                  *ngIf="popUpForm.get('comment').errors.required"
+                  class="error"
+                >
+                  Comment is required</span
+                >
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="submit"
+              class="saveBtn"
+              [ngStyle]="{
+                opacity: !popUpForm.valid ? '0.6' : '1'
+              }"
+              [disabled]="!popUpForm.valid"
+            >
+              {{ commentSubmitButton }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
   </div>
 </div>
 
@@ -473,12 +464,12 @@
   id="myModal"
   [style.display]="showCommentModal ? 'block' : 'none'"
 >
-<div class="custom_modal_main">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header mb-0">
-        <h4 class="modal-title">Comments</h4>
-        <!-- <button
+  <div class="custom_modal_main">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header mb-0">
+          <h4 class="modal-title">Comments</h4>
+          <!-- <button
           type="button"
           class="close"
           data-dismiss="modal"
@@ -486,17 +477,17 @@
         >
           &times;
         </button> -->
-      </div>
-      <div class="modal-body overflow-hidden p-3 mb-3">
-        <div class="product_details_popup text-center">
-          <label>Product Details:</label>
-          <span
-            >{{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }}</span
-          >
         </div>
-        <!-- <div class="coment_list_content">
+        <div class="modal-body overflow-hidden p-3 mb-3">
+          <div class="product_details_popup text-center">
+            <label>Product Details:</label>
+            <span
+              >{{ selectedProductCode }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }}</span
+            >
+          </div>
+          <!-- <div class="coment_list_content">
           <ul *ngFor="let c of comments">
             <li>
               <div class="comnent_main" *ngIf="!hasUserId(c)">
@@ -519,32 +510,33 @@
           </ul>
         </div> -->
 
-        <div class="ibc-code-section">
-          <div class="container">
-            <div class="row">
-              <div class="ibc-code-main">
-                <div class="main_box">
-                  <div class="box_com" *ngFor="let c of comments">
-                    <div class="left_box">
-                      <p>
-                        {{ c.comment }}
-                      </p>
-                      <h5>{{ c.remark }}</h5>
-                      <h6>{{ c.createdAt | date: "medium" }}</h6>
-                    </div>
-                    <div class="right_box">
-                      <div class="img_box_main">
-                        <div class="img_box">
-                          <img src="assets/images/profile1.jpg" />
-                        </div>
+          <div class="ibc-code-section">
+            <div class="container">
+              <div class="row">
+                <div class="ibc-code-main">
+                  <div class="main_box">
+                    <div class="box_com" *ngFor="let c of comments">
+                      <div class="left_box">
+                        <p>
+                          {{ c.comment }}
+                        </p>
+                        <h5>{{ c.remark }}</h5>
+                        <h6>{{ c.createdAt | date: "medium" }}</h6>
                       </div>
-                      <div class="text_box">
-                        <h2 *ngIf="!hasUserId(c)">
-                          {{ c.commentedBy }}
-                        </h2>
-                        <h2 *ngIf="hasUserId(c)">
-                          me
-                        </h2>
+                      <div class="right_box">
+                        <div class="img_box_main">
+                          <div class="img_box">
+                            <img src="assets/images/profile1.jpg" />
+                          </div>
+                        </div>
+                        <div class="text_box">
+                          <h2 *ngIf="!hasUserId(c)">
+                            {{ c.commentedBy }}
+                          </h2>
+                          <h2 *ngIf="hasUserId(c)">
+                            me
+                          </h2>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -553,23 +545,20 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal_footer">
-        <button
-          class="cancelBtn"
-          type="button"
-          data-dismiss="modal"
-          (click)="hideCommentModel(selectedComment)"
-        >
-          Close
-        </button>
+        <div class="modal_footer">
+          <button
+            class="cancelBtn"
+            type="button"
+            data-dismiss="modal"
+            (click)="hideCommentModel(selectedComment)"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
-
-
 
 <div
   class="modal"
@@ -577,95 +566,96 @@
   [style.display]="showRenewModal ? 'block' : 'none'"
 >
   <div class="custom_modal_main">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">
-          Renew for
-          {{ selectedProductCode }}
-          {{ selectedProductFamily }}
-          {{ selectedProductVersion }}
-        </h4>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          (click)="hideRenewModel(selectedProduct.id)"
-        >
-          &times;
-        </button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="onSubmitStartDate()" [formGroup]="popUpStartDateForm">
-          <div class="modal-body">
-            <div class="form-group">
-              <label>Start Date</label>
-              <input
-                type="date"
-                class="form-control"
-                formControlName="startDate"
-                name="startDate"
-                [min]="getToday()"
-                [readonly]="startDateChange == false"
-              />
-              <span
-                *ngIf="
-                  popUpStartDateForm.get('startDate').errors &&
-                  (popUpStartDateForm.get('startDate').touched ||
-                    popUpStartDateForm.get('startDate').dirty)
-                "
-              >
-                <span
-                  *ngIf="popUpStartDateForm.get('startDate').errors.required"
-                  class="field_error"
-                >
-                  Start Date is required</span
-                >
-              </span>
-            </div>
-            <div class="form-group">
-              <label>Expiry Period (in months) </label>
-              <input
-                type="number"
-                class="form-control"
-                formControlName="expirationMonthCount"
-                name="expirationMonthCount"
-              />
-              <span
-                *ngIf="
-                  popUpStartDateForm.get('expirationMonthCount').errors &&
-                  (popUpStartDateForm.get('expirationMonthCount').touched ||
-                    popUpStartDateForm.get('expirationMonthCount').dirty)
-                "
-              >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            Renew for
+            {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }}
+          </h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            (click)="hideRenewModel(selectedProduct.id)"
+          >
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            (ngSubmit)="onSubmitStartDate()"
+            [formGroup]="popUpStartDateForm"
+          >
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Start Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="startDate"
+                  name="startDate"
+                  [min]="getToday()"
+                  [readonly]="startDateChange == false"
+                />
                 <span
                   *ngIf="
-                    popUpStartDateForm.get('expirationMonthCount').errors.min
+                    popUpStartDateForm.get('startDate').errors &&
+                    (popUpStartDateForm.get('startDate').touched ||
+                      popUpStartDateForm.get('startDate').dirty)
                   "
-                  class="field_error"
                 >
-                  Minimum 1 is required</span
+                  <span
+                    *ngIf="popUpStartDateForm.get('startDate').errors.required"
+                    class="field_error"
+                  >
+                    Start Date is required</span
+                  >
+                </span>
+              </div>
+              <div class="form-group">
+                <label>Expiry Period (in months) </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="expirationMonthCount"
+                  name="expirationMonthCount"
+                />
+                <span
+                  *ngIf="
+                    popUpStartDateForm.get('expirationMonthCount').errors &&
+                    (popUpStartDateForm.get('expirationMonthCount').touched ||
+                      popUpStartDateForm.get('expirationMonthCount').dirty)
+                  "
                 >
-              </span>
+                  <span
+                    *ngIf="
+                      popUpStartDateForm.get('expirationMonthCount').errors.min
+                    "
+                    class="field_error"
+                  >
+                    Minimum 1 is required</span
+                  >
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="submit"
-              class="saveBtn"
-              [ngStyle]="{
-                'opacity': !popUpStartDateForm.valid
-                  ? '0.6'
-                  : '1'
-              }"
-              [disabled]="!popUpStartDateForm.valid"
-            >
-              Renew
-            </button>
-          </div>
-        </form>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="saveBtn"
+                [ngStyle]="{
+                  opacity: !popUpStartDateForm.valid ? '0.6' : '1'
+                }"
+                [disabled]="!popUpStartDateForm.valid"
+              >
+                Renew
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>

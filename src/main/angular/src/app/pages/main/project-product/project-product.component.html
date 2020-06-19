@@ -2,6 +2,19 @@
   <div class="site_main">
     <!-- <button (click)="exportProjectProducts()">Export ProjectProducts</button>
     <button (click)="PdfProjectProducts()">PDF Download</button> -->
+
+    <form [formGroup]="searchProjectProductsForm">
+      <div class="search_bar">
+        <input
+          type="text"
+          formControlName="Search"
+          class="form-control"
+          placeholder="Search here.."
+          (ngModelChange)="onsearchProjectProductsForm($event)"
+        />
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </div>
+    </form>
     <form [formGroup]="filterStatusForm">
       <div class="search_bar">
         <!-- <label>Product Status </label> -->
@@ -624,9 +637,12 @@
         <div class="modal-header">
           <h4 class="modal-title">
             License for
-           <span>( {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }} )</span> Product
+            <span
+              >( {{ selectedProductCode }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }} )</span
+            >
+            Product
           </h4>
           <button
             type="button"
@@ -641,7 +657,7 @@
           <form (ngSubmit)="onSubmitRequest()" [formGroup]="popUpRequestForm">
             <div class="modal-body">
               <div class="form-group">
-                <label>License Count</label>
+                <label>License Count *</label>
                 <input
                   type="number"
                   class="form-control"
@@ -664,7 +680,7 @@
                 </span>
               </div>
               <div class="form-group">
-                <label>Comment </label>
+                <label>Comment * </label>
                 <textarea
                   class="form-control"
                   formControlName="comment"
