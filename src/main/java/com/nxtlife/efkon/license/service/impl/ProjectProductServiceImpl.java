@@ -290,8 +290,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		ProjectProductResponse projectProductResponse = projectProductDao.findResponseById(unmaskId);
 		projectProductResponse.setProductDetail(
 				productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
-		projectProductResponse
-				.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+		projectProductResponse.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 		return projectProductResponse;
 	}
 
@@ -321,8 +320,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						&& !projectProduct.getCreatedById().equals(getUserId())))
 				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
-			projectProduct.setProductDetail(
-					productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
+			projectProduct
+					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
 			projectProduct
@@ -377,8 +376,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						&& !projectProduct.getCreatedById().equals(getUserId())))
 				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
-			projectProduct.setProductDetail(
-					productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
+			projectProduct
+					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
 			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
 		});
@@ -525,7 +524,67 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		} else {
 			throw new NotFoundException(String.format("Project product (%s) not found", id));
 		}
+	}
 
+	@SuppressWarnings("unused")
+	@Override
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_REJECT)
+	public ProjectProductResponse undo(Long id, String comment) {
+		User user = getUser();
+		Long unmaskId = unmask(id);
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		ProjectProductStatus projectProductStatus;
+		if (roles.contains("Customer")) {
+			throw new ValidationException(
+					String.format("you don't have access to undo the project product having id [%s]", id));
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				projectProductStatus = projectProductDao.findStatusByIdAndProjectProjectManagerIdAndActive(unmaskId,
+						user.getUserId(), true);
+			} else {
+				projectProductStatus = projectProductDao.findStatusByIdAndActive(unmaskId, true);
+			}
+		}
+		int rows;
+
+		if (projectProductStatus != null) {
+			if (projectProductStatus.equals(ProjectProductStatus.SUBMIT)) {
+				rows = projectProductDao.update(unmaskId, ProjectProductStatus.DRAFT, getUserId(), new Date());
+			}
+			if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
+				rows = projectProductDao.update(unmaskId, ProjectProductStatus.SUBMIT, getUserId(), new Date());
+			}
+
+			if (projectProductStatus.equals(ProjectProductStatus.DRAFT)
+					|| projectProductStatus.equals(ProjectProductStatus.APPROVED)
+					|| projectProductStatus.equals(ProjectProductStatus.REJECT)) {
+				throw new ValidationException(String.format(
+						"It is not possibe to undo the project product whose status is (%s) ", projectProductStatus));
+			}
+
+			ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
+
+			if (comment != null && !comment.isEmpty()) {
+				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(),
+						projectProductResponse.getStatus().name(), unmaskId));
+			}
+
+			if (projectProductResponse != null) {
+				projectProductResponse.setProductDetail(
+						productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
+				projectProductResponse
+						.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
+			}
+			return projectProductResponse;
+		} else {
+			throw new NotFoundException(String.format("Project product (%s) not found", id));
+		}
 	}
 
 	@Override

@@ -122,4 +122,6 @@ public interface ProjectProductService {
 	 */
 	public Resource findByProjectIdPdf(Long projectId);
 
+	public ProjectProductResponse undo(Long id, String comment);
+
 }

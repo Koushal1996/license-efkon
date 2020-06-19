@@ -41,6 +41,7 @@ public interface LicenseService {
 	 * @param id
 	 * @param request
 	 * @return {@link LicenseResponse}}
+	 * @throws Exception
 	 */
 
 	public LicenseResponse generateKey(Long id, LicenseRequest request);
