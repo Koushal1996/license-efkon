@@ -388,19 +388,22 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 			}
 
 			endDate = setEndDate(request.getStartDate(), expirationMonth);
-			projectProduct.setLicenseCount(pplrResponse.getLicenseCount());
 			projectProduct.setEndDate(endDate);
 			projectProduct.setStatus(ProjectProductStatus.SUBMIT);
 			projectProductDao.save(projectProduct);
 
-			int rows;
-			rows = projectProductLicenseRequestDao.update(unmaskId, status, getUserId(), new Date());
 			projectProductCommentJpaDao
 					.save(new ProjectProductComment("This product was created using customer request", getUserId(),
 							ProjectProductStatus.SUBMIT.name(), projectProduct.getId()));
+
+			int rows;
+			rows = projectProductLicenseRequestDao.update(unmaskId, status, projectProduct.getLicenseCount(),
+					getUserId(), new Date());
+
 			if (rows > 0) {
-				logger.info("Project product license request {} approved successfully", unmaskId);
+				logger.info("Project product license request {} updated successfully", unmaskId);
 			}
+
 			pplrResponse = projectProductLicenseRequestDao.findByIdAndActive(unmaskId, true);
 			pplrResponse.setProjectProductResponse(
 					projectProductDao.findByIdAndActive(unmask(pplrResponse.getProjectProductId()), true));

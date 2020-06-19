@@ -55,6 +55,7 @@ public class ProjectProductRequest implements Request {
 		projectProduct.setStartDate(startDate);
 		projectProduct.settProductDetailId(unmask(productDetailId));
 		projectProduct.settProjectId(unmask(projectId));
+		projectProduct.setLicenseCount(licenseCount);
 		return projectProduct;
 
 	}

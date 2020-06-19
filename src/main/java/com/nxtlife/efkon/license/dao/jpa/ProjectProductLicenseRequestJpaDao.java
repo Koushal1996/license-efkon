@@ -41,8 +41,8 @@ public interface ProjectProductLicenseRequestJpaDao extends JpaRepository<Projec
 	public LicenseRequestStatus findStatusByIdAndActive(Long unmaskId, Boolean active);
 
 	@Modifying
-	@Query(value = "update ProjectProductLicenseRequest set status=?2, modifiedBy.id =?3, modifiedAt =?4 where id =?1")
-	public int update(Long unmaskId, LicenseRequestStatus status, Long userId, Date date);
+	@Query(value = "update ProjectProductLicenseRequest set status=?2, licenseCount=?3, modifiedBy.id =?4, modifiedAt =?5 where id =?1")
+	public int update(Long unmaskId, LicenseRequestStatus status, Integer licenseCount, Long userId, Date date);
 
 	public Integer findLicenseCountById(Long unmaskId);
 
@@ -53,5 +53,9 @@ public interface ProjectProductLicenseRequestJpaDao extends JpaRepository<Projec
 			LicenseRequestStatus pending, Long userId, boolean b);
 
 	public List<ProjectProductLicenseRequestResponse> findByStatusAndActive(LicenseRequestStatus pending, boolean b);
+
+	@Modifying
+	@Query(value = "update ProjectProductLicenseRequest set status=?2, modifiedBy.id =?3, modifiedAt =?4 where id =?1")
+	public int update(Long unmaskId, LicenseRequestStatus status, Long userId, Date date);
 
 }

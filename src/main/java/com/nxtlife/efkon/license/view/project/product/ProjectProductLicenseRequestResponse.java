@@ -32,7 +32,7 @@ public class ProjectProductLicenseRequestResponse implements Response {
 
 	private Long projectProductId;
 
-	private ProjectProductResponse projectProductResponse;
+	private ProjectProductResponse projectProduct;
 
 	private List<ProjectProductCommentResponse> comments;
 
@@ -96,11 +96,11 @@ public class ProjectProductLicenseRequestResponse implements Response {
 	}
 
 	public ProjectProductResponse getProjectProductResponse() {
-		return projectProductResponse;
+		return projectProduct;
 	}
 
 	public void setProjectProductResponse(ProjectProductResponse projectProductResponse) {
-		this.projectProductResponse = projectProductResponse;
+		this.projectProduct = projectProductResponse;
 	}
 
 	public LicenseRequestStatus getStatus() {
