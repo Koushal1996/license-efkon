@@ -526,9 +526,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		}
 	}
 
-	@SuppressWarnings("unused")
 	@Override
-	@Secured(AuthorityUtils.PROJECT_PRODUCT_REJECT)
+	@Secured(AuthorityUtils.PROJECT_PRODUCT_UNDO)
 	public ProjectProductResponse undo(Long id, String comment) {
 		User user = getUser();
 		Long unmaskId = unmask(id);
@@ -550,30 +549,28 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				projectProductStatus = projectProductDao.findStatusByIdAndActive(unmaskId, true);
 			}
 		}
-		int rows;
+		int rows = 0;
 
 		if (projectProductStatus != null) {
-			if (projectProductStatus.equals(ProjectProductStatus.SUBMIT)) {
-				rows = projectProductDao.update(unmaskId, ProjectProductStatus.DRAFT, getUserId(), new Date());
-			}
-			if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
-				rows = projectProductDao.update(unmaskId, ProjectProductStatus.SUBMIT, getUserId(), new Date());
-			}
-
 			if (projectProductStatus.equals(ProjectProductStatus.DRAFT)
 					|| projectProductStatus.equals(ProjectProductStatus.APPROVED)
 					|| projectProductStatus.equals(ProjectProductStatus.REJECT)) {
 				throw new ValidationException(String.format(
 						"It is not possibe to undo the project product whose status is (%s) ", projectProductStatus));
 			}
-
-			ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
-
-			if (comment != null && !comment.isEmpty()) {
-				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(),
-						projectProductResponse.getStatus().name(), unmaskId));
+			if (projectProductStatus.equals(ProjectProductStatus.SUBMIT)) {
+				rows = projectProductDao.update(unmaskId, ProjectProductStatus.DRAFT, getUserId(), new Date());
 			}
-
+			if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
+				rows = projectProductDao.update(unmaskId, ProjectProductStatus.SUBMIT, getUserId(), new Date());
+			}
+			if (comment != null && !comment.isEmpty()) {
+				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(), "Undo Status", unmaskId));
+			}
+			if (rows > 0) {
+				logger.info("Project product {} undo request accepted successfully", unmaskId);
+			}
+			ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
 			if (projectProductResponse != null) {
 				projectProductResponse.setProductDetail(
 						productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));

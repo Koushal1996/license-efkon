@@ -7,7 +7,5 @@ public class ProjectProductCommentRequest {
 	public String getComment() {
 		return comment;
 	}
-	
-	
 
 }
