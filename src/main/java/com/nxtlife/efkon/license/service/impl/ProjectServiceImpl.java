@@ -62,8 +62,8 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 	private static Logger logger = LoggerFactory.getLogger(ProjectServiceImpl.class);
 
 	/**
-	 * this method used to validate request. In this we are validating that
-	 * project type and project manager are valid
+	 * this method used to validate request. In this we are validating that project
+	 * type and project manager are valid
 	 * 
 	 * @param request
 	 */
@@ -198,7 +198,6 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		Long unmaskId = unmask(id);
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		ProjectResponse response;
-		Long projectProductCount;
 		if (roles.contains("Customer")) {
 			response = projectDao.findByIdAndCustomerEmailAndActive(unmaskId, user.getEmail(), true);
 		} else {
@@ -214,8 +213,10 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 			}
 		}
 
-		projectProductCount = projectProductDao.countByProjectIdAndActive(unmaskId, true);
-		response.setProductsCount(projectProductCount);
+		if (response == null) {
+			throw new NotFoundException(String.format("project having id (%s) didn't exist", id));
+		}
+
 		return response;
 	}
 

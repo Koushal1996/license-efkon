@@ -397,8 +397,7 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 							ProjectProductStatus.SUBMIT.name(), projectProduct.getId()));
 
 			int rows;
-			rows = projectProductLicenseRequestDao.update(unmaskId, status, projectProduct.getLicenseCount(),
-					getUserId(), new Date());
+			rows = projectProductLicenseRequestDao.update(unmaskId, status, getUserId(), new Date());
 
 			if (rows > 0) {
 				logger.info("Project product license request {} updated successfully", unmaskId);
