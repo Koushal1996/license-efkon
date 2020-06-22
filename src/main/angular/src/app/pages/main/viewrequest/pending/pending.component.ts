@@ -72,6 +72,12 @@ export class PendingComponent implements OnInit {
     this.selectedProduct = product;
     this.selectedRejectProductId = product.id;
     this.showRejectModal = true;
+    this.selectedProductCode =
+      product.projectProductResponse.productDetail.productCodeName;
+    this.selectedProductFamily =
+      product.projectProductResponse.productDetail.productFamilyName;
+    this.selectedProductVersion =
+      product.projectProductResponse.productDetail.versionName;
   }
   updateProductLicenseAccept(product) {
     this.productservice.selecetedProductPending.next(product);
@@ -108,7 +114,7 @@ export class PendingComponent implements OnInit {
             (data) => {
               console.log(data);
               swal(
-                "update product license request status to rejected successfully!"
+                `Product ${this.selectedProductCode} ${this.selectedProductFamily} ${this.selectedProductVersion} Rejected Successfully!`
               );
               $("#" + this.selectedProduct.id).removeClass("highlight");
 
