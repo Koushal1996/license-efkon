@@ -175,6 +175,10 @@ a.list-group-item i {
   display: inline-block;
   width: 100%;
   border-top: 1px solid #3d4957;
+  a {
+    display: flex;
+    align-items: center;
+  }
   span {
     font-size: 19px;
     position: relative;
@@ -184,4 +188,3 @@ a.list-group-item i {
     border-block-end: none;
   }
 }
-
