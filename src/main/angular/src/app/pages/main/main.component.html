@@ -1,12 +1,12 @@
 <div id="wrapper">
   <div class="header_main">
     <button class="toggle_main" id="menu-toggle" (click)="menu()">
-      <img src="assets/images/nav.svg" alt="">
+      <img src="assets/images/nav.svg" alt="" />
     </button>
     <div class="logo">
       <img src="assets/logo-name.png" alt="" />
     </div>
-   
+
     <div class="menu" id="navbarSupportedContent">
       <ul>
         <li (click)="logout()" style="cursor: pointer;">
@@ -47,6 +47,7 @@
           >
             <span class="material-icons">
               keyboard_arrow_right
+              <img [src]="p.imagePath" alt="" style="max-width: 30px;" />
             </span>
             {{ p.title }}
           </a>

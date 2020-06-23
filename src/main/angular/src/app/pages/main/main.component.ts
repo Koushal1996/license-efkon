@@ -16,25 +16,44 @@ export class MainComponent implements OnInit {
       route: "/dashboard",
       title: "Dashboard",
       privilege: "PROJECT_PRODUCT_FETCH",
+      imagePath: "assets/images/profile.jpg",
     },
-    { route: "/projects", title: "Projects", privilege: "PROJECT_FETCH" },
+    {
+      route: "/projects",
+      title: "Projects",
+      privilege: "PROJECT_FETCH",
+      imagePath: "assets/images/profile.jpg",
+    },
     {
       route: "/products/family",
       title: "Configuration",
       privilege: "PRODUCT_DETAIL_FETCH",
+      imagePath: "assets/images/profile.jpg",
     },
     {
       route: "/projectproduct",
       title: "Project-Products",
       privilege: "PROJECT_PRODUCT_FETCH",
+      imagePath: "assets/images/profile.jpg",
     },
     {
       route: "/viewrequest/pending",
       title: "View-Request",
       privilege: "LICENSE_REQUEST_FETCH",
+      imagePath: "assets/images/profile.jpg",
     },
-    { route: "/roles", title: "Roles", privilege: "ROLE_FETCH" },
-    { route: "/users", title: "Users", privilege: "USER_FETCH" },
+    {
+      route: "/roles",
+      title: "Roles",
+      privilege: "ROLE_FETCH",
+      imagePath: "assets/images/profile.jpg",
+    },
+    {
+      route: "/users",
+      title: "Users",
+      privilege: "USER_FETCH",
+      imagePath: "assets/images/profile.jpg",
+    },
   ];
   UserInfo: any;
   UserAuthorities;

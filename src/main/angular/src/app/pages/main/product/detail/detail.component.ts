@@ -87,9 +87,10 @@ export class DetailComponent implements OnInit {
 
   onSubmit() {
     this.loaderbutton = true;
+    const requestBody = this.createDetailForm.getRawValue();
     if (this.detailId) {
       this._productService
-        .updateProductDetail(this.detailId, this.createDetailForm.value)
+        .updateProductDetail(this.detailId, requestBody)
         .subscribe(
           (data) => {
             this.getProductDetail();
@@ -151,6 +152,8 @@ export class DetailComponent implements OnInit {
       version: version.version,
       description: version.description,
     });
+    this.createDetailForm.controls["productFamilyId"].disable();
+    this.createDetailForm.controls["productCodeId"].disable();
     this.productVersion = code.versions;
   }
   deleteProductDetail(detail, code, productDetailId) {
