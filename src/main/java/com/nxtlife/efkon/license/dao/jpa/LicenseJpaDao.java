@@ -64,13 +64,15 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 			Boolean active);
 
 	public List<LicenseResponse> findByProjectProductProductDetailIdAndProjectProductProjectIdAndProjectProductProjectProjectManagerIdAndActive(
-			Long unmaskedProductId, Long unmaskProjectId, Long userId, boolean b);
+			Long unmaskedProductId, Long unmaskProjectId, Long userId, Boolean active);
 
 	public List<LicenseResponse> findByProjectProductProductDetailIdAndProjectProductProjectIdAndProjectProductProjectCustomerEmailAndActive(
-			Long unmaskedProductId, Long unmaskProjectId, String email, boolean b);
+			Long unmaskedProductId, Long unmaskProjectId, String email, Boolean active);
 
 	public List<LicenseResponse> findByProjectProductProductDetailIdAndProjectProductProjectIdAndActive(
-			Long unmaskedProductId, Long unmaskProjectId, boolean b);
+			Long unmaskedProductId, Long unmaskProjectId, Boolean active);
+
+	public List<LicenseResponse> findByProjectProductIdAndAccessIdIsNullAndActive(Long unmaskId, Boolean active);
 
 //	@Modifying
 //	@Query(value = "update License set active=?2, modifiedBy.id=?3, modifiedAt=?4 where id =?1")

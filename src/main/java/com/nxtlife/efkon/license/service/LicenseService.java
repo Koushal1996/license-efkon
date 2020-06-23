@@ -3,6 +3,7 @@ package com.nxtlife.efkon.license.service;
 import java.util.List;
 
 import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
@@ -123,5 +124,15 @@ public interface LicenseService {
 	 * @return {@link Resource}
 	 */
 	public Resource findAllPdf();
+
+	/**
+	 * this method is used to generate license key by importing excel or uploading
+	 * excel file
+	 * 
+	 * @param file
+	 * @param projectProductId
+	 * @return
+	 */
+	public List<LicenseResponse> generateLicenseKeyFromExcel(MultipartFile file, Long projectProductId);
 
 }

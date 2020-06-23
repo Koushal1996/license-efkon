@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.LicenseService;
@@ -62,7 +66,14 @@ public class LicenseController {
 			@ApiResponse(description = "if required fileds are not filled properly or license doesn't exist", responseCode = "404", content = @Content(schema = @Schema(implementation = LicenseResponse.class))) })
 	public LicenseResponse generateKey(@PathVariable Long id, @Valid @RequestBody LicenseRequest request) {
 		return licenseService.generateKey(id, request);
+	}
 
+	@Transactional
+	@RequestMapping(value = "/license/generate-key/excel-upload", method = RequestMethod.PUT)
+	public List<LicenseResponse> generateLicenseKeyFromExcel(@RequestParam("file") MultipartFile file,
+			@RequestParam(required = true, value = "projectProductId") Long projectProductId) {
+
+		return licenseService.generateLicenseKeyFromExcel(file, projectProductId);
 	}
 
 	@GetMapping(value = "licenses", produces = { "application/json" })

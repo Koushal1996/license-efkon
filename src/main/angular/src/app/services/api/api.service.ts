@@ -16,9 +16,9 @@ import swal from "sweetalert";
   providedIn: "root",
 })
 export class ApiService {
-  // url: string = 'http://localhost:8080';
+   url: string = 'http://localhost:8083';
   // url: string = 'http://enforcement.us-east-2.elasticbeanstalk.com:8080';
-  url: string = "http://efkon-licence-key.us-east-2.elasticbeanstalk.com:8080";
+  //url: string = "http://efkon-licence-key.us-east-2.elasticbeanstalk.com:8080";
 
   constructor(public http: HttpClient, public router: Router) {}
 

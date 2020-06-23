@@ -16,6 +16,9 @@ import javax.annotation.PostConstruct;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -54,6 +58,7 @@ import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
 @Service("licenseServiceImpl")
 @Transactional
@@ -272,6 +277,81 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		LicenseResponse response = licenseDao.findResponseByIdAndActive(unmaskId, true);
 		response.setProjectProduct(projectProductDao.findResponseById(unmask(response.getProjectProductId())));
 		return response;
+	}
+
+	@SuppressWarnings("resource")
+	@Override
+	@Secured(AuthorityUtils.LICENSE_UPDATE)
+	public List<LicenseResponse> generateLicenseKeyFromExcel(MultipartFile file, Long projectProductId) {
+		if (file == null || file.isEmpty() || file.getSize() == 0)
+			throw new ValidationException("Pls upload valid excel file.");
+
+		if (projectProductId == null) {
+			throw new ValidationException("project product id can't be null");
+		}
+
+		Long unmaskId = unmask(projectProductId);
+
+		ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
+
+		if (projectProductResponse == null) {
+			throw new NotFoundException(String.format("project product having id (%s) didn't exist", projectProductId));
+		}
+
+		List<LicenseResponse> licenseResponse = licenseDao.findByProjectProductIdAndAccessIdIsNullAndActive(unmaskId,
+				true);
+
+		try {
+			XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
+			XSSFSheet worksheet = workbook.getSheetAt(0);
+			if (worksheet == null) {
+				throw new NotFoundException("sheet not found");
+			}
+
+			if (licenseResponse.size() != (worksheet.getPhysicalNumberOfRows() - 1)) {
+				throw new ValidationException(String.format(
+						"total number of license count whose keys are not generated of project product having id (%s) are (%s) but number of access id in excel for creating licenses is (%s) ",
+						projectProductId, licenseResponse.size(), (worksheet.getPhysicalNumberOfRows() - 1)));
+			}
+
+			for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+
+				XSSFRow row = worksheet.getRow(i);
+
+				LicenseResponse license = licenseResponse.get(i - 1);
+
+				if (row.getCell(1) != null) {
+					license.setAccessId(row.getCell(1).toString());
+					license.setGeneratedKey(
+							row.getCell(1).toString().concat(license.getCode()) + UUID.randomUUID().toString());
+				} else {
+					throw new ValidationException(String.format("Access id is not present in (%s) row of excel ", i));
+				}
+
+				if (row.getCell(2) != null) {
+					license.setName(row.getCell(2).toString());
+				}
+
+				int rows = licenseDao.update(unmask(license.getId()), license.getAccessId(), license.getGeneratedKey(),
+						license.getName(), getUserId(), new Date());
+
+				if (rows > 0) {
+					logger.info(" License {} updated successfully", unmaskId);
+				}
+
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+
+		licenseResponse = licenseDao.findByProjectProductIdAndActive(unmaskId, true);
+		projectProductResponse = projectProductDao.findResponseById(unmaskId);
+
+		for (LicenseResponse response : licenseResponse) {
+			response.setProjectProduct(projectProductResponse);
+		}
+
+		return licenseResponse;
 	}
 
 	@Override
