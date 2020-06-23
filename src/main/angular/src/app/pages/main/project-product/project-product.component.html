@@ -151,6 +151,10 @@
                   type="button"
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
+                  *ngIf="
+                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                    hasAuthority('PROJECT_PRODUCT_REJECT')
+                  "
                 >
                   Reject
                 </button>
@@ -166,6 +170,10 @@
                 </button>
                 <button
                   type="button"
+                  *ngIf="
+                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                    hasAuthority('PROJECT_PRODUCT_REJECT')
+                  "
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                 >

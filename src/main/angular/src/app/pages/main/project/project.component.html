@@ -235,7 +235,17 @@
                           <th scope="col">Start Date</th>
                           <th scope="col">End Date</th>
                           <th scope="col">Status</th>
-                          <th scope="col">Action</th>
+                          <th
+                            scope="col"
+                            *ngIf="
+                              hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                              hasAuthority('PROJECT_PRODUCT_REJECT') ||
+                              hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                              hasAuthority('PROJECT_PRODUCT_APPROVE')
+                            "
+                          >
+                            Action
+                          </th>
                         </tr>
                         <tr
                           *ngFor="let pro of project.products; index as i"
@@ -272,7 +282,14 @@
                               >comments
                             </a>
                           </td>
-                          <td *ngIf="pro.status == 'DRAFT'">
+                          <td
+                            *ngIf="
+                              pro.status == 'DRAFT' &&
+                              (hasAuthority('PROJECT_PRODUCT_UPDATE') ||
+                                hasAuthority('PROJECT_PRODUCT_DELETE') ||
+                                hasAuthority('PROJECT_PRODUCT_SUBMIT'))
+                            "
+                          >
                             <a
                               class="edit_button top_tooltip text-success"
                               *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
@@ -309,7 +326,13 @@
                               Submit
                             </button>
                           </td>
-                          <td *ngIf="pro.status == 'SUBMIT'">
+                          <td
+                            *ngIf="
+                              pro.status == 'SUBMIT' &&
+                              (hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                                hasAuthority('PROJECT_PRODUCT_REJECT'))
+                            "
+                          >
                             <button
                               class="t_save_btn"
                               type="button"
@@ -321,12 +344,23 @@
                             <button
                               class="t_save_btn bg-danger"
                               type="button"
+                              *ngIf="
+                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                                hasAuthority('PROJECT_PRODUCT_REJECT')
+                              "
                               (click)="rejectProductStatus(pro)"
                             >
                               Reject
                             </button>
                           </td>
-                          <td *ngIf="pro.status == 'REVIEWED'">
+                          <td
+                            *ngIf="
+                              pro.status == 'REVIEWED' &&
+                              (hasAuthority('PROJECT_PRODUCT_APPROVE') ||
+                                hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                                hasAuthority('PROJECT_PRODUCT_REJECT'))
+                            "
+                          >
                             <button
                               class="roleactive mr-2"
                               type="button"
@@ -339,11 +373,20 @@
                               class="roleactive bg-danger"
                               type="button"
                               (click)="rejectProductStatus(pro)"
+                              *ngIf="
+                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                                hasAuthority('PROJECT_PRODUCT_REJECT')
+                              "
                             >
                               Reject
                             </button>
                           </td>
-                          <td *ngIf="pro.status == 'APPROVED'">
+                          <td
+                            *ngIf="
+                              pro.status == 'APPROVED' &&
+                              hasAuthority('PROJECT_PRODUCT_RENEW')
+                            "
+                          >
                             <button
                               type="button"
                               class="roleactive"
@@ -360,7 +403,12 @@
                           <td *ngIf="pro.status == 'REJECTED'">
                             NA
                           </td>
-                          <td *ngIf="pro.status == 'RENEWED'">
+                          <td
+                            *ngIf="
+                              pro.status == 'RENEWED' &&
+                              hasAuthority('PROJECT_PRODUCT_RENEW')
+                            "
+                          >
                             <button
                               type="button"
                               class="roleactive"

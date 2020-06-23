@@ -10,6 +10,8 @@ import { Component, OnInit } from "@angular/core";
 export class DeshboardComponent implements OnInit {
   productCounts;
   statusvalue: any;
+  isloader: boolean = true;
+
   constructor(private _projectService: ProjectService, private route: Router) {}
 
   ngOnInit() {
@@ -19,6 +21,7 @@ export class DeshboardComponent implements OnInit {
     this._projectService.productCountByStatus().subscribe((data) => {
       console.log(data);
       this.productCounts = data;
+      this.isloader = false;
     });
   }
   getStatus(status) {

@@ -260,6 +260,7 @@ export class ProjectProductComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
+                  console.log(data);
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   //swal("Product Rejected successfully!");
@@ -605,7 +606,9 @@ export class ProjectProductComponent implements OnInit {
           (item.project.customerName &&
             item.project.customerName.toLowerCase().startsWith(key)) ||
           (item.project.customerEmail &&
-            item.project.customerEmail.toLowerCase().startsWith(key))
+            item.project.customerEmail.toLowerCase().startsWith(key)) ||
+          (item.productDetail.productCodeName &&
+            item.productDetail.productCodeName.toLowerCase().startsWith(key))
       );
     } else {
       this.projectProducts = this.projectProductsCopy;
