@@ -114,11 +114,11 @@
                     <span style="min-width: 120px;">View Licenses</span>
                   </button>
                   <button
-                    class="top_tooltip rahul border-info text-info"
+                    class="top_tooltip rahul border-seccess text-seccess"
                     (click)="createExcelLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                    <i class="fa fa-id-card-o" aria-hidden="true"></i>
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                     <span style="min-width: 120px;">Export Licenses</span>
                   </button>
                   <button
@@ -126,7 +126,7 @@
                     (click)="createPdfLicense(project)"
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
-                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     <span style="min-width: 120px;">Download Pdf</span>
                   </button>
                 </td>
@@ -444,7 +444,11 @@
       <div class="modal-content">
         <div class="modal-header mb-0">
           <h4 class="modal-title">
-            Enter Comment *
+            Enter Comment * for   <span
+            >( {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }} )</span
+          >
             <!-- <span style="color: #f00;">*</span> -->
           </h4>
           <button
@@ -459,14 +463,14 @@
 
         <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
           <div class="modal-body p-3">
-            <div class="product_details_popup">
+            <!-- <div class="product_details_popup">
               <label>Product Details:</label>
               <span
                 >{{ selectedProductCode }}
                 {{ selectedProductFamily }}
                 {{ selectedProductVersion }}</span
               >
-            </div>
+            </div> -->
             <div class="form-group mb-0">
               <textarea
                 class="form-control"
@@ -516,7 +520,11 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header mb-0">
-          <h4 class="modal-title">Comments</h4>
+          <h4 class="modal-title">Comments for     <span
+            > ( {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }} )</span
+          ></h4>
           <!-- <button
           type="button"
           class="close"
@@ -527,14 +535,14 @@
         </button> -->
         </div>
         <div class="modal-body overflow-hidden p-3 mb-3">
-          <div class="product_details_popup text-center">
+          <!-- <div class="product_details_popup text-center">
             <label>Product Details:</label>
             <span
               >{{ selectedProductCode }}
               {{ selectedProductFamily }}
               {{ selectedProductVersion }}</span
             >
-          </div>
+          </div> -->
           <!-- <div class="coment_list_content">
           <ul *ngFor="let c of comments">
             <li>
@@ -619,9 +627,9 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Renew for
-            {{ selectedProductCode }}
+          <span>(   {{ selectedProductCode }}
             {{ selectedProductFamily }}
-            {{ selectedProductVersion }}
+            {{ selectedProductVersion }} )</span>
           </h4>
           <button
             type="button"

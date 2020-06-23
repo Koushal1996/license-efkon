@@ -69,7 +69,11 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Comments</h4>
+            <h4 class="modal-title">Comments for  <span>( 
+              {{ selectedProductCode }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }} )
+            </span></h4>
             <!-- <button
               type="button"
               class="close"
@@ -81,14 +85,14 @@
           </div>
 
           <div class="modal-body overflow-hidden mb-3">
-            <div class="product_details_popup text-center">
+            <!-- <div class="product_details_popup text-center">
               <label>Product Details:</label>
               <span>
                 {{ selectedProductCode }}
                 {{ selectedProductFamily }}
                 {{ selectedProductVersion }}
               </span>
-            </div>
+            </div> -->
             <div class="ibc-code-section">
               <div class="container">
                 <div class="row">

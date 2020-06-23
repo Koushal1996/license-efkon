@@ -19,7 +19,7 @@
       <div class="search_bar">
         <!-- <label>Product Status </label> -->
         <span class="fa fa-filter" aria-hidden="true"></span>
-        <label>Filter</label>
+        <label>Filter by Status</label>
         <select
           class="form-control"
           name="productStatus"
@@ -370,8 +370,12 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header mb-0">
-          <h4 class="modal-title">Enter Comment *</h4>
-
+          <h4 class="modal-title">Enter Comment for  <span
+            > ( {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }} )</span
+          ></h4>
+        
           <button
             type="button"
             class="close"
@@ -384,14 +388,14 @@
 
         <form (ngSubmit)="onSubmitComment()" [formGroup]="popUpForm">
           <div class="modal-body p-3">
-            <div class="product_details_popup">
+            <!-- <div class="product_details_popup">
               <label>Product Details:</label>
               <span
                 >{{ selectedProductCode }}
                 {{ selectedProductFamily }}
                 {{ selectedProductVersion }}</span
               >
-            </div>
+            </div> -->
             <div class="form-group mb-0">
               <textarea
                 class="form-control"
@@ -441,7 +445,11 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Comments</h4>
+          <h4 class="modal-title">Comments for  <span> ( 
+            {{ selectedProductCode }}
+            {{ selectedProductFamily }}
+            {{ selectedProductVersion }} )
+          </span></h4>
           <!-- <button
             type="button"
             class="close"
@@ -453,14 +461,14 @@
         </div>
 
         <div class="modal-body overflow-hidden mb-3">
-          <div class="product_details_popup text-center">
+          <!-- <div class="product_details_popup text-center">
             <label>Product Details:</label>
             <span>
               {{ selectedProductCode }}
               {{ selectedProductFamily }}
               {{ selectedProductVersion }}
             </span>
-          </div>
+          </div> -->
           <!-- <div class="coment_list_content">
             <ul *ngFor="let c of comments">
               <li>
@@ -545,9 +553,9 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Renew for
-            {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }}
+            <span>( {{ selectedProductCode }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }} )</span>
           </h4>
           <button
             type="button"
