@@ -45,9 +45,9 @@
             [routerLink]="[p.route]"
             routerLinkActive="active"
           >
-              <img [src]="p.imagePath" alt="" style="max-width: 20px; filter: brightness(20); margin-right: 10px;" />
+              <img [src]="p.imagePath" alt="" style="max-width: 20px; margin-right: 10px;" />
             
-            {{ p.title }}
+            <span>{{ p.title }}</span>
           </a>
         </div>
       </ng-container>

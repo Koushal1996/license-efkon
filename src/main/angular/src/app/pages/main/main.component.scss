@@ -29,10 +29,26 @@ div#wrapper {
 }
 .toggled {
   #sidebar-wrapper {
-      margin-left: -250px;
+      width:70px;
+      overflow: hidden;
+      .list-group-item{
+        span{
+          display: none;
+        }
+        img{
+          margin-right: 0 !important;
+        }
+      }
+      .user-img {
+        width: 50px;
+        height: 50px;
+      }
+      .user-name{
+        display: none;
+      }
   }
   #page-content-wrapper {
-      width: 100%;
+    width: calc(100% - 70px);
   }
 }
 .user {
@@ -72,10 +88,18 @@ a.list-group-item.list-group-item-action.active
   background-color: #29aba4;
   color: white;
 }
+a.list-group-item.list-group-item-action.active img
+{
+  filter: brightness(10);
+}
 a.list-group-item.list-group-item-action:hover{
   background: #2c3542;
   padding-left: 25px;
 }
+// a.list-group-item.list-group-item-action:hover img, a.list-group-item.list-group-item-action:hover{
+//   filter: brightness(10);
+//   color: white;
+// }
 .list-group-item-action{
   color: #b4bcc8;
   border-style: none;
@@ -179,11 +203,11 @@ a.list-group-item i {
     display: flex;
     align-items: center;
   }
-  span {
-    font-size: 19px;
-    position: relative;
-    top: 4px;
-}
+//   span {
+//     font-size: 19px;
+//     position: relative;
+//     top: 4px;
+// }
   &:last-child{
     border-block-end: none;
   }

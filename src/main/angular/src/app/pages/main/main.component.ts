@@ -16,13 +16,13 @@ export class MainComponent implements OnInit {
       route: "/dashboard",
       title: "Dashboard",
       privilege: "PROJECT_PRODUCT_FETCH",
-      imagePath: "assets/images/dashboard4.png",
+      imagePath: "assets/images/dashboard.png",
     },
     {
       route: "/projects",
       title: "Projects",
       privilege: "PROJECT_FETCH",
-      imagePath: "assets/images/project1.png",
+      imagePath: "assets/images/project.png",
     },
     {
       route: "/products/family",
@@ -34,25 +34,25 @@ export class MainComponent implements OnInit {
       route: "/projectproduct",
       title: "Project-Products",
       privilege: "PROJECT_PRODUCT_FETCH",
-      imagePath: "assets/images/product_project1.png",
+      imagePath: "assets/images/product_project.png",
     },
     {
       route: "/viewrequest/pending",
       title: "View-Request",
       privilege: "LICENSE_REQUEST_FETCH",
-      imagePath: "assets/images/view_request1.png",
+      imagePath: "assets/images/view_request.png",
     },
     {
       route: "/roles",
       title: "Roles",
       privilege: "ROLE_FETCH",
-      imagePath: "assets/images/role2.png",
+      imagePath: "assets/images/role.png",
     },
     {
       route: "/users",
       title: "Users",
       privilege: "USER_FETCH",
-      imagePath: "assets/images/user4.png",
+      imagePath: "assets/images/user.png",
     },
   ];
   UserInfo: any;
