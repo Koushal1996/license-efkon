@@ -81,8 +81,6 @@ export class ProjectComponent implements OnInit {
             item.customerName.toLowerCase().startsWith(key)) ||
           (item.customerEmail &&
             item.customerEmail.toLowerCase().startsWith(key)) ||
-          // (item.projectManagerName &&
-          //   item.projectManagerName.toLowerCase().startsWith(key)) ||
           (item.customerContactNo && item.customerContactNo.startsWith(key))
       );
     } else {
