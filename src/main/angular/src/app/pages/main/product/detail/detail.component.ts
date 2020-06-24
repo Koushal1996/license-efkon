@@ -55,7 +55,6 @@ export class DetailComponent implements OnInit {
     );
     this.createDetailForm.controls["version"].reset();
     this.createDetailForm.controls["description"].reset();
-    //this.productCodes = [];
   }
 
   onProductCodeSelect(productCodeId) {
@@ -156,15 +155,10 @@ export class DetailComponent implements OnInit {
     this.createDetailForm.controls["productCodeId"].disable();
     this.productVersion = code.versions;
   }
-  deleteProductDetail(detail, code, productDetailId) {
-    // console.log(code.versions);
-    // const Selectedversion = code.versions.find((item) => {
-    //   return item.version ;
-    // });
-    // console.log(Selectedversion);
+  deleteProductDetail(detail, code, productDetailId, version) {
     $("#" + productDetailId).addClass("highlight");
     swal({
-      text: `Are you sure, You want to delete ${detail.name} ${code.name}?`,
+      text: `Are you sure, You want to delete ${detail.name} ${code.name} ${version.version}?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
