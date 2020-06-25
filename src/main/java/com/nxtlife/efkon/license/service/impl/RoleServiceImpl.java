@@ -127,7 +127,7 @@ public class RoleServiceImpl extends BaseService implements RoleService {
 		role.setAuthorities(authorityDao.findByAuthorityRolesRoleId(unmask(role.getId())));
 		return role;
 	}
-	
+
 	@Override
 	@Secured(AuthorityUtils.ROLE_UPDATE)
 	public RoleResponse update(Long id, RoleRequest request) {
@@ -193,7 +193,7 @@ public class RoleServiceImpl extends BaseService implements RoleService {
 		if (role.getName().equalsIgnoreCase("SuperAdmin")) {
 			throw new ValidationException("SuperAdmin role can't be delete");
 		}
-		Set<Long> userIds = userRoleJpaDao.findUserIdsByRoleId(unmaskId);
+		Set<Long> userIds = userRoleJpaDao.findUserIdsByRoleIdAndActive(unmaskId, true);
 		if (userIds.isEmpty()) {
 			int rows = roleDao.delete(unmaskId, getUserId(), new Date());
 			if (rows > 0) {
