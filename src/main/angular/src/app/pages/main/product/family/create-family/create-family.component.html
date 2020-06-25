@@ -6,7 +6,7 @@
         class="form_main"
         (ngSubmit)="onSubmit()"
       >
-        <h3>{{ familyId ? "Edit" : "Add" }} product Family</h3>
+        <h3>{{ familyId ? "Edit" : "Add" }} Product Family</h3>
         <div class="input_feild pt-0">
           <div class="category_col">
             <div class="row border-bottom">
@@ -43,7 +43,7 @@
                     class="form-control"
                     formControlName="code"
                     name="code"
-                    placeholder="code"
+                    placeholder="Code"
                   />
                   <span
                     *ngIf="
@@ -68,7 +68,7 @@
                     class="form-control"
                     formControlName="description"
                     name="description"
-                    placeholder="description"
+                    placeholder="Description"
                   />
                   <span
                     *ngIf="
@@ -109,6 +109,7 @@
                             tupe="text"
                             formControlName="name"
                             name="productCodeName"
+                            placeholder="Product Codes"
                             class="form-control mt-2"
                           />
                           <button
@@ -167,9 +168,6 @@
           </div>
         </div>
         <div class="form_footer pr-3">
-          <button type="button" class="cancelBtn" (click)="back()">
-            Back
-          </button>
           <button
             type="submit"
             class="saveBtn"
@@ -185,6 +183,9 @@
             <i class="fa fa-refresh fa-spin"></i>
             <!-- Loading -->
             {{ familyId ? "Updating...." : "Submitting...." }}
+          </button>
+          <button type="button" class="cancelBtn" (click)="back()">
+            Back
           </button>
         </div>
       </form>

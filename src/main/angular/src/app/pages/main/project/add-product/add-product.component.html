@@ -34,7 +34,7 @@
       </div>
 
       <div class="product_main mt-3">
-        <h3 class="m-0">Added Product</h3>
+        <h3 class="m-0">Added Products</h3>
         <div class="added_pct_scl">
           <div *ngIf="selectedProductLoader" class="loader">
             <img
@@ -197,6 +197,7 @@
                     (ngModelChange)="onLicenseChange($event)"
                     formControlName="licenseTypeId"
                   >
+                    <option value="" disabled>Select License Type</option>
                     <option
                       *ngFor="let license of licenseType"
                       value="{{ license.id }}"
@@ -227,7 +228,7 @@
                     name="expirationPeriodType"
                     (ngModelChange)="onExpirationChange($event)"
                     formControlName="expirationPeriodType"
-                  >
+                    ><option value="" disabled>Select Expiry</option>
                     <option>LIMITED</option>
                     <option>LIFETIME </option>
                   </select>
@@ -258,6 +259,7 @@
                     class="form-control"
                     formControlName="expirationMonthCount"
                     name="expirationMonthCount"
+                    placeholder="Expiry Period (in months)"
                     (ngModelChange)="onExpirationMonthCount($event)"
                   />
                   <span

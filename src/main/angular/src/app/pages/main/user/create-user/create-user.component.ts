@@ -38,6 +38,7 @@ export class CreateUserComponent implements OnInit {
         "",
         [
           Validators.required,
+          Validators.email,
           Validators.pattern("^[a-z0-9._%+-]+@[a-z.-]+\\.[a-z]{2,4}$"),
         ],
       ],
@@ -134,16 +135,18 @@ export class CreateUserComponent implements OnInit {
         .updateUser(this.userId, this.createUserForm.value)
         .subscribe(
           (data) => {
+            console.log(data);
             this.route.navigate(["users"]);
-            swal("Update User Successfully!");
+            swal(`${data.name} updated Successfully!`);
           },
           (error) => {}
         );
     } else {
       this._adminService.addUser(this.createUserForm.value).subscribe(
         (data) => {
+          console.log(data);
           this.route.navigate(["users"]);
-          swal("New User Added Successfully!");
+          swal(`New User (${data.name}) Added Successfully!`);
         },
         (error) => {}
       );

@@ -311,7 +311,7 @@ export class ProjectProductComponent implements OnInit {
           }
         });
         break;
-      case "Approved":
+      case "Approve":
         swal({
           //title: "Are you sure?",
           text: "Are you sure,You want to Approve this?",
@@ -346,6 +346,41 @@ export class ProjectProductComponent implements OnInit {
           }
         });
         break;
+      case "Recall":
+        swal({
+          //title: "Are you sure?",
+          text: "Are you sure,You want to Recall this?",
+          icon: "warning",
+          closeOnClickOutside: false,
+          buttons: ["Yes", "No"],
+          dangerMode: true,
+        }).then((willDelete) => {
+          if (willDelete) {
+            $("#" + this.selectedProduct.id).removeClass("highlight");
+          } else {
+            this._projectService
+              .recallProductStatus(
+                this.selectedProduct.id,
+                this.popUpForm.value
+              )
+              .subscribe(
+                (data) => {
+                  console.log(data);
+                  this.selectedProduct.status = data.status;
+                  this.selectedProduct.comments = data.comments;
+                  this.getProjectProducts();
+                  //swal("Product Approved successfully!");
+                  swal(
+                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) recalled successfully!`
+                  );
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                },
+                (error) => {
+                  $("#" + this.selectedProduct.id).removeClass("highlight");
+                }
+              );
+          }
+        });
     }
   }
   submitProductStatus(project) {
@@ -377,7 +412,7 @@ export class ProjectProductComponent implements OnInit {
     this.selectedProductVersion = project.productDetail.versionName;
     this.showModal = true;
     this.popUpForm.reset();
-    this.commentSubmitButton = "Approved";
+    this.commentSubmitButton = "Approve";
     this.selectedProduct = project;
   }
   rejectProductStatus(project) {
@@ -391,7 +426,17 @@ export class ProjectProductComponent implements OnInit {
     this.selectedProduct = project;
     this.popUpForm.reset();
   }
-
+  recallProductStatus(project) {
+    $("#" + project.id).addClass("highlight");
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
+    this.showModal = true;
+    this.popUpForm.controls["comment"].setValidators(Validators.required);
+    this.commentSubmitButton = "Recall";
+    this.selectedProduct = project;
+    this.popUpForm.reset();
+  }
   hide(selectedProduct) {
     this.showModal = false;
     $("#" + selectedProduct).removeClass("highlight");

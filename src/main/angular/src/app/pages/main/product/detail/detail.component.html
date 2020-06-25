@@ -108,7 +108,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">
-          Products detail {{ detailId ? "Edit" : "Add" }}
+          {{ detailId ? "Edit" : "Add" }} Product Details
         </h4>
         <button class="close" type="button" (click)="close()">×</button>
       </div>
@@ -121,6 +121,7 @@
               (ngModelChange)="onProductFamilySelect($event)"
               formControlName="productFamilyId"
             >
+              <option value="" disabled>Select Product Family</option>
               <option
                 value="{{ name.id }}"
                 [disabled]="detailId"
@@ -150,6 +151,7 @@
               formControlName="productCodeId"
               (ngModelChange)="onProductCodeSelect($event)"
             >
+              <option value="" disabled>Select Product Code</option>
               <option
                 *ngFor="let productCode of productCodes"
                 value="{{ productCode.id }}"
@@ -183,7 +185,12 @@
                 {{ version.version }}
               </span>
             </label>
-            <input type="text" class="form-control" formControlName="version" />
+            <input
+              type="text"
+              class="form-control"
+              formControlName="version"
+              placeholder="Version"
+            />
             <span
               *ngIf="
                 createDetailForm.get('version').errors &&
@@ -204,6 +211,7 @@
               name="description"
               class="form-control"
               formControlName="description"
+              placeholder="Description"
             ></textarea>
             <span
               *ngIf="
