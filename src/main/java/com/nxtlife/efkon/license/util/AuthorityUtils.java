@@ -248,4 +248,15 @@ public final class AuthorityUtils {
 	 * AUTJORITY TO UPDATE RENEW CONFIGURATION
 	 */
 	public static final String RENEW_CONFIGURATION_UPDATE = "ROLE_RENEW_CONFIGURATION_UPDATE";
+
+	/**
+	 * AUTJORITY TO DELETE LICENSE TYPE
+	 */
+	public static final String LICENSE_TYPE_DELETE = "ROLE_LICENSE_TYPE_DELETE";
+
+	/**
+	 * AUTJORITY TO LICENSE TYPE FETCH
+	 */
+	public static final String LICENSE_TYPE_FETCH = "ROLE_LICENSE_TYPE_FETCH";
+
 }

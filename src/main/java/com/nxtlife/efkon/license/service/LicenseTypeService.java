@@ -23,4 +23,27 @@ public interface LicenseTypeService {
 	 */
 	public SuccessResponse update(Long id, Integer monthCount);
 
+	/**
+	 * this method is used to delete the license typw
+	 * 
+	 * @param id
+	 * @return success message if updated successfully
+	 */
+	public SuccessResponse delete(Long id);
+
+	/**
+	 * this method is used to reactivate the deactivated license type;
+	 * 
+	 * @param id
+	 * @return {@link LicenseTypeResponse}
+	 */
+	public LicenseTypeResponse reactivate(Long id);
+
+	/**
+	 * this method used to fetch all activated license types
+	 * 
+	 * @return list of {@link LicenseTypeResponse}
+	 */
+	public List<LicenseTypeResponse> findAllActivated();
+
 }

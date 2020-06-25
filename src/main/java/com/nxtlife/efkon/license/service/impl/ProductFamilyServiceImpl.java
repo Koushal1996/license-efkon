@@ -3,6 +3,7 @@ package com.nxtlife.efkon.license.service.impl;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.ProductCodeJpaDao;
-import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductFamilyJpaDao;
 import com.nxtlife.efkon.license.entity.product.ProductCode;
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
@@ -39,8 +39,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 	@Autowired
 	private ProductCodeJpaDao productCodeDao;
 
-	@Autowired
-	private ProductDetailJpaDao productDetailDao;
+//	@Autowired
+//	private ProductDetailJpaDao productDetailDao;
 
 	public void validate(ProductFamilyRequest request) {
 		if (productFamilyDao.existsByName(request.getName())) {
@@ -76,11 +76,26 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_FAMILY_FETCH)
-	public List<ProductFamilyResponse> findAll() {
+	public List<ProductFamilyResponse> findAllActivated() {
 		List<ProductFamilyResponse> productFamilies = productFamilyDao.findByActive(true);
 		productFamilies.stream().forEach(productFamily -> productFamily
 				.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmask(productFamily.getId()), true)));
+		if (productFamilies.isEmpty()) {
+			throw new NotFoundException("no product family found");
+		}
 		return productFamilies;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_FAMILY_FETCH)
+	public List<ProductFamilyResponse> findAll() {
+		List<ProductFamilyResponse> responseList = productFamilyDao.findAll().stream().map(ProductFamilyResponse::get)
+				.collect(Collectors.toList());
+
+		if (responseList.isEmpty()) {
+			throw new NotFoundException("no product family found");
+		}
+		return responseList;
 	}
 
 	@Override
@@ -146,16 +161,34 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		if (!productFamilyDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("Product Family (%s) not found", id));
 		}
-		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
-			throw new ValidationException(String.format(
-					"Product family(%s) can't be delete as some of the version are related to this product family ",
-					unmaskId));
-		}
-		productCodeDao.deleteByProductFamilyId(id, getUserId(), new Date());
+//		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
+//			throw new ValidationException(String.format(
+//					"Product family(%s) can't be delete as some of the version are related to this product family ",
+//					unmaskId));
+//		}
+		productCodeDao.deleteByProductFamilyId(unmaskId, getUserId(), new Date());
 		int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("Product family {} successfuly deleted", unmaskId);
 		}
 		return new SuccessResponse(HttpStatus.OK.value(), "Product family deleted successfully");
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_FAMILY_UPDATE)
+	public ProductFamilyResponse reactivate(Long id) {
+		Long unmaskId = unmask(id);
+		if (!productFamilyDao.existsById(unmaskId)) {
+			throw new NotFoundException(String.format("Product Family (%s) not found", id));
+		}
+		int rows = productFamilyDao.reactivate(unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("Product family {} successfuly reactivated", unmaskId);
+		}
+		productCodeDao.updateByProductFamilyId(unmaskId, getUserId(), new Date());
+
+		ProductFamilyResponse response = productFamilyDao.findResponseById(unmaskId);
+		response.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmaskId, true));
+		return response;
 	}
 }
