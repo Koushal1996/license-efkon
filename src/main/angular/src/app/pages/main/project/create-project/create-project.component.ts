@@ -44,12 +44,14 @@ export class CreateProjectComponent implements OnInit {
           console.log(data);
           this.projectForm.patchValue(data);
           this.projectForm.controls["projectTypeId"].disable();
+          this.projectForm.controls["customerEmail"].disable();
         } else {
           this._projectService
             .getProjectById(this.projectId)
             .subscribe((data) => {
               this.projectForm.patchValue(data);
               this.projectForm.controls["projectTypeId"].disable();
+              this.projectForm.controls["customerEmail"].disable();
             });
         }
       });
@@ -65,6 +67,7 @@ export class CreateProjectComponent implements OnInit {
         "",
         [
           Validators.required,
+          Validators.email,
           Validators.pattern("^[a-z0-9._%+-]+@[a-z.-]+\\.[a-z]{2,4}$"),
         ],
       ],

@@ -19,6 +19,7 @@ export class UserComponent implements OnInit {
   showModal: boolean = false;
   selectedAuthorites: any;
   itemId: any;
+  roleName: any;
 
   constructor(
     private _admin: AdminService,
@@ -64,7 +65,7 @@ export class UserComponent implements OnInit {
         this._admin.deleteUser(item.id).subscribe(
           (data) => {
             item.active = false;
-            swal(`${item.name} Delete successfully!`);
+            swal(`${item.name} deleted successfully!`);
             $("#" + item.id).removeClass("highlight");
           },
           (error) => $("#" + item.id).removeClass("highlight")
@@ -102,7 +103,7 @@ export class UserComponent implements OnInit {
         this._admin.activateUser(item.id).subscribe(
           (data) => {
             item.active = true;
-            swal(`${item.name} Activate successfully!`);
+            swal(`${item.name} activated successfully!`);
             $("#" + item.id).removeClass("highlight");
           },
           (error) => {
@@ -118,6 +119,7 @@ export class UserComponent implements OnInit {
     if (key) {
       this.users = this.users.filter(
         (item) =>
+          //console.log(item)
           (item.name && item.name.toLowerCase().startsWith(key)) ||
           (item.username && item.username.toLowerCase().startsWith(key)) ||
           (item.email && item.email.toLowerCase().startsWith(key)) ||
@@ -127,6 +129,9 @@ export class UserComponent implements OnInit {
       this.users = this.usersCopy;
     }
   }
+
+  // onSearchUser(key) {
+  // }
 
   sortAphabetically() {
     console.log(this.users);

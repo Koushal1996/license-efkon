@@ -212,7 +212,9 @@ export class EditProductComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log(data);
-          swal(`Product accepted successfully!`);
+          swal(
+            `Product (${requestBody.productFamily.name} ${requestBody.productCode.name}) accepted successfully!`
+          );
           this.route.navigate(["viewrequest/pending"]);
           this.productForm.reset();
         },

@@ -136,8 +136,9 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
         .updateRole(this.roleId, this.createRoleForm.value)
         .subscribe(
           (data) => {
+            console.log();
             this.route.navigate(["roles"]);
-            swal("Updated Role successfully!");
+            swal(`${data.name} updated successfully!`);
           },
           (error) => {
             this.loaderbutton = false;
@@ -147,7 +148,7 @@ export class CreateRoleComponent implements OnInit, AfterViewInit {
       this._adminService.addRole(this.createRoleForm.value).subscribe(
         (data) => {
           this.route.navigate(["roles"]);
-          swal("New role added successfully!");
+          swal(`New role (${data.name}) added successfully!`);
         },
         (error) => {
           this.loaderbutton = false;

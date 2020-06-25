@@ -56,7 +56,6 @@
                     class="form-control"
                     formControlName="customerEmail"
                     name="customerEmail"
-                    [readonly]="projectId"
                   />
                   <span
                     *ngIf="
@@ -73,6 +72,11 @@
                     <span
                       *ngIf="projectForm.get('customerEmail').errors.pattern"
                       class="field_error"
+                      >Enter a valid Email</span
+                    >
+                    <span
+                      *ngIf="createUserForm.get('customerEmail').errors.email"
+                      class="error"
                       >Enter a valid Email</span
                     >
                   </span>
@@ -209,13 +213,6 @@
         </div>
         <div class="form_footer">
           <button
-            type="button"
-            class="cancelBtn"
-            (click)="backCreateProjectForm()"
-          >
-            Back
-          </button>
-          <button
             type="submit"
             class="saveBtn mr-3"
             *ngIf="!loaderbutton"
@@ -228,6 +225,13 @@
           </button>
           <button class="saveBtn mr-3" *ngIf="loaderbutton">
             {{ projectId ? "Updating...." : "Submitting...." }}
+          </button>
+          <button
+            type="button"
+            class="cancelBtn"
+            (click)="backCreateProjectForm()"
+          >
+            Back
           </button>
         </div>
       </form>

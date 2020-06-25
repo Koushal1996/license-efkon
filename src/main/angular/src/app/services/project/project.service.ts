@@ -48,6 +48,9 @@ export class ProjectService {
   renewProjectProduct(Id, data) {
     return this.api.put(`api/project/product/${Id}​/renew`, data);
   }
+  recallProductStatus(Id, data) {
+    return this.api.put(`api/project/product/${Id}​/undo`, data);
+  }
   getProjectTypes() {
     return this.api.get("api/project/types");
   }

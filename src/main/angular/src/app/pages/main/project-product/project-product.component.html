@@ -63,7 +63,24 @@
               <!-- <button (click)="sortAphabetically()">up</button>
               <button (click)="reverseAphabetically()">down</button> -->
             </th>
-            <th scope="col" style="min-width: 112px;">Action</th>
+            <th
+              scope="col"
+              style="min-width: 112px;"
+              *ngIf="
+                hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                hasAuthority('PROJECT_PRODUCT_REJECT') ||
+                hasAuthority('PROJECT_PRODUCT_APPROVE') ||
+                hasAuthority('PROJECT_PRODUCT_UPDATE') ||
+                hasAuthority('PROJECT_PRODUCT_DELETE') ||
+                hasAuthority('PROJECT_PRODUCT_SUBMIT') ||
+                hasAuthority('PROJECT_PRODUCT_RENEW') ||
+                hasAuthority('LICENSE_FETCH') ||
+                hasAuthority('LICENSE_REQUEST_CREATE') ||
+                hasAuthority('PROJECT_PRODUCT_UNDO')
+              "
+            >
+              Action
+            </th>
           </tr>
         </thead>
 
@@ -114,7 +131,14 @@
                   >comments
                 </a>
               </td>
-              <td *ngIf="project.status == 'DRAFT'">
+              <td
+                *ngIf="
+                  project.status == 'DRAFT' &&
+                  (hasAuthority('PROJECT_PRODUCT_UPDATE') ||
+                    hasAuthority('PROJECT_PRODUCT_DELETE') ||
+                    hasAuthority('PROJECT_PRODUCT_SUBMIT'))
+                "
+              >
                 <a
                   class="edit_button text-success"
                   *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
@@ -138,7 +162,14 @@
                   Submit
                 </button>
               </td>
-              <td *ngIf="project.status == 'SUBMIT'">
+              <td
+                *ngIf="
+                  project.status == 'SUBMIT' &&
+                  (hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                    hasAuthority('PROJECT_PRODUCT_REJECT') ||
+                    hasAuthority('PROJECT_PRODUCT_UNDO'))
+                "
+              >
                 <button
                   type="button"
                   class="t_save_btn"
@@ -158,8 +189,27 @@
                 >
                   Reject
                 </button>
+                <button
+                  type="button"
+                  class="t_save_btn bg-danger"
+                  (click)="recallProductStatus(project)"
+                  *ngIf="
+                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                    hasAuthority('PROJECT_PRODUCT_UNDO')
+                  "
+                >
+                  Recall
+                </button>
               </td>
-              <td *ngIf="project.status == 'REVIEWED'">
+              <td
+                *ngIf="
+                  project.status == 'REVIEWED' &&
+                  (hasAuthority('PROJECT_PRODUCT_APPROVE') ||
+                    hasAuthority('PROJECT_PRODUCT_REVIEW') ||
+                    hasAuthority('PROJECT_PRODUCT_REJECT') ||
+                    hasAuthority('PROJECT_PRODUCT_UNDO'))
+                "
+              >
                 <button
                   class="t_save_btn"
                   type="button"
@@ -179,8 +229,26 @@
                 >
                   Reject
                 </button>
+                <button
+                  type="button"
+                  class="t_save_btn bg-danger"
+                  (click)="recallProductStatus(project)"
+                  *ngIf="
+                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                    hasAuthority('PROJECT_PRODUCT_UNDO')
+                  "
+                >
+                  Recall
+                </button>
               </td>
-              <td *ngIf="project.status == 'APPROVED'">
+              <td
+                *ngIf="
+                  project.status == 'APPROVED' &&
+                  (hasAuthority('PROJECT_PRODUCT_RENEW') ||
+                    hasAuthority('LICENSE_FETCH') ||
+                    hasAuthority('LICENSE_REQUEST_CREATE'))
+                "
+              >
                 <button
                   type="button"
                   class="roleactive"
@@ -214,7 +282,14 @@
                   Request
                 </button>
               </td>
-              <td *ngIf="project.status == 'RENEWED'">
+              <td
+                *ngIf="
+                  project.status == 'RENEWED' &&
+                  (hasAuthority('PROJECT_PRODUCT_RENEW') ||
+                    hasAuthority('LICENSE_FETCH') ||
+                    hasAuthority('LICENSE_REQUEST_CREATE'))
+                "
+              >
                 <button
                   type="button"
                   *ngIf="
@@ -248,9 +323,9 @@
                   Request
                 </button>
               </td>
-              <td *ngIf="project.status == 'REJECTED'">
+              <!-- <td *ngIf="project.status == 'REJECTED'">
                 NA
-              </td>
+              </td> -->
             </tr>
             <tr>
               <td colspan="12" class="padding" *ngIf="project.licenses.length">
@@ -370,12 +445,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header mb-0">
-          <h4 class="modal-title">Enter Comment for  <span
-            > ( {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }} )</span
-          ></h4>
-        
+          <h4 class="modal-title">
+            Enter Comment * for
+            <span>
+              ( {{ selectedProductCode }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }} )</span
+            >
+          </h4>
+
           <button
             type="button"
             class="close"
@@ -445,11 +523,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Comments for  <span> ( 
-            {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }} )
-          </span></h4>
+          <h4 class="modal-title">
+            Comments for
+            <span>
+              (
+              {{ selectedProductCode }}
+              {{ selectedProductFamily }}
+              {{ selectedProductVersion }} )
+            </span>
+          </h4>
           <!-- <button
             type="button"
             class="close"
@@ -553,9 +635,11 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Renew for
-            <span>( {{ selectedProductCode }}
+            <span
+              >( {{ selectedProductCode }}
               {{ selectedProductFamily }}
-              {{ selectedProductVersion }} )</span>
+              {{ selectedProductVersion }} )</span
+            >
           </h4>
           <button
             type="button"
@@ -573,7 +657,7 @@
           >
             <div class="modal-body">
               <div class="form-group">
-                <label>Start Date</label>
+                <label>Start Date *</label>
                 <input
                   type="date"
                   class="form-control"
@@ -598,7 +682,7 @@
                 </span>
               </div>
               <div class="form-group">
-                <label>Expiry Period (in months) </label>
+                <label>Expiry Period (in months) *</label>
                 <input
                   type="number"
                   class="form-control"
