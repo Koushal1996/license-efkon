@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,7 +35,7 @@ public class LicenseTypeController {
 	@Autowired
 	private LicenseTypeService licenseTypeService;
 
-	@GetMapping(value = "license/types", produces = { "application/json" })
+	@GetMapping(value = "license/types/all", produces = { "application/json" })
 	@Operation(summary = "Find all license types", description = "return a list of license types", tags = {
 			"LicenseType", "Project Product" })
 	@ApiResponses(value = {
@@ -42,6 +43,17 @@ public class LicenseTypeController {
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project types", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<LicenseTypeResponse> findAll() {
 		return licenseTypeService.findAll();
+
+	}
+
+	@GetMapping(value = "license/types", produces = { "application/json" })
+	@Operation(summary = "Find all activated license types", description = "return a list of activated license types", tags = {
+			"LicenseType", "Project Product" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "License types successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseTypeResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project types", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<LicenseTypeResponse> findAllActivated() {
+		return licenseTypeService.findAllActivated();
 
 	}
 
@@ -54,5 +66,28 @@ public class LicenseTypeController {
 	public SuccessResponse update(@PathVariable("id") Long id, @Valid @RequestBody LicenseTypeRequest request) {
 		return licenseTypeService.update(id, request.getMonthCount());
 
+	}
+
+	@PutMapping(value = "license/type/reactivate/{id}", consumes = { "application/json" }, produces = {
+			"application/json" })
+	@Operation(summary = "Reactivete license type", description = "success message after reactivating license type", tags = {
+			"LicenseType" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "License types Reactivated successfully", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to reactivate project type", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public LicenseTypeResponse reactivate(@PathVariable("id") Long id) {
+		return licenseTypeService.reactivate(id);
+
+	}
+
+	@DeleteMapping(value = "license/type/{id}", produces = { "application/json" })
+	@Operation(summary = "delete license type ", description = "return success response after successfully deleting the license type", tags = {
+			"License Type" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "License type successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to delete License type", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If License type id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public SuccessResponse delete(@PathVariable Long id) {
+		return licenseTypeService.delete(id);
 	}
 }

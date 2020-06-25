@@ -41,7 +41,11 @@ public interface ProductCodeJpaDao extends JpaRepository<ProductCode, Long> {
 	public int deleteByIds(List<Long> ids, Long userId, Date date);
 
 	@Modifying
-	@Query(value = "update ProductCode set active = false, modified_by =?2, modified_at =?3 where id =?1")
-	public int deleteByProductFamilyId(Long id, Long userId, Date date);
+	@Query(value = "update ProductCode set active = false, modified_by =?2, modified_at =?3 where product_Family_id =?1")
+	public int deleteByProductFamilyId(Long unmaskId, Long userId, Date date);
+
+	@Modifying
+	@Query(value = "update ProductCode set active = true, modified_by =?2, modified_at =?3 where product_Family_id =?1")
+	public int updateByProductFamilyId(Long unmaskId, Long userId, Date date);
 
 }

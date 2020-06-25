@@ -33,4 +33,8 @@ public interface ProductFamilyJpaDao extends JpaRepository<ProductFamily, Long> 
 	@Query(value = "update ProductFamily set active = false, modified_by =?2, modified_at =?3 where id =?1")
 	public int delete(Long id, Long userId, Date date);
 
+	@Modifying
+	@Query(value = "update ProductFamily set active = true, modified_by =?2, modified_at =?3 where id =?1")
+	public int reactivate(Long unmaskId, Long userId, Date date);
+
 }

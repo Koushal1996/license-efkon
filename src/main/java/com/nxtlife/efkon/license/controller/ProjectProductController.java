@@ -134,7 +134,7 @@ public class ProjectProductController {
 			@ApiResponse(description = "If user doesn't have access to undo product details in project", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If project product id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))),
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	@Secured({ AuthorityUtils.PROJECT_PRODUCT_REVIEW, AuthorityUtils.PROJECT_PRODUCT_UNDO })
+	@Secured({ AuthorityUtils.PROJECT_PRODUCT_UNDO })
 	public ProjectProductResponse undo(@PathVariable Long id, @RequestBody ProjectProductCommentRequest request) {
 		return projectProductService.undo(id, request.getComment());
 	}
