@@ -26,10 +26,10 @@
               <td>{{ i + 1 }}</td>
               <td>
                 {{
-                  product.projectProductResponse.productDetail.productCodeName
+                  product.projectProductResponse.productDetail.productFamilyName
                 }}
                 {{
-                  product.projectProductResponse.productDetail.productFamilyName
+                  product.projectProductResponse.productDetail.productCodeName
                 }}
                 {{ product.projectProductResponse.productDetail.versionName }}
               </td>
@@ -70,11 +70,16 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Comments for <span>( 
-            {{ selectedProductCode }}
-            {{ selectedProductFamily }}
-            {{ selectedProductVersion }} )
-          </span></h4>
+          <h4 class="modal-title">
+            Comments for
+            <span
+              >(
+
+              {{ selectedProductFamily }}
+              {{ selectedProductCode }}
+              {{ selectedProductVersion }} )
+            </span>
+          </h4>
           <!-- <button
             type="button"
             class="close"

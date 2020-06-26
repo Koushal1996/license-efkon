@@ -259,7 +259,7 @@
                               hasAuthority('PROJECT_PRODUCT_UPDATE') ||
                               hasAuthority('PROJECT_PRODUCT_DELETE') ||
                               hasAuthority('PROJECT_PRODUCT_SUBMIT') ||
-                              hasAuthority('PROJECT_PRODUCT_RENEW')||
+                              hasAuthority('PROJECT_PRODUCT_RENEW') ||
                               hasAuthority('PROJECT_PRODUCT_UNDO')
                             "
                           >
@@ -273,8 +273,8 @@
                         >
                           <td>{{ i + 1 }}</td>
                           <td>
-                            {{ pro.productDetail.productCodeName }}
                             {{ pro.productDetail.productFamilyName }}
+                            {{ pro.productDetail.productCodeName }}
                             {{ pro.productDetail.versionName }}
                           </td>
                           <td>{{ pro.licenseCount }}</td>
@@ -285,12 +285,10 @@
                           <td *ngIf="!pro.licenseTypeName">NA</td>
 
                           <td>{{ pro.startDate }}</td>
-                          <td *ngIf="pro.expirationPeriodType == 'LIMITED'">
+                          <td>
                             {{ pro.endDate }}
                           </td>
-                          <td *ngIf="pro.expirationPeriodType == 'LIFETIME'">
-                            NA
-                          </td>
+
                           <td>
                             {{ pro.status }}
                             <br />
@@ -489,8 +487,8 @@
           <h4 class="modal-title">
             Enter Comment * for
             <span
-              >( {{ selectedProductCode }}
-              {{ selectedProductFamily }}
+              >( {{ selectedProductFamily }}
+              {{ selectedProductCode }}
               {{ selectedProductVersion }} )</span
             >
             <!-- <span style="color: #f00;">*</span> -->
@@ -567,8 +565,8 @@
           <h4 class="modal-title">
             Comments for
             <span>
-              ( {{ selectedProductCode }}
-              {{ selectedProductFamily }}
+              ( {{ selectedProductFamily }}
+              {{ selectedProductCode }}
               {{ selectedProductVersion }} )</span
             >
           </h4>
@@ -675,8 +673,8 @@
           <h4 class="modal-title">
             Renew for
             <span
-              >( {{ selectedProductCode }}
-              {{ selectedProductFamily }}
+              >( {{ selectedProductFamily }}
+              {{ selectedProductCode }}
               {{ selectedProductVersion }} )</span
             >
           </h4>
