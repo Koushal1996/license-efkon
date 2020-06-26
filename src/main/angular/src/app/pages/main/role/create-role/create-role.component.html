@@ -7,10 +7,10 @@
         class="form_main"
       >
         <h3>{{ roleId ? "Edit" : "Add" }} Role</h3>
-        <div class="input_feild">
+        <div class="input_feild pt-0">
           <div class="category_col">
             <div class="row">
-              <div class="col-6">
+              <div class="col-12">
                 <div class="form-group">
                   <label>Name *</label>
                   <input
@@ -40,43 +40,43 @@
                   </span>
                 </div>
               </div>
-              <div class="form-group">
-                <label class="mb-1" for="exampleInputPassword1"
-                  >Authorities *:
-                </label>
-                <span
-                  class="badge badge-secondary custom_bdg"
-                  *ngFor="let a of selectedAuthorities; index as i"
-                >
-                  {{ a.name }}
-                  <button
-                    class="close_btn"
-                    type="button"
-                    (click)="onChangeAuthorities(a)"
+              <div class="col-12">
+                <div class="">
+                  <label for="exampleInputPassword1" class="mb-0"
+                    >Authorities *:
+                  </label>
+                  <!-- <span
+                    class="badge badge-secondary custom_bdg"
+                    *ngFor="let a of selectedAuthorities; index as i"
                   >
-                    <i class="fa fa-close"></i>
-                  </button>
-                </span>
-                <div class="text-danger" *ngIf="eventValue">
-                  Please Select Authority
-                </div>
-                <div>
-                  <div class="authorities_main" id="authorities">
-                    <div *ngFor="let item of authorities" class="checkbox_main">
-                      <div class="checkbox_box">
-                        <input
-                          type="checkbox"
-                          selected="true"
-                          [checked]="isChecked(item)"
-                          name="check"
-                          id="authCheck"
-                          value="{{ item.id }}"
-                          (change)="onChangeAuthorities(item)"
-                        />
-                        <span>{{ item.name }}</span>
+                    {{ a.name }}
+                    <button
+                      class="close_btn"
+                      type="button"
+                      (click)="onChangeAuthorities(a)"
+                    >
+                      <i class="fa fa-close"></i>
+                    </button>
+                  </span> -->
+                  <div class="error" *ngIf="eventValue">
+                    Please Select Authority
+                  </div>
+                    <div class="authorities_main" id="authorities">
+                      <div *ngFor="let item of authorities" class="checkbox_main">
+                        <div class="checkbox_box">
+                          <input
+                            type="checkbox"
+                            selected="true"
+                            [checked]="isChecked(item)"
+                            name="check"
+                            id="authCheck"
+                            value="{{ item.id }}"
+                            (change)="onChangeAuthorities(item)"
+                          />
+                          <span>{{ item.name }}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>

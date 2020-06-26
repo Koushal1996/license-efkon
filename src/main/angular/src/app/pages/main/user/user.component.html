@@ -8,10 +8,21 @@
       >
         Create User
       </button>
-
+      <form [formGroup]="serachUserForm">
+        <div class="search_bar">
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control"
+            placeholder="Search here.."
+            (ngModelChange)="onSearchUser($event)"
+          />
+          <i class="fa fa-search" aria-hidden="true"></i>
+        </div>
+      </form>
       <form [formGroup]="filterStatusForm">
         <div class="search_bar">
-          <span class="fa fa-filter" aria-hidden="true"></span>
+          <!-- <span class="fa fa-filter" aria-hidden="true"></span> -->
           <label>Filter by Roles</label>
           <select
             class="form-control"
@@ -30,18 +41,7 @@
         </div>
       </form>
 
-      <form [formGroup]="serachUserForm">
-        <div class="search_bar">
-          <input
-            type="text"
-            formControlName="name"
-            class="form-control"
-            placeholder="Search here.."
-            (ngModelChange)="onSearchUser($event)"
-          />
-          <i class="fa fa-search" aria-hidden="true"></i>
-        </div>
-      </form>
+
       <div class="table_scroll">
         <table>
           <thead>
