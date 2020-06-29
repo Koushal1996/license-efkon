@@ -91,11 +91,6 @@ export class AddProductComponent implements OnInit, OnChanges {
         if (Object.keys(data).length) {
           console.log(data);
           this.productForm.patchValue(data);
-          // this.productForm.patchValue({
-          //   productFamily: this.productDetail.find(
-          //     (pd) => pd.id == data.productDetail.productFamilyId
-          //   ),
-          // });
           const productDetaill = this.productDetail.find(
             (pd) => pd.id == data.productDetail.productFamilyId
           );
@@ -198,7 +193,7 @@ export class AddProductComponent implements OnInit, OnChanges {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
-          console.log(data);
+          //console.log(data);
           this.loaderbutton = false;
           this.getProductsByProjectId();
           swal({
@@ -209,13 +204,13 @@ export class AddProductComponent implements OnInit, OnChanges {
             dangerMode: true,
           }).then((willDelete) => {
             if (willDelete) {
-              console.log(data);
+              //console.log(data);
               //swal("New Product Added successfully!");
               this.route.navigate(["projects"]);
             } else {
               //swal("New Product Added successfully!");
               this.loaderbutton = false;
-              console.log(data);
+              //console.log(data);
               this.ngOnInit();
               //this.productForm.reset();
               //this.productForm.controls["startDate"].patchValue(this.todayDate);
@@ -293,10 +288,33 @@ export class AddProductComponent implements OnInit, OnChanges {
     }
   }
 
+  // onExpirationMonthCount(expirationMonthCount) {
+  //   this.expirationMonthNo = expirationMonthCount;
+  //   console.log(this.todayDate);
+  //   if (this.todayDate) var d = new Date(this.todayDate);
+  //   console.log(d.toLocaleDateString());
+  //   const month = d.getMonth();
+  //   d.setMonth(d.getMonth() + this.expirationMonthNo);
+  //   console.log(d.toLocaleDateString());
+  //   while (d.getMonth() === month) {
+  //     d.setDate(d.getDate() - 1);
+  //   }
+  //   console.log(d.toLocaleDateString());
+  //   function convert(d) {
+  //     var date = new Date(d),
+  //       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+  //       day = ("0" + date.getDate()).slice(-2);
+  //     return [date.getFullYear(), mnth, day].join("-");
+  //   }
+  //   this.productForm.controls["EndDate"].patchValue(convert(d));
+  // }
   onExpirationMonthCount(expirationMonthCount) {
     this.expirationMonthNo = expirationMonthCount;
+    console.log(this.todayDate);
     if (this.todayDate) var d = new Date(this.todayDate);
+    console.log(d.toLocaleDateString());
     d.setMonth(d.getMonth() + this.expirationMonthNo);
+    console.log(d.toLocaleDateString());
     function convert(d) {
       var date = new Date(d),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -305,19 +323,13 @@ export class AddProductComponent implements OnInit, OnChanges {
     }
     this.productForm.controls["EndDate"].patchValue(convert(d));
   }
+
   getToday(): string {
-    console.log(new Date().toISOString().split("T")[0]);
+    //console.log(new Date().toISOString().split("T")[0]);
     return new Date().toISOString().split("T")[0];
   }
   onStartDate(startDate) {
     console.log(startDate);
-    // var UserDate = startDate;
-    // var ToDate = new Date();
-    // if (new Date(UserDate).getTime() <= ToDate.getTime()) {
-    //   alert("The Date must be Bigger or Equal to today date");
-    //   return false;
-    // }
-    // return true;
     this.sDate = startDate;
     var d = new Date(this.sDate);
     d.setMonth(d.getMonth() + this.expirationMonthNo);

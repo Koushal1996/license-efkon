@@ -160,7 +160,7 @@ export class ProjectComponent implements OnInit {
     $("#" + pro.id).addClass("highlight");
     swal({
       //title: "You sure?",
-      text: `Are you sure, You want to delete ${pro.productDetail.productCodeName}  ${pro.productDetail.productFamilyName} ${pro.productDetail.versionName} product?`,
+      text: `Are you sure, You want to delete ${pro.productDetail.productFamilyName}  ${pro.productDetail.productCodeName} ${pro.productDetail.versionName} product?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -172,7 +172,7 @@ export class ProjectComponent implements OnInit {
         this.projectservice.deleteProduct(pro.id).subscribe(
           (data) => {
             swal(
-              `${pro.productDetail.productCodeName}  ${pro.productDetail.productFamilyName} ${pro.productDetail.versionName} Delete successfully!`
+              `${pro.productDetail.productFamilyName}  ${pro.productDetail.productCodeName} ${pro.productDetail.versionName} Delete successfully!`
             );
             this.getProjects();
           },
@@ -226,7 +226,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Submitted successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
+                  `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
                 );
                 $("#" + this.selectedProduct.id).removeClass("highlight");
               });
@@ -255,7 +255,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Rejected successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
+                  `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) rejected successfully!`
                 );
                 $("#" + this.selectedProduct.id).removeClass("highlight");
               });
@@ -284,7 +284,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Reviewed successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
+                  `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
                 );
                 $("#" + this.selectedProduct.id).removeClass("highlight");
               });
@@ -313,7 +313,7 @@ export class ProjectComponent implements OnInit {
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Approved successfully!");
                 swal(
-                  `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
+                  `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) approved successfully!`
                 );
                 $("#" + this.selectedProduct.id).removeClass("highlight");
               });
@@ -345,7 +345,7 @@ export class ProjectComponent implements OnInit {
                   //this.getProjectProducts();
                   //swal("Product Approved successfully!");
                   swal(
-                    `Product (${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.versionName}) recalled successfully!`
+                    `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) recalled successfully!`
                   );
                   $("#" + this.selectedProduct.id).removeClass("highlight");
                 },

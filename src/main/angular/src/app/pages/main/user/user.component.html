@@ -8,7 +8,6 @@
       >
         Create User
       </button>
-
       <form [formGroup]="serachUserForm">
         <div class="search_bar">
           <input
@@ -21,6 +20,28 @@
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
       </form>
+      <form [formGroup]="filterStatusForm">
+        <div class="search_bar">
+          <!-- <span class="fa fa-filter" aria-hidden="true"></span> -->
+          <label>Filter by Roles</label>
+          <select
+            class="form-control"
+            name="productStatus"
+            formControlName="productStatus"
+            (ngModelChange)="onFilterUser($event)"
+          >
+            <option selected>All</option>
+            <option> SuperAdmin</option>
+            <option> admin</option>
+            <option> Submitter</option>
+            <option> Project Manager</option>
+            <option> Customer</option>
+            <option> Approver</option>
+          </select>
+        </div>
+      </form>
+
+
       <div class="table_scroll">
         <table>
           <thead>

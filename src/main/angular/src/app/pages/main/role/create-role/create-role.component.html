@@ -7,24 +7,18 @@
         class="form_main"
       >
         <h3>{{ roleId ? "Edit" : "Add" }} Role</h3>
-        <div class="input_feild">
+        <div class="input_feild pt-0">
           <div class="category_col">
             <div class="row">
-              <div class="col-6">
+              <div class="col-12">
                 <div class="form-group">
-                  <label>Name</label>
+                  <label>Name *</label>
                   <input
                     type="text"
                     class="form-control"
                     formControlName="name"
                     name="name"
                     placeholder="Name"
-                    [ngClass]="{
-                      errorinput:
-                        createRoleForm.get('name').errors &&
-                        (createRoleForm.get('name').touched ||
-                          createRoleForm.get('name').dirty)
-                    }"
                   />
                   <span
                     *ngIf="
@@ -46,22 +40,43 @@
                   </span>
                 </div>
               </div>
-              <div class="col-6">
-                <div class="form-group">
-                  <label>Select Roles</label>
-                  <ng-multiselect-dropdown
-                    name="authorities"
-                    ng-required="true"
-                    [placeholder]="'Select roles'"
-                    [data]="dropdownList"
-                    [(ngModel)]="selectedItems"
-                    [settings]="dropdownSettings"
-                    (onSelect)="onItemSelect($event)"
-                    (onDeSelect)="onItemDeSelect($event)"
-                    (onSelectAll)="onSelectAll($event)"
-                    [ngModelOptions]="{ standalone: true }"
+              <div class="col-12">
+                <div class="">
+                  <label for="exampleInputPassword1" class="mb-0"
+                    >Authorities *:
+                  </label>
+                  <!-- <span
+                    class="badge badge-secondary custom_bdg"
+                    *ngFor="let a of selectedAuthorities; index as i"
                   >
-                  </ng-multiselect-dropdown>
+                    {{ a.name }}
+                    <button
+                      class="close_btn"
+                      type="button"
+                      (click)="onChangeAuthorities(a)"
+                    >
+                      <i class="fa fa-close"></i>
+                    </button>
+                  </span> -->
+                  <div class="error" *ngIf="eventValue">
+                    Please Select Authority
+                  </div>
+                    <div class="authorities_main" id="authorities">
+                      <div *ngFor="let item of authorities" class="checkbox_main">
+                        <div class="checkbox_box">
+                          <input
+                            type="checkbox"
+                            selected="true"
+                            [checked]="isChecked(item)"
+                            name="check"
+                            id="authCheck"
+                            value="{{ item.id }}"
+                            (change)="onChangeAuthorities(item)"
+                          />
+                          <span>{{ item.name }}</span>
+                        </div>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -73,25 +88,16 @@
               type="submit"
               *ngIf="!loaderbutton"
               class="saveBtn"
-              [disabled]="!createRoleForm.valid"
               [ngStyle]="{
-                opacity: !createRoleForm.valid ? '0.6' : '1'
+                opacity: createRoleForm.valid ? '0.6' : '1'
               }"
             >
               {{ roleId ? "Update" : "Submit" }}
             </button>
             <button class="saveBtn" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i>
-              <!-- Loading -->
               {{ roleId ? "Updating...." : "Submitting...." }}
             </button>
-            <!-- <button
-              type="button"
-              class="btn btn-danger ml-auto"
-              (click)="cancel()"
-            >
-              <i class="fa fa-times"></i> Reset
-            </button> -->
             <button
               type="button"
               class="cancelBtn ml-3 mr-3"

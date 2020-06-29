@@ -126,6 +126,22 @@ export class RoleComponent implements OnInit {
       this.roles = this.rolesCopy;
     }
   }
+
+  // onSearchRole() {
+  //   if (this.serachRoleForm.get("name").value) {
+  //     this.roles = this.roles.filter((item) => {
+  //       return (
+  //         item.name
+  //           .toLowerCase()
+  //           .indexOf(this.serachRoleForm.get("name").value.toLowerCase()) > -1
+  //       );
+  //     });
+  //   } else {
+  //     //console.log("jhj");
+  //     this.roles = this.rolesCopy;
+  //   }
+  // }
+
   sortAphabetically() {
     console.log(this.roles);
     this.roles.sort(function (a, b) {

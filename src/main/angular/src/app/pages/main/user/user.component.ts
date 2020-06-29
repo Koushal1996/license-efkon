@@ -20,6 +20,7 @@ export class UserComponent implements OnInit {
   selectedAuthorites: any;
   itemId: any;
   roleName: any;
+  filterStatusForm: FormGroup;
 
   constructor(
     private _admin: AdminService,
@@ -41,6 +42,9 @@ export class UserComponent implements OnInit {
     this.serachUserForm = this.fb.group({
       name: [""],
     });
+     this.filterStatusForm = this.fb.group({
+      productStatus: [""],
+    })
   }
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
@@ -128,10 +132,33 @@ export class UserComponent implements OnInit {
     } else {
       this.users = this.usersCopy;
     }
+    //this.onFilterUser("Approver");
+  }
+  onFilterUser(key) {
+   this.users = this.usersCopy;
+    console.log(key);
+    if (key) {
+      this.users = this.users.filter((item) => {
+        if (
+          item.roles.filter((data) => {
+            // console.log("data:" + JSON.stringify(data);
+            if (data.name == key) {
+              return data;
+            }
+          }).length > 0
+        ) {
+          return item;
+        }
+      });
+      console.log(this.users);
+    } else {
+      this.users = this.usersCopy;
+    }
+    if (key == "All") {
+      this.users = this.usersCopy;
+    }
   }
 
-  // onSearchUser(key) {
-  // }
 
   sortAphabetically() {
     console.log(this.users);
