@@ -66,8 +66,8 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActive(Boolean active);
 
 	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 and project.customerEmail = ?2 and status is not ?3 group by project.id")
-	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndCustomerEmailAndNotStatus(Boolean active,
-			String customerEmail, ProjectProductStatus status);
+	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndCustomerEmailAndNotStatus(
+			Boolean active, String customerEmail, ProjectProductStatus status);
 
 	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 and project.projectManager.id=?2 group by project.id ")
 	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndProjectManagerId(Boolean active,
@@ -130,5 +130,9 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenseCountByProjectManagerId(Long userId);
 
 	public Long countByProjectIdAndActive(Long unmaskId, boolean b);
+
+	@Modifying
+	@Query(value = "update ProjectProduct set active = false, modified_by =?2, modified_at =?3 where project_id =?1")
+	public void deleteByProjectId(Long unmaskId, Long userId, Date date);
 
 }

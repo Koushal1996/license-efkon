@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectTypeJpaDao;
@@ -31,8 +33,10 @@ import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.ProjectService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.project.ProjectRequest;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
+import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 import com.nxtlife.efkon.license.view.user.UserResponse;
 
 @Service("projectServiceImpl")
@@ -49,6 +53,9 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 
 	@Autowired
 	private ProjectProductJpaDao projectProductDao;
+
+	@Autowired
+	private LicenseJpaDao licenseDao;
 
 	@Autowired
 	private RoleJpaDao roleDao;
@@ -218,6 +225,35 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		}
 
 		return response;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_DELETE)
+	public SuccessResponse delete(Long id) {
+
+		Long unmaskId = unmask(id);
+		if (!projectDao.existsByIdAndActive(unmaskId, true)) {
+			throw new NotFoundException(String.format("Project having id (%s) not found", id));
+		}
+
+		List<ProjectProductResponse> ppResponse = projectProductDao.findByProjectIdAndActive(unmaskId, true);
+
+		if (!ppResponse.isEmpty() || ppResponse != null) {
+
+			for (ProjectProductResponse response : ppResponse) {
+				licenseDao.deleteByProjectProductId(unmask(response.getId()), getUserId(), new Date());
+			}
+
+		}
+
+		projectProductDao.deleteByProjectId(unmaskId, getUserId(), new Date());
+
+		int rows = projectDao.delete(unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("Project {} successfuly deleted", unmaskId);
+		}
+		return new SuccessResponse(HttpStatus.OK.value(), "Project  deleted successfully");
+
 	}
 
 }

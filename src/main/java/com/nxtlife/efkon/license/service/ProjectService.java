@@ -3,6 +3,7 @@ package com.nxtlife.efkon.license.service;
 import java.util.List;
 
 import com.nxtlife.efkon.license.ex.ValidationException;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.project.ProjectRequest;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
 
@@ -42,5 +43,7 @@ public interface ProjectService {
 	 * @return {@link ProjectResponse}
 	 */
 	public ProjectResponse findById(Long id);
+
+	public SuccessResponse delete(Long id);
 
 }

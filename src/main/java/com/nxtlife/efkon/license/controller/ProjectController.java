@@ -2,9 +2,11 @@ package com.nxtlife.efkon.license.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.ProjectService;
+import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.project.ProjectRequest;
 import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductLicenseRequestResponse;
@@ -78,6 +81,18 @@ public class ProjectController {
 			@ApiResponse(description = "If required field are not filled properly or project doesn't exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public ProjectResponse findById(@PathVariable Long id) {
 		return projectService.findById(id);
+	}
+
+	@Transactional
+	@DeleteMapping(value = "project/{id}", produces = { "application/json" })
+	@Operation(summary = "Delete project detail", description = "return success response after successfully deleting the project", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Project successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectProductLicenseRequestResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to delete Project ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If Project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public SuccessResponse delete(@PathVariable Long id) {
+		return projectService.delete(id);
 	}
 
 }
