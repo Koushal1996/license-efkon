@@ -236,12 +236,12 @@ form {
       width: 100%;
       border: 1px solid lightgray;
       padding: 6px 18px 6px 56px;
-      font-size: 14px !important;
+      font-size: 14px;
       font-weight: 300;
       color: #304c5f;
       letter-spacing: .1rem;
       transition: border-color .2s ease-in-out;
-      font-weight: 400;
+      font-weight: bold;
       &:focus {
         border-bottom: 1px solid #795548;
       }
@@ -279,7 +279,7 @@ form {
       background-color: transparent;
       margin-bottom: 15px;
       font-size: 13px;
-      font-weight: 300;
+      font-weight: bold;
     }
     .login-btn{
       cursor: pointer;
@@ -371,7 +371,7 @@ form {
   /* font-weight: bold; */
   margin-top: 10px;
   h3 {
-    font-weight: 400;
+    font-weight: bold;
     font-size: 19px;
     color: #04c0a7;
 }
@@ -409,7 +409,7 @@ form {
 }
 label{
   font-size: 14px;
-    font-weight: 500 !important;
+    font-weight: bold;
     margin-bottom: 4px;
 }
 }

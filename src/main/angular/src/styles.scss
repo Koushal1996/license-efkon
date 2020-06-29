@@ -1,14 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "./app/app.component.scss";
 body {
-  // font-family: 'Oxygen', sans-serif !important;
+  font-family: 'Oxygen', sans-serif !important;
+  // font-family: 'Roboto Condensed', sans-serif !important;
 
   margin: 0;
   background: #f2f2f3 !important;
-  font-family: 'Roboto', sans-serif !important;
-  
-
-
 }
 // html, body { height: 100%; }
 // body { margin: 0; font-family: 'Roboto', sans-serif; }
@@ -31,11 +28,6 @@ i{
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #24928d; 
-}
-label{
-  color: #3a3f45 !important;
-  font-weight: 400 !important;
-  font-size: 14px !important;
 }
 
 .table {
@@ -149,8 +141,6 @@ table.table.table-bordered {
   textarea{
     height: 100px !important;
     border-radius: 0;
-    font-weight: 300;
-    font-size: 14px;
   }
 }
 
@@ -280,9 +270,9 @@ h2.text-center {
     width: 100%;
   h3{
     border-bottom: 1px solid #ddd;
-    font-size: 14px;
-    font-weight: 500;
-    color: #555;
+    font-size: 16px;
+    font-weight: 600;
+    color: #676a6c;
     padding: 10px 15px;
   }
   .input_feild{
@@ -290,12 +280,12 @@ h2.text-center {
     .category_col{
       h4 {
         font-size: 15px;
-        font-weight: 500;
+        font-weight: bold;
         color: #29aba4;
-        text-decoration: underline;
+        // border-bottom: 1px solid;
     }
   label{
-      font-size: 13px ;
+      font-size: 13px !important;
       font-weight: bold;
       margin-bottom: 5px;
   }
@@ -435,10 +425,9 @@ table {
       position: -webkit-sticky;
       position: sticky;
       top: -1px;
-      background: #f2f2f2;
+      background: #fafafa;
       border-bottom: none;
       z-index: 99;
-      font-weight: 500;
      }
   }
   tr{
@@ -446,7 +435,7 @@ table {
       border: 1px solid #ddd;
       padding: 8px 10px;
       color: #676a6c;
-      font-size: 13.2px;
+      font-size: 13px;
       .info{
         i {
           font-size: 18px !important;
@@ -462,10 +451,6 @@ table {
           cursor: pointer;
       }
       }
-      &:nth-child(2) {
-        /* font-size: 22px; */
-        text-transform: capitalize;
-    }
      }
   }
 }
@@ -476,7 +461,7 @@ table {
     display: inline-block;
     text-align: center;
     font-size: 17px;
-    font-weight: 400;
+    font-weight: 600;
     color: #29aba4;
     margin-bottom: 15px;
   }
@@ -646,7 +631,7 @@ table {
     margin-bottom: 12px;
     h4 {
       font-size: 15px;
-      font-weight: 400;
+      font-weight: bold;
       color: white; 
       span{
         font-size: 13px;
@@ -662,8 +647,6 @@ table {
     top: 10px;
     opacity: 1;
     color: #424242;
-    text-shadow: none;
-    font-weight: 400;
 }
 
 }
@@ -1003,8 +986,6 @@ span {
   line-height: normal;
   color: #333333;
   margin-bottom: 5px;
-  font-weight: 300;
-  letter-spacing: .5px;
 }
 
 .ibc-code-section .right_box {
@@ -1046,12 +1027,10 @@ span {
   text-align: center;
 }
 .ibc-code-section .text_box h2 {
-  font-size: 13px;
+  font-size: 15px;
   color: #2b3643;
-  font-weight: 500;
+  font-weight: 600;
   margin-top: 6px;
-  text-transform: capitalize;
-  letter-spacing: .5px;
 }
 
 .ibc-code-section .box_com:after {
@@ -1131,7 +1110,7 @@ span {
   display: inline-block;
 }
 .left_box h5 {
-  font-weight: 500;
+  font-weight: bold;
   font-size: 13px;
   width: auto;
   display: inline-block;
@@ -1141,7 +1120,6 @@ span {
 .left_box h6 {
   color: #29aba4;
   font-size: 11px;
-  font-weight: 400;
 }
 .img_box_main {
   width: 100%;
@@ -1211,14 +1189,4 @@ span {
 }
 .highlight td {
   color: #fff;
-}
-
-.required{
-  color: #dc3545;
-}
-.dropdown-btn{
-  font-size: 13px !important;
-}
-li.multiselect-item-checkbox {
-  font-size: 13px;
 }

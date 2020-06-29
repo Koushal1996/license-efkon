@@ -49,8 +49,7 @@ button.btn.btn-primary {
 .badge.badge-success {
   background-color: transparent;
   border: 1px solid green;
-  color: green !important;
-  font-size: 12px !important;
+  color: green;
 }
 
 .box_com {
@@ -225,6 +224,12 @@ section.main-slider {
   color: #333;
   text-align: center;
 }
+.ibc-code-section .text_box h2 {
+  font-size: 15px;
+  color: #2b3643;
+  font-weight: 600;
+  margin-top: 6px;
+}
 
 .ibc-code-section .box_com:after {
   content: "";
@@ -358,7 +363,28 @@ section.main-slider {
 //     color: #2b405a;
 // }
 
-
+.ibc-code-main {
+  width: 100%;
+  display: inline-block;
+}
+.left_box h5 {
+  font-weight: bold;
+  font-size: 13px;
+  width: auto;
+  display: inline-block;
+  color: #2b3643;
+  margin: 0;
+}
+.left_box h6 {
+  color: #29aba4;
+  font-size: 11px;
+}
+.img_box_main {
+  width: 100%;
+  text-align: center;
+  display: inline-block;
+  margin: auto;
+}
 
 .custom_modal_main {
   position: absolute;

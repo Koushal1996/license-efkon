@@ -8,7 +8,7 @@
       >
         Create User
       </button>
-      <!--<form [formGroup]="serachUserForm">
+      <!-- <form [formGroup]="serachUserForm">
         <div class="search_bar">
           <input
             type="text"
@@ -35,7 +35,7 @@
           <i class="fa fa-search"></i>
         </form>
       </div>
-      <form [formGroup]="filterStatusForm">
+      <form [formGroup]="filterRoleForm">
         <div class="search_bar">
           <!-- <span class="fa fa-filter" aria-hidden="true"></span> -->
           <label>Filter by Roles</label>
@@ -109,7 +109,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let item of users; index as index"
+              *ngFor="let item of users | filter: term; index as index"
               id="{{ item.id }}"
               class=""
             >

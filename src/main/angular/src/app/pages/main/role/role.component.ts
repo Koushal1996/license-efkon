@@ -5,7 +5,7 @@ import { _keyValueDiffersFactory } from "@angular/core/src/application_module";
 import { hasLifecycleHook } from "@angular/compiler/src/lifecycle_reflector";
 import { Router } from "@angular/router";
 import swal from "sweetalert";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 declare let $: any;
 
 @Component({
@@ -20,6 +20,8 @@ export class RoleComponent implements OnInit {
   AuthoritiesName: any;
   serachRoleForm: FormGroup;
   rolesCopy: any[];
+  form: FormGroup;
+
   constructor(
     private _adminService: AdminService,
     private route: Router,
@@ -42,6 +44,9 @@ export class RoleComponent implements OnInit {
 
     this.serachRoleForm = this.fb.group({
       name: [""],
+    });
+    this.form = new FormGroup({
+      search: new FormControl(null),
     });
   }
 

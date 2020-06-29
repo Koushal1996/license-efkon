@@ -42,12 +42,10 @@ export class FamilyComponent implements OnInit {
         this._productService
           .deleteProductFamily(family.id)
           .subscribe((data) => {
-            // this.family.splice(
-            //   this.family.findIndex((pd) => pd.id == family.id),
-            //   1
-            // );
-            console.log(data);
-            family.active = false;
+            this.family.splice(
+              this.family.findIndex((pd) => pd.id == family.id),
+              1
+            );
             swal("Product family deleted successfully!");
           });
         $("#" + family.id).removeClass("highlight");

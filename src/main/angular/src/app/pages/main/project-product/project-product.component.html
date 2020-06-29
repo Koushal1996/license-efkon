@@ -3,7 +3,7 @@
     <!-- <button (click)="exportProjectProducts()">Export ProjectProducts</button>
     <button (click)="PdfProjectProducts()">PDF Download</button> -->
 
-    <form [formGroup]="searchProjectProductsForm">
+    <!-- <form [formGroup]="searchProjectProductsForm">
       <div class="search_bar">
         <input
           type="text"
@@ -14,7 +14,22 @@
         />
         <i class="fa fa-search" aria-hidden="true"></i>
       </div>
-    </form>
+    </form> -->
+    <div class="search_bar">
+      <form [formGroup]="form">
+        <input
+          type="text"
+          autocomplete="off"
+          name="search"
+          formControlName="search"
+          placeholder="Search here "
+          [(ngModel)]="term"
+          class="form-control"
+        />
+        <i class="fa fa-search"></i>
+      </form>
+    </div>
+
     <form [formGroup]="filterStatusForm">
       <div class="search_bar">
         <!-- <label>Product Status </label> -->
@@ -87,7 +102,9 @@
           <!-- <div *ngIf="!projectProducts?.length">
             No products Available Now
           </div> -->
-          <ng-container *ngFor="let project of projectProducts; index as i">
+          <ng-container
+            *ngFor="let project of projectProducts | filter: term; index as i"
+          >
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
               <td>

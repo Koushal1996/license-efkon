@@ -155,7 +155,7 @@
                     *ngIf="createUserForm.get('contactNo').errors.maxlength"
                     class="error"
                   >
-                    maximum 15 digits allowed</span
+                    maximum 10 digits allowed</span
                   >
                   <span
                     *ngIf="createUserForm.get('contactNo').errors.minlength"
@@ -166,24 +166,7 @@
               </div>
             </div>
             <div class="col-6">
-              <div class="authorities_main" id="roles">
-                <label>Select Role</label>
-                <div *ngFor="let item of dropdownList" class="checkbox_main">
-                  <div class="checkbox_box">
-                    <input
-                      type="checkbox"
-                      selected="true"
-                      [checked]="isChecked(item)"
-                      name="check"
-                      id="authCheck"
-                      value="{{ item.id }}"
-                      (change)="onChangeRole(item)"
-                    />
-                    <span>{{ item.name }}</span>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="form-group">
+              <div class="form-group">
                 <label>Select Role</label>
                 <ng-multiselect-dropdown
                   name="roles"
@@ -198,7 +181,7 @@
                   [ngModelOptions]="{ standalone: true }"
                 >
                 </ng-multiselect-dropdown>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>

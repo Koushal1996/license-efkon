@@ -8,7 +8,7 @@
       Create Role
     </button>
     <ng-container>
-      <form [formGroup]="serachRoleForm">
+      <!-- <form [formGroup]="serachRoleForm">
         <div class="search_bar">
           <input
             type="text"
@@ -19,7 +19,21 @@
           />
           <i class="fa fa-search"></i>
         </div>
-      </form>
+      </form> -->
+      <div class="search_bar">
+        <form [formGroup]="form">
+          <input
+            type="text"
+            autocomplete="off"
+            name="search"
+            formControlName="search"
+            placeholder="Search here "
+            [(ngModel)]="term"
+            class="form-control"
+          />
+          <i class="fa fa-search"></i>
+        </form>
+      </div>
       <div class="table_scroll">
         <table>
           <thead>
@@ -56,7 +70,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let item of roles; index as index"
+              *ngFor="let item of roles | filter: term; index as index"
               id="{{ item.id }}"
               class=""
             >

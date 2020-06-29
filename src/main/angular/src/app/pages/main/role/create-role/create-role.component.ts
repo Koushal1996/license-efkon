@@ -49,7 +49,7 @@ export class CreateRoleComponent implements OnInit {
   ngOnInit() {
     this.createRoleForm = this.fb.group({
       name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
-      authorityIds: this.fb.array([], [Validators.required]),
+      authorityIds: this.fb.array([]),
     });
 
     this.showAuthoities();
@@ -69,13 +69,15 @@ export class CreateRoleComponent implements OnInit {
     );
   }
   onChangeAuthorities(item) {
+    console.log(item);
     let index = this.authorityIds.indexOf(item.id);
+    console.log(index);
     if (index == -1) {
       this.authorityIds.push(item.id);
-      //this.selectedAuthorities.push(item);
+      this.selectedAuthorities.push(item);
     } else {
       this.authorityIds.splice(index, 1);
-      //this.selectedAuthorities.splice(index, 1);
+      this.selectedAuthorities.splice(index, 1);
     }
     if (!this.authorityIds.length) {
       this.eventValue = true;
@@ -83,8 +85,6 @@ export class CreateRoleComponent implements OnInit {
       this.eventValue = false;
     }
   }
-
-  checkUncheckAll() {}
   isChecked(item) {
     if (this.authorityIds) {
       return this.authorityIds.find((id) => {
@@ -133,7 +133,7 @@ export class CreateRoleComponent implements OnInit {
         (data) => {
           console.log();
           this.route.navigate(["roles"]);
-          swal("Role updated successfully!");
+          swal(`${data.name} updated successfully!`);
         },
         (error) => {
           this.loaderbutton = false;
