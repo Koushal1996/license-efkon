@@ -52,8 +52,6 @@ export class ProjectComponent implements OnInit {
   renewStartDate: string;
   totolProductsCount: any;
   selectedComment: any;
-  form: FormGroup;
-
   constructor(
     private projectservice: ProjectService,
     private _storageService: StorageService,
@@ -72,9 +70,6 @@ export class ProjectComponent implements OnInit {
     });
     this.searchProjectsForm = this.fb.group({
       Search: [""],
-    });
-    this.form = new FormGroup({
-      search: new FormControl(null),
     });
   }
   onsearchProjectsForm(key) {

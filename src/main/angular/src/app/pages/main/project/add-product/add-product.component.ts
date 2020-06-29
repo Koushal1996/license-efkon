@@ -312,11 +312,7 @@ export class AddProductComponent implements OnInit, OnChanges {
     this.expirationMonthNo = expirationMonthCount;
     console.log(this.todayDate);
     if (this.todayDate) var d = new Date(this.todayDate);
-    //console.log(d.toLocaleDateString());
-    console.log(d);
-    // End date should be one day less than the month
-    d.setDate(d.getDate() - 1);
-    console.log(d);
+    console.log(d.toLocaleDateString());
     d.setMonth(d.getMonth() + this.expirationMonthNo);
     console.log(d.toLocaleDateString());
     function convert(d) {
@@ -336,10 +332,6 @@ export class AddProductComponent implements OnInit, OnChanges {
     console.log(startDate);
     this.sDate = startDate;
     var d = new Date(this.sDate);
-    console.log(d);
-    // End date should be one day less than the month
-    d.setDate(d.getDate() - 1);
-    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
     function convert(d) {
       var date = new Date(d),

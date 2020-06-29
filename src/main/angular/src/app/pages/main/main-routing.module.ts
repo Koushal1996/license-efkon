@@ -12,7 +12,6 @@ import { ProductComponent } from "./product/product.component";
 import { FamilyComponent } from "./product/family/family.component";
 import { DetailComponent } from "./product/detail/detail.component";
 import { LicensesComponent } from "./product/licenses/licenses.component";
-import { TypeComponent } from "./product/type/type.component";
 
 import { AddProductComponent } from "./project/add-product/add-product.component";
 import { ProfileComponent } from "./profile/profile.component";
@@ -66,7 +65,6 @@ const routes: Routes = [
           { path: "detail", component: DetailComponent },
           { path: "version", component: VersionComponent },
           { path: "license", component: LicensesComponent },
-          { path: "type", component: TypeComponent },
           {
             path: "renewconfiguration",
             component: RenewConfigurationComponent,

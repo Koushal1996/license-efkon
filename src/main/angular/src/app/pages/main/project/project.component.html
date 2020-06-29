@@ -8,7 +8,7 @@
       >
         Create Project
       </button>
-      <!-- <form [formGroup]="searchProjectsForm">
+      <form [formGroup]="searchProjectsForm">
         <div class="search_bar">
           <input
             type="text"
@@ -19,21 +19,7 @@
           />
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-      </form> -->
-      <div class="search_bar">
-        <form [formGroup]="form">
-          <input
-            type="text"
-            autocomplete="off"
-            name="search"
-            formControlName="search"
-            placeholder="Search here "
-            [(ngModel)]="term"
-            class="form-control"
-          />
-          <i class="fa fa-search"></i>
-        </form>
-      </div>
+      </form>
       <div class="table_scroll">
         <table>
           <thead>
@@ -125,10 +111,7 @@
                       data-toggle="collapse"
                       [attr.data-target]="'#collapse' + i"
                       (click)="productsCount(project)"
-                      *ngIf="
-                        hasAuthority('PROJECT_PRODUCT_FETCH') &&
-                        project.productsCount
-                      "
+                      *ngIf="hasAuthority('PROJECT_PRODUCT_FETCH')"
                       >Added</label
                     >
                     <!-- {{ project.productsCount }} -->

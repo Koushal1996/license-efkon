@@ -61,22 +61,22 @@
                   <div class="error" *ngIf="eventValue">
                     Please Select Authority
                   </div>
-                  <div class="authorities_main" id="authorities">
-                    <div *ngFor="let item of authorities" class="checkbox_main">
-                      <div class="checkbox_box">
-                        <input
-                          type="checkbox"
-                          selected="true"
-                          [checked]="isChecked(item)"
-                          name="check"
-                          id="authCheck"
-                          value="{{ item.id }}"
-                          (change)="onChangeAuthorities(item)"
-                        />
-                        <span>{{ item.name }}</span>
+                    <div class="authorities_main" id="authorities">
+                      <div *ngFor="let item of authorities" class="checkbox_main">
+                        <div class="checkbox_box">
+                          <input
+                            type="checkbox"
+                            selected="true"
+                            [checked]="isChecked(item)"
+                            name="check"
+                            id="authCheck"
+                            value="{{ item.id }}"
+                            (change)="onChangeAuthorities(item)"
+                          />
+                          <span>{{ item.name }}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -88,9 +88,8 @@
               type="submit"
               *ngIf="!loaderbutton"
               class="saveBtn"
-              [disabled]="!createRoleForm.valid"
               [ngStyle]="{
-                opacity: !createRoleForm.valid ? '0.6' : '1'
+                opacity: createRoleForm.valid ? '0.6' : '1'
               }"
             >
               {{ roleId ? "Update" : "Submit" }}

@@ -47,9 +47,6 @@ export class UserComponent implements OnInit {
     this.filterStatusForm = this.fb.group({
       productStatus: [""],
     });
-    this.form = new FormGroup({
-      search: new FormControl(null),
-    });
   }
   hasAuthority(authority) {
     const authorities: any[] = this._storageService

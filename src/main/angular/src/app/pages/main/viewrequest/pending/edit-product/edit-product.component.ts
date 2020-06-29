@@ -280,9 +280,6 @@ export class EditProductComponent implements OnInit {
   onExpirationMonthCount(expirationMonthCount) {
     this.expirationMonthNo = expirationMonthCount;
     if (this.todayDate) var d = new Date(this.todayDate);
-    // End date should be one day less than the month
-    d.setDate(d.getDate() - 1);
-    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
     function convert(d) {
       var date = new Date(d),
@@ -301,10 +298,6 @@ export class EditProductComponent implements OnInit {
     //console.log(startDate);
     this.sDate = startDate;
     var d = new Date(this.sDate);
-    console.log(d);
-    // End date should be one day less than the month
-    d.setDate(d.getDate() - 1);
-    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
     function convert(d) {
       var date = new Date(d),

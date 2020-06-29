@@ -46,7 +46,6 @@ export class ProjectProductComponent implements OnInit {
   renewStartDate: string;
   productCountsStatus: any;
   filterStatusForm: FormGroup;
-  form: FormGroup;
   projectProductsCopy: any;
   productStatus: any;
   selectedComment: any;
@@ -83,9 +82,6 @@ export class ProjectProductComponent implements OnInit {
       if (this.productStatus) {
         this.productStatus = this.productStatus.toUpperCase();
       }
-    });
-    this.form = new FormGroup({
-      search: new FormControl(null),
     });
   }
 
@@ -139,12 +135,7 @@ export class ProjectProductComponent implements OnInit {
     this._projectService.getProjectProducts().subscribe((data) => {
       this.projectProducts = data;
       this.projectProductsCopy = data;
-      this.filterStatusForm.controls["productStatus"].patchValue("All");
-      if (this.productStatus) {
-        this.filterStatusForm
-          .get("productStatus")
-          .patchValue(this.productStatus);
-      }
+      this.filterStatusForm.get("productStatus").patchValue(this.productStatus);
       console.log(data);
       this.isloader = false;
     });

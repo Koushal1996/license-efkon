@@ -36,7 +36,6 @@ import { TypeComponent } from "./product/type/type.component";
     FormsModule,
     MainRoutingModule,
     ReactiveFormsModule,
-    Ng2SearchPipeModule,
     NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [
@@ -64,7 +63,6 @@ import { TypeComponent } from "./product/type/type.component";
     RejectedComponent,
     PendingComponent,
     EditProductComponent,
-    TypeComponent,
   ],
 })
 export class MainModule {}
