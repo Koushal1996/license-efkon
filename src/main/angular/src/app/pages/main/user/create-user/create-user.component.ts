@@ -23,6 +23,10 @@ export class CreateUserComponent implements OnInit {
   dropdownSettings = {};
   userId;
   loaderbutton: boolean = false;
+  selectedRole: any = [];
+  Role: any = [];
+  selected: boolean;
+  selectedRoles: any[] = [];
   constructor(
     private fb: FormBuilder,
     private _adminService: AdminService,
@@ -46,9 +50,9 @@ export class CreateUserComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validators.pattern("^[0-9]*$"),
+          Validators.pattern("^[0-9-]*$"),
           Validators.minLength(10),
-          Validators.maxLength(10),
+          Validators.maxLength(15),
         ],
       ],
       roleIds: this.fb.array([], [Validators.required]),
@@ -57,19 +61,11 @@ export class CreateUserComponent implements OnInit {
     this._adminService.getRoles().subscribe(
       (data) => {
         this.dropdownList = data;
+        this.Role = data;
+        console.log(this.dropdownList);
       },
       (error) => {}
     );
-
-    this.dropdownSettings = {
-      singleSelection: false,
-      idField: "id",
-      textField: "name",
-      selectAllText: "Select All",
-      unSelectAllText: "UnSelect All",
-      itemsShowLimit: 2,
-      allowSearchFilter: true,
-    };
 
     this.activate.params.subscribe((params) => {
       this.userId = params["id"];
@@ -77,7 +73,30 @@ export class CreateUserComponent implements OnInit {
 
     this.patchavalue();
   }
-
+  onChangeRole(item) {
+    let index = this.selectedRole.indexOf(item.id);
+    if (index === -1) {
+      this.selectedRole.push(item.id);
+      this.selectedRoles.push(item);
+    } else {
+      this.selectedRole.splice(index, 1);
+      this.selectedRoles.splice(index, 1);
+    }
+    if (!this.selectedRole.length) {
+      this.selected = true;
+    } else {
+      this.selected = false;
+    }
+  }
+  isChecked(item) {
+    if (this.selectedRole) {
+      return this.selectedRole.find((id) => {
+        return id === item.id;
+      });
+    } else {
+      return false;
+    }
+  }
   patchavalue() {
     if (this.userId) {
       this._adminService.selecetedUser.subscribe((data) => {
@@ -106,43 +125,27 @@ export class CreateUserComponent implements OnInit {
     }
   }
 
-  onItemSelect(item: any) {
-    const roleIds = <FormArray>this.createUserForm.controls["roleIds"];
-    roleIds.push(new FormControl(item.id));
-  }
-
-  onItemDeSelect(item: any) {
-    const roleIds = <FormArray>this.createUserForm.controls["roleIds"];
-    roleIds.removeAt(roleIds.value.indexOf(item.id));
-  }
-  onSelectAll(items: any[]) {
-    const roleIds = <FormArray>this.createUserForm.controls["roleIds"];
-    items.forEach((e) => {
-      roleIds.push(new FormControl(e.id));
-    });
-  }
-  onDeSelect(items: any[]) {
-    const roleIds = <FormArray>this.createUserForm.controls["roleIds"];
-    items.forEach((e) => {
-      roleIds.removeAt(roleIds.value.indexOf(e.id));
-    });
-  }
-
   onSubmit() {
     this.loaderbutton = true;
+    console.log(this.createUserForm.value);
+    const object = {
+      name: this.createUserForm.value.name,
+      username: this.createUserForm.value.name,
+      email: this.createUserForm.value.email,
+      contactNo: this.createUserForm.value.contactNo,
+      roleIds: this.selectedRole,
+    };
     if (this.userId) {
-      this._adminService
-        .updateUser(this.userId, this.createUserForm.value)
-        .subscribe(
-          (data) => {
-            console.log(data);
-            this.route.navigate(["users"]);
-            swal(`${data.name} updated Successfully!`);
-          },
-          (error) => {}
-        );
+      this._adminService.updateUser(this.userId, object).subscribe(
+        (data) => {
+          console.log(data);
+          this.route.navigate(["users"]);
+          swal(`${data.name} updated Successfully!`);
+        },
+        (error) => {}
+      );
     } else {
-      this._adminService.addUser(this.createUserForm.value).subscribe(
+      this._adminService.addUser(object).subscribe(
         (data) => {
           console.log(data);
           this.route.navigate(["users"]);

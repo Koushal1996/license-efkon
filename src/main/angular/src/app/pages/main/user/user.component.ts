@@ -20,7 +20,7 @@ export class UserComponent implements OnInit {
   selectedAuthorites: any;
   itemId: any;
   roleName: any;
-  filterRoleForm: FormGroup;
+  filterStatusForm: FormGroup;
   form: FormGroup;
 
   constructor(
@@ -37,14 +37,14 @@ export class UserComponent implements OnInit {
         console.log(this.users);
         this.usersCopy = JSON.parse(JSON.stringify(data));
         this.isloader = false;
-        this.filterRoleForm.controls["productStatus"].patchValue("All");
+        this.filterStatusForm.controls["productStatus"].patchValue("All");
       },
       (error) => {}
     );
     this.serachUserForm = this.fb.group({
       name: [""],
     });
-    this.filterRoleForm = this.fb.group({
+    this.filterStatusForm = this.fb.group({
       productStatus: [""],
     });
     this.form = new FormGroup({

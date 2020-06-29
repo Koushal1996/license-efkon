@@ -18,11 +18,12 @@
     h3 {
       font-size: 19px;
       color: #fff;
+      font-weight: normal;
   }
   h4 {
     color: #fff;
     font-size: 30px;
-    font-weight: bold;
+    font-weight: 500;
 }
 }
 .icon {
@@ -59,6 +60,7 @@ i {
           margin: 0;
           color: #3f586a;
           display: inline-block;
+          font-weight: 400;
       }
   }
 }
