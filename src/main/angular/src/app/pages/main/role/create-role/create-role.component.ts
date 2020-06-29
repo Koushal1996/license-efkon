@@ -49,7 +49,7 @@ export class CreateRoleComponent implements OnInit {
   ngOnInit() {
     this.createRoleForm = this.fb.group({
       name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
-      authorityIds: this.fb.array([], [Validators.required]),
+      authorityIds: this.fb.array([]),
     });
 
     this.showAuthoities();
@@ -69,7 +69,9 @@ export class CreateRoleComponent implements OnInit {
     );
   }
   onChangeAuthorities(item) {
+    console.log(item);
     let index = this.authorityIds.indexOf(item.id);
+    console.log(index);
     if (index == -1) {
       this.authorityIds.push(item.id);
       this.selectedAuthorities.push(item);

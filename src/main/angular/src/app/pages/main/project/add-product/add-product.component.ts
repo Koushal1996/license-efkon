@@ -288,31 +288,15 @@ export class AddProductComponent implements OnInit, OnChanges {
     }
   }
 
-  // onExpirationMonthCount(expirationMonthCount) {
-  //   this.expirationMonthNo = expirationMonthCount;
-  //   console.log(this.todayDate);
-  //   if (this.todayDate) var d = new Date(this.todayDate);
-  //   console.log(d.toLocaleDateString());
-  //   const month = d.getMonth();
-  //   d.setMonth(d.getMonth() + this.expirationMonthNo);
-  //   console.log(d.toLocaleDateString());
-  //   while (d.getMonth() === month) {
-  //     d.setDate(d.getDate() - 1);
-  //   }
-  //   console.log(d.toLocaleDateString());
-  //   function convert(d) {
-  //     var date = new Date(d),
-  //       mnth = ("0" + (date.getMonth() + 1)).slice(-2),
-  //       day = ("0" + date.getDate()).slice(-2);
-  //     return [date.getFullYear(), mnth, day].join("-");
-  //   }
-  //   this.productForm.controls["EndDate"].patchValue(convert(d));
-  // }
   onExpirationMonthCount(expirationMonthCount) {
     this.expirationMonthNo = expirationMonthCount;
     console.log(this.todayDate);
     if (this.todayDate) var d = new Date(this.todayDate);
-    console.log(d.toLocaleDateString());
+    //console.log(d.toLocaleDateString());
+    console.log(d);
+    // End date should be one day less than the month
+    d.setDate(d.getDate() - 1);
+    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
     console.log(d.toLocaleDateString());
     function convert(d) {
@@ -332,6 +316,10 @@ export class AddProductComponent implements OnInit, OnChanges {
     console.log(startDate);
     this.sDate = startDate;
     var d = new Date(this.sDate);
+    console.log(d);
+    // End date should be one day less than the month
+    d.setDate(d.getDate() - 1);
+    console.log(d);
     d.setMonth(d.getMonth() + this.expirationMonthNo);
     function convert(d) {
       var date = new Date(d),

@@ -8,7 +8,7 @@
       >
         Create Project
       </button>
-      <form [formGroup]="searchProjectsForm">
+      <!-- <form [formGroup]="searchProjectsForm">
         <div class="search_bar">
           <input
             type="text"
@@ -19,7 +19,21 @@
           />
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-      </form>
+      </form> -->
+      <div class="search_bar">
+        <form [formGroup]="form">
+          <input
+            type="text"
+            autocomplete="off"
+            name="search"
+            formControlName="search"
+            placeholder="Search here "
+            [(ngModel)]="term"
+            class="form-control"
+          />
+          <i class="fa fa-search"></i>
+        </form>
+      </div>
       <div class="table_scroll">
         <table>
           <thead>
@@ -63,7 +77,7 @@
             No Project Available Now
           </div> -->
           <tbody id="accordion">
-            <ng-container *ngFor="let project of projects; index as i">
+            <ng-container *ngFor="let project of projects| filter: term; index as i">
               <tr #c (click)="getProductsByProjectId(c, project)">
                 <td>{{ i + 1 }}</td>
                 <td>{{ project.customerName }}</td>
@@ -109,9 +123,13 @@
                       data-toggle="collapse"
                       [attr.data-target]="'#collapse' + i"
                       (click)="productsCount(project)"
-                      *ngIf="hasAuthority('PROJECT_PRODUCT_FETCH')"
-                      >Added</label>
-                      <!-- {{ project.productsCount }} -->
+                      *ngIf="
+                        hasAuthority('PROJECT_PRODUCT_FETCH') &&
+                        project.productsCount
+                      "
+                      >Added</label
+                    >
+                    <!-- {{ project.productsCount }} -->
                     <span style="min-width: 140px;">Added Product Details</span>
                   </div>
                 </td>
