@@ -63,7 +63,9 @@
             No Project Available Now
           </div> -->
           <tbody id="accordion">
-            <ng-container *ngFor="let project of projects; index as i">
+            <ng-container
+              *ngFor="let project of projects | filter: term; index as i"
+            >
               <tr #c (click)="getProductsByProjectId(c, project)">
                 <td>{{ i + 1 }}</td>
                 <td>{{ project.customerName }}</td>
@@ -110,8 +112,9 @@
                       [attr.data-target]="'#collapse' + i"
                       (click)="productsCount(project)"
                       *ngIf="hasAuthority('PROJECT_PRODUCT_FETCH')"
-                      >Added</label>
-                      <!-- {{ project.productsCount }} -->
+                      >Added</label
+                    >
+                    <!-- {{ project.productsCount }} -->
                     <span style="min-width: 140px;">Added Product Details</span>
                   </div>
                 </td>

@@ -32,11 +32,22 @@
           class="nav-link"
           data-toggle="tab"
           routerLinkActive="active"
+          routerLink="type"
+        >
+          Project Type
+        </a>
+      </li>
+      <li class="nav-item" (click)="activeParentTab()">
+        <a
+          class="nav-link"
+          data-toggle="tab"
+          routerLinkActive="active"
           routerLink="license"
         >
           Licenses</a
         >
       </li>
+
       <!-- <li class="nav-item">
         <a
           class="nav-link"

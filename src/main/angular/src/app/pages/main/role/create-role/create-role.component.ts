@@ -72,10 +72,10 @@ export class CreateRoleComponent implements OnInit {
     let index = this.authorityIds.indexOf(item.id);
     if (index == -1) {
       this.authorityIds.push(item.id);
-      this.selectedAuthorities.push(item);
+      //this.selectedAuthorities.push(item);
     } else {
       this.authorityIds.splice(index, 1);
-      this.selectedAuthorities.splice(index, 1);
+      //this.selectedAuthorities.splice(index, 1);
     }
     if (!this.authorityIds.length) {
       this.eventValue = true;
@@ -83,6 +83,8 @@ export class CreateRoleComponent implements OnInit {
       this.eventValue = false;
     }
   }
+
+  checkUncheckAll() {}
   isChecked(item) {
     if (this.authorityIds) {
       return this.authorityIds.find((id) => {
@@ -131,7 +133,7 @@ export class CreateRoleComponent implements OnInit {
         (data) => {
           console.log();
           this.route.navigate(["roles"]);
-          swal(`${data.name} updated successfully!`);
+          swal("Role updated successfully!");
         },
         (error) => {
           this.loaderbutton = false;
