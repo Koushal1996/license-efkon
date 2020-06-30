@@ -10,12 +10,7 @@
       </button>
       <!-- <form [formGroup]="searchProjectsForm">
         <div class="search_bar">
-          <input
-            type="text"
-            formControlName="Search"
-            class="form-control"
-            placeholder="Search here.."
-            (ngModelChange)="onsearchProjectsForm($event)"
+          <input type="text" formControlName="Search" class="form-control" placeholder="Search here.." (ngModelChange)="onsearchProjectsForm($event)"
           />
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
@@ -505,8 +500,7 @@
           <h4 class="modal-title">
             Enter Comment * for
             <span
-              >( {{ selectedProductFamily }}
-              {{ selectedProductCode }}
+              >( {{ selectedProductFamily }} {{ selectedProductCode }}
               {{ selectedProductVersion }} )</span
             >
             <!-- <span style="color: #f00;">*</span> -->
@@ -583,8 +577,7 @@
           <h4 class="modal-title">
             Comments for
             <span>
-              ( {{ selectedProductFamily }}
-              {{ selectedProductCode }}
+              ( {{ selectedProductFamily }} {{ selectedProductCode }}
               {{ selectedProductVersion }} )</span
             >
           </h4>
@@ -691,8 +684,7 @@
           <h4 class="modal-title">
             Renew for
             <span
-              >( {{ selectedProductFamily }}
-              {{ selectedProductCode }}
+              >( {{ selectedProductFamily }} {{ selectedProductCode }}
               {{ selectedProductVersion }} )</span
             >
           </h4>

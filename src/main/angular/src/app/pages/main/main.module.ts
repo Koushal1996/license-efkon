@@ -27,7 +27,6 @@ import { AcceptedComponent } from "./viewrequest/accepted/accepted.component";
 import { RejectedComponent } from "./viewrequest/rejected/rejected.component";
 import { PendingComponent } from "./viewrequest/pending/pending.component";
 import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
-//import { Ng2SearchPipeModule } from "ng2-search-filter";
 import { TypeComponent } from "./product/type/type.component";
 
 @NgModule({
