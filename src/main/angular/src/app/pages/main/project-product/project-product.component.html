@@ -102,9 +102,7 @@
           <!-- <div *ngIf="!projectProducts?.length">
             No products Available Now
           </div> -->
-          <ng-container
-            *ngFor="let project of projectProducts | filter: term; index as i"
-          >
+          <ng-container *ngFor="let project of projectProducts; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
               <td>
