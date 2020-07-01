@@ -8,14 +8,19 @@
       >
         Create Project
       </button>
-      <!-- <form [formGroup]="searchProjectsForm">
+      <form [formGroup]="searchProjectsForm">
         <div class="search_bar">
-          <input type="text" formControlName="Search" class="form-control" placeholder="Search here.." (ngModelChange)="onsearchProjectsForm($event)"
+          <input
+            type="text"
+            formControlName="Search"
+            class="form-control"
+            placeholder="Search here.."
+            (ngModelChange)="onsearchProjectsForm($event)"
           />
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-      </form> -->
-      <div class="search_bar">
+      </form>
+      <!-- <div class="search_bar">
         <form [formGroup]="form">
           <input
             type="text"
@@ -28,7 +33,7 @@
           />
           <i class="fa fa-search"></i>
         </form>
-      </div>
+      </div> -->
       <div class="table_scroll">
         <table>
           <thead>
@@ -72,6 +77,9 @@
             No Project Available Now
           </div> -->
           <tbody id="accordion">
+            <h2 *ngIf="!projects?.length && !isloader">
+              No Projects Available Now
+            </h2>
             <ng-container *ngFor="let project of projects; index as i">
               <tr #c (click)="getProductsByProjectId(c, project)">
                 <td>{{ i + 1 }}</td>
@@ -375,10 +383,7 @@
                             <button
                               class="t_save_btn bg-danger"
                               type="button"
-                              *ngIf="
-                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                                hasAuthority('PROJECT_PRODUCT_REJECT')
-                              "
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_REJECT')"
                               (click)="rejectProductStatus(pro)"
                             >
                               Reject
@@ -387,10 +392,7 @@
                               type="button"
                               class="t_save_btn bg-danger"
                               (click)="recallProductStatus(pro)"
-                              *ngIf="
-                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                                hasAuthority('PROJECT_PRODUCT_UNDO')
-                              "
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                             >
                               Recall
                             </button>
@@ -399,7 +401,6 @@
                             *ngIf="
                               pro.status == 'REVIEWED' &&
                               (hasAuthority('PROJECT_PRODUCT_APPROVE') ||
-                                hasAuthority('PROJECT_PRODUCT_REVIEW') ||
                                 hasAuthority('PROJECT_PRODUCT_REJECT') ||
                                 hasAuthority('PROJECT_PRODUCT_UNDO'))
                             "
@@ -416,10 +417,7 @@
                               class="roleactive bg-danger"
                               type="button"
                               (click)="rejectProductStatus(pro)"
-                              *ngIf="
-                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                                hasAuthority('PROJECT_PRODUCT_REJECT')
-                              "
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_REJECT')"
                             >
                               Reject
                             </button>
@@ -427,10 +425,7 @@
                               type="button"
                               class="t_save_btn bg-danger"
                               (click)="recallProductStatus(pro)"
-                              *ngIf="
-                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                                hasAuthority('PROJECT_PRODUCT_UNDO')
-                              "
+                              *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                             >
                               Recall
                             </button>

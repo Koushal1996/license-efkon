@@ -24,7 +24,7 @@ export class CreateUserComponent implements OnInit {
   userId;
   loaderbutton: boolean = false;
   selectedRole: any = [];
-  Role: any = [];
+  roleIds: any = [];
   selected: boolean;
   selectedRoles: any[] = [];
   constructor(
@@ -43,26 +43,26 @@ export class CreateUserComponent implements OnInit {
         [
           Validators.required,
           Validators.email,
-          Validators.pattern("^[a-z0-9._%+-]+@[a-z.-]+\\.[a-z]{2,4}$"),
+          Validators.pattern("^[a-z0-9._%+-]+@[a-z.-]+.[a-z]{2,4}$"),
         ],
       ],
       contactNo: [
         "",
         [
           Validators.required,
-          Validators.pattern("^[0-9-]*$"),
+          Validators.pattern("^[0-9]*$"),
           Validators.minLength(10),
-          Validators.maxLength(15),
+          Validators.maxLength(10),
         ],
       ],
-      roleIds: this.fb.array([], [Validators.required]),
+      roleIds: this.fb.array([], Validators.required),
     });
 
     this._adminService.getRoles().subscribe(
       (data) => {
         this.dropdownList = data;
-        this.Role = data;
-        console.log(this.dropdownList);
+        //this.Role = data;
+        //console.log(this.dropdownList);
       },
       (error) => {}
     );
@@ -87,6 +87,7 @@ export class CreateUserComponent implements OnInit {
     } else {
       this.selected = false;
     }
+    console.log(this.selectedRole);
   }
   isChecked(item) {
     if (this.selectedRole) {
@@ -103,22 +104,18 @@ export class CreateUserComponent implements OnInit {
         if (Object.keys(data).length) {
           this.createUserForm.patchValue(data);
           this.selectedItems = data.roles;
-          const roleIds = <FormArray>this.createUserForm.controls["roleIds"];
-          if (data.roles) {
-            data.roles.forEach((role) => {
-              roleIds.push(new FormControl(role.id));
-            });
-          }
+          this.selectedItems.forEach((role) => {
+            this.selectedRole.push(role.id);
+            this.selectedRoles.push(role);
+          });
         } else {
           this._adminService.getUserById(this.userId).subscribe((data) => {
             this.createUserForm.patchValue(data);
             this.selectedItems = data.roles;
-            const roleIds = <FormArray>this.createUserForm.controls["roleIds"];
-            if (data.roles) {
-              data.roles.forEach((role) => {
-                roleIds.push(new FormControl(role.id));
-              });
-            }
+            this.selectedItems.forEach((role) => {
+              this.selectedRole.push(role.id);
+              this.selectedRoles.push(role);
+            });
           });
         }
       });
@@ -128,21 +125,28 @@ export class CreateUserComponent implements OnInit {
   onSubmit() {
     this.loaderbutton = true;
     console.log(this.createUserForm.value);
+    // this.createUserForm.controls["roleIds"].patchValue(this.selectedRole);
+    // console.log(this.createUserForm.value);
     const object = {
       name: this.createUserForm.value.name,
-      username: this.createUserForm.value.name,
+      username: this.createUserForm.value.username,
       email: this.createUserForm.value.email,
       contactNo: this.createUserForm.value.contactNo,
       roleIds: this.selectedRole,
     };
+    console.log(object);
     if (this.userId) {
       this._adminService.updateUser(this.userId, object).subscribe(
         (data) => {
           console.log(data);
           this.route.navigate(["users"]);
-          swal(`${data.name} updated Successfully!`);
+          swal("User updated Successfully!");
+          this.loaderbutton = false;
         },
-        (error) => {}
+        (error) => {
+          // this.route.navigate(["users"]);
+          this.loaderbutton = false;
+        }
       );
     } else {
       this._adminService.addUser(object).subscribe(
@@ -150,8 +154,12 @@ export class CreateUserComponent implements OnInit {
           console.log(data);
           this.route.navigate(["users"]);
           swal(`New User (${data.name}) Added Successfully!`);
+          this.loaderbutton = false;
         },
-        (error) => {}
+        (error) => {
+          //this.route.navigate(["users"]);
+          this.loaderbutton = false;
+        }
       );
     }
   }

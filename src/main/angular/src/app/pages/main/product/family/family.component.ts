@@ -1,3 +1,4 @@
+import { StorageService } from "src/app/services/storage/storage.service";
 import { Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import { ProductService } from "./../../../../services/product/product.service";
@@ -11,7 +12,11 @@ declare let $: any;
 export class FamilyComponent implements OnInit {
   family = [];
   isloader: boolean = true;
-  constructor(private _productService: ProductService, private route: Router) {}
+  constructor(
+    private _productService: ProductService,
+    private route: Router,
+    private _storageService: StorageService
+  ) {}
 
   ngOnInit() {
     this._productService.getProductFamilies().subscribe((data) => {
@@ -19,6 +24,12 @@ export class FamilyComponent implements OnInit {
       console.log(data);
       this.isloader = false;
     });
+  }
+  hasAuthority(authority) {
+    const authorities: any[] = this._storageService
+      .getData("userAuthorities")
+      .map((a) => a.name);
+    return authorities.includes(authority);
   }
   addProductFamily() {
     this.route.navigate(["products/family/create"]);
@@ -42,12 +53,12 @@ export class FamilyComponent implements OnInit {
         this._productService
           .deleteProductFamily(family.id)
           .subscribe((data) => {
-            // this.family.splice(
-            //   this.family.findIndex((pd) => pd.id == family.id),
-            //   1
-            // );
+            this.family.splice(
+              this.family.findIndex((pd) => pd.id == family.id),
+              1
+            );
             console.log(data);
-            family.active = false;
+            //family.active = false;
             swal("Product family deleted successfully!");
           });
         $("#" + family.id).removeClass("highlight");

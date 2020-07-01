@@ -1,7 +1,11 @@
 <div class="site_main">
   <div class="container-fluid p-0">
     <div class="col-12 p-0">
-      <button class="createBtn" (click)="addProductFamily()">
+      <button
+        class="createBtn"
+        *ngIf="hasAuthority('PRODUCT_FAMILY_CREATE')"
+        (click)="addProductFamily()"
+      >
         Add Product Family
       </button>
       <div class="table_scroll">
@@ -13,10 +17,21 @@
               <th scope="col">Code</th>
               <th scope="col">Product Codes</th>
               <th scope="col">Description</th>
-              <th scope="col">Action</th>
+              <th
+                scope="col"
+                *ngIf="
+                  hasAuthority('PRODUCT_FAMILY_UPDATE') ||
+                  hasAuthority('PRODUCT_FAMILY_DELETE')
+                "
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
+            <div *ngIf="!family?.length && !isloader">
+              No Product Family Available Now
+            </div>
             <tr
               *ngFor="let family of family; index as i"
               id="{{ family.id }}"
@@ -34,10 +49,16 @@
                 <div class="description">{{ family.description }}</div>
               </td>
               <td *ngIf="!family.description">NA</td>
-              <td>
+              <td
+                *ngIf="
+                  hasAuthority('PRODUCT_FAMILY_UPDATE') ||
+                  hasAuthority('PRODUCT_FAMILY_DELETE')
+                "
+              >
                 <button
                   class="edit_button top_tooltip"
                   (click)="editFamilyDescription(family)"
+                  *ngIf="hasAuthority('PRODUCT_FAMILY_UPDATE')"
                 >
                   <i class="fa fa-edit"></i>
                   <span>Edit</span>
@@ -45,6 +66,7 @@
                 <button
                   class="delete_button top_tooltip"
                   (click)="deleteFamilyDescription(family)"
+                  *ngIf="hasAuthority('PRODUCT_FAMILY_DELETE')"
                 >
                   <i class="fa fa-trash"></i>
                   <span>Delete</span>

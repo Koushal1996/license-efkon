@@ -28,14 +28,12 @@ import { RejectedComponent } from "./viewrequest/rejected/rejected.component";
 import { PendingComponent } from "./viewrequest/pending/pending.component";
 import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
 import { TypeComponent } from "./product/type/type.component";
-
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     MainRoutingModule,
     ReactiveFormsModule,
-    //Ng2SearchPipeModule,
     NgMultiSelectDropDownModule.forRoot(),
   ],
   declarations: [

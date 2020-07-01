@@ -3,7 +3,7 @@
     <!-- <button (click)="exportProjectProducts()">Export ProjectProducts</button>
     <button (click)="PdfProjectProducts()">PDF Download</button> -->
 
-    <!-- <form [formGroup]="searchProjectProductsForm">
+    <form [formGroup]="searchProjectProductsForm">
       <div class="search_bar">
         <input
           type="text"
@@ -14,8 +14,8 @@
         />
         <i class="fa fa-search" aria-hidden="true"></i>
       </div>
-    </form> -->
-    <div class="search_bar">
+    </form>
+    <!-- <div class="search_bar">
       <form [formGroup]="form">
         <input
           type="text"
@@ -28,7 +28,7 @@
         />
         <i class="fa fa-search"></i>
       </form>
-    </div>
+    </div> -->
 
     <form [formGroup]="filterStatusForm">
       <div class="search_bar">
@@ -99,9 +99,9 @@
         </thead>
 
         <tbody id="accordion">
-          <!-- <div *ngIf="!projectProducts?.length">
-            No products Available Now
-          </div> -->
+          <h2 *ngIf="!projectProducts?.length && !isloader">
+            No Products Available Now
+          </h2>
           <ng-container *ngFor="let project of projectProducts; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
@@ -195,10 +195,7 @@
                   type="button"
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
-                  *ngIf="
-                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                    hasAuthority('PROJECT_PRODUCT_REJECT')
-                  "
+                  *ngIf="hasAuthority('PROJECT_PRODUCT_REJECT')"
                 >
                   Reject
                 </button>
@@ -206,10 +203,7 @@
                   type="button"
                   class="t_save_btn bg-danger"
                   (click)="recallProductStatus(project)"
-                  *ngIf="
-                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                    hasAuthority('PROJECT_PRODUCT_UNDO')
-                  "
+                  *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                 >
                   Recall
                 </button>
@@ -218,7 +212,6 @@
                 *ngIf="
                   project.status == 'REVIEWED' &&
                   (hasAuthority('PROJECT_PRODUCT_APPROVE') ||
-                    hasAuthority('PROJECT_PRODUCT_REVIEW') ||
                     hasAuthority('PROJECT_PRODUCT_REJECT') ||
                     hasAuthority('PROJECT_PRODUCT_UNDO'))
                 "
@@ -233,10 +226,7 @@
                 </button>
                 <button
                   type="button"
-                  *ngIf="
-                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                    hasAuthority('PROJECT_PRODUCT_REJECT')
-                  "
+                  *ngIf="hasAuthority('PROJECT_PRODUCT_REJECT')"
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                 >
@@ -246,10 +236,7 @@
                   type="button"
                   class="t_save_btn bg-danger"
                   (click)="recallProductStatus(project)"
-                  *ngIf="
-                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
-                    hasAuthority('PROJECT_PRODUCT_UNDO')
-                  "
+                  *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                 >
                   Recall
                 </button>
@@ -336,9 +323,6 @@
                   Request
                 </button>
               </td>
-              <!-- <td *ngIf="project.status == 'REJECTED'">
-                NA
-              </td> -->
             </tr>
             <tr>
               <td colspan="12" class="padding" *ngIf="project.licenses.length">

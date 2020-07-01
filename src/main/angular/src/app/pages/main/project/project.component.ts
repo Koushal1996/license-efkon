@@ -77,21 +77,37 @@ export class ProjectComponent implements OnInit {
       search: new FormControl(null),
     });
   }
+  // onsearchProjectsForm(key) {
+  //   console.log(key);
+  //   if (key) {
+  //     this.projects = this.projects.filter(
+  //       (item) =>
+  //         (item.customerName &&
+  //           item.customerName.toLowerCase().startsWith(key)) ||
+  //         (item.customerEmail &&
+  //           item.customerEmail.toLowerCase().startsWith(key)) ||
+  //         (item.customerContactNo && item.customerContactNo.startsWith(key))
+  //     );
+  //   } else {
+  //     this.projects = this.projectsCopy;
+  //   }
+  // }
   onsearchProjectsForm(key) {
-    console.log(key);
     if (key) {
-      this.projects = this.projects.filter(
+      this.projects = this.projectsCopy.filter(
         (item) =>
-          (item.customerName &&
-            item.customerName.toLowerCase().startsWith(key)) ||
-          (item.customerEmail &&
-            item.customerEmail.toLowerCase().startsWith(key)) ||
-          (item.customerContactNo && item.customerContactNo.startsWith(key))
+          item.customerName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.customerName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.projectManagerName.toLowerCase().indexOf(key.toLowerCase()) >
+            -1 ||
+          item.projectTypeName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.customerContactNo.toLowerCase().indexOf(key.toLowerCase()) > -1
       );
     } else {
-      this.projects = this.projectsCopy;
+      this.projects = JSON.parse(JSON.stringify(this.projectsCopy));
     }
   }
+
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
       .getData("userAuthorities")
