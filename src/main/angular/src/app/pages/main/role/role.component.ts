@@ -120,32 +120,28 @@ export class RoleComponent implements OnInit {
   createRole() {
     this.route.navigate(["roles/create"]);
   }
+  // onSearchRole() {
+  //   if (this.serachRoleForm.get("name").value) {
+  //     this.roles = this.roles.filter((item) =>
+  //       item.name
+  //         .toLowerCase()
+  //         .startsWith(this.serachRoleForm.get("name").value)
+  //     );
+  //   } else {
+  //     this.roles = this.rolesCopy;
+  //   }
+  // }
+
   onSearchRole() {
-    if (this.serachRoleForm.get("name").value) {
-      this.roles = this.roles.filter((item) =>
-        item.name
-          .toLowerCase()
-          .startsWith(this.serachRoleForm.get("name").value)
+    let key = this.serachRoleForm.get("name").value;
+    if (key) {
+      this.roles = this.rolesCopy.filter(
+        (item) => item.name.toLowerCase().indexOf(key.toLowerCase()) > -1
       );
     } else {
       this.roles = this.rolesCopy;
     }
   }
-
-  // onSearchRole() {
-  //   if (this.serachRoleForm.get("name").value) {
-  //     this.roles = this.roles.filter((item) => {
-  //       return (
-  //         item.name
-  //           .toLowerCase()
-  //           .indexOf(this.serachRoleForm.get("name").value.toLowerCase()) > -1
-  //       );
-  //     });
-  //   } else {
-  //     //console.log("jhj");
-  //     this.roles = this.rolesCopy;
-  //   }
-  // }
 
   sortAphabetically() {
     console.log(this.roles);

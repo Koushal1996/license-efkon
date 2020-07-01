@@ -505,6 +505,7 @@ export class ProjectProductComponent implements OnInit {
             license.edit = false;
             console.log(data);
             license.generatedKey = data.generatedKey;
+            license.id = data.id;
             swal("License Key updated successfully!");
           },
           (error) => {
@@ -650,24 +651,41 @@ export class ProjectProductComponent implements OnInit {
     }
   }
 
+  // onsearchProjectProductsForm(key) {
+  //   console.log(key);
+  //   if (key) {
+  //     this.projectProducts = this.projectProducts.filter(
+  //       (
+  //         item //console.log(item)
+  //       ) =>
+  //         (item.project.customerName &&
+  //           item.project.customerName.toLowerCase().startsWith(key)) ||
+  //         (item.project.customerEmail &&
+  //           item.project.customerEmail.toLowerCase().startsWith(key)) ||
+  //         (item.productDetail.productCodeName &&
+  //           item.productDetail.productCodeName.toLowerCase().startsWith(key))
+  //     );
+  //   } else {
+  //     this.projectProducts = this.projectProducts;
+  //   }
+  // }
   onsearchProjectProductsForm(key) {
-    console.log(key);
     if (key) {
-      this.projectProducts = this.projectProducts.filter(
-        (
-          item //console.log(item)
-        ) =>
-          (item.project.customerName &&
-            item.project.customerName.toLowerCase().startsWith(key)) ||
-          (item.project.customerEmail &&
-            item.project.customerEmail.toLowerCase().startsWith(key)) ||
-          (item.productDetail.productCodeName &&
-            item.productDetail.productCodeName.toLowerCase().startsWith(key))
+      this.projectProducts = this.projectProductsCopy.filter(
+        (item) =>
+          item.project.customerName.toLowerCase().indexOf(key.toLowerCase()) >
+            -1 ||
+          item.project.customerName.toLowerCase().indexOf(key.toLowerCase()) >
+            -1 ||
+          item.productDetail.productCodeName
+            .toLowerCase()
+            .indexOf(key.toLowerCase()) > -1
       );
     } else {
-      this.projectProducts = this.projectProductsCopy;
+      this.projectProducts = JSON.parse(JSON.stringify(this.projectProducts));
     }
   }
+
   exportProjectProducts() {
     this._projectService.getProjectProductsExcel().subscribe((data) => {
       console.log(data);

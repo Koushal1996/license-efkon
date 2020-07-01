@@ -29,7 +29,6 @@ export class CreateRoleComponent implements OnInit {
   roleId;
   roledata;
   loaderbutton: boolean = false;
-
   createRoleForm: FormGroup;
   selectedAuthorities: any[] = [];
   authorityIds = [];
@@ -38,6 +37,9 @@ export class CreateRoleComponent implements OnInit {
   roleValues: any;
   authVal: boolean;
   authorities: any = [];
+  authoritiesCopy: any;
+  checkbox: boolean;
+  totalAuthoritiesCopy: any;
 
   constructor(
     private fb: FormBuilder,
@@ -64,6 +66,18 @@ export class CreateRoleComponent implements OnInit {
     this._adminService.getauthorities().subscribe(
       (data) => {
         this.authorities = data;
+        this.authoritiesCopy = data;
+        //console.log(
+        // " this.authoritiesCopy.length:" + this.authoritiesCopy.length
+        //);
+        this.totalAuthoritiesCopy = this.authoritiesCopy.length;
+        //console.log("get" + this.roleValues.authorities.length);
+        console.log("gettttcopy" + this.roleValues);
+        if (this.roleValues != undefined) {
+          if (this.totalAuthoritiesCopy == this.roleValues.authorities.length) {
+            this.checkbox = true;
+          }
+        }
       },
       (error) => {}
     );
@@ -77,6 +91,7 @@ export class CreateRoleComponent implements OnInit {
       //this.selectedAuthorities.push(item);
     } else {
       this.authorityIds.splice(index, 1);
+      this.checkbox = false;
       //this.selectedAuthorities.splice(index, 1);
     }
     if (!this.authorityIds.length) {
@@ -84,9 +99,26 @@ export class CreateRoleComponent implements OnInit {
     } else {
       this.eventValue = false;
     }
+    console.log(this.authorityIds);
   }
 
-  checkUncheckAll() {}
+  onSelectDeselectAll(e) {
+    this.checkbox = e.target.checked;
+    console.log(this.checkbox);
+    if (this.checkbox == true) {
+      this.authorityIds = [];
+      //this.authorities = this.authoritiesCopy;
+      this.authoritiesCopy.forEach((role) => {
+        this.authorityIds.push(role.id);
+        console.log(this.authorityIds);
+      });
+    } else if (this.checkbox == false) {
+      this.authorityIds = [];
+      // this.authoritiesCopy.forEach((role) => {
+      //   this.authorityIds.splice(role.id);
+      // });
+    }
+  }
   isChecked(item) {
     if (this.authorityIds) {
       return this.authorityIds.find((id) => {
@@ -96,12 +128,13 @@ export class CreateRoleComponent implements OnInit {
       return false;
     }
   }
+
   val = true;
   patchavalue() {
     if (this.roleId) {
       this._adminService.selecetedRole.subscribe((data) => {
         if (Object.keys(data).length) {
-          console.log(data);
+          //console.log(data);
           this.roleValues = data;
           //this.createRoleForm.controls["name"].patchValue(data.name);
           this.createRoleForm.patchValue(data);
@@ -109,6 +142,14 @@ export class CreateRoleComponent implements OnInit {
             this.authorityIds.push(role.id);
             this.selectedAuthorities.push(role);
           });
+          this.showAuthoities();
+          // console.log("get" + this.roleValues.authorities.length);
+          // console.log("gettttcopy" + this.totalAuthoritiesCopy);
+          // if (
+          //   this.totalAuthoritiesCopy === this.roleValues.authorities.length
+          // ) {
+          //   this.checkbox = false;
+          // }
         } else {
           this._adminService.getRoleById(this.roleId).subscribe((data) => {
             this.createRoleForm.patchValue(data);
@@ -117,6 +158,7 @@ export class CreateRoleComponent implements OnInit {
               this.authorityIds.push(role.id);
               this.selectedAuthorities.push(role);
             });
+            this.showAuthoities();
           });
         }
       });

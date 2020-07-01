@@ -34,7 +34,7 @@ export class UserComponent implements OnInit {
     this._admin.getUsers().subscribe(
       (data) => {
         this.users = data;
-        console.log(this.users);
+        // console.log(this.users);
         this.usersCopy = JSON.parse(JSON.stringify(data));
         this.isloader = false;
         this.filterRoleForm.controls["productStatus"].patchValue("All");
@@ -46,9 +46,6 @@ export class UserComponent implements OnInit {
     });
     this.filterRoleForm = this.fb.group({
       productStatus: [""],
-    });
-    this.form = new FormGroup({
-      search: new FormControl(null),
     });
   }
   hasAuthority(authority) {
@@ -126,18 +123,17 @@ export class UserComponent implements OnInit {
   onSearchUser(key) {
     console.log(key);
     if (key) {
-      this.users = this.users.filter(
+      this.users = this.usersCopy.filter(
         (item) =>
           //console.log(item)
-          (item.name && item.name.toLowerCase().startsWith(key)) ||
-          (item.username && item.username.toLowerCase().startsWith(key)) ||
-          (item.email && item.email.toLowerCase().startsWith(key)) ||
-          (item.contactNo && item.contactNo.startsWith(key))
+          item.name.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.username.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.email.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.contactNo.toLowerCase().indexOf(key.toLowerCase()) > -1
       );
     } else {
       this.users = this.usersCopy;
     }
-    //this.onFilterUser("Approver");
   }
   onFilterUser(key) {
     this.users = this.usersCopy;

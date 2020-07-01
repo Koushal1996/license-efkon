@@ -18,6 +18,9 @@
             </tr>
           </thead>
           <tbody>
+            <h2 *ngIf="!productRejectRequests?.length && !isloader">
+              No products Available Now
+            </h2>
             <tr
               id="{{ product.id }}"
               class=""

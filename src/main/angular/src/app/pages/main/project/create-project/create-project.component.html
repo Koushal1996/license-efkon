@@ -69,13 +69,13 @@
                       class="field_error"
                       >Email is required</span
                     >
-                    <span
+                    <!-- <span
                       *ngIf="projectForm.get('customerEmail').errors.pattern"
                       class="field_error"
-                      >Enter a valid Email</span
+                      >Enter a valid Email</span -->
                     >
                     <span
-                      *ngIf="createUserForm.get('customerEmail').errors.email"
+                      *ngIf="projectForm.get('customerEmail').errors.email"
                       class="error"
                       >Enter a valid Email</span
                     >

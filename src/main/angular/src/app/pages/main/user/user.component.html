@@ -8,7 +8,7 @@
       >
         Create User
       </button>
-      <!-- <form [formGroup]="serachUserForm">
+      <form [formGroup]="serachUserForm">
         <div class="search_bar">
           <input
             type="text"
@@ -19,22 +19,9 @@
           />
           <i class="fa fa-search" aria-hidden="true"></i>
         </div>
-      </form> -->
+      </form>
 
-      <div class="search_bar">
-        <form [formGroup]="form">
-          <input
-            type="text"
-            autocomplete="off"
-            name="search"
-            formControlName="search"
-            placeholder="Search here "
-            [(ngModel)]="term"
-            class="form-control"
-          />
-          <i class="fa fa-search"></i>
-        </form>
-      </div>
+      <!-- <input [(ngModel)]="term" placeholder="search text goes here" /> -->
       <form [formGroup]="filterRoleForm">
         <div class="search_bar">
           <!-- <span class="fa fa-filter" aria-hidden="true"></span> -->
