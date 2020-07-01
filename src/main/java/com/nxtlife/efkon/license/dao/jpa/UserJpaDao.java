@@ -63,4 +63,6 @@ public interface UserJpaDao extends JpaRepository<User, Long> {
 
 	public UserResponse findByContactNoAndActive(String customerContactNo, Boolean active);
 
+	public boolean existsByEmail(String email);
+
 }

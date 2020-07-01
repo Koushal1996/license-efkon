@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
+import com.nxtlife.efkon.license.view.license.LicenseReportResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
 
@@ -134,5 +135,25 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	@Modifying
 	@Query(value = "update ProjectProduct set active = false, modified_by =?2, modified_at =?3 where project_id =?1")
 	public void deleteByProjectId(Long unmaskId, Long userId, Date date);
+
+	@Query(value = "select  new com.nxtlife.efkon.license.view.license.LicenseReportResponse(p.customerName, pf.name, pc.name, lt.name, pp.startDate, pp.endDate, pp.expirationMonthCount, pp.licenseCount) "
+			+ "from ProjectProduct pp inner join Project p on pp.project.id=p.id "
+			+ "inner join ProductDetail pd on pp.productDetail.id=pd.id "
+			+ "inner join ProductFamily pf on pd.productFamily.id=pf.id "
+			+ "inner join ProductCode pc on pd.productCode.id = pc.id "
+			+ "inner join LicenseType lt on pp.licenseType.id=lt.id " + "where p.customerEmail=?1 and pp.status=?2")
+	public List<LicenseReportResponse> findLicenseReportByCustomerEmailAndStatus(String email,
+			ProjectProductStatus approved);
+//	inner join license_type lt on pp.license_type_id = lt.id
+
+	@Query(value = "select  new com.nxtlife.efkon.license.view.license.LicenseReportResponse(p.customerName, pf.name, pc.name, lt.name, pp.startDate, pp.endDate, pp.expirationMonthCount, pp.licenseCount) "
+			+ "from ProjectProduct pp inner join Project p on pp.project.id=p.id "
+			+ "inner join ProductDetail pd on pp.productDetail.id=pd.id "
+			+ "inner join ProductFamily pf on pd.productFamily.id=pf.id "
+			+ "inner join ProductCode pc on pd.productCode.id = pc.id "
+			+ "inner join LicenseType lt on pp.licenseType.id=lt.id "
+			+ "where p.customerEmail=?1 and pp.status=?2 and p.projectManager.id=?3")
+	public List<LicenseReportResponse> findLicenseReportByCustomerEmailAndStatusByProjectManagerId(String email,
+			ProjectProductStatus approved, Long userId);
 
 }

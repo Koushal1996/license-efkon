@@ -2,6 +2,7 @@ package com.nxtlife.efkon.license.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.view.Response;
+import com.nxtlife.efkon.license.view.license.LicenseReportResponse;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
@@ -203,6 +205,25 @@ public class LicenseController {
 			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenses() {
 		return licenseService.findTotalActiveAndExpiredLicenses();
+	}
+
+	@GetMapping(value = "license/report", produces = { "application/json" })
+	@Operation(summary = "Report of the licenses", description = "return a license report", tags = { "License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "license report", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license report ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<Map<String, Integer>> licenseReport() {
+		return licenseService.licenseReport();
+	}
+
+	@GetMapping(value = "license/report/{email}", produces = { "application/json" })
+	@Operation(summary = "Report of the licenses by customer email", description = "return a license report", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "license report", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license report ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<LicenseReportResponse> licenseReportByEmail(@PathVariable String email) {
+		return licenseService.licenseReportByEmail(email);
 	}
 
 }

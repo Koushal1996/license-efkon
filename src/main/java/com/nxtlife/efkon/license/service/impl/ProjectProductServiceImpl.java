@@ -481,7 +481,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			}
 			int rows;
 			if (status.equals(ProjectProductStatus.REJECT)) {
-				rows = projectProductDao.update(unmaskId, ProjectProductStatus.DRAFT, getUserId(), new Date());
+				rows = projectProductDao.update(unmaskId, ProjectProductStatus.REJECT, getUserId(), new Date());
 			} else {
 				rows = projectProductDao.update(unmaskId, status, getUserId(), new Date());
 			}

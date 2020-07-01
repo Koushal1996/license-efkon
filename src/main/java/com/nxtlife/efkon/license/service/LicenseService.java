@@ -1,10 +1,12 @@
 package com.nxtlife.efkon.license.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nxtlife.efkon.license.view.license.LicenseReportResponse;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
@@ -134,5 +136,9 @@ public interface LicenseService {
 	 * @return
 	 */
 	public List<LicenseResponse> generateLicenseKeyFromExcel(MultipartFile file, Long projectProductId);
+
+	public List<Map<String, Integer>> licenseReport();
+
+	public List<LicenseReportResponse> licenseReportByEmail(String email);
 
 }

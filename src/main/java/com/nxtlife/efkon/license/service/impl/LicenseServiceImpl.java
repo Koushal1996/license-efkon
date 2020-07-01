@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -38,9 +39,11 @@ import com.nxtlife.efkon.license.dao.jpa.LicenseJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.UserJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.enums.LicenseStatus;
+import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
@@ -53,6 +56,7 @@ import com.nxtlife.efkon.license.util.ITextPdfUtil;
 import com.nxtlife.efkon.license.util.PdfHeaderFooterPageEvent;
 import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
+import com.nxtlife.efkon.license.view.license.LicenseReportResponse;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
@@ -78,6 +82,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 
 	@Autowired
 	private ProductDetailJpaDao productDetailDao;
+
+	@Autowired
+	private UserJpaDao userDao;
 
 	@Value("${file.upload-pdf-dir}")
 	private String pdfDirectory;
@@ -542,6 +549,76 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			}
 		}
 		return licenseCounts;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public List<Map<String, Integer>> licenseReport() {
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		List<Map<String, Integer>> licenseCounts;
+		if (roles.contains("Customer")) {
+			licenseCounts = licenseDao.findTotalLicenseCountByCustomerEmail(user.getEmail());
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				licenseCounts = licenseDao.findTotalLicenseCountByProjectManagerId(user.getUserId());
+
+			} else {
+				licenseCounts = licenseDao.findTotalLicenseCount();
+			}
+		}
+
+		if (licenseCounts.isEmpty() || licenseCounts == null) {
+			throw new NotFoundException("no license found");
+		}
+
+		return licenseCounts;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public List<LicenseReportResponse> licenseReportByEmail(String email) {
+
+		if (email == null) {
+			throw new ValidationException("email can't be null");
+		}
+
+		if (!userDao.existsByEmail(email)) {
+			throw new NotFoundException(String.format("no customer found having email (%s)", email));
+		}
+
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		List<LicenseReportResponse> licenseReportResponse;
+		if (roles.contains("Customer")) {
+			licenseReportResponse = projectProductDao.findLicenseReportByCustomerEmailAndStatus(user.getEmail(),
+					ProjectProductStatus.APPROVED);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				licenseReportResponse = projectProductDao.findLicenseReportByCustomerEmailAndStatusByProjectManagerId(
+						user.getEmail(), ProjectProductStatus.APPROVED, user.getUserId());
+
+			} else {
+				licenseReportResponse = projectProductDao.findLicenseReportByCustomerEmailAndStatus(email,
+						ProjectProductStatus.APPROVED);
+			}
+		}
+
+		if (licenseReportResponse == null || licenseReportResponse.isEmpty()) {
+			throw new NotFoundException(String.format("No License found of customer having email (%s)", email));
+		}
+
+		return licenseReportResponse;
 	}
 
 }

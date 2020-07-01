@@ -2,6 +2,7 @@ package com.nxtlife.efkon.license.dao.jpa;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -77,6 +78,18 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 	@Modifying
 	@Query(value = "update License set active = false, modified_by =?2, modified_at =?3 where project_product_id =?1")
 	public int deleteByProjectProductId(Long unmask, Long userId, Date date);
+
+	@Modifying
+	@Query(value = "SELECT  p.customer_name , count(l.id) license_count FROM license_key_management.license l inner join project_product pp on pp.id = l.project_product_id inner join project p on p.id = pp.project_id where l.active=true and p.customer_email=?1 group by p.customer_email", nativeQuery = true)
+	public List<Map<String, Integer>> findTotalLicenseCountByCustomerEmail(String email);
+
+	@Modifying
+	@Query(value = "SELECT  p.customer_name , count(l.id) license_count FROM license_key_management.license l inner join project_product pp on pp.id = l.project_product_id inner join project p on p.id = pp.project_id where l.active=true and p.project_manager_id=?1 group by p.customer_email", nativeQuery = true)
+	public List<Map<String, Integer>> findTotalLicenseCountByProjectManagerId(Long userId);
+
+	@Modifying
+	@Query(value = "SELECT  p.customer_name customer_name , count(l.id) total_license_distributed FROM license_key_management.license l inner join project_product pp on pp.id = l.project_product_id inner join project p on p.id = pp.project_id where l.active=true group by p.customer_email", nativeQuery = true)
+	public List<Map<String, Integer>> findTotalLicenseCount();
 
 //	@Modifying
 //	@Query(value = "update License set active=?2, modifiedBy.id=?3, modifiedAt=?4 where id =?1")
