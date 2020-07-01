@@ -68,26 +68,4 @@ public class LicenseTypeController {
 
 	}
 
-	@PutMapping(value = "license/type/reactivate/{id}", consumes = { "application/json" }, produces = {
-			"application/json" })
-	@Operation(summary = "Reactivete license type", description = "success message after reactivating license type", tags = {
-			"LicenseType" })
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "License types Reactivated successfully", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
-			@ApiResponse(responseCode = "403", description = "user don't have access to reactivate project type", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public LicenseTypeResponse reactivate(@PathVariable("id") Long id) {
-		return licenseTypeService.reactivate(id);
-
-	}
-
-	@DeleteMapping(value = "license/type/{id}", produces = { "application/json" })
-	@Operation(summary = "delete license type ", description = "return success response after successfully deleting the license type", tags = {
-			"License Type" })
-	@ApiResponses(value = {
-			@ApiResponse(description = "License type successfully deleted", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
-			@ApiResponse(description = "If user doesn't have access to delete License type", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
-			@ApiResponse(description = "If License type id incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public SuccessResponse delete(@PathVariable Long id) {
-		return licenseTypeService.delete(id);
-	}
 }

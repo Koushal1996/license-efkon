@@ -2,7 +2,6 @@ package com.nxtlife.efkon.license.controller;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,6 @@ public class ProjectController {
 		return projectService.findById(id);
 	}
 
-	@Transactional
 	@DeleteMapping(value = "project/{id}", produces = { "application/json" })
 	@Operation(summary = "Delete project detail", description = "return success response after successfully deleting the project", tags = {
 			"Project" })

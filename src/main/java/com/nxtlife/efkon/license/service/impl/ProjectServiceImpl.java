@@ -230,30 +230,22 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 	@Override
 	@Secured(AuthorityUtils.PROJECT_DELETE)
 	public SuccessResponse delete(Long id) {
-
 		Long unmaskId = unmask(id);
 		if (!projectDao.existsByIdAndActive(unmaskId, true)) {
 			throw new NotFoundException(String.format("Project having id (%s) not found", id));
 		}
-
 		List<ProjectProductResponse> ppResponse = projectProductDao.findByProjectIdAndActive(unmaskId, true);
-
 		if (!ppResponse.isEmpty() || ppResponse != null) {
-
 			for (ProjectProductResponse response : ppResponse) {
 				licenseDao.deleteByProjectProductId(unmask(response.getId()), getUserId(), new Date());
 			}
-
 		}
-
 		projectProductDao.deleteByProjectId(unmaskId, getUserId(), new Date());
-
 		int rows = projectDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("Project {} successfuly deleted", unmaskId);
 		}
 		return new SuccessResponse(HttpStatus.OK.value(), "Project  deleted successfully");
-
 	}
 
 }

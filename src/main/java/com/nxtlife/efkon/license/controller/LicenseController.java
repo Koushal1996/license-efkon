@@ -72,7 +72,6 @@ public class LicenseController {
 	@RequestMapping(value = "/license/generate-key/excel-upload", method = RequestMethod.PUT)
 	public List<LicenseResponse> generateLicenseKeyFromExcel(@RequestParam("file") MultipartFile file,
 			@RequestParam(required = true, value = "projectProductId") Long projectProductId) {
-
 		return licenseService.generateLicenseKeyFromExcel(file, projectProductId);
 	}
 
