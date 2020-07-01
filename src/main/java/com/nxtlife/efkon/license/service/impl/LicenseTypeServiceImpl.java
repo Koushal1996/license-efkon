@@ -62,7 +62,6 @@ public class LicenseTypeServiceImpl extends BaseService implements LicenseTypeSe
 		if (responseList.isEmpty()) {
 			throw new NotFoundException("No License Type found");
 		}
-
 		return responseList;
 	}
 
@@ -86,12 +85,10 @@ public class LicenseTypeServiceImpl extends BaseService implements LicenseTypeSe
 		if (!licenseTypeJpaDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("License Type (%s) not found", id));
 		}
-
 		int rows = licenseTypeJpaDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("License type {} successfuly deleted", unmaskId);
 		}
-
 		return new SuccessResponse(HttpStatus.OK.value(), "License type deleted successfully");
 
 	}
@@ -103,12 +100,10 @@ public class LicenseTypeServiceImpl extends BaseService implements LicenseTypeSe
 		if (!licenseTypeJpaDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("License Type (%s) not found", id));
 		}
-
 		int rows = licenseTypeJpaDao.reactivate(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("License type {} successfuly deleted", unmaskId);
 		}
-
 		LicenseTypeResponse response = licenseTypeJpaDao.findResponseById(unmaskId);
 		return response;
 	}

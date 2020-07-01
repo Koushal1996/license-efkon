@@ -15,6 +15,8 @@ import com.nxtlife.efkon.license.view.project.ProjectResponse;
 public interface ProjectJpaDao extends JpaRepository<Project, Long> {
 
 	public Boolean existsByIdAndActive(Long id, Boolean active);
+	
+	public Boolean existsByProjectTypeId(Long id);
 
 	public Project findByCustomerName(String name);
 

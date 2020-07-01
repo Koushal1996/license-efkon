@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,8 +16,10 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -53,6 +56,7 @@ import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.util.DateUtil;
 import com.nxtlife.efkon.license.util.ITextPdfUtil;
+import com.nxtlife.efkon.license.util.LicenseExcelUtil;
 import com.nxtlife.efkon.license.util.PdfHeaderFooterPageEvent;
 import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
@@ -136,7 +140,6 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	}
 
 	private void createPdf(List<LicenseResponse> licenseResponseList, String fileName, String heading) {
-
 		Document document = new Document(PageSize.A4, 10f, 10f, 10f, 30f);
 		try {
 			FileOutputStream fout = new FileOutputStream(fileName);
@@ -171,6 +174,68 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private List<Map<String, Object>> fetchRowValues(Map<String, CellType> columnTypes, XSSFSheet sheet,
+			List<String> errors, String sheetName) {
+		List<Map<String, Object>> rows = new ArrayList<>();
+		Map<String, Object> columnValues = null;
+		List<String> headers = new ArrayList<>();
+		int columnSize = columnTypes.keySet().size();
+		XSSFRow row;
+		XSSFCell cell;
+		for (int i = 0; i < sheet.getPhysicalNumberOfRows(); i++) {
+			row = sheet.getRow(i);
+			if (row.getPhysicalNumberOfCells() != columnSize) {
+				errors.add(String.format("Some of the cells (Row number : %d) are missing or extras in %s sheet", i + 1,
+						sheetName));
+				continue;
+			}
+			if (i == 0) {
+				row.forEach(c -> {
+					if (!columnTypes.containsKey(c.getStringCellValue())) {
+						errors.add(String.format("This cell (%s) is not valid", c.getStringCellValue()));
+					} else {
+						headers.add(c.getStringCellValue());
+					}
+				});
+			} else {
+				columnValues = new HashMap<>();
+				rows.add(columnValues);
+				for (int j = 0; j < columnSize; j++) {
+					cell = row.getCell(j);
+					if (columnTypes.get(headers.get(j)).equals(cell.getCellType())) {
+						if (cell.getCellType() == CellType.NUMERIC)
+							columnValues.put(headers.get(j), cell.getNumericCellValue());
+						else if (cell.getCellType() == CellType.BOOLEAN) {
+							columnValues.put(headers.get(j), cell.getBooleanCellValue());
+						} else {
+							columnValues.put(headers.get(j), cell.getStringCellValue());
+						}
+					} else {
+						errors.add(String.format(
+								"Cell Type is incorrect (Expected : %s, Actual : %s) for column %s of sheet (%s)",
+								columnTypes.get(headers.get(j)), cell.getCellType(), headers.get(j), sheetName));
+					}
+				}
+
+			}
+		}
+		return rows;
+	}
+
+	private List<Map<String, Object>> findSheetRowValues(XSSFWorkbook workbook, String sheetName, Integer rowLimit,
+			List<String> errors) {
+		XSSFSheet sheet = workbook.getSheet(sheetName);
+		if (sheet == null) {
+			errors.add(sheetName + " sheet not found");
+			return null;
+		}
+		if (sheet.getPhysicalNumberOfRows() > rowLimit) {
+			errors.add(String.format("Number of row can't be more than %d for %s sheet", rowLimit, sheetName));
+		}
+		Map<String, CellType> columnTypes = LicenseExcelUtil.sheetColumns(sheetName);
+		return fetchRowValues(columnTypes, sheet, errors, sheetName);
 
 	}
 
@@ -286,7 +351,6 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		return response;
 	}
 
-	@SuppressWarnings("resource")
 	@Override
 	@Secured(AuthorityUtils.LICENSE_UPDATE)
 	public List<LicenseResponse> generateLicenseKeyFromExcel(MultipartFile file, Long projectProductId) {
@@ -294,71 +358,40 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 			throw new ValidationException("Pls upload valid excel file.");
 
 		if (projectProductId == null) {
-			throw new ValidationException("project product id can't be null");
+			throw new ValidationException("Project product id can't be null");
 		}
-
 		Long unmaskId = unmask(projectProductId);
-
 		ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
-
 		if (projectProductResponse == null) {
-			throw new NotFoundException(String.format("project product having id (%s) didn't exist", projectProductId));
+			throw new NotFoundException(String.format("Project product having id (%s) didn't exist", projectProductId));
 		}
-
-		List<LicenseResponse> licenseResponse = licenseDao.findByProjectProductIdAndAccessIdIsNullAndActive(unmaskId,
-				true);
-
-		try {
-			XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream());
-			XSSFSheet worksheet = workbook.getSheetAt(0);
-			if (worksheet == null) {
-				throw new NotFoundException("sheet not found");
-			}
-
-			if (licenseResponse.size() != (worksheet.getPhysicalNumberOfRows() - 1)) {
-				throw new ValidationException(String.format(
-						"total number of license count whose keys are not generated of project product having id (%s) are (%s) but number of access id in excel for creating licenses is (%s) ",
-						projectProductId, licenseResponse.size(), (worksheet.getPhysicalNumberOfRows() - 1)));
-			}
-
-			for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
-
-				XSSFRow row = worksheet.getRow(i);
-
-				LicenseResponse license = licenseResponse.get(i - 1);
-
-				if (row.getCell(1) != null) {
-					license.setAccessId(row.getCell(1).toString());
-					license.setGeneratedKey(
-							row.getCell(1).toString().concat(license.getCode()) + UUID.randomUUID().toString());
-				} else {
-					throw new ValidationException(String.format("Access id is not present in (%s) row of excel ", i));
-				}
-
-				if (row.getCell(2) != null) {
-					license.setName(row.getCell(2).toString());
-				}
-
-				int rows = licenseDao.update(unmask(license.getId()), license.getAccessId(), license.getGeneratedKey(),
-						license.getName(), getUserId(), new Date());
-
+		List<LicenseResponse> licenses = licenseDao.findByProjectProductIdAndAccessIdIsNullAndActive(unmaskId, true);
+		List<String> errors = new ArrayList<>();
+		String accessId, remark;
+		LicenseResponse license;
+		int i = 0, rows;
+		try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+			List<Map<String, Object>> licenseAccessIds = findSheetRowValues(workbook, "LICENSE ACCESS ID",
+					licenses.size(), errors);
+			for (Map<String, Object> licenseAccessId : licenseAccessIds) {
+				license = licenses.get(i);
+				accessId = licenseAccessId.get("ACCESS ID").toString();
+				remark = licenseAccessId.get("REMARK").toString();
+				rows = licenseDao.update(unmask(license.getId()), accessId,
+						accessId.concat(UUID.randomUUID().toString()), remark, getUserId(), new Date());
 				if (rows > 0) {
 					logger.info(" License {} updated successfully", unmaskId);
 				}
-
 			}
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
-		licenseResponse = licenseDao.findByProjectProductIdAndActive(unmaskId, true);
+		licenses = licenseDao.findByProjectProductIdAndActive(unmaskId, true);
 		projectProductResponse = projectProductDao.findResponseById(unmaskId);
-
-		for (LicenseResponse response : licenseResponse) {
+		for (LicenseResponse response : licenses) {
 			response.setProjectProduct(projectProductResponse);
 		}
-
-		return licenseResponse;
+		return licenses;
 	}
 
 	@Override
