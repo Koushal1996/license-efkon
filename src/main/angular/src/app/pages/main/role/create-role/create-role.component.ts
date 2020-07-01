@@ -119,7 +119,6 @@ export class CreateRoleComponent implements OnInit {
       // });
     }
   }
-  isCheckedAll() {}
   isChecked(item) {
     if (this.authorityIds) {
       return this.authorityIds.find((id) => {
