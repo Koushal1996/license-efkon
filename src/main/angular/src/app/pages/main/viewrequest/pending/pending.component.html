@@ -34,14 +34,10 @@
               *ngFor="let product of productPendingRequests; index as i"
             >
               <td>{{ i + 1 }}</td>
-              <td>
-                {{
-                  product.projectProductResponse.productDetail.productFamilyName
-                }}
-                {{
-                  product.projectProductResponse.productDetail.productCodeName
-                }}
-                {{ product.projectProductResponse.productDetail.versionName }}
+              <td class="product_family">
+                <span>{{ product.projectProductResponse.productDetail.productFamilyName }}</span>
+                <span>{{ product.projectProductResponse.productDetail.productCodeName }}</span>
+                <span>{{ product.projectProductResponse.productDetail.versionName }}</span>
               </td>
               <td>{{ product.licenseCount }}</td>
               <td>{{ product.projectProductResponse.licenseTypeName }}</td>
