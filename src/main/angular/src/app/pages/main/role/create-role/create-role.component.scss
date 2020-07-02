@@ -83,6 +83,9 @@
     .authorities_main {
         width: 100%;
         display: inline-block;
+        border: 1px solid #ddd;
+        padding: 0px 10px 10px;
+        margin-top: 4px;
         .checkbox_box {
             position: relative;
             margin-top: 10px;
@@ -124,6 +127,8 @@
         }
     }
 
+
+
     .checkbox_box input:checked + span:after {
         content: "\f00c";
         color: #29aba4;
@@ -142,3 +147,49 @@
         display: inline-block;
     }
     
+
+    .check_main {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+      .check_main label:after {
+         position: absolute;
+        top: 0;
+        left: 0;
+        width: 19px;
+        height: 19px;
+        content: "";
+        border: 1px solid #29aba4;
+      }
+      
+      .form_main .input_feild .category_col input {
+          border-radius: 0;
+          font-size: 13px !important;
+      }
+      .check_main input {
+          position: absolute;
+          z-index: 3;
+          width: 19px;
+          height: 19px;
+          top: 0px;
+          opacity: 0;
+          cursor: pointer;
+      }
+      .check_main input:checked + label:after{
+        background-image :inherit;
+        content: "\f00c";
+        font-family: FontAwesome;
+        line-height: normal;
+        text-align: center;
+        color: #29aba4;
+        font-size: 12px;
+        padding-top: 2px;
+      }
+      .check_main label {
+        margin-left: 26px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }

@@ -58,7 +58,7 @@
               <th scope="col">Customer Contact No.</th>
               <th scope="col">Project Type</th>
               <th scope="col">Project Manager</th>
-              <th
+              <th style="min-width: 109px;"
                 scope="col"
                 *ngIf="
                   hasAuthority('PROJECT_PRODUCT_CREATE') ||
@@ -67,7 +67,7 @@
               >
                 Products
               </th>
-              <th scope="col" *ngIf="hasAuthority('LICENSE_FETCH')">
+              <th scope="col" *ngIf="hasAuthority('LICENSE_FETCH')" style="min-width: 120px;">
                 Licenses
               </th>
               <th scope="col" *ngIf="hasAuthority('PROJECT_UPDATE')">Edit</th>
@@ -77,9 +77,6 @@
             No Project Available Now
           </div> -->
           <tbody id="accordion">
-            <h2 *ngIf="!projects?.length && !isloader">
-              No Projects Available Now
-            </h2>
             <ng-container *ngFor="let project of projects; index as i">
               <tr #c (click)="getProductsByProjectId(c, project)">
                 <td>{{ i + 1 }}</td>
@@ -121,8 +118,8 @@
                   </div>
 
                   <div class="info top_tooltip">
-                    <label
-                      class="badge custom_badge"
+                    <button
+                      class="rahul added_product"
                       data-toggle="collapse"
                       [attr.data-target]="'#collapse' + i"
                       (click)="productsCount(project)"
@@ -130,7 +127,7 @@
                         hasAuthority('PROJECT_PRODUCT_FETCH') &&
                         project.productsCount
                       "
-                      >Added</label
+                      ><i class="material-icons m-0 border-success text-success">add_to_queue</i></button
                     >
                     <!-- {{ project.productsCount }} -->
                     <span style="min-width: 140px;">Added Product Details</span>
@@ -293,10 +290,10 @@
                           class=""
                         >
                           <td>{{ i + 1 }}</td>
-                          <td>
-                            {{ pro.productDetail.productFamilyName }}
-                            {{ pro.productDetail.productCodeName }}
-                            {{ pro.productDetail.versionName }}
+                          <td class="product_family">
+                           <span> {{ pro.productDetail.productFamilyName }}</span>
+                           <span>  {{ pro.productDetail.productCodeName }} </span>
+                            <span>{{ pro.productDetail.versionName }}</span>
                           </td>
                           <td>{{ pro.licenseCount }}</td>
                           <!-- <td>{{ pro.licenseTypeName }}</td> -->
@@ -390,7 +387,7 @@
                             </button>
                             <button
                               type="button"
-                              class="t_save_btn bg-danger"
+                              class="t_save_btn bg-success"
                               (click)="recallProductStatus(pro)"
                               *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                             >
@@ -423,7 +420,7 @@
                             </button>
                             <button
                               type="button"
-                              class="t_save_btn bg-danger"
+                              class="t_save_btn bg-success"
                               (click)="recallProductStatus(pro)"
                               *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                             >
@@ -483,6 +480,10 @@
         <div *ngIf="isloader" class="loader">
           <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
         </div>
+       <div class="no_product" *ngIf="!projects?.length && !isloader">
+        <h2> <img src="assets/images/alert.svg" alt="">
+          No Projects Available Now </h2>
+       </div>
       </div>
     </div>
   </div>

@@ -400,7 +400,14 @@ section.main-slider {
     line-height: normal;
     vertical-align: text-top;
   }
+&.added_product {
+    border: 1px solid #28a745;
+    i{
+      font-weight: 100;
+    }
 }
+}
+
 
 .view {
   color: #795548;

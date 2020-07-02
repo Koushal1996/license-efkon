@@ -99,16 +99,14 @@
         </thead>
 
         <tbody id="accordion">
-          <h2 *ngIf="!projectProducts?.length && !isloader">
-            No Products Available Now
-          </h2>
+         
           <ng-container *ngFor="let project of projectProducts; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
-              <td>
-                {{ project.productDetail.productFamilyName }}
-                {{ project.productDetail.productCodeName }}
-                {{ project.productDetail.versionName }}
+              <td class="product_family">
+                <span>{{ project.productDetail.productFamilyName }}</span>
+                <span>{{ project.productDetail.productCodeName }}</span>
+                <span> {{ project.productDetail.versionName }} </span>
               </td>
               <td>
                 {{ project.licenseCount }}
@@ -201,7 +199,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger"
+                  class="t_save_btn bg-success"
                   (click)="recallProductStatus(project)"
                   *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                 >
@@ -234,7 +232,7 @@
                 </button>
                 <button
                   type="button"
-                  class="t_save_btn bg-danger"
+                  class="t_save_btn bg-success"
                   (click)="recallProductStatus(project)"
                   *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
                 >
@@ -433,6 +431,12 @@
       <div *ngIf="isloader" class="loader">
         <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
       </div>
+
+      <div class="no_product" *ngIf="!projectProducts?.length && !isloader">
+        <h2> <img src="assets/images/alert.svg" alt="">
+          No Projects Available Now </h2>
+       </div>
+
     </div>
   </div>
 </div>

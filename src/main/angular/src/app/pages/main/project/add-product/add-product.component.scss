@@ -32,10 +32,11 @@
     
 }
 .added_pct_scl {
-    max-height: 227px;
+    max-height: 217px;
     overflow-y: auto;
-    min-height: 100px;
+    min-height: 217px;
     position: relative;
+    height: 100%;
 }
 .nodata{
    
@@ -43,6 +44,6 @@
         text-align: center;
         padding: 30px 10px;
         color: #d42e2e;
-        font-weight: 600;
+        font-weight: 400;
     
 }

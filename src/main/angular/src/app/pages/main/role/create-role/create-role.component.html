@@ -61,18 +61,20 @@
                   <!-- <div class="error" *ngIf="eventValue">
                     Please Select Authority
                   </div> -->
-                  <div>
-                    <input
-                      type="checkbox"
-                      selected="true"
-                      name="check"
-                      [checked]="checkbox"
-                      (change)="onSelectDeselectAll($event)"
-                    />
-                    <span *ngIf="!checkbox">Select All</span>
-                    <span *ngIf="checkbox">Unselect All</span>
-                  </div>
+            
                   <div class="authorities_main" id="authorities">
+                    <div class="check_main">
+                      <input id="select-all"
+                        type="checkbox"
+                        selected="true"
+                        name="check"
+                        [checked]="checkbox"
+                        (change)="onSelectDeselectAll($event)"
+                      />
+                      <label for="select-all" *ngIf="!checkbox">Select All</label>
+                      <label for="select-all" *ngIf="checkbox">Unselect All</label>
+                    </div>
+
                     <div *ngFor="let item of authorities" class="checkbox_main">
                       <div class="checkbox_box">
                         <input

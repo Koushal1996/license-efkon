@@ -95,9 +95,7 @@
             </tr>
           </thead>
           <tbody>
-            <h2 *ngIf="!users?.length && !isloader">
-              No Users Available Now
-            </h2>
+          
             <tr
               *ngFor="let item of users; index as index"
               id="{{ item.id }}"
@@ -151,6 +149,13 @@
             </tr>
           </tbody>
         </table>
+        <div *ngIf="isloader" class="loader">
+          <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+        </div>
+        <div class="no_product" *ngIf="!users?.length && !isloader">
+          <h2> <img src="assets/images/alert.svg" alt="">
+            No Users Available Now </h2>
+         </div>
       </div>
     </div>
   </div>
@@ -194,9 +199,5 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <div *ngIf="isloader" class="loader">
-    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
   </div>
 </div>

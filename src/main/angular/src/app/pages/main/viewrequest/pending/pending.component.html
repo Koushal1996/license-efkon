@@ -82,14 +82,15 @@
                 </button>
               </td>
             </tr>
-            <h2 *ngIf="!productPendingRequests?.length && !isloader">
-              No products Available Now
-            </h2>
           </tbody>
         </table>
         <div *ngIf="isloader" class="loader">
           <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
         </div>
+        <div class="no_product"*ngIf="!productPendingRequests?.length && !isloader">
+          <h2> <img src="assets/images/alert.svg" alt="">
+            No products Available Now </h2>
+         </div>
       </div>
     </div>
   </div>

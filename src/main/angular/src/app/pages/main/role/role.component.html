@@ -69,9 +69,7 @@
             </tr>
           </thead>
           <tbody>
-            <h2 *ngIf="!roles?.length && !isloader">
-              No Roles Available Now
-            </h2>
+           
             <tr
               *ngFor="let item of roles; index as index"
               id="{{ item.id }}"
@@ -123,10 +121,15 @@
             </tr>
           </tbody>
         </table>
+        <div class="no_product" *ngIf="!roles?.length && !isloader">
+          <h2> <img src="assets/images/alert.svg" alt="">
+            No Roles Available Now </h2>
+         </div>
       </div>
     </ng-container>
   </div>
   <div *ngIf="isloader" class="loader">
     <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
   </div>
+
 </div>

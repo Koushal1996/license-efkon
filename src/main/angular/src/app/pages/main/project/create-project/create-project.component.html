@@ -214,7 +214,7 @@
         <div class="form_footer">
           <button
             type="submit"
-            class="saveBtn mr-3"
+            class="saveBtn mr-2"
             *ngIf="!loaderbutton"
             [ngStyle]="{
               opacity: !projectForm.valid ? '0.6' : '1'
@@ -223,12 +223,12 @@
           >
             {{ projectId ? "Update" : "Submit" }}
           </button>
-          <button class="saveBtn mr-3" *ngIf="loaderbutton">
+          <button class="saveBtn mr-2" *ngIf="loaderbutton">
             {{ projectId ? "Updating...." : "Submitting...." }}
           </button>
           <button
             type="button"
-            class="cancelBtn"
+            class="cancelBtn mr-3"
             (click)="backCreateProjectForm()"
           >
             Back
