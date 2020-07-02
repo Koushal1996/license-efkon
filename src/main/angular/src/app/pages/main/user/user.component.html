@@ -95,6 +95,9 @@
             </tr>
           </thead>
           <tbody>
+            <h2 *ngIf="!users?.length && !isloader">
+              No Users Available Now
+            </h2>
             <tr
               *ngFor="let item of users; index as index"
               id="{{ item.id }}"
