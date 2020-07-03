@@ -682,7 +682,9 @@ export class ProjectProductComponent implements OnInit {
             .indexOf(key.toLowerCase()) > -1
       );
     } else {
-      this.projectProducts = JSON.parse(JSON.stringify(this.projectProducts));
+      this.projectProducts = JSON.parse(
+        JSON.stringify(this.projectProductsCopy)
+      );
     }
   }
 

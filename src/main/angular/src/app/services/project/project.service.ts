@@ -54,6 +54,13 @@ export class ProjectService {
   getProjectTypes() {
     return this.api.get("api/project/types");
   }
+  deleteProjectTypeById(id) {
+    return this.api.delete(`api/project/type/${id}`);
+  }
+
+  addProjectType(name: any) {
+    return this.api.post("api/project/type?name=" + name, {});
+  }
   getProjectManager() {
     return this.api.get("api/users/project-manager");
   }
