@@ -1,4 +1,4 @@
-<div class="site_main"></div>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-6 pl-0">
@@ -63,10 +63,10 @@
             </thead>
             <tr *ngFor="let pro of selectedproducts; index as i">
               <td>{{ i + 1 }}</td>
-              <td>
-                {{ pro.productDetail.productFamilyName }}
-                {{ pro.productDetail.productCodeName }}
-                {{ pro.productDetail.versionName }}
+              <td class="product_family">
+                <span>{{ pro.productDetail.productFamilyName }}</span>
+                <span>{{ pro.productDetail.productCodeName }}</span>
+                <span>{{ pro.productDetail.versionName }}</span>
               </td>
               <td>{{ pro.licenseCount }}</td>
               <td>{{ pro.licenseTypeName }}</td>

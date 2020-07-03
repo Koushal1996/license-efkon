@@ -30,8 +30,10 @@ div#wrapper {
 .toggled {
   #sidebar-wrapper {
       width:70px;
-      overflow: hidden;
+      overflow: inherit;
       .list-group-item{
+        width: 100%;
+        text-align: center;
         span{
           display: none;
         }
@@ -87,6 +89,7 @@ a.list-group-item.list-group-item-action.active
 {
   background-color: #29aba4;
   color: white;
+  width: 100%;
 }
 a.list-group-item.list-group-item-action.active img
 {
@@ -95,6 +98,7 @@ a.list-group-item.list-group-item-action.active img
 a.list-group-item.list-group-item-action:hover{
   background: #2c3542;
   padding-left: 25px;
+  width: 100%;
 }
 // a.list-group-item.list-group-item-action:hover img, a.list-group-item.list-group-item-action:hover{
 //   filter: brightness(10);
@@ -212,3 +216,60 @@ a.list-group-item i {
     border-block-end: none;
   }
 }
+
+.toggled{
+  .left_tooltip{
+      position: relative;
+      display: inline-block;
+      width: auto;
+     label{
+      position: absolute;
+      bottom: 0;
+      left: 68px;
+    background: #29aba4;
+    padding: 3px 10px;
+      color: white !important;
+      border-radius: 4px;
+      height: auto;
+      font-size: 13px;
+      display: none;
+      z-index: 100;
+      line-height: normal;
+      text-align: center;
+      white-space: nowrap;
+      opacity: 1;
+      &:after{
+          content: "";
+          bottom: 0;
+          width: 0;
+          height: 0;
+          border-left: 8px solid transparent;
+          border-right: 8px solid transparent;
+          border-top: 8px solid #29aba4;
+          top: 7px;
+          left: -11px;
+          position: absolute;
+          transform: rotate(90deg);
+      }
+     }
+     &:hover{
+      label{
+        display: block;
+        animation: top .5s;
+      }
+    }
+    }
+  }
+  .left_tooltip{
+      position: relative;
+      display: inline-block;
+      width: auto;
+     label{
+         position: absolute;
+         opacity: 0;
+     }
+  }
+  @keyframes top{
+    0% {transform: translate(0px, 10px);}
+    100% {transform: translate(0px, 0px);}
+  }

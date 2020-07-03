@@ -39,7 +39,7 @@
         <div class="dropdown_sidebar" *ngIf="pageAuthority(p.privilege)">
           <a
             href="#"
-            class="list-group-item list-group-item-action main-menu"
+            class="list-group-item list-group-item-action main-menu left_tooltip"
             id="{{ p.title }}"
             (click)="activeClass(p.title)"
             [routerLink]="[p.route]"
@@ -48,6 +48,7 @@
               <img [src]="p.imagePath" alt="" style="max-width: 20px; margin-right: 10px;" />
             
             <span>{{ p.title }}</span>
+            <label>{{ p.title }}</label>
           </a>
         </div>
       </ng-container>

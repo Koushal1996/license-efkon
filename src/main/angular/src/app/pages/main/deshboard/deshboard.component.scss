@@ -1,42 +1,48 @@
 
 .col-main {
-  background: #00a489;
+  background: #ffffff;
     border: 1px solid #ddd;
     padding: 25px 15px;
     width: 100%;
     float: left;
-    box-shadow: 0px 1px 6px #8c8a8a;
     cursor: pointer;
     transition: 0.4s;
+    border-radius: 0px;
+    box-shadow: 0px 10px 0px #29aba4;
     &:hover {
-      box-shadow: 1px 10px 15px #8a8a8a;
-      transform: translateY(-2px);
+      // box-shadow: 1px 10px 15px #8a8a8a;
+      // transform: translateY(-2px);
+      box-shadow: 0px 10px 0px #364150;
   }
   .text_content {
     width: calc(100% - 100px);
     display: inline-block;
     h3 {
       font-size: 19px;
-      color: #fff;
-      font-weight: normal;
+    color: #2b3643;
+    font-weight: normal;
   }
   h4 {
-    color: #fff;
+    color: #29aba4;
     font-size: 30px;
     font-weight: 500;
 }
 }
 .icon {
-  width: 100px;
+  width: 70px;
   float: right;
-  margin-top: 15px;
-    text-align: right;
+  text-align: right;
+  height: 70px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  text-align: center;
+  padding-top: 14px;
   img {
     width: 60%;
 }
 i {
-  font-size: 50px;
-  color: #fff;
+  font-size: 40px;
+    color: #29aba4;
 }
 }
 }
@@ -64,25 +70,26 @@ i {
       }
   }
 }
-.row :nth-child(2) .col-main {
-  background: #959801;
-}
-.row :nth-child(3) .col-main {
-  background: #847cc5;
-}
-.row :nth-child(4) .col-main {
-  background: #ab8465;
-}
-.row :nth-child(5) .col-main {
-  background: #74B749;
-}
-.row :nth-child(6) .col-main {
-  background: #f37b53;
-}
-.dashboard {
-  background: white;
-  padding: 15px;
-  min-height: calc(100vh - 117px);
-  display: inline-block;
-  width: 100%;
-}
+// .row :nth-child(2) .col-main {
+//   background: #959801;
+// }
+// .row :nth-child(3) .col-main {
+//   background: #847cc5;
+// }
+// .row :nth-child(4) .col-main {
+//   background: #ab8465;
+// }
+// .row :nth-child(5) .col-main {
+//   background: #74B749;
+// }
+// .row :nth-child(6) .col-main {
+//   background: #f37b53;
+// }
+// .dashboard {
+//   background: white;
+//   padding: 15px;
+//   min-height: calc(100vh - 117px);
+//   display: inline-block;
+//   width: 100%;
+//   border: 1px solid #ddd;
+// }
