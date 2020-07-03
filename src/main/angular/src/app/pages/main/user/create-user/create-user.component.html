@@ -11,7 +11,7 @@
           <div class="row">
             <div class="col-6">
               <div class="form-group">
-                <label>Name *</label>
+                <label>Name <span class="required">*</span></label>
                 <input
                   type="text"
                   class="form-control"
@@ -41,7 +41,7 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label>Username *</label>
+                <label>Username <span class="required">*</span></label>
                 <input
                   type="text"
                   class="form-control"
@@ -67,7 +67,7 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label>Email *</label>
+                <label>Email <span class="required">*</span></label>
                 <input
                   type="email"
                   class="form-control"
@@ -102,7 +102,7 @@
             </div>
             <div class="col-6">
               <div class="form-group">
-                <label>Contact Number *</label>
+                <label>Contact Number <span class="required">*</span></label>
                 <input
                   type="tel"
                   class="form-control"
@@ -143,12 +143,13 @@
             </div>
             <div class="col-12">
               <div class="form-group mb-0">
-                <label class="mb-0">Select Role *</label>
+                <label class="mb-0">Select Role <span class="required">*</span></label>
+                <small class="text-danger" *ngIf="selected"
+                >Please select atleast one role</small
+              >
               </div>
               <div class="authorities_main" id="roles">
-                <small class="text-danger" *ngIf="selected"
-                  >Please select atleast one role</small
-                >
+             
                 <div *ngFor="let item of dropdownList" class="checkbox_main">
                   <div class="checkbox_box">
                     <input

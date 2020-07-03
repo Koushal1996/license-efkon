@@ -8,7 +8,7 @@
             <div class="row">
               <div class="col-6">
                 <div class="form-group">
-                  <label>Customer Name</label>
+                  <label>Customer Name <span class="required">*</span></label>
                   <input
                     class="form-control"
                     type="text"
@@ -50,7 +50,7 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label>Customer Email</label>
+                  <label>Customer Email <span class="required">*</span></label>
                   <input
                     type="email"
                     class="form-control"
@@ -67,13 +67,12 @@
                     <span
                       *ngIf="projectForm.get('customerEmail').errors.required"
                       class="field_error"
-                      >Email is required</span
-                    >
+                      >Email is required </span>
                     <!-- <span
                       *ngIf="projectForm.get('customerEmail').errors.pattern"
                       class="field_error"
                       >Enter a valid Email</span -->
-                    >
+                    
                     <span
                       *ngIf="projectForm.get('customerEmail').errors.email"
                       class="error"
@@ -84,7 +83,8 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label>Customer Contact No </label>
+                  <label>Customer Contact No <span class="required">*</span>
+                  </label>
                   <input
                     type="tel"
                     class="form-control"
@@ -131,7 +131,7 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label for="sel1">Project Type </label>
+                  <label for="sel1">Project Type <span class="required">*</span></label>
                   <select
                     class="form-control"
                     id="sel1"
@@ -162,7 +162,7 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label for="sel1">Project Manager </label>
+                  <label for="sel1">Project Manager <span class="required">*</span></label>
                   <select
                     class="form-control"
                     id="sel1"
