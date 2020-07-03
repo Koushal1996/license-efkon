@@ -5,8 +5,9 @@ import {
   FormBuilder,
   FormControl,
   Validators,
+  NgForm,
 } from "@angular/forms";
-import { Component, OnInit, OnChanges } from "@angular/core";
+import { Component, OnInit, OnChanges, ViewChild } from "@angular/core";
 import { AdminService } from "./../../../../services/admin/admin.service";
 import swal from "sweetalert";
 import { Observable } from "rxjs";
@@ -35,7 +36,25 @@ export class CreateUserComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.createUserForm = this.fb.group({
+    this.createUserForm = this.initCreateUserForm();
+    this._adminService.getRoles().subscribe(
+      (data) => {
+        this.dropdownList = data;
+        //this.Role = data;
+        //console.log(this.dropdownList);
+      },
+      (error) => {}
+    );
+
+    this.activate.params.subscribe((params) => {
+      this.userId = params["id"];
+    });
+
+    this.patchavalue();
+  }
+
+  initCreateUserForm() {
+    return this.fb.group({
       name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
       username: ["", [Validators.required]],
       email: [
@@ -55,23 +74,9 @@ export class CreateUserComponent implements OnInit {
           Validators.maxLength(10),
         ],
       ],
-      roleIds: this.fb.array([], Validators.required),
+      // roleIds: this.fb.array([]),
+      roleIds: ["", Validators.required],
     });
-
-    this._adminService.getRoles().subscribe(
-      (data) => {
-        this.dropdownList = data;
-        //this.Role = data;
-        //console.log(this.dropdownList);
-      },
-      (error) => {}
-    );
-
-    this.activate.params.subscribe((params) => {
-      this.userId = params["id"];
-    });
-
-    this.patchavalue();
   }
   onChangeRole(item) {
     let index = this.selectedRole.indexOf(item.id);
@@ -88,6 +93,7 @@ export class CreateUserComponent implements OnInit {
       this.selected = false;
     }
     console.log(this.selectedRole);
+    this.createUserForm.controls["roleIds"].patchValue(this.selectedRole);
   }
   isChecked(item) {
     if (this.selectedRole) {
@@ -107,6 +113,9 @@ export class CreateUserComponent implements OnInit {
           this.selectedItems.forEach((role) => {
             this.selectedRole.push(role.id);
             this.selectedRoles.push(role);
+            this.createUserForm.controls["roleIds"].patchValue(
+              this.selectedRole
+            );
           });
         } else {
           this._adminService.getUserById(this.userId).subscribe((data) => {
@@ -115,6 +124,9 @@ export class CreateUserComponent implements OnInit {
             this.selectedItems.forEach((role) => {
               this.selectedRole.push(role.id);
               this.selectedRoles.push(role);
+              this.createUserForm.controls["roleIds"].patchValue(
+                this.selectedRole
+              );
             });
           });
         }
@@ -125,31 +137,32 @@ export class CreateUserComponent implements OnInit {
   onSubmit() {
     this.loaderbutton = true;
     console.log(this.createUserForm.value);
-    // this.createUserForm.controls["roleIds"].patchValue(this.selectedRole);
     // console.log(this.createUserForm.value);
-    const object = {
-      name: this.createUserForm.value.name,
-      username: this.createUserForm.value.username,
-      email: this.createUserForm.value.email,
-      contactNo: this.createUserForm.value.contactNo,
-      roleIds: this.selectedRole,
-    };
-    console.log(object);
+    // const object = {
+    //   name: this.createUserForm.value.name,
+    //   username: this.createUserForm.value.username,
+    //   email: this.createUserForm.value.email,
+    //   contactNo: this.createUserForm.value.contactNo,
+    //   roleIds: this.selectedRole,
+    // };
+    //console.log(object);
     if (this.userId) {
-      this._adminService.updateUser(this.userId, object).subscribe(
-        (data) => {
-          console.log(data);
-          this.route.navigate(["users"]);
-          swal("User updated Successfully!");
-          this.loaderbutton = false;
-        },
-        (error) => {
-          // this.route.navigate(["users"]);
-          this.loaderbutton = false;
-        }
-      );
+      this._adminService
+        .updateUser(this.userId, this.createUserForm.value)
+        .subscribe(
+          (data) => {
+            console.log(data);
+            this.route.navigate(["users"]);
+            swal("User updated Successfully!");
+            this.loaderbutton = false;
+          },
+          (error) => {
+            // this.route.navigate(["users"]);
+            this.loaderbutton = false;
+          }
+        );
     } else {
-      this._adminService.addUser(object).subscribe(
+      this._adminService.addUser(this.createUserForm.value).subscribe(
         (data) => {
           console.log(data);
           this.route.navigate(["users"]);

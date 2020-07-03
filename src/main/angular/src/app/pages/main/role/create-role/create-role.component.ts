@@ -51,7 +51,8 @@ export class CreateRoleComponent implements OnInit {
   ngOnInit() {
     this.createRoleForm = this.fb.group({
       name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
-      authorityIds: this.fb.array([]),
+      //authorityIds: this.fb.array([]),
+      authorityIds: ["", Validators.required],
     });
 
     this.showAuthoities();
@@ -100,6 +101,7 @@ export class CreateRoleComponent implements OnInit {
       this.eventValue = false;
     }
     console.log(this.authorityIds);
+    this.createRoleForm.controls["authorityIds"].patchValue(this.authorityIds);
   }
 
   onSelectDeselectAll(e) {
@@ -111,9 +113,15 @@ export class CreateRoleComponent implements OnInit {
       this.authoritiesCopy.forEach((role) => {
         this.authorityIds.push(role.id);
         console.log(this.authorityIds);
+        this.createRoleForm.controls["authorityIds"].patchValue(
+          this.authorityIds
+        );
       });
     } else if (this.checkbox == false) {
       this.authorityIds = [];
+      this.createRoleForm.controls["authorityIds"].patchValue(
+        this.authorityIds
+      );
       // this.authoritiesCopy.forEach((role) => {
       //   this.authorityIds.splice(role.id);
       // });
@@ -141,6 +149,9 @@ export class CreateRoleComponent implements OnInit {
           this.roleValues.authorities.forEach((role) => {
             this.authorityIds.push(role.id);
             this.selectedAuthorities.push(role);
+            this.createRoleForm.controls["authorityIds"].patchValue(
+              this.authorityIds
+            );
           });
           this.showAuthoities();
           // console.log("get" + this.roleValues.authorities.length);
@@ -157,6 +168,9 @@ export class CreateRoleComponent implements OnInit {
             this.roleValues.authorities.forEach((role) => {
               this.authorityIds.push(role.id);
               this.selectedAuthorities.push(role);
+              this.createRoleForm.controls["authorityIds"].patchValue(
+                this.authorityIds
+              );
             });
             this.showAuthoities();
           });
@@ -167,24 +181,26 @@ export class CreateRoleComponent implements OnInit {
 
   onSubmit(): void {
     console.log(this.createRoleForm.value);
-    const object = {
-      name: this.createRoleForm.value.name,
-      authorityIds: this.authorityIds,
-    };
+    // const object = {
+    //   name: this.createRoleForm.value.name,
+    //   authorityIds: this.authorityIds,
+    // };
     this.loaderbutton = true;
     if (this.roleId) {
-      this._adminService.updateRole(this.roleId, object).subscribe(
-        (data) => {
-          console.log();
-          this.route.navigate(["roles"]);
-          swal("Role updated successfully!");
-        },
-        (error) => {
-          this.loaderbutton = false;
-        }
-      );
+      this._adminService
+        .updateRole(this.roleId, this.createRoleForm.value)
+        .subscribe(
+          (data) => {
+            console.log();
+            this.route.navigate(["roles"]);
+            swal("Role updated successfully!");
+          },
+          (error) => {
+            this.loaderbutton = false;
+          }
+        );
     } else {
-      this._adminService.addRole(object).subscribe(
+      this._adminService.addRole(this.createRoleForm.value).subscribe(
         (data) => {
           this.route.navigate(["roles"]);
           swal(`New role (${data.name}) added successfully!`);

@@ -43,7 +43,7 @@
               <div class="col-12">
                 <div class="">
                   <label for="exampleInputPassword1" class="mb-0"
-                    >Authorities :
+                    >Authorities * :
                   </label>
                   <!-- <span
                     class="badge badge-secondary custom_bdg"
@@ -61,18 +61,23 @@
                   <!-- <div class="error" *ngIf="eventValue">
                     Please Select Authority
                   </div> -->
-            
+
                   <div class="authorities_main" id="authorities">
                     <div class="check_main">
-                      <input id="select-all"
+                      <input
+                        id="select-all"
                         type="checkbox"
                         selected="true"
                         name="check"
                         [checked]="checkbox"
                         (change)="onSelectDeselectAll($event)"
                       />
-                      <label for="select-all" *ngIf="!checkbox">Select All</label>
-                      <label for="select-all" *ngIf="checkbox">Unselect All</label>
+                      <label for="select-all" *ngIf="!checkbox"
+                        >Select All</label
+                      >
+                      <label for="select-all" *ngIf="checkbox"
+                        >Unselect All</label
+                      >
                     </div>
 
                     <div *ngFor="let item of authorities" class="checkbox_main">

@@ -146,7 +146,6 @@
                 <label class="mb-0">Select Role *</label>
               </div>
               <div class="authorities_main" id="roles">
-                
                 <small class="text-danger" *ngIf="selected"
                   >Please select atleast one role</small
                 >
@@ -170,7 +169,15 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="submit" *ngIf="!loaderbutton" class="saveBtn">
+        <button
+          type="submit"
+          *ngIf="!loaderbutton"
+          [disabled]="!createUserForm.valid"
+          [ngStyle]="{
+            opacity: !createUserForm.valid ? '0.6' : '1'
+          }"
+          class="saveBtn"
+        >
           {{ userId ? "Update" : "Submit" }}
         </button>
         <button class="saveBtn" *ngIf="loaderbutton">

@@ -99,7 +99,6 @@
         </thead>
 
         <tbody id="accordion">
-         
           <ng-container *ngFor="let project of projectProducts; index as i">
             <tr id="{{ project.id }}" class="">
               <td>{{ i + 1 }}</td>
@@ -433,10 +432,11 @@
       </div>
 
       <div class="no_product" *ngIf="!projectProducts?.length && !isloader">
-        <h2> <img src="assets/images/alert.svg" alt="">
-          No Projects Available Now </h2>
-       </div>
-
+        <h2>
+          <img src="assets/images/alert.svg" alt="" /> No Project-Products
+          Available Now
+        </h2>
+      </div>
     </div>
   </div>
 </div>
