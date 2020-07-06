@@ -156,4 +156,11 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public List<LicenseReportResponse> findLicenseReportByCustomerEmailAndStatusByProjectManagerId(String email,
 			ProjectProductStatus approved, Long userId);
 
+	public ProjectProductResponse findResponseByIdAndActive(Long unmaskProjectProductId, boolean b);
+
+	@Query(value = "SELECT sum(pp.license_count) " + "FROM license_key_management.project_product pp "
+			+ "where pp.project_id=?1 " + "and pp.status=?2" + "and active=?3;", nativeQuery = true)
+	public Integer SumByLicenseCountAndProjectIdAndStatusAndActive(Long projectId, ProjectProductStatus status,
+			boolean b);
+
 }

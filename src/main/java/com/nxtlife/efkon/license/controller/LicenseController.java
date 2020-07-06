@@ -225,4 +225,26 @@ public class LicenseController {
 		return licenseService.licenseReportByEmail(email);
 	}
 
+	@GetMapping(value = "project/{projectId}/generated-license-count", produces = { "application/json" })
+	@Operation(summary = "Find count of generated licenses of a project", description = "return count of generated license", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "generated licenses count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project id or product detail id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public Map<String, Integer> findGeneratedLicenseCountOfProject(@PathVariable Long projectId) {
+		return licenseService.findGeneratedLicenseCountOfProject(projectId);
+	}
+
+	@GetMapping(value = "project/product/{productId}/generated-license", produces = { "application/json" })
+	@Operation(summary = "Find all generated licenses of a product of a project", description = "return generated license", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "generated licenses", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project id or product detail id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<LicenseResponse> findGeneratedLicenses(@PathVariable(value = "productId") Long projectProductId) {
+		return licenseService.findGeneratedLicenses(projectProductId);
+	}
+
 }

@@ -141,4 +141,8 @@ public interface LicenseService {
 
 	public List<LicenseReportResponse> licenseReportByEmail(String email);
 
+	public Map<String, Integer> findGeneratedLicenseCountOfProject(Long projectId);
+
+	public List<LicenseResponse> findGeneratedLicenses(Long projectProductId);
+
 }

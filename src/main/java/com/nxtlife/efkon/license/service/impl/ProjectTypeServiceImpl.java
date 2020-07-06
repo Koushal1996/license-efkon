@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
@@ -27,6 +29,8 @@ import com.nxtlife.efkon.license.view.project.ProjectTypeResponse;
 @Service("projectTypeServiceImpl")
 @Transactional
 public class ProjectTypeServiceImpl extends BaseService implements ProjectTypeService {
+
+	private static Logger logger = LoggerFactory.getLogger(ProjectTypeResponse.class);
 
 	@Autowired
 	private ProjectTypeJpaDao projectTypeDao;
@@ -63,10 +67,10 @@ public class ProjectTypeServiceImpl extends BaseService implements ProjectTypeSe
 	}
 
 	@Override
-	@Secured(AuthorityUtils.PROJECT_TYPE_CREATE)
+	@Secured(AuthorityUtils.PROJECT_TYPE_UPDATE)
 	public SuccessResponse delete(Long id) {
 		Long unmaskId = unmask(id);
-		if (projectTypeDao.existsById(unmaskId)) {
+		if (!projectTypeDao.existsById(unmaskId)) {
 			throw new NotFoundException("This project type not found");
 		}
 		if (projectJpaDao.existsByProjectTypeId(unmaskId)) {
@@ -74,5 +78,20 @@ public class ProjectTypeServiceImpl extends BaseService implements ProjectTypeSe
 		}
 		projectTypeDao.deleteById(unmaskId, getUserId(), new Date());
 		return new SuccessResponse(HttpStatus.OK.value(), "Successfully deleted");
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PROJECT_TYPE_UPDATE)
+	public ProjectTypeResponse reactivate(Long id) {
+		Long unmaskId = unmask(id);
+		if (!projectTypeDao.existsById(unmaskId)) {
+			throw new NotFoundException(String.format("project type (%s) not found", id));
+		}
+		int rows = projectTypeDao.reactivate(unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("project type {} successfuly reactivated", unmaskId);
+		}
+		ProjectTypeResponse response = projectTypeDao.findResponseById(unmaskId);
+		return response;
 	}
 }

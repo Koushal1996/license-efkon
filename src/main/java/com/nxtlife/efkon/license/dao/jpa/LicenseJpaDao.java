@@ -91,6 +91,34 @@ public interface LicenseJpaDao extends JpaRepository<License, Long> {
 	@Query(value = "SELECT  p.customer_name customer_name , count(l.id) total_license_distributed FROM license_key_management.license l inner join project_product pp on pp.id = l.project_product_id inner join project p on p.id = pp.project_id where l.active=true group by p.customer_email", nativeQuery = true)
 	public List<Map<String, Integer>> findTotalLicenseCount();
 
+	public List<LicenseResponse> findByProjectProductIdAndAccessIdNotNullAndGeneratedKeyNotNullAndProjectProductProjectCustomerEmailAndActive(
+			Long unmaskProjectProductId, String email, boolean b);
+
+	public List<LicenseResponse> findByProjectProductIdAndAccessIdNotNullAndGeneratedKeyNotNullAndProjectProductProjectProjectManagerIdAndActive(
+			Long unmaskProjectProductId, Long userId, boolean b);
+
+	public List<LicenseResponse> findByProjectProductIdAndAccessIdNotNullAndGeneratedKeyNotNullAndActive(
+			Long unmaskProjectProductId, boolean b);
+
+	@Query(value = "SELECT count(l.id) generatedLicense " + "FROM license_key_management.license l "
+			+ "inner join project_product pp on l.project_product_id=pp.id "
+			+ "inner join project p on pp.project_id=p.id " + "where pp.project_id=?1 " + "and p.customer_email=?2 "
+			+ "and l.active=?3 " + "and l.access_id is not null ", nativeQuery = true)
+	public Integer findCountByProjectIdAndAccessIdNotNullAndProjectProductProjectCustomerEmailAndActive(
+			Long unmaskProjectId, String email, boolean b);
+
+	@Query(value = "SELECT count(l.id) generatedLicense " + "FROM license_key_management.license l "
+			+ "inner join project_product pp on l.project_product_id=pp.id "
+			+ "inner join project p on pp.project_id=p.id " + "where pp.project_id=?1 " + "and p.project_manager_id=?2 "
+			+ "and l.active=?3 " + "and l.access_id is not null ", nativeQuery = true)
+	public Integer findCountByProjectIdAndAccessIdNotNullAndProjectProductProjectProjectManagerIdAndActive(
+			Long unmaskProjectId, Long userId, boolean b);
+
+	@Query(value = "SELECT count(l.id) generatedLicense " + "FROM license_key_management.license l "
+			+ "inner join project_product pp on l.project_product_id=pp.id " + "where pp.project_id=?1 "
+			+ "and l.active=?2 " + "and l.access_id is not null", nativeQuery = true)
+	public Integer findByProjectProductIdAndAccessIdNotNullAndActive(Long unmaskProjectId, boolean b);
+
 //	@Modifying
 //	@Query(value = "update License set active=?2, modifiedBy.id=?3, modifiedAt=?4 where id =?1")
 //	public int update(Long unmaskId, Boolean active, Long userId, Date date);

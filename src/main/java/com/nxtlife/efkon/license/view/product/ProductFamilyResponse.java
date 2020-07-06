@@ -23,14 +23,18 @@ public class ProductFamilyResponse implements Response {
 	@Schema(description = "Description of product family")
 	private String description;
 
+	@Schema(description = "Active true if product family is active", example = "true", nullable = false)
+	public Boolean active;
+
 	private List<ProductCodeResponse> productCodes;
 
-	public ProductFamilyResponse(Long id, String name, String code, String description) {
+	public ProductFamilyResponse(Long id, String name, String code, String description, Boolean active) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.code = code;
 		this.description = description;
+		this.active = active;
 	}
 
 	public Long getId() {
@@ -73,10 +77,18 @@ public class ProductFamilyResponse implements Response {
 		this.productCodes = productCodes;
 	}
 
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
 	public static ProductFamilyResponse get(ProductFamily productFamily) {
 		if (productFamily != null) {
 			ProductFamilyResponse response = new ProductFamilyResponse(productFamily.getId(), productFamily.getName(),
-					productFamily.getCode(), productFamily.getDescription());
+					productFamily.getCode(), productFamily.getDescription(), productFamily.getActive());
 			return response;
 		}
 		return null;

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,18 @@ public class ProjectTypeController {
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project types", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectTypeResponse> findAll() {
 		return projectTypeService.findAll();
+	}
+
+	@PutMapping(value = "project/type/reactivate/{id}", consumes = { "application/json" }, produces = {
+			"application/json" })
+	@Operation(summary = "reactivate project type ", description = "return project type info after reactivating project type", tags = {
+			"project type" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "project type info after reactivating project type", responseCode = "200", content = @Content(schema = @Schema(implementation = ProjectTypeResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to reactivate project type", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If required field are not filled", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public ProjectTypeResponse reactivate(@PathVariable Long id) {
+		return projectTypeService.reactivate(id);
 	}
 
 	@DeleteMapping(value = "project/type/{id}", produces = { "application/json" })

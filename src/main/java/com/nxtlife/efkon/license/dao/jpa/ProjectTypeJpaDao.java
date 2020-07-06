@@ -25,4 +25,8 @@ public interface ProjectTypeJpaDao extends JpaRepository<ProjectType, Long> {
 	@Query(value = "update ProjectType set active = false, modifiedBy.id = ?2, modifiedAt = ?3 where id = ?1")
 	public int deleteById(Long id, Long userId, Date date);
 
+	@Modifying
+	@Query(value = "update ProjectType set active = true, modifiedBy.id = ?2, modifiedAt = ?3 where id = ?1")
+	public int reactivate(Long unmaskId, Long userId, Date date);
+
 }

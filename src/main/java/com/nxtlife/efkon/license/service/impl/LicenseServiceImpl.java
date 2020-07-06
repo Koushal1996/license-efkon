@@ -372,9 +372,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		int i = 0, rows;
 		try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
 			List<Map<String, Object>> licenseAccessIds = findSheetRowValues(workbook, "LICENSE ACCESS ID",
-					licenses.size(), errors);
+					(licenses.size() + 1), errors);
 			for (Map<String, Object> licenseAccessId : licenseAccessIds) {
-				license = licenses.get(i);
+				license = licenses.get(i++);
 				accessId = licenseAccessId.get("ACCESS ID").toString();
 				remark = licenseAccessId.get("REMARK").toString();
 				rows = licenseDao.update(unmask(license.getId()), accessId,
@@ -652,6 +652,105 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		}
 
 		return licenseReportResponse;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public Map<String, Integer> findGeneratedLicenseCountOfProject(Long projectId) {
+		User user = getUser();
+		Long unmaskProjectId = unmask(projectId);
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+
+		// problem in status, gives error, i'll check later
+		Integer totalCount = projectProductDao.SumByLicenseCountAndProjectIdAndStatusAndActive(unmaskProjectId,
+				ProjectProductStatus.APPROVED, true);
+
+		if (totalCount == null) {
+			throw new NotFoundException(String.format("no license count found for project having id %d", projectId));
+		}
+
+		Integer generatedLicenseCount = 0;
+		if (roles.contains("Customer")) {
+			generatedLicenseCount = licenseDao
+					.findCountByProjectIdAndAccessIdNotNullAndProjectProductProjectCustomerEmailAndActive(
+							unmaskProjectId, user.getEmail(), true);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				generatedLicenseCount = licenseDao
+						.findCountByProjectIdAndAccessIdNotNullAndProjectProductProjectProjectManagerIdAndActive(
+								unmaskProjectId, user.getUserId(), true);
+
+			} else {
+				generatedLicenseCount = licenseDao.findByProjectProductIdAndAccessIdNotNullAndActive(unmaskProjectId,
+						true);
+			}
+		}
+		Map<String, Integer> map = new HashMap<String, Integer>();
+
+		if (generatedLicenseCount > totalCount) {
+			throw new ValidationException("generated licenses are more than total license");
+		}
+
+		map.put("generatedLicenses", generatedLicenseCount);
+		map.put("nonGeneratedLicense", totalCount - generatedLicenseCount);
+
+		return map;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.LICENSE_FETCH)
+	public List<LicenseResponse> findGeneratedLicenses(Long projectProductId) {
+		User user = getUser();
+		Long unmaskProjectProductId = unmask(projectProductId);
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+
+		ProjectProductResponse ppResponse = projectProductDao.findResponseByIdAndActive(unmaskProjectProductId, true);
+
+		if (ppResponse == null) {
+			throw new NotFoundException(String.format("no project product found having id %d", projectProductId));
+		}
+
+		List<LicenseResponse> licenseResponseList = new ArrayList<LicenseResponse>();
+		if (roles.contains("Customer")) {
+			licenseResponseList = licenseDao
+					.findByProjectProductIdAndAccessIdNotNullAndGeneratedKeyNotNullAndProjectProductProjectCustomerEmailAndActive(
+							unmaskProjectProductId, user.getEmail(), true);
+		} else {
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				licenseResponseList = licenseDao
+						.findByProjectProductIdAndAccessIdNotNullAndGeneratedKeyNotNullAndProjectProductProjectProjectManagerIdAndActive(
+								unmaskProjectProductId, user.getUserId(), true);
+
+			} else {
+				licenseResponseList = licenseDao
+						.findByProjectProductIdAndAccessIdNotNullAndGeneratedKeyNotNullAndActive(unmaskProjectProductId,
+								true);
+			}
+		}
+
+		if (licenseResponseList.isEmpty() || licenseResponseList == null) {
+			throw new NotFoundException(String.format("no license is generated"));
+		}
+
+		for (LicenseResponse iterate1 : licenseResponseList) {
+			iterate1.setProjectProduct(
+					projectProductDao.findByIdAndActive(unmask(iterate1.getProjectProductId()), true));
+			iterate1.getProjectProduct().setProductDetail(productDetailDao
+					.findByIdAndActive(unmask(iterate1.getProjectProduct().getProductDetailId()), true));
+		}
+
+		return licenseResponseList;
+
 	}
 
 }

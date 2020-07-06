@@ -63,7 +63,7 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO FETCH PROJECT TYPE
 	 */
 	public static final String PROJECT_TYPE_FETCH = "ROLE_PROJECT_TYPE_FETCH";
-	
+
 	/**
 	 * AUTHORITY TO CREATE PROJECT TYPE
 	 */
@@ -263,5 +263,10 @@ public final class AuthorityUtils {
 	 * AUTJORITY TO LICENSE TYPE FETCH
 	 */
 	public static final String LICENSE_TYPE_FETCH = "ROLE_LICENSE_TYPE_FETCH";
+
+	/**
+	 * AUTHORITY TO UPDATE PROJECT TYPE
+	 */
+	public static final String PROJECT_TYPE_UPDATE = "PROJECT_TYPE_UPDATE";
 
 }

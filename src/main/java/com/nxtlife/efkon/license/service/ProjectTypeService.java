@@ -23,11 +23,19 @@ public interface ProjectTypeService {
 	public List<ProjectTypeResponse> findAll();
 
 	/**
-	 * this project type has been deleted
+	 * this method is used to delete the project type
 	 * 
 	 * @param id
 	 * @return {@link SuccessResponse}
 	 */
 	public SuccessResponse delete(Long id);
+
+	/**
+	 * this method is used to reactivate the project type
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ProjectTypeResponse reactivate(Long id);
 
 }

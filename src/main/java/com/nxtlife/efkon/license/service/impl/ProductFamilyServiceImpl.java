@@ -89,13 +89,15 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_FAMILY_FETCH)
 	public List<ProductFamilyResponse> findAll() {
-		List<ProductFamilyResponse> responseList = productFamilyDao.findAll().stream().map(ProductFamilyResponse::get)
-				.collect(Collectors.toList());
+		List<ProductFamilyResponse> productFamilies = productFamilyDao.findAll().stream()
+				.map(ProductFamilyResponse::get).collect(Collectors.toList());
+		productFamilies.stream().forEach(productFamily -> productFamily
+				.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmask(productFamily.getId()), true)));
 
-		if (responseList.isEmpty()) {
+		if (productFamilies.isEmpty()) {
 			throw new NotFoundException("no product family found");
 		}
-		return responseList;
+		return productFamilies;
 	}
 
 	@Override
