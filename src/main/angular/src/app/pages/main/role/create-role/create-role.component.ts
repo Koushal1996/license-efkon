@@ -116,6 +116,7 @@ export class CreateRoleComponent implements OnInit {
         this.createRoleForm.controls["authorityIds"].patchValue(
           this.authorityIds
         );
+        // this.eventValue =
       });
     } else if (this.checkbox == false) {
       this.authorityIds = [];
@@ -125,6 +126,11 @@ export class CreateRoleComponent implements OnInit {
       // this.authoritiesCopy.forEach((role) => {
       //   this.authorityIds.splice(role.id);
       // });
+    }
+    if (!this.authorityIds.length) {
+      this.eventValue = true;
+    } else {
+      this.eventValue = false;
     }
   }
   isChecked(item) {

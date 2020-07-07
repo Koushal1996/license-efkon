@@ -11,6 +11,7 @@ import {
 } from "@angular/forms";
 import swal from "sweetalert";
 import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 declare let $: any;
 @Component({
@@ -51,6 +52,8 @@ export class ProjectProductComponent implements OnInit {
   productStatus: any;
   selectedComment: any;
   searchProjectProductsForm: FormGroup;
+  //storeData: string | ArrayBuffer;
+  worksheet: any;
 
   constructor(
     private _projectService: ProjectService,
@@ -235,7 +238,8 @@ export class ProjectProductComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  this.selectedProduct.status = "SUBMIT";
+                  //this.selectedProduct.status = "SUBMIT";
+                  this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   //swal("Product Submitted successfully!");
                   swal(
@@ -305,7 +309,8 @@ export class ProjectProductComponent implements OnInit {
               .subscribe(
                 (data) => {
                   console.log(data);
-                  this.selectedProduct.status = "REVIEWED";
+                  // this.selectedProduct.status = "REVIEWED";
+                  this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   // swal("Product Reviewed successfully!");
                   swal(
@@ -339,7 +344,8 @@ export class ProjectProductComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  this.selectedProduct.status = "APPROVED";
+                  //this.selectedProduct.status = "APPROVED";
+                  this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   this.getProjectProducts();
                   //swal("Product Approved successfully!");
@@ -709,4 +715,63 @@ export class ProjectProductComponent implements OnInit {
       FileSaver.saveAs(blob, "ProjectProducts");
     });
   }
+  OpenExcel() {}
+  fileUploaded: File;
+  myFiles: string[] = [];
+  csvData: any;
+  jsonData: any;
+  textData: any;
+  htmlData: any;
+  storeData: any;
+
+  uploadedFile(event, project) {
+    console.log(event);
+
+    console.log(project);
+    console.log(event.target.files[0]);
+    this.fileUploaded = event.target.files[0];
+    const formData = new FormData();
+    formData.append("projectProductId", project.id);
+    formData.append("file ", this.fileUploaded);
+    this._projectService
+      .upLoadLicenseDetailByExcel(formData)
+      .subscribe((data) => {
+        console.log(data);
+      });
+  }
+
+  // uploadedFile(event, project) {
+  //   console.log(event);
+
+  //   console.log(project);
+  //   console.log(event.target.files[0]);
+  //   this.fileUploaded = event.target.files[0];
+  //   //this.readExcel();
+
+  // }
+
+  // readExcel() {
+  //   let readFile = new FileReader();
+  //   readFile.onload = (e) => {
+  //     this.storeData = readFile.result;
+  //     var data = new Uint8Array(this.storeData);
+  //     var arr = new Array();
+  //     for (var i = 0; i != data.length; ++i)
+  //       arr[i] = String.fromCharCode(data[i]);
+  //     var bstr = arr.join("");
+  //     var workbook = XLSX.read(bstr, { type: "binary" });
+  //     var first_sheet_name = workbook.SheetNames[0];
+  //     this.worksheet = workbook.Sheets[first_sheet_name];
+  //   };
+  //   readFile.readAsArrayBuffer(this.fileUploaded);
+  //   this.readAsJson();
+  // }
+  // readAsJson() {
+  //   this.jsonData = XLSX.utils.sheet_to_json(this.worksheet, { raw: false });
+  //   this.jsonData = JSON.stringify(this.jsonData);
+  //   console.log(this.jsonData);
+  //   //const data: Blob = new Blob([this.jsonData], { type: "application/json" });
+  //   //console.log(data);
+  //   //FileSaver.saveAs(data, "JsonFile" + new Date().getTime() + ".json");
+  // }
 }

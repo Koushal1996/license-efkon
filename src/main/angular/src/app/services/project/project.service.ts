@@ -57,7 +57,9 @@ export class ProjectService {
   deleteProjectTypeById(id) {
     return this.api.delete(`api/project/type/${id}`);
   }
-
+  activateProjectTypeById(id) {
+    return this.api.put(`api/project/type/reactivate/${id}`, {});
+  }
   addProjectType(name: any) {
     return this.api.post("api/project/type?name=" + name, {});
   }
@@ -115,4 +117,14 @@ export class ProjectService {
       data
     );
   }
+  upLoadLicenseDetailByExcel(formData: FormData) {
+    return this.api.put("api/license/generate-key/excel-upload", formData);
+  }
+  // upLoadLicenseDetailByExcel(file, projectProductId) {
+  //   return this.api.put(
+  //     "api/license/generate-key/excel-upload?file=" + file,
+  //     "&projectProductId=" + projectProductId,
+  //     {}
+  //   );
+  // }
 }

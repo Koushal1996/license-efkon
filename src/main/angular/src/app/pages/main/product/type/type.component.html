@@ -6,7 +6,7 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Project Type</th>
-      <th scope="col">Action</th>
+      <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_UPDATE')">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -17,15 +17,22 @@
     >
       <td>{{ i + 1 }}</td>
       <td>{{ type.name }}</td>
-      <td>
-        <!-- <button class="edit_button top_tooltip" (click)="edit(license)">
-          edit
-        </button> -->
+      <td *ngIf="type.active">
         <button
           class="delete_button top_tooltip"
           (click)="deleteProjectTypes(type)"
+          *ngIf="hasAuthority('PROJECT_TYPE_UPDATE')"
         >
           delete
+        </button>
+      </td>
+      <td *ngIf="!type.active">
+        <button
+          class="delete_button top_tooltip"
+          (click)="activateProjectTypes(type)"
+          *ngIf="hasAuthority('PROJECT_TYPE_UPDATE')"
+        >
+          Activate
         </button>
       </td>
     </tr>
@@ -45,8 +52,18 @@
         id="fname"
       />
     </div>
-    <button type="submit" class="saveBtn mr-2">
+    <button
+      type="submit"
+      class="saveBtn mr-2"
+      [disabled]="!projectTypeForm.valid"
+      [ngStyle]="{
+        opacity: !projectTypeForm.valid ? '0.6' : '1'
+      }"
+    >
       submit
+    </button>
+    <button type="button" class="cancelBtn ml-3 mr-3" (click)="goback()">
+      Back
     </button>
   </form>
 </div>

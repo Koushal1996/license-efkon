@@ -243,7 +243,8 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                this.selectedProduct.status = "SUBMIT";
+                //this.selectedProduct.status = "SUBMIT";
+                this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Submitted successfully!");
                 swal(
@@ -301,7 +302,8 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                this.selectedProduct.status = "REVIEWED";
+                //this.selectedProduct.status = "REVIEWED";
+                this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Reviewed successfully!");
                 swal(
@@ -330,7 +332,8 @@ export class ProjectComponent implements OnInit {
                 this.popUpForm.value
               )
               .subscribe((data) => {
-                this.selectedProduct.status = "APPROVED";
+                //this.selectedProduct.status = "APPROVED";
+                this.selectedProduct.status = data.status;
                 this.selectedProduct.comments = data.comments;
                 //swal("Product Approved successfully!");
                 swal(

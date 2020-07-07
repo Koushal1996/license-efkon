@@ -19,7 +19,7 @@ export class FamilyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._productService.getProductFamilies().subscribe((data) => {
+    this._productService.getProductFamiliesAll().subscribe((data) => {
       this.family = data;
       console.log(data);
       this.isloader = false;
@@ -53,13 +53,36 @@ export class FamilyComponent implements OnInit {
         this._productService
           .deleteProductFamily(family.id)
           .subscribe((data) => {
-            this.family.splice(
-              this.family.findIndex((pd) => pd.id == family.id),
-              1
-            );
+            // this.family.splice(
+            //   this.family.findIndex((pd) => pd.id == family.id),
+            //   1
+            // );
             console.log(data);
-            //family.active = false;
+            family.active = false;
             swal("Product family deleted successfully!");
+          });
+        $("#" + family.id).removeClass("highlight");
+      }
+    });
+  }
+  activateFamilyDescription(family) {
+    $("#" + family.id).addClass("highlight");
+    swal({
+      text: `Are you sure, You want to Activate ${family.name}?`,
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $("#" + family.id).removeClass("highlight");
+      } else {
+        this._productService
+          .activateProductFamily(family.id)
+          .subscribe((data) => {
+            console.log(data);
+            family.active = true;
+            swal("Product family activated successfully!");
           });
         $("#" + family.id).removeClass("highlight");
       }

@@ -81,6 +81,7 @@ export class DetailComponent implements OnInit {
   getProductFamilies() {
     this._productService.getProductFamilies().subscribe((data) => {
       this.Family = data;
+      console.log(data);
     });
   }
 
@@ -127,6 +128,7 @@ export class DetailComponent implements OnInit {
   getProductDetail() {
     this._productService.getProductDetails().subscribe((data) => {
       this.productDetail = data;
+      console.log(data);
       this.isloader = false;
     });
   }

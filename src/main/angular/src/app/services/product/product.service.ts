@@ -22,9 +22,7 @@ export class ProductService {
   updateVersions(Id, data) {
     return this.api.put(`api/version/${Id}`, data);
   }
-  getProductFamilies() {
-    return this.api.get("api/product/families");
-  }
+
   getProductDetails() {
     return this.api.get("api​/product​/details");
   }
@@ -41,6 +39,12 @@ export class ProductService {
   getProductById(Id) {
     return this.api.get(`api/project/product/${Id}`);
   }
+  getProductFamilies() {
+    return this.api.get("api/product/families");
+  }
+  getProductFamiliesAll() {
+    return this.api.get("api/product/families/all");
+  }
   addProductFamily(data) {
     return this.api.post("api/product/family", data);
   }
@@ -49,6 +53,9 @@ export class ProductService {
   }
   deleteProductFamily(Id) {
     return this.api.delete(`api/product/family/${Id}`);
+  }
+  activateProductFamily(Id) {
+    return this.api.put(`​api​/product​/family​/reactivate​/${Id}`, {});
   }
   // viewRequest(status: any) {
   //   //debugger;
