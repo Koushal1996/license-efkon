@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nxtlife.efkon.license.dao.jpa.ProductCodeJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.ProductDetailJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProductFamilyJpaDao;
 import com.nxtlife.efkon.license.entity.product.ProductCode;
 import com.nxtlife.efkon.license.entity.product.ProductFamily;
@@ -39,8 +40,8 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 	@Autowired
 	private ProductCodeJpaDao productCodeDao;
 
-//	@Autowired
-//	private ProductDetailJpaDao productDetailDao;
+	@Autowired
+	private ProductDetailJpaDao productDetailDao;
 
 	public void validate(ProductFamilyRequest request) {
 		if (productFamilyDao.existsByName(request.getName())) {
@@ -92,7 +93,7 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		List<ProductFamilyResponse> productFamilies = productFamilyDao.findAll().stream()
 				.map(ProductFamilyResponse::get).collect(Collectors.toList());
 		productFamilies.stream().forEach(productFamily -> productFamily
-				.setProductCodes(productCodeDao.findByProductFamilyIdAndActive(unmask(productFamily.getId()), true)));
+				.setProductCodes(productCodeDao.findByProductFamilyId(unmask(productFamily.getId()))));
 
 		if (productFamilies.isEmpty()) {
 			throw new NotFoundException("no product family found");
@@ -163,11 +164,11 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		if (!productFamilyDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("Product Family (%s) not found", id));
 		}
-//		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
-//			throw new ValidationException(String.format(
-//					"Product family(%s) can't be delete as some of the version are related to this product family ",
-//					unmaskId));
-//		}
+		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
+			throw new ValidationException(String.format(
+					"Product family(%s) can't be delete as some of the products are related to this product family ",
+					unmaskId));
+		}
 		productCodeDao.deleteByProductFamilyId(unmaskId, getUserId(), new Date());
 		int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
