@@ -2,7 +2,9 @@ package com.nxtlife.efkon.license.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,16 +78,31 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 	public List<ProductFamilyResponse> findAll() {
 		List<ProductDetailResponse> productDetailResponseList = productDetailDao
 				.findByActiveOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc(true);
+
+		Map<Long, ProductFamilyResponse> productFamilyCollector = new HashMap<Long, ProductFamilyResponse>();
+
 		Long familyId = null, codeId = null;
 		List<ProductFamilyResponse> productFamilies = new ArrayList<>();
 		ProductFamilyResponse productFamily = null;
 		ProductCodeResponse productCode = null;
 		VersionResponse version;
 		for (ProductDetailResponse productDetail : productDetailResponseList) {
+
+			if (productFamilyCollector.containsKey(productDetail.getProductFamilyId())) {
+				productDetail.setProductFamily(productFamilyCollector.get(productDetail.getProductFamilyId()));
+			} else {
+				ProductFamilyResponse productFamilyResponse = productFamilyDao
+						.findResponseById(unmask(productDetail.getProductFamilyId()));
+				if (productFamilyResponse != null) {
+					productFamilyCollector.put(productDetail.getProductFamilyId(), productFamilyResponse);
+				}
+				productDetail.setProductFamily(productFamilyCollector.get(productDetail.getProductFamilyId()));
+			}
+
 			if (!productDetail.getProductFamilyId().equals(familyId)) {
 				productFamily = new ProductFamilyResponse(unmask(productDetail.getProductFamilyId()),
 						productDetail.getProductFamilyName(), productDetail.getProductFamilyCode(),
-						productDetail.getProductFamilyDescription());
+						productDetail.getProductFamilyDescription(), productDetail.getProductFamily().getActive());
 				productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
 						productDetail.getProductCodeName());
 				version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());

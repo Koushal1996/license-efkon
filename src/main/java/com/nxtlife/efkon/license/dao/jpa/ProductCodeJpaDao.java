@@ -48,4 +48,6 @@ public interface ProductCodeJpaDao extends JpaRepository<ProductCode, Long> {
 	@Query(value = "update ProductCode set active = true, modified_by =?2, modified_at =?3 where product_Family_id =?1")
 	public int updateByProductFamilyId(Long unmaskId, Long userId, Date date);
 
+	public List<ProductCodeResponse> findByProductFamilyId(Long unmask);
+
 }
