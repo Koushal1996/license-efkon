@@ -267,6 +267,11 @@ public final class AuthorityUtils {
 	/**
 	 * AUTHORITY TO UPDATE PROJECT TYPE
 	 */
-	public static final String PROJECT_TYPE_UPDATE = "PROJECT_TYPE_UPDATE";
+	public static final String PROJECT_TYPE_UPDATE = "ROLE_PROJECT_TYPE_UPDATE";
+	
+	/**
+	 * AUTHORITY TO DELETE PROJECT TYPE
+	 */
+	public static final String PROJECT_TYPE_DELETE = "ROLE_PROJECT_TYPE_DELETE";
 
 }

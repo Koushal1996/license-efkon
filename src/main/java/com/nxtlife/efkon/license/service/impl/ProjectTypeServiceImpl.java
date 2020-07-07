@@ -67,7 +67,7 @@ public class ProjectTypeServiceImpl extends BaseService implements ProjectTypeSe
 	}
 
 	@Override
-	@Secured(AuthorityUtils.PROJECT_TYPE_UPDATE)
+	@Secured(AuthorityUtils.PROJECT_TYPE_DELETE)
 	public SuccessResponse delete(Long id) {
 		Long unmaskId = unmask(id);
 		if (!projectTypeDao.existsById(unmaskId)) {
@@ -81,7 +81,7 @@ public class ProjectTypeServiceImpl extends BaseService implements ProjectTypeSe
 	}
 
 	@Override
-	@Secured(AuthorityUtils.PROJECT_TYPE_UPDATE)
+	@Secured(AuthorityUtils.PROJECT_TYPE_DELETE)
 	public ProjectTypeResponse reactivate(Long id) {
 		Long unmaskId = unmask(id);
 		if (!projectTypeDao.existsById(unmaskId)) {
