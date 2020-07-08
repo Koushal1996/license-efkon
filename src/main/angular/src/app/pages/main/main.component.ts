@@ -43,6 +43,12 @@ export class MainComponent implements OnInit {
       imagePath: "assets/images/view_request.png",
     },
     {
+      route: "/report",
+      title: "Report",
+      privilege: "USER_FETCH",
+      imagePath: "assets/images/user.png",
+    },
+    {
       route: "/roles",
       title: "Roles",
       privilege: "ROLE_FETCH",

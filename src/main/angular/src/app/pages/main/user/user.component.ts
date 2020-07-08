@@ -171,7 +171,14 @@ export class UserComponent implements OnInit {
     });
   }
   reverseAphabetically() {
-    this.users.reverse();
+    //this.users.reverse();
+    this.users.sort(function (b, a) {
+      var nameA = a.name.toLowerCase(),
+        nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
   }
   sortUserNameAphabetically() {
     this.users.sort(function (a, b) {
@@ -183,7 +190,14 @@ export class UserComponent implements OnInit {
     });
   }
   reverseUserNameAphabetically() {
-    this.users.reverse();
+    //this.users.reverse();
+    this.users.sort(function (b, a) {
+      var nameA = a.username.toLowerCase(),
+        nameB = b.username.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
   }
   showRoleAuthoities(role, item) {
     $("#" + item.id).addClass("highlight");

@@ -28,6 +28,7 @@ import { RejectedComponent } from "./viewrequest/rejected/rejected.component";
 import { PendingComponent } from "./viewrequest/pending/pending.component";
 import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
 import { TypeComponent } from "./product/type/type.component";
+import { ReportComponent } from './report/report.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -62,6 +63,7 @@ import { TypeComponent } from "./product/type/type.component";
     PendingComponent,
     EditProductComponent,
     TypeComponent,
+    ReportComponent,
   ],
 })
 export class MainModule {}

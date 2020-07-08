@@ -53,7 +53,9 @@ export class ProjectProductComponent implements OnInit {
   selectedComment: any;
   searchProjectProductsForm: FormGroup;
   //storeData: string | ArrayBuffer;
+  fileUploaded: File;
   worksheet: any;
+  ProjectIdUploadFile: any;
 
   constructor(
     private _projectService: ProjectService,
@@ -592,7 +594,14 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   reverseAphabetically() {
-    this.projectProducts.reverse();
+    //this.projectProducts.reverse();
+    this.projectProducts.sort(function (b, a) {
+      var statusA = a.status.toLowerCase(),
+        statusB = b.status.toLowerCase();
+      if (statusA > statusB) return 1;
+      if (statusA < statusB) return -1;
+      return 0;
+    });
   }
   hideRequestModel(selectedProduct) {
     $("#" + selectedProduct).removeClass("highlight");
@@ -716,30 +725,31 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   OpenExcel() {}
-  fileUploaded: File;
-  myFiles: string[] = [];
-  csvData: any;
-  jsonData: any;
-  textData: any;
-  htmlData: any;
-  storeData: any;
 
   uploadedFile(event, project) {
     console.log(event);
-
     console.log(project);
+    this.ProjectIdUploadFile = project;
     console.log(event.target.files[0]);
     this.fileUploaded = event.target.files[0];
-    const formData = new FormData();
-    formData.append("projectProductId", project.id);
-    formData.append("file ", this.fileUploaded);
-    this._projectService
-      .upLoadLicenseDetailByExcel(formData)
-      .subscribe((data) => {
-        console.log(data);
-      });
   }
-
+  sendExcel() {
+    const formData = new FormData();
+    formData.append("projectProductId", this.ProjectIdUploadFile.id);
+    formData.append("file ", this.fileUploaded);
+    this._projectService.upLoadLicenseDetailByExcel(formData).subscribe(
+      (data) => {
+        console.log(data);
+        console.log(this.ProjectIdUploadFile);
+        this.ProjectIdUploadFile.licenses = data;
+        //this.ProjectIdUploadFile.licenses.push(data);
+        swal("File Uploaded Sucessfully");
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   // uploadedFile(event, project) {
   //   console.log(event);
 

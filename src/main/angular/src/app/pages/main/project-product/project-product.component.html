@@ -274,12 +274,14 @@
                 (click)="OpenExcel()">
                   Upload By Excel
                 </button> -->
-                <input
-                  type="file"
-                  class="form-control"
-                  (change)="uploadedFile($event, project)"
-                  accept=".xlsx"
-                />
+                <div>
+                  <input
+                    type="file"
+                    (change)="uploadedFile($event, project)"
+                    accept=".xlsx"
+                  />
+                  <button (click)="sendExcel()">send</button>
+                </div>
                 <button
                   type="button"
                   class="mt-1 roleactive"
@@ -297,7 +299,7 @@
                     hasAuthority('LICENSE_REQUEST_CREATE'))
                 "
               >
-                <button
+                <!-- <button
                   type="button"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
@@ -310,7 +312,7 @@
                   "
                 >
                   Renew
-                </button>
+                </button> -->
                 <button
                   type="button"
                   class="t_save_btn"
@@ -325,12 +327,15 @@
                 (click)="OpenExcel()">
                   Upload By Excel
                 </button> -->
-                <input
-                  type="file"
-                  class="form-control"
-                  (change)="uploadedFile($event, project)"
-                  accept=".xlsx"
-                />
+                <div>
+                  <input
+                    type="file"
+                    (change)="uploadedFile($event, project)"
+                    accept=".xlsx"
+                  />
+                  <button (click)="sendExcel()">send</button>
+                </div>
+
                 <button
                   type="button"
                   class="roleactive mt-1"

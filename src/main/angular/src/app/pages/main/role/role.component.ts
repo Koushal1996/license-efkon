@@ -154,6 +154,13 @@ export class RoleComponent implements OnInit {
     });
   }
   reverseAphabetically() {
-    this.roles.reverse();
+    // this.roles.reverse();
+    this.roles.sort(function (b, a) {
+      var nameA = a.name.toLowerCase(),
+        nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { ProductService } from "./../../../../services/product/product.service";
 import { StorageService } from "src/app/services/storage/storage.service";
 import {
   FormGroup,
@@ -25,6 +26,7 @@ export class TypeComponent implements OnInit {
   constructor(
     private projectservice: ProjectService,
     private fb: FormBuilder,
+    private productservice: ProductService,
     private _storageService: StorageService
   ) {}
 
