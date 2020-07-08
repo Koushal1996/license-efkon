@@ -45,7 +45,7 @@ export class MainComponent implements OnInit {
     {
       route: "/report",
       title: "Report",
-      privilege: "USER_FETCH",
+      privilege: "LICENSE_FETCH",
       imagePath: "assets/images/user.png",
     },
     {

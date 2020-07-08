@@ -188,7 +188,7 @@ export class DetailComponent implements OnInit {
                 this.productDetail.findIndex((pd) => pd.id == detail.id)
               );
             }
-            swal("Product’s details delete successfully!");
+            swal("Product’s details deleted successfully!");
           },
           (error) => {}
         );

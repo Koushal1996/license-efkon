@@ -6,7 +6,7 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col">Project Type</th>
-      <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_UPDATE')">Action</th>
+      <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_DELETE')">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -21,7 +21,7 @@
         <button
           class="delete_button top_tooltip"
           (click)="deleteProjectTypes(type)"
-          *ngIf="hasAuthority('PROJECT_TYPE_UPDATE')"
+          *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
         >
           delete
         </button>
@@ -30,7 +30,7 @@
         <button
           class="delete_button top_tooltip"
           (click)="activateProjectTypes(type)"
-          *ngIf="hasAuthority('PROJECT_TYPE_UPDATE')"
+          *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
         >
           Activate
         </button>
