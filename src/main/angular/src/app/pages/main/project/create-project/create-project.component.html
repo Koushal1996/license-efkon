@@ -13,6 +13,7 @@
                     class="form-control"
                     type="text"
                     autocomplete="off"
+                    placeholder="Customer Name"
                     formControlName="customerName"
                     name="customerName"
                     (ngModelChange)="selectSearchTerm($event)"
@@ -56,6 +57,7 @@
                     class="form-control"
                     formControlName="customerEmail"
                     name="customerEmail"
+                    placeholder="Customer Email"
                   />
                   <span
                     *ngIf="
@@ -67,12 +69,13 @@
                     <span
                       *ngIf="projectForm.get('customerEmail').errors.required"
                       class="field_error"
-                      >Email is required </span>
+                      >Email is required
+                    </span>
                     <!-- <span
                       *ngIf="projectForm.get('customerEmail').errors.pattern"
                       class="field_error"
                       >Enter a valid Email</span -->
-                    
+
                     <span
                       *ngIf="projectForm.get('customerEmail').errors.email"
                       class="error"
@@ -83,13 +86,15 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label>Customer Contact No <span class="required">*</span>
+                  <label
+                    >Customer Contact No <span class="required">*</span>
                   </label>
                   <input
                     type="tel"
                     class="form-control"
                     formControlName="customerContactNo"
                     name="customerContactNo"
+                    placeholder="Customer Contact No"
                   />
                   <span
                     *ngIf="
@@ -131,13 +136,16 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label for="sel1">Project Type <span class="required">*</span></label>
+                  <label for="sel1"
+                    >Project Type <span class="required">*</span></label
+                  >
                   <select
                     class="form-control"
                     id="sel1"
                     name="projectTypeId"
                     formControlName="projectTypeId"
                   >
+                    <option value="" disabled>Project Type</option>
                     <option
                       *ngFor="let type of projectTypes"
                       value="{{ type.id }}"
@@ -162,13 +170,16 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label for="sel1">Project Manager <span class="required">*</span></label>
+                  <label for="sel1"
+                    >Project Manager <span class="required">*</span></label
+                  >
                   <select
                     class="form-control"
                     id="sel1"
                     name="projectManagerId"
                     formControlName="projectManagerId"
                   >
+                    <option value="" disabled>Project Manager</option>
                     <option
                       *ngFor="let Manager of projectManager"
                       value="{{ Manager.id }}"
