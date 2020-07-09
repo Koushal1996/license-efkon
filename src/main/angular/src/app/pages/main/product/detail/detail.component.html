@@ -35,6 +35,9 @@
               </tr>
             </thead>
             <tbody>
+              <div *ngIf="!productDetail?.length && !isloader">
+                No Product Details Available Now
+              </div>
               <ng-container *ngFor="let detail of productDetail; index as i">
                 <tr>
                   <td [attr.rowspan]="getDetailRowspan(detail)">{{ i + 1 }}</td>

@@ -43,6 +43,16 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO FETCH USER
 	 */
 	public static final String USER_FETCH = "ROLE_USER_FETCH";
+	
+	/**
+	 * AUTHORITY TO FETCH PROJECT MANAGER
+	 */
+	public static final String PROJECT_MANAGER_FETCH = "ROLE_PROJECT_MANAGER_FETCH";
+	
+	/**
+	 * AUTHORITY TO FETCH CUSTOMER
+	 */
+	public static final String CUSTOMER_FETCH = "ROLE_CUSTOMER_FETCH";
 
 	/**
 	 * AUTHORITY TO CREATE USER

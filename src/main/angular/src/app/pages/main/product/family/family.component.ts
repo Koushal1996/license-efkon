@@ -19,11 +19,16 @@ export class FamilyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._productService.getProductFamiliesAll().subscribe((data) => {
-      this.family = data;
-      console.log(data);
-      this.isloader = false;
-    });
+    this._productService.getProductFamiliesAll().subscribe(
+      (data) => {
+        this.family = data;
+        console.log(data);
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
   }
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
