@@ -10,7 +10,9 @@
             <th scope="col">#</th>
             <th scope="col">License Type</th>
             <th scope="col">Expiry Period Limit (in months)</th>
-            <th scope="col">Action</th>
+            <th scope="col" *ngIf="hasAuthority('LICENSE_TYPE_UPDATE')">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -34,7 +36,7 @@
                 [(ngModel)]="license.maxMonthCount"
               />
             </td>
-            <td *ngIf="!license.edit">
+            <td *ngIf="!license.edit && hasAuthority('LICENSE_TYPE_UPDATE')">
               <button
                 type="button"
                 (click)="editMonthCount(license)"

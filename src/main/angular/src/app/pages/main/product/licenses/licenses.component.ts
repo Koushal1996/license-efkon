@@ -1,3 +1,4 @@
+import { StorageService } from "src/app/services/storage/storage.service";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ProjectService } from "src/app/services/project/project.service";
@@ -24,6 +25,7 @@ export class LicensesComponent implements OnInit {
   configuration;
   constructor(
     private fb: FormBuilder,
+    private _storageService: StorageService,
     private projectservice: ProjectService
   ) {}
 
@@ -31,7 +33,12 @@ export class LicensesComponent implements OnInit {
     this.getLicenseType();
     this.getrenewConfiguration();
   }
-
+  hasAuthority(authority) {
+    const authorities: any[] = this._storageService
+      .getData("userAuthorities")
+      .map((a) => a.name);
+    return authorities.includes(authority);
+  }
   getLicenseType() {
     this.projectservice.getLicenseType().subscribe((data) => {
       this.licenseType = data;

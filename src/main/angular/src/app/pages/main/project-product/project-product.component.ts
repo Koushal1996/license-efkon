@@ -56,6 +56,7 @@ export class ProjectProductComponent implements OnInit {
   fileUploaded: File;
   worksheet: any;
   ProjectIdUploadFile: any;
+  file:any;
 
   constructor(
     private _projectService: ProjectService,
@@ -724,7 +725,6 @@ export class ProjectProductComponent implements OnInit {
       FileSaver.saveAs(blob, "ProjectProducts");
     });
   }
-  OpenExcel() {}
 
   uploadedFile(event, project) {
     console.log(event);
@@ -732,6 +732,7 @@ export class ProjectProductComponent implements OnInit {
     this.ProjectIdUploadFile = project;
     console.log(event.target.files[0]);
     this.fileUploaded = event.target.files[0];
+    project.isFile = true;
   }
   sendExcel() {
     const formData = new FormData();
@@ -740,10 +741,17 @@ export class ProjectProductComponent implements OnInit {
     this._projectService.upLoadLicenseDetailByExcel(formData).subscribe(
       (data) => {
         console.log(data);
-        console.log(this.ProjectIdUploadFile);
-        this.ProjectIdUploadFile.licenses = data;
-        //this.ProjectIdUploadFile.licenses.push(data);
-        swal("File Uploaded Sucessfully");
+        const customerEmail = data.filter((item) => item.accessId);
+        console.log(customerEmail);
+        if (customerEmail.length < 1) {
+          swal("Error");
+          this.ProjectIdUploadFile.licenses = data;
+          this.ProjectIdUploadFile.isFile = false;
+        } else {
+          swal("File Uploaded Sucessfully");
+          this.ProjectIdUploadFile.licenses = data;
+          this.ProjectIdUploadFile.isFile = false;
+        }
       },
       (error) => {
         console.log(error);

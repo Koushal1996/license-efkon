@@ -280,7 +280,10 @@
                     (change)="uploadedFile($event, project)"
                     accept=".xlsx"
                   />
-                  <button (click)="sendExcel()">send</button>
+
+                  <button (click)="sendExcel()" *ngIf="project.isFile">
+                    send
+                  </button>
                 </div>
                 <button
                   type="button"
@@ -333,7 +336,9 @@
                     (change)="uploadedFile($event, project)"
                     accept=".xlsx"
                   />
-                  <button (click)="sendExcel()">send</button>
+                  <button (click)="sendExcel()" *ngIf="project.isFile">
+                    send
+                  </button>
                 </div>
 
                 <button
