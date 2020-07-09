@@ -1,12 +1,13 @@
 <div class="site_main position-relative">
-
   <div class="table_scroll">
     <table>
       <thead class="users_table_hader">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Project Type</th>
-          <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_DELETE')">Action</th>
+          <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_DELETE')">
+            Action
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -19,7 +20,7 @@
           <td>{{ type.name }}</td>
           <td *ngIf="type.active">
             <button
-              class=" top_tooltip t_save_btn bg-danger"
+              class="top_tooltip t_save_btn bg-danger"
               (click)="deleteProjectTypes(type)"
               *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
             >
@@ -42,11 +43,9 @@
       <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
     </div>
   </div>
-<button (click)="addProjectType()" class="createBtn">Add Project Type</button>
+  <button (click)="addProjectType()" class="createBtn">Add Project Type</button>
 
-
-
-<!-- <table>
+  <!-- <table>
   <thead class="users_table_hader">
     <tr>
       <th scope="col">#</th>
@@ -100,8 +99,6 @@
   </form>
 </div> -->
 
-
-
 <div class="modal" id="myModal" style="display: block;" *ngIf="showForm">
   <div class="custom_modal_main">
     <div class="modal-dialog" style="max-width: 440px;">
@@ -110,36 +107,47 @@
           <h4 class="modal-title">
             Add Project Type
           </h4>
-          <button  type="button" class="close" (click)="goback()">  &times; </button>
+          <button type="button" class="close" (click)="goback()">
+            &times;
+          </button>
         </div>
 
-          <div class="modal-body p-3">
-        <form (ngSubmit)="onSubmit()" [formGroup]="projectTypeForm" class="add_project">
+        <div class="modal-body p-3">
+          <form
+            (ngSubmit)="onSubmit()"
+            [formGroup]="projectTypeForm"
+            class="add_project"
+          >
             <div class="form-group p-0">
               <label>Project Type Name</label>
-              <input class="form-control" type="text" autocomplete="off"  formControlName="name" name="name" id="fname"  />
+              <input
+                class="form-control"
+                type="text"
+                autocomplete="off"
+                formControlName="name"
+                name="name"
+                id="fname"
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="saveBtn"
+                [disabled]="!projectTypeForm.valid"
+                [ngStyle]="{
+                  opacity: !projectTypeForm.valid ? '0.6' : '1'
+                }"
+              >
+                Submit
+              </button>
             </div>
           </form>
-          </div>
-          
-          <div class="modal-footer">
-            <button
-      type="submit"
-      class="saveBtn"
-      [disabled]="!projectTypeForm.valid"
-      [ngStyle]="{
-        opacity: !projectTypeForm.valid ? '0.6' : '1'
-      }"
-    >
-      Submit
-    </button>
-    <!-- <button type="button" class="cancelBtn ml-3 mr-3" (click)="goback()">
+
+          <!-- <button type="button" class="cancelBtn ml-3 mr-3" (click)="goback()">
       Back
     </button> -->
-          </div>
-        
+        </div>
       </div>
     </div>
   </div>
 </div>
-

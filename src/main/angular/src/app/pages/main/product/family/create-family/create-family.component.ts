@@ -69,7 +69,7 @@ export class CreateFamilyComponent implements OnInit {
           (data) => {
             this.route.navigate(["products/family"]);
             this.loaderbutton = false;
-            swal("Product family updated successfully!");
+            swal(`Product family (${data.name}) updated successfully!`);
           },
           (error) => {
             this.loaderbutton = false;
@@ -83,7 +83,7 @@ export class CreateFamilyComponent implements OnInit {
           (data) => {
             this.loaderbutton = false;
             this.route.navigate(["products/family"]);
-            swal("New Product family added successfully!");
+            swal(`New Product (${data.name}) family added successfully!`);
           },
           (error) => {
             this.loaderbutton = false;

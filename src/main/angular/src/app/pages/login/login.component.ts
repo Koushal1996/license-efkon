@@ -1,3 +1,4 @@
+import { MainService } from "src/app/services/main/main.service";
 /**
  * @description
  * Component for login form
@@ -24,10 +25,13 @@ export class LoginComponent implements OnInit {
   logging = false;
   /**to show error msg */
   errorMsg = "";
+  UserRole: any;
+  userloginRole: any;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private mainService: MainService,
     private authService: AuthService
   ) {}
 
@@ -100,7 +104,12 @@ export class LoginComponent implements OnInit {
         this.authService.fetchUserDetails().subscribe(
           (resp: any) => {
             this.authService.saveUserDetails(resp);
-            this.navigate();
+            this.mainService.getLoginUser().subscribe((data) => {
+              //console.log(data);
+              this.UserRole = data.roles;
+              console.log(this.UserRole[0].name);
+              this.navigate(this.UserRole[0].name);
+            });
           },
           (err: any) => {
             localStorage.clear();
@@ -126,7 +135,14 @@ export class LoginComponent implements OnInit {
   }
 
   /**navigate to control-room interface after successfull login */
-  navigate() {
-    this.router.navigate(["/projects"]);
+  navigate(szRoll: string) {
+    console.log(szRoll);
+    if (szRoll == "admin") {
+      this.router.navigate(["/roles"]);
+    } else if (szRoll == "Customer") {
+      this.router.navigate(["/dashboard"]);
+    } else {
+      this.router.navigate(["/projects"]);
+    }
   }
 }

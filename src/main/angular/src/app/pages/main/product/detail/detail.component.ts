@@ -49,10 +49,14 @@ export class DetailComponent implements OnInit {
     //this.createDetailForm.reset();
     console.log(productFamilyId);
     const family = this.Family.find((item) => item.id == productFamilyId);
-    if (family) this.productCodes = family.productCodes;
-    this.currentProductFamilyData = this.productDetail.find(
-      (item) => item.id == productFamilyId
-    );
+    if (family) {
+      this.productCodes = family.productCodes;
+      this.currentProductFamilyData = this.productDetail.find(
+        (item) => item.id == productFamilyId
+      );
+    } else {
+      this.productCodes = [];
+    }
     this.createDetailForm.controls["version"].reset();
     this.createDetailForm.controls["description"].reset();
   }
@@ -93,11 +97,14 @@ export class DetailComponent implements OnInit {
         .updateProductDetail(this.detailId, requestBody)
         .subscribe(
           (data) => {
+            console.log(data);
             this.getProductDetail();
             this.isCreateDetail = false;
             this.detailId = "";
             this.loaderbutton = false;
-            swal("Product’s details updated successfully!");
+            swal(
+              `Product’s details (${data.productFamilyName} ${data.productCodeName} ${data.versionName}) updated successfully!`
+            );
             //this.createDetailForm.reset();
             this.productVersion = "";
             this.createDetailForm = this.initProductDetailForm();
@@ -111,7 +118,10 @@ export class DetailComponent implements OnInit {
         .addProductDetail(this.createDetailForm.value)
         .subscribe(
           (data) => {
-            swal("Product’s details added successfully");
+            console.log(data);
+            swal(
+              `Product’s details (${data.productFamilyName} ${data.productCodeName} ${data.versionName}) added successfully`
+            );
             this.getProductDetail();
             this.isCreateDetail = false;
             this.loaderbutton = false;
@@ -138,6 +148,8 @@ export class DetailComponent implements OnInit {
     this.createDetailForm.reset();
     this.productVersion = "";
     this.detailId = "";
+    this.createDetailForm.controls["productFamilyId"].enable();
+    this.createDetailForm.controls["productCodeId"].enable();
   }
 
   editProductDetail(detail, code, version) {
@@ -160,7 +172,7 @@ export class DetailComponent implements OnInit {
   deleteProductDetail(detail, code, productDetailId, version) {
     $("#" + productDetailId).addClass("highlight");
     swal({
-      text: `Are you sure, You want to delete ${detail.name} ${code.name} ${version.version}?`,
+      text: `Are you sure, You want to delete Product detail (${detail.name} ${code.name} ${version.version})?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -188,7 +200,9 @@ export class DetailComponent implements OnInit {
                 this.productDetail.findIndex((pd) => pd.id == detail.id)
               );
             }
-            swal("Product’s details deleted successfully!");
+            swal(
+              `Product’s details (${detail.name} ${code.name} ${version.version}) deleted successfully!`
+            );
           },
           (error) => {}
         );
