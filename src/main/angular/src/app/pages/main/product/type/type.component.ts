@@ -54,7 +54,7 @@ export class TypeComponent implements OnInit {
   deleteProjectTypes(type) {
     $("#" + type.id).addClass("highlight");
     swal({
-      text: `Are you sure, You want to delete ${type.name}`,
+      text: `Are you sure, You want to delete Project Type (${type.name})`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -67,7 +67,7 @@ export class TypeComponent implements OnInit {
         this.projectservice.deleteProjectTypeById(type.id).subscribe((data) => {
           console.log(data);
           type.active = false;
-          swal("Project Type deleted successfully!");
+          swal(`Project Type (${type.name}) deleted successfully!`);
 
           //this.getProjectTypes();
         });
@@ -78,7 +78,7 @@ export class TypeComponent implements OnInit {
   activateProjectTypes(type) {
     $("#" + type.id).addClass("highlight");
     swal({
-      text: `Are you sure, You want to activate ${type.name}`,
+      text: `Are you sure, You want to activate Project Type (${type.name})`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -93,7 +93,7 @@ export class TypeComponent implements OnInit {
           .subscribe((data) => {
             console.log(data);
             type.active = true;
-            swal("Project Type activated successfully!");
+            swal(`Project Type (${type.name}) activated successfully!`);
             // this.getProjectTypes();
           });
         $("#" + type.id).removeClass("highlight");
@@ -107,13 +107,13 @@ export class TypeComponent implements OnInit {
     this.showForm = false;
   }
   onSubmit() {
-    // console.log(this.projectTypeForm.value);
+    console.log(this.projectTypeForm.value);
     this.projectservice
       .addProjectType(this.projectTypeForm.value.name)
       .subscribe((data) => {
         console.log(data);
         this.showForm = false;
-        swal("New Project Type Added Sucessfully!");
+        swal(`New Project Type (${data.name}) added Sucessfully!`);
         this.getProjectTypes();
       });
   }

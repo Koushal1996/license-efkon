@@ -46,7 +46,7 @@ export class FamilyComponent implements OnInit {
   deleteFamilyDescription(family) {
     $("#" + family.id).addClass("highlight");
     swal({
-      text: `Are you sure, You want to delete ${family.name}?`,
+      text: `Are you sure, You want to delete Product family (${family.name})?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -64,7 +64,7 @@ export class FamilyComponent implements OnInit {
             // );
             console.log(data);
             family.active = false;
-            swal("Product family deleted successfully!");
+            swal(`Product family (${family.name}) deleted successfully!`);
           });
         $("#" + family.id).removeClass("highlight");
       }
@@ -73,7 +73,7 @@ export class FamilyComponent implements OnInit {
   activateFamilyDescription(family) {
     $("#" + family.id).addClass("highlight");
     swal({
-      text: `Are you sure, You want to Activate ${family.name}?`,
+      text: `Are you sure, You want to activate Product family (${family.name})?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -87,7 +87,7 @@ export class FamilyComponent implements OnInit {
           .subscribe((data) => {
             console.log(data);
             family.active = true;
-            swal("Product family activated successfully!");
+            swal(`Product family (${family.name}) activated successfully!`);
           });
         $("#" + family.id).removeClass("highlight");
       }

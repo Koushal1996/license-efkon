@@ -89,7 +89,7 @@ export class LicensesComponent implements OnInit {
       this.projectservice.updaterenewConfiguration(object).subscribe(
         (data) => {
           console.log(data);
-          swal("Configuration updated successfully!");
+          swal("Renew Configuration updated successfully!");
           this.isBeforeDaysEdit = true;
         },
         (error) => {}
