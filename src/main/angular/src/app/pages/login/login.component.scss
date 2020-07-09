@@ -1,8 +1,4 @@
 @import "../../app.component.scss";
-.err-msg {
-  color: red;
-}
-
 .logoImage {
   width: 200px;
 }
@@ -425,4 +421,16 @@ label{
   font-size: 14px;
   color: #bdbdbddd;
   letter-spacing: 0;
+}
+.err-msg {
+  font-size: 14px;
+    letter-spacing: 0.2px;
+    border: 1px solid #dc3545;
+    text-align: center;
+    padding: 6px;
+    color: #dc3545;
+    width: 100%;
+    display: inline-block;
+    margin-bottom: 20px;
+    // box-shadow: 0px 3px 1px #dc3545;
 }

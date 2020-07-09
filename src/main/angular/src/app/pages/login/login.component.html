@@ -29,6 +29,9 @@
               (ngSubmit)="onSubmit()"
             >
               <fieldset class="forms_fieldset">
+                <div class="err-msg" *ngIf="errorMsg">
+                  {{ errorMsg }}
+                </div>
                 <div class="forms_field">
                   <label>User Name</label>
                   <input
@@ -53,6 +56,7 @@
                     vpn_key
                     </span>
                 </div>
+                
               </fieldset>
               <div class="forms_buttons">
                 <a routerLink="/forgot-pwd">Forgot Password ?</a>
@@ -65,9 +69,7 @@
                 </button>
               </div>
   
-              <div class="err-msg" *ngIf="errorMsg">
-                <p>{{ errorMsg }}</p>
-              </div>
+              
             </form>
           </div>
         </div>
