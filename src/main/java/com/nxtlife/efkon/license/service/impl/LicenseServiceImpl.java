@@ -662,7 +662,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 
 		// problem in status, gives error, i'll check later
-		Integer totalCount = projectProductDao.SumByLicenseCountAndProjectIdAndStatusAndActive(unmaskProjectId,
+		Integer totalCount = projectProductDao.sumByLicenseCountAndProjectIdAndStatusAndActive(unmaskProjectId,
 				ProjectProductStatus.APPROVED, true);
 
 		if (totalCount == null) {

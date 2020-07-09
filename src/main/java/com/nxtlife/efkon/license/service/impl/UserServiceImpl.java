@@ -41,7 +41,6 @@ import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.entity.user.UserRole;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
-import com.nxtlife.efkon.license.service.AuthorityService;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.UserService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
@@ -64,10 +63,6 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 
 	@Autowired
 	private UserRoleJpaDao userRoleJpaDao;
-
-	@SuppressWarnings("unused")
-	@Autowired
-	private AuthorityService authorityService;
 
 	@Autowired
 	private AuthorityJpaDao authorityDao;
@@ -101,8 +96,7 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 	}
 
 	/**
-	 * this method used to validate role ids that these role ids exist in
-	 * database
+	 * this method used to validate role ids that these role ids exist in database
 	 *
 	 * @param requestRoleIds
 	 */
@@ -117,8 +111,7 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 	}
 
 	/**
-	 * this method used to validate user request like username already exist or
-	 * not
+	 * this method used to validate user request like username already exist or not
 	 *
 	 * @param request
 	 */
@@ -202,9 +195,8 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 	}
 
 	/**
-	 * this method used to fetch user response using roleId this method is used
-	 * when we want to get al the names and email ids of the user using
-	 * particular role
+	 * this method used to fetch user response using roleId this method is used when
+	 * we want to get al the names and email ids of the user using particular role
 	 *
 	 * @param roleId
 	 * @return {@link <tt>UserResponse</tt>}
@@ -222,14 +214,14 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 	}
 
 	@Override
-	@Secured(AuthorityUtils.USER_FETCH)
+	@Secured(AuthorityUtils.PROJECT_MANAGER_FETCH)
 	public Set<UserResponse> findAllProjectManagers() {
 		Set<UserResponse> userResponseList = new HashSet<>(userJpaDao.findByUserRolesRoleName("Project Manager"));
 		return userResponseList;
 	}
 
 	@Override
-	@Secured(AuthorityUtils.USER_FETCH)
+	@Secured(AuthorityUtils.CUSTOMER_FETCH)
 	public Set<UserResponse> findAllCustomers() {
 		Set<UserResponse> userResponseList = new HashSet<>(userJpaDao.findByUserRolesRoleName("Customer"));
 		return userResponseList;
