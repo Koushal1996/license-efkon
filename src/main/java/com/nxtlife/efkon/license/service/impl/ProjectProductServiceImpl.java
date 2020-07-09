@@ -255,8 +255,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		if (projectProduct == null) {
 			throw new NotFoundException(String.format("Project product (%s) not found", id));
 		}
-		if (!projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)) {
-			throw new ValidationException("Project product can't be updated after submitting");
+		if (!projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)
+				|| !projectProduct.getStatus().equals(ProjectProductStatus.REJECT)) {
+			throw new ValidationException("Project product can't be updated");
 		}
 		Optional<LicenseType> licenseType = licenseTypeJpaDao.findById(request.getLicenseTypeId());
 		if (!licenseType.isPresent()) {
@@ -283,7 +284,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				request.getExpirationMonthCount() == null ? projectProduct.getExpirationMonthCount()
 						: request.getExpirationMonthCount(),
 				request.getStartDate() == null ? projectProduct.getStartDate() : request.getStartDate(),
-				setEndDate(request.getStartDate(), expirationMonth), getUserId(), new Date());
+				setEndDate(request.getStartDate(), expirationMonth), getUserId(), new Date(),
+				ProjectProductStatus.DRAFT);
 		if (rows > 0) {
 			logger.info("Project product {} updated successfully", unmaskId);
 		}
@@ -455,6 +457,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (roles.isEmpty() && isProjectManager) {
 				projectProductStatus = projectProductDao.findStatusByIdAndProjectProjectManagerIdAndActive(unmaskId,
 						user.getUserId(), true);
+
+				if (status.equals(ProjectProductStatus.REJECT)
+						&& projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
+					throw new ValidationException("Project Manager can't reject project product after review");
+				}
 			} else {
 				projectProductStatus = projectProductDao.findStatusByIdAndActive(unmaskId, true);
 			}
@@ -472,6 +479,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					&& !projectProductStatus.equals(ProjectProductStatus.SUBMIT)) {
 				throw new ValidationException("You can review project product after submit only");
 			}
+
 			if (status.equals(ProjectProductStatus.REJECT) && (comment == null || comment.isEmpty())) {
 				throw new ValidationException("Comment is required at the reject time");
 			}
@@ -545,8 +553,28 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (roles.isEmpty() && isProjectManager) {
 				projectProductStatus = projectProductDao.findStatusByIdAndProjectProjectManagerIdAndActive(unmaskId,
 						user.getUserId(), true);
+
+				if (projectProductStatus.equals(ProjectProductStatus.SUBMIT)) {
+					throw new ValidationException(
+							String.format("Project Manager can't recall the project product whose status is %s",
+									projectProductStatus));
+				}
 			} else {
 				projectProductStatus = projectProductDao.findStatusByIdAndActive(unmaskId, true);
+
+				if (roles.contains("Submitter")) {
+					Boolean isSubmitter = true;
+					roles.remove("Submitter");
+
+					if (roles.isEmpty() && isSubmitter) {
+						if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
+							throw new ValidationException(
+									String.format("Submitter can't recall the project product whose status is %s",
+											projectProductStatus));
+						}
+					}
+				}
+
 			}
 		}
 		int rows = 0;
@@ -702,8 +730,17 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		List<ProjectProductGraphResponse> projectProductGraphResponse = null;
 		if (roles.contains("Customer")) {
-			projectProductGraphResponse = projectProductDao
-					.countProductByStatusAndProjectCustomerEmailAndActive(user.getEmail(), true);
+			projectProductGraphResponse = projectProductDao.countProductByStatusAndProjectCustomerEmailAndActive(
+					ProjectProductStatus.APPROVED, user.getEmail(), true);
+
+			if (!projectProductGraphResponse.isEmpty() && projectProductGraphResponse.size() == 1) {
+
+				if (projectProductGraphResponse.get(0).getStatus() == null) {
+					projectProductGraphResponse.get(0).setStatus(ProjectProductStatus.APPROVED.name());
+				}
+			}
+
+			return projectProductGraphResponse;
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -713,6 +750,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (roles.isEmpty() && isProjectManager) {
 				projectProductGraphResponse = projectProductDao
 						.countProductByStatusAndProjectProjectManagerIdAndActive(user.getUserId(), true);
+				roles.add("Project Manager");
 			} else {
 				projectProductGraphResponse = projectProductDao.countTotalProductsByStatusAndActive(true);
 
@@ -747,6 +785,82 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				i++;
 			}
 		}
+
+		if (roles.contains("Submitter")) {
+			Boolean isSubmitter = true;
+			roles.remove("Submitter");
+
+			if (roles.isEmpty() && isSubmitter) {
+				for (int k = 0; k < projectProductGraphResponse.size(); k++) {
+					if (projectProductGraphResponse.get(k).getStatus().equals(ProjectProductStatus.REVIEWED.name())) {
+						projectProductGraphResponse.remove(k);
+					}
+				}
+			}
+		}
+
+		if (roles.contains("Project Manager")) {
+
+			for (int k = 0; k < projectProductGraphResponse.size(); k++) {
+				ProjectProductGraphResponse ppgResponse = projectProductGraphResponse.get(k);
+				if (ppgResponse.getStatus().equals(ProjectProductStatus.SUBMIT.name())) {
+					ppgResponse.setName("PENDING");
+				}
+
+				else if (ppgResponse.getStatus().equals(ProjectProductStatus.DRAFT.name())) {
+					int count = projectProductDao.countByStatusAndCreatedByIdAndActive(ProjectProductStatus.DRAFT,
+							user.getUserId(), true);
+					ppgResponse.setCount(count);
+				}
+
+				else if (ppgResponse.getStatus().equals(ProjectProductStatus.REJECT.name())) {
+					int count = projectProductDao.countByStatusAndModifiedByIdAndActive(ProjectProductStatus.REJECT,
+							user.getUserId(), true);
+					ppgResponse.setCount(count);
+				}
+
+				else if (ppgResponse.getStatus().equals(ProjectProductStatus.REVIEWED.name())) {
+					projectProductGraphResponse.remove(k);
+				}
+			}
+		}
+
+		if (roles.contains("Approver")) {
+			Boolean isApprover = true;
+			roles.remove("Approver");
+			if (roles.isEmpty() && isApprover) {
+				for (int k = 0; k < projectProductGraphResponse.size(); k++) {
+					ProjectProductGraphResponse ppgResponse = projectProductGraphResponse.get(k);
+					if (ppgResponse.getStatus().equals(ProjectProductStatus.REVIEWED.name())) {
+						ppgResponse.setName("PENDING");
+					}
+
+					else if (ppgResponse.getStatus().equals(ProjectProductStatus.DRAFT.name())) {
+						int count = projectProductDao.countByStatusAndCreatedByIdAndActive(ProjectProductStatus.DRAFT,
+								user.getUserId(), true);
+						ppgResponse.setCount(count);
+					}
+
+					else if (ppgResponse.getStatus().equals(ProjectProductStatus.REJECT.name())) {
+						int count = projectProductDao.countByStatusAndModifiedByIdAndActive(ProjectProductStatus.REJECT,
+								user.getUserId(), true);
+						ppgResponse.setCount(count);
+					}
+
+					else if (ppgResponse.getStatus().equals(ProjectProductStatus.APPROVED.name())) {
+						int count = projectProductDao.countByStatusAndModifiedByIdAndActive(
+								ProjectProductStatus.APPROVED, user.getUserId(), true);
+						ppgResponse.setCount(count);
+					}
+
+					else if (ppgResponse.getStatus().equals(ProjectProductStatus.SUBMIT.name())) {
+						projectProductGraphResponse.remove(k);
+					}
+				}
+
+			}
+		}
+
 		return projectProductGraphResponse;
 	}
 

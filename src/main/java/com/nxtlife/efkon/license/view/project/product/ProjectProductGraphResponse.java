@@ -12,16 +12,19 @@ public class ProjectProductGraphResponse {
 	@Schema(description = "No of product count by status", example = "4")
 	private long count;
 
-	public ProjectProductGraphResponse() {
-	}
+	@Schema(description = "name of status", example = "PENDING")
+	private String name;
 
-	public ProjectProductGraphResponse(ProjectProductStatus status, long count) {
-		this.status = status.toString();
-		this.count = count;
+	public ProjectProductGraphResponse() {
 	}
 
 	public ProjectProductGraphResponse(String status, long count) {
 		this.status = status;
+		this.count = count;
+	}
+
+	public ProjectProductGraphResponse(ProjectProductStatus status, long count) {
+		this.status = status.name();
 		this.count = count;
 	}
 
@@ -43,6 +46,14 @@ public class ProjectProductGraphResponse {
 
 	public void setCount(long count) {
 		this.count = count;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

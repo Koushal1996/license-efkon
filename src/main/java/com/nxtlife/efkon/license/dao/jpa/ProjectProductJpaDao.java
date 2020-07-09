@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -89,9 +90,10 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public Integer findLicenseCountById(Long id);
 
 	@Modifying
-	@Query(value = "update ProjectProduct set licenseCount=?2, licenseType.id =?3, expirationPeriodType=?4, expirationMonthCount=?5, startDate=?6, endDate=?7, modifiedBy.id =?8, modifiedAt =?9 where id =?1")
+	@Query(value = "update ProjectProduct set licenseCount=?2, licenseType.id =?3, expirationPeriodType=?4, expirationMonthCount=?5, startDate=?6, endDate=?7, modifiedBy.id =?8, modifiedAt =?9 ,status=?10 where id =?1")
 	public int update(Long id, Integer licenseCount, Long licenseTypeId, ExpirationPeriodType expirationPeriodType,
-			Integer expirationMonthCoun, String startDate, String endDate, Long userId, Date date);
+			Integer expirationMonthCoun, String startDate, String endDate, Long userId, Date date,
+			ProjectProductStatus status);
 
 	@Modifying
 	@Query(value = "update ProjectProduct set status=?2, modifiedBy.id =?3, modifiedAt =?4 where id =?1")
@@ -101,33 +103,34 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	@Query(value = "update ProjectProduct set active = false, modifiedBy.id =?2, modifiedAt =?3 where id =?1")
 	public int delete(Long id, Long userId, Date date);
 
+	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(pp.status , COUNT(pp.id)) "
+			+ "FROM ProjectProduct pp inner join Project p on pp.project.id = p.id where p.customerEmail=:email and pp.status=:status and pp.active =:active")
+	public List<ProjectProductGraphResponse> countProductByStatusAndProjectCustomerEmailAndActive(
+			@Param("status") ProjectProductStatus status, @Param("email") String email,
+			@Param("active") Boolean active);
+
+	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(pp.status, COUNT(pp.id))"
+			+ "FROM ProjectProduct pp inner join Project p on pp.project.id = p.id where p.projectManager.id=?1 and pp.active =?2 GROUP BY pp.status ORDER BY pp.status ASC")
+	public List<ProjectProductGraphResponse> countProductByStatusAndProjectProjectManagerIdAndActive(Long userId,
+			Boolean active);
+
 	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(pp.status, COUNT(pp.id))"
 			+ "FROM ProjectProduct AS pp where pp.active =?1 GROUP BY pp.status ORDER BY pp.status ASC")
 	public List<ProjectProductGraphResponse> countTotalProductsByStatusAndActive(Boolean active);
 
-	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(projectProduct.status, COUNT(projectProduct.id))"
-			+ "FROM ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where project.customerEmail=?1 and projectProduct.active =?2 GROUP BY projectProduct.status ORDER BY projectProduct.status ASC")
-	public List<ProjectProductGraphResponse> countProductByStatusAndProjectCustomerEmailAndActive(String email,
-			Boolean active);
-
-	@Query(value = "SELECT new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse(projectProduct.status, COUNT(projectProduct.id))"
-			+ "FROM ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where project.projectManager.id=?1 and projectProduct.active =?2 GROUP BY projectProduct.status ORDER BY projectProduct.status ASC")
-	public List<ProjectProductGraphResponse> countProductByStatusAndProjectProjectManagerIdAndActive(Long userId,
-			Boolean active);
-
-	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when projectProduct.endDate >=curdate() then 'active' else 'expired' end) as status, sum(projectProduct.licenseCount) as count) "
-			+ "from ProjectProduct projectProduct where projectProduct.active=true "
-			+ "group by (case when projectProduct.endDate >=curdate() then 'active' else 'expired' end)")
+	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when pp.endDate >=curdate() then 'active' else 'expired' end) as status, sum(pp.licenseCount) as count) "
+			+ "from ProjectProduct pp where pp.active=true "
+			+ "group by (case when pp.endDate >=curdate() then 'active' else 'expired' end)")
 	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenseCount();
 
-	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when projectProduct.endDate >=curdate() then 'active' else 'expired' end) as status, sum(projectProduct.licenseCount) as count) "
-			+ "from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where projectProduct.active=true and project.customerEmail=?1 "
-			+ "group by (case when projectProduct.endDate >=curdate() then 'active' else 'expired' end)")
+	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when pp.endDate >=curdate() then 'active' else 'expired' end) as status, sum(pp.licenseCount) as count) "
+			+ "from ProjectProduct pp inner join Project p on pp.project.id = p.id where pp.active=true and p.customerEmail=?1 "
+			+ "group by (case when pp.endDate >=curdate() then 'active' else 'expired' end)")
 	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenseCountByCustomerEmail(String customerEmail);
 
-	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when projectProduct.endDate >=curdate() then 'active' else 'expired' end) as status, sum(projectProduct.licenseCount) as count) "
-			+ "from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where projectProduct.active=true and project.projectManager.id=?1 "
-			+ "group by (case when projectProduct.endDate >=curdate() then 'active' else 'expired' end)")
+	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when pp.endDate >=curdate() then 'active' else 'expired' end) as status, sum(pp.licenseCount) as count) "
+			+ "from ProjectProduct pp inner join Project p on pp.project.id = p.id where pp.active=true and p.projectManager.id=?1 "
+			+ "group by (case when pp.endDate >=curdate() then 'active' else 'expired' end)")
 	public List<ProjectProductGraphResponse> findTotalActiveAndExpiredLicenseCountByProjectManagerId(Long userId);
 
 	public Long countByProjectIdAndActive(Long unmaskId, boolean b);
@@ -156,11 +159,15 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public List<LicenseReportResponse> findLicenseReportByCustomerEmailAndStatusByProjectManagerId(String email,
 			ProjectProductStatus approved, Long userId);
 
-	public ProjectProductResponse findResponseByIdAndActive(Long unmaskProjectProductId, boolean b);
+	public ProjectProductResponse findResponseByIdAndActive(Long unmaskProjectProductId, Boolean b);
 
 	@Query(value = "SELECT sum(pp.license_count) FROM project_product pp "
 			+ "where pp.project_id=?1 and pp.status=?2 and active=?3", nativeQuery = true)
 	public Integer sumByLicenseCountAndProjectIdAndStatusAndActive(Long projectId, ProjectProductStatus status,
 			boolean b);
+
+	public int countByStatusAndCreatedByIdAndActive(ProjectProductStatus draft, Long userId, Boolean b);
+
+	public int countByStatusAndModifiedByIdAndActive(ProjectProductStatus reject, Long userId, Boolean b);
 
 }
