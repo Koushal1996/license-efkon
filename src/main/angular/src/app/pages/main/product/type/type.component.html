@@ -1,45 +1,77 @@
-<div *ngIf="isloader" class="loader">
-  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
-</div>
-<table>
+<div class="site_main position-relative">
+
+  <div class="table_scroll">
+    <table>
+      <thead class="users_table_hader">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Project Type</th>
+          <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_DELETE')">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let type of projectTypes; index as i"
+          id="{{ type.id }}"
+          class=""
+        >
+          <td>{{ i + 1 }}</td>
+          <td>{{ type.name }}</td>
+          <td *ngIf="type.active">
+            <button
+              class=" top_tooltip t_save_btn bg-danger"
+              (click)="deleteProjectTypes(type)"
+              *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
+            >
+              delete
+            </button>
+          </td>
+          <td *ngIf="!type.active">
+            <button
+              class="t_save_btn bg-success top_tooltip"
+              (click)="activateProjectTypes(type)"
+              *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
+            >
+              Activate
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="isloader" class="loader">
+      <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+    </div>
+  </div>
+<button (click)="addProjectType()" class="createBtn">Add Project Type</button>
+
+
+
+<!-- <table>
   <thead class="users_table_hader">
     <tr>
       <th scope="col">#</th>
       <th scope="col">Project Type</th>
-      <th scope="col" *ngIf="hasAuthority('PROJECT_TYPE_DELETE')">Action</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
-    <tr
-      *ngFor="let type of projectTypes; index as i"
-      id="{{ type.id }}"
-      class=""
-    >
-      <td>{{ i + 1 }}</td>
-      <td>{{ type.name }}</td>
-      <td *ngIf="type.active">
-        <button
-          class="delete_button top_tooltip"
-          (click)="deleteProjectTypes(type)"
-          *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
-        >
-          delete
-        </button>
+    <tr>
+      <td>1</td>
+      <td>
+        <select class="form-control" id="sel1" name="projectTypeId">
+          <option *ngFor="let type of projectTypes" value="{{ type.id }}">
+            {{ type.name }}
+          </option>
+        </select>
       </td>
-      <td *ngIf="!type.active">
-        <button
-          class="delete_button top_tooltip"
-          (click)="activateProjectTypes(type)"
-          *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
-        >
-          Activate
-        </button>
-      </td>
+
+      <td></td>
     </tr>
   </tbody>
-</table>
-<button (click)="addProjectType()">Add Project Type</button>
-<div *ngIf="showForm">
+</table> -->
+</div>
+
+<!-- <div *ngIf="showForm">
   <form (ngSubmit)="onSubmit()" [formGroup]="projectTypeForm" class="form_main">
     <div class="form-group">
       <label>Project Type Name</label>
@@ -66,27 +98,48 @@
       Back
     </button>
   </form>
-</div>
-<!-- <table>
-  <thead class="users_table_hader">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Project Type</th>
-      <th scope="col">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>1</td>
-      <td>
-        <select class="form-control" id="sel1" name="projectTypeId">
-          <option *ngFor="let type of projectTypes" value="{{ type.id }}">
-            {{ type.name }}
-          </option>
-        </select>
-      </td>
+</div> -->
 
-      <td></td>
-    </tr>
-  </tbody>
-</table> -->
+
+
+<div class="modal" id="myModal" style="display: block;" *ngIf="showForm">
+  <div class="custom_modal_main">
+    <div class="modal-dialog" style="max-width: 440px;">
+      <div class="modal-content">
+        <div class="modal-header mb-0">
+          <h4 class="modal-title">
+            Add Project Type
+          </h4>
+          <button  type="button" class="close" (click)="goback()">  &times; </button>
+        </div>
+
+          <div class="modal-body p-3">
+        <form (ngSubmit)="onSubmit()" [formGroup]="projectTypeForm" class="add_project">
+            <div class="form-group p-0">
+              <label>Project Type Name</label>
+              <input class="form-control" type="text" autocomplete="off"  formControlName="name" name="name" id="fname"  />
+            </div>
+          </form>
+          </div>
+          
+          <div class="modal-footer">
+            <button
+      type="submit"
+      class="saveBtn"
+      [disabled]="!projectTypeForm.valid"
+      [ngStyle]="{
+        opacity: !projectTypeForm.valid ? '0.6' : '1'
+      }"
+    >
+      Submit
+    </button>
+    <!-- <button type="button" class="cancelBtn ml-3 mr-3" (click)="goback()">
+      Back
+    </button> -->
+          </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
