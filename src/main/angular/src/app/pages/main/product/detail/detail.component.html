@@ -35,9 +35,7 @@
               </tr>
             </thead>
             <tbody>
-              <div *ngIf="!productDetail?.length && !isloader">
-                No Product Details Available Now
-              </div>
+             
               <ng-container *ngFor="let detail of productDetail; index as i">
                 <tr>
                   <td [attr.rowspan]="getDetailRowspan(detail)">{{ i + 1 }}</td>
@@ -99,6 +97,15 @@
           <div *ngIf="isloader" class="loader">
             <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
           </div>
+
+          <div class="no_product" *ngIf="!productDetail?.length && !isloader">
+            <h2> <img src="assets/images/alert.svg" alt="">
+              No Product Details Available Now </h2>
+           </div>
+
+          <!-- <div *ngIf="!productDetail?.length && !isloader">
+            No Product Details Available Now
+          </div> -->
         </div>
         <!-- </div> -->
       </div>

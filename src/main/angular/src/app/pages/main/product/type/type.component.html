@@ -112,13 +112,13 @@
           </button>
         </div>
 
-        <div class="modal-body p-3">
+        <div class="modal-body p-0">
           <form
             (ngSubmit)="onSubmit()"
             [formGroup]="projectTypeForm"
             class="add_project"
           >
-            <div class="form-group p-0">
+            <div class="form-group p-3">
               <label>Project Type Name</label>
               <input
                 class="form-control"
@@ -129,10 +129,10 @@
                 id="fname"
               />
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer p-2">
               <button
                 type="submit"
-                class="saveBtn"
+                class="saveBtn mr-2"
                 [disabled]="!projectTypeForm.valid"
                 [ngStyle]="{
                   opacity: !projectTypeForm.valid ? '0.6' : '1'

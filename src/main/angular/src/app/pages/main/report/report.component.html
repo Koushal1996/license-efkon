@@ -1,62 +1,81 @@
-<table>
-  <thead class="users_table_hader">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Customer name</th>
-      <th scope="col">Total License Distributed</th>
-    </tr>
-  </thead>
-  <tbody id="accordion">
-    <ng-container *ngFor="let report of licebseReports; index as i">
-      <tr id="{{ report.id }}" class="">
-        <td>{{ i + 1 }}</td>
-        <td>{{ report.customer_name }}</td>
-        <td
-          data-toggle="collapse"
-          [attr.data-target]="'#collapse' + i"
-          (click)="getLicenseByEmail(report)"
-          class="cursor"
-        >
-          {{ report.total_license_distributed }}
-        </td>
-      </tr>
-      <tr>
-        <td colspan="9" class="padding">
-          <div
-            [attr.id]="'collapse' + i"
-            class="collapse"
-            data-parent="#accordion"
-          >
-            <h3>License Reports By Email</h3>
-            <table>
-              <thead class="users_table_hader">
-                <tr>
+<div class="site_main">
+  <div class="container-fluid p-0">
+      <div class="col-12 p-0">
+        <div class="table_scroll">
+          <table>
+            <thead>
+              <tr>
                   <th scope="col">#</th>
                   <th scope="col">Customer name</th>
-                  <th scope="col">startDate</th>
-                  <th scope="col">endDate</th>
-                  <th scope="col">expiration</th>
-                  <th scope="col">licenseType</th>
-                  <th scope="col">productFamily</th>
                   <th scope="col">Total License Distributed</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let report of licebseReportsByEmail; index as i">
+              </tr>
+            </thead>
+            <tbody id="accordion">
+              <ng-container *ngFor="let report of licebseReports; index as i">
+                <tr id="{{ report.id }}" class="">
                   <td>{{ i + 1 }}</td>
-                  <td>{{ report.customerName }}</td>
-                  <td>{{ report.startDate }}</td>
-                  <td>{{ report.endDate }}</td>
-                  <td>{{ report.expiration }}</td>
-                  <td>{{ report.licenseType }}</td>
-                  <td>{{ report.productFamily }}</td>
-                  <td>{{ report.totalLicenseDistributed }}</td>
+                  <td>{{ report.customer_name }}</td>
+                  <td
+                    data-toggle="collapse"
+                    [attr.data-target]="'#collapse' + i"
+                    (click)="getLicenseByEmail(report)"
+                    class="cursor"
+                  >
+                    {{ report.total_license_distributed }}
+                  </td>
                 </tr>
-              </tbody>
-            </table>
+                <tr>
+                  <td colspan="9" class="padding">
+                    <div
+                      [attr.id]="'collapse' + i"
+                      class="collapse"
+                      data-parent="#accordion"
+                    >
+                    <div class="sub_table mt-3 p-0">
+                      <h3>License Reports By Email</h3>
+                      <table>
+                        <thead class="users_table_hader">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Customer name</th>
+                            <th scope="col">startDate</th>
+                            <th scope="col">endDate</th>
+                            <th scope="col">expiration</th>
+                            <th scope="col">licenseType</th>
+                            <th scope="col">productFamily</th>
+                            <th scope="col">Total License Distributed</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let report of licebseReportsByEmail; index as i">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ report.customerName }}</td>
+                            <td>{{ report.startDate }}</td>
+                            <td>{{ report.endDate }}</td>
+                            <td>{{ report.expiration }}</td>
+                            <td>{{ report.licenseType }}</td>
+                            <td>{{ report.productFamily }}</td>
+                            <td>{{ report.totalLicenseDistributed }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div class="loader" style="display: none;">
+            <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
           </div>
-        </td>
-      </tr>
-    </ng-container>
-  </tbody>
-</table>
+          <div class="no_product" style="display: none;">
+            <h2>
+              <img src="assets/images/alert.svg" alt="" /> No Reports Available
+              Now
+            </h2>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

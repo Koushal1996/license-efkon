@@ -1295,3 +1295,7 @@ table{
     border: 1px solid #ddd;
   }
 }
+
+.sub_table:last-child {
+  margin-bottom: 0;
+}

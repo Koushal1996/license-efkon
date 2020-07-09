@@ -29,9 +29,7 @@
             </tr>
           </thead>
           <tbody>
-            <div *ngIf="!family?.length && !isloader">
-              No Product Family Available Now
-            </div>
+            
             <tr
               *ngFor="let family of family; index as i"
               id="{{ family.id }}"
@@ -90,7 +88,15 @@
         <div *ngIf="isloader" class="loader">
           <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
         </div>
+        <div class="no_product" *ngIf="!family?.length && !isloader">
+          <h2> <img src="assets/images/alert.svg" alt="">
+            No Product Family Available Now </h2>
+         </div>
+         <!-- <div *ngIf="!family?.length && !isloader">
+          No Product Family Available Now
+        </div> -->
       </div>
     </div>
   </div>
 </div>
+
