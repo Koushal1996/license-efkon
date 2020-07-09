@@ -29,4 +29,6 @@ public interface ProjectTypeJpaDao extends JpaRepository<ProjectType, Long> {
 	@Query(value = "update ProjectType set active = true, modifiedBy.id = ?2, modifiedAt = ?3 where id = ?1")
 	public int reactivate(Long unmaskId, Long userId, Date date);
 
+	public boolean existsByIdAndActive(Long unmaskId, boolean b);
+
 }
