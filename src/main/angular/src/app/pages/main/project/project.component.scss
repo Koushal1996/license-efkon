@@ -401,10 +401,13 @@ section.main-slider {
     vertical-align: text-top;
   }
 &.added_product {
-    border: 1px solid #28a745;
-    i{
-      font-weight: 100;
-    }
+  border: 1px solid #58b687;
+  i{
+    margin: 0;
+    padding: 0 5px;
+    vertical-align: middle;
+    color: #58b687;
+  }
 }
 }
 

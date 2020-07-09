@@ -133,9 +133,10 @@
                         project.productsCount
                       "
                     >
-                      <i class="material-icons m-0 border-success text-success"
+                      <!-- <i class="material-icons m-0 border-success text-success"
                         >add_to_queue</i
-                      >
+                      > -->
+                      <i class="fa fa-info" aria-hidden="true"></i>
                     </button>
                     <!-- {{ project.productsCount }} -->
                     <span style="min-width: 140px;">Added Product Details</span>
@@ -270,7 +271,7 @@
                         >
                           <th>#</th>
                           <th scope="col">Product Detail</th>
-                          <th scope="col">No of License</th>
+                          <th scope="col">No of Licenses</th>
                           <th scope="col">License Type</th>
 
                           <th scope="col">Start Date</th>
@@ -509,10 +510,9 @@
         <div class="modal-header mb-0">
           <h4 class="modal-title">
             Enter Comment for
-            <span
-              >( {{ selectedProductFamily }} {{ selectedProductCode }}
-              {{ selectedProductVersion }} )</span
-            >
+
+            <span> {{ selectedProductFamily }}</span> <span> {{ selectedProductCode }}</span>
+             <span> {{ selectedProductVersion }} </span>
             <!-- <span style="color: #f00;">*</span> -->
           </h4>
           <button
@@ -587,10 +587,9 @@
         <div class="modal-header mb-0">
           <h4 class="modal-title">
             Comments for
-            <span>
-              ( {{ selectedProductFamily }} {{ selectedProductCode }}
-              {{ selectedProductVersion }} )</span
-            >
+            
+              <span >{{ selectedProductFamily }}</span> <span>{{ selectedProductCode }}</span>
+              <span>{{ selectedProductVersion }}</span>
           </h4>
           <!-- <button
           type="button"
@@ -694,10 +693,8 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Renew for
-            <span
-              >( {{ selectedProductFamily }} {{ selectedProductCode }}
-              {{ selectedProductVersion }} )</span
-            >
+            <span> {{ selectedProductFamily }}</span> <span>{{ selectedProductCode }}</span>
+              <span> {{ selectedProductVersion }}</span>
           </h4>
           <button
             type="button"
