@@ -1,3 +1,4 @@
+import { StorageService } from "src/app/services/storage/storage.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { AdminService } from "./../../../../services/admin/admin.service";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
@@ -23,6 +24,7 @@ export class CreateProjectComponent implements OnInit {
     private _projectService: ProjectService,
     private _adminService: AdminService,
     private route: Router,
+    private _storageService: StorageService,
     private routeparam: ActivatedRoute
   ) {}
 
@@ -85,7 +87,12 @@ export class CreateProjectComponent implements OnInit {
       projectManagerId: ["", [Validators.required]],
     });
   }
-
+  hasAuthority(authority) {
+    const authorities: any[] = this._storageService
+      .getData("userAuthorities")
+      .map((a) => a.name);
+    return authorities.includes(authority);
+  }
   getProjectTypes() {
     this._projectService.getProjectTypes().subscribe((data) => {
       this.projectTypes = data;

@@ -53,6 +53,7 @@ export class ProjectComponent implements OnInit {
   totolProductsCount: any;
   selectedComment: any;
   form: FormGroup;
+  userRoles: any[] = [];
 
   constructor(
     private projectservice: ProjectService,
@@ -76,6 +77,11 @@ export class ProjectComponent implements OnInit {
     this.form = new FormGroup({
       search: new FormControl(null),
     });
+    this.mainService.getLoginUser().subscribe((data) => {
+      this.userRoles = data.roles;
+      console.log(this.userRoles[0].name);
+      //this.selectedUserRole = this.userRoles[0].name;
+    });
   }
   // onsearchProjectsForm(key) {
   //   console.log(key);
@@ -97,7 +103,7 @@ export class ProjectComponent implements OnInit {
       this.projects = this.projectsCopy.filter(
         (item) =>
           item.customerName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
-          item.customerName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
+          item.customerEmail.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
           item.projectManagerName.toLowerCase().indexOf(key.toLowerCase()) >
             -1 ||
           item.projectTypeName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
@@ -113,6 +119,11 @@ export class ProjectComponent implements OnInit {
       .getData("userAuthorities")
       .map((a) => a.name);
     return authorities.includes(authority);
+  }
+  checkRole(role) {
+    const roles = this.userRoles.map((r) => r.name);
+    console.log(roles);
+    return roles.includes(role);
   }
   getrenewConfiguration() {
     this.projectservice.renewConfiguration().subscribe((data) => {
@@ -228,7 +239,7 @@ export class ProjectComponent implements OnInit {
       case "Submit":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure, You want to Submit this?",
+          text: `Are you sure, You want to Submit (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -258,7 +269,7 @@ export class ProjectComponent implements OnInit {
       case "Reject":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure, You want to Reject this?",
+          text: `Are you sure, You want to Reject (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -287,7 +298,7 @@ export class ProjectComponent implements OnInit {
       case "Review":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Review this?",
+          text: `Are you sure,You want to Review (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -317,7 +328,7 @@ export class ProjectComponent implements OnInit {
       case "Approve":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Approve this?",
+          text: `Are you sure,You want to Approve (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -347,7 +358,7 @@ export class ProjectComponent implements OnInit {
       case "Recall":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Recall this?",
+          text: `Are you sure,You want to Recall (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],

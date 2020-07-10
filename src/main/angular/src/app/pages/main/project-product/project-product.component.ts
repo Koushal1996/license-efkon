@@ -56,7 +56,9 @@ export class ProjectProductComponent implements OnInit {
   fileUploaded: File;
   worksheet: any;
   ProjectIdUploadFile: any;
-  file:any;
+  file: any;
+  userRoles: any[] = [];
+  selectedUserRole: any;
 
   constructor(
     private _projectService: ProjectService,
@@ -92,6 +94,12 @@ export class ProjectProductComponent implements OnInit {
     });
     this.form = new FormGroup({
       search: new FormControl(null),
+    });
+    this.mainService.getLoginUser().subscribe((data) => {
+      //console.log(data);
+      this.userRoles = data.roles;
+      console.log(this.userRoles[0].name);
+      this.selectedUserRole = this.userRoles[0].name;
     });
   }
 
@@ -162,6 +170,12 @@ export class ProjectProductComponent implements OnInit {
       .map((a) => a.name);
     return authorities.includes(authority);
   }
+
+  checkRole(role) {
+    const roles = this.userRoles.map((r) => r.name);
+    return roles.includes(role);
+  }
+
   initpopUpForm() {
     return this.fb.group({
       comment: ["", [Validators.required]],
@@ -225,7 +239,7 @@ export class ProjectProductComponent implements OnInit {
       case "Submit":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Submit this?",
+          text: `Are you sure,You want to Submit (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -260,7 +274,7 @@ export class ProjectProductComponent implements OnInit {
       case "Reject":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Reject this?",
+          text: `Are you sure,You want to Reject (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -295,7 +309,7 @@ export class ProjectProductComponent implements OnInit {
       case "Review":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Review this?",
+          text: `Are you sure,You want to Review (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -331,7 +345,7 @@ export class ProjectProductComponent implements OnInit {
       case "Approve":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Approve this?",
+          text: `Are you sure,You want to Approve (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -367,7 +381,7 @@ export class ProjectProductComponent implements OnInit {
       case "Recall":
         swal({
           //title: "Are you sure?",
-          text: "Are you sure,You want to Recall this?",
+          text: `Are you sure,You want to Recall (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
           buttons: ["Yes", "No"],
@@ -667,32 +681,24 @@ export class ProjectProductComponent implements OnInit {
     }
   }
 
-  // onsearchProjectProductsForm(key) {
-  //   console.log(key);
-  //   if (key) {
-  //     this.projectProducts = this.projectProducts.filter(
-  //       (
-  //         item //console.log(item)
-  //       ) =>
-  //         (item.project.customerName &&
-  //           item.project.customerName.toLowerCase().startsWith(key)) ||
-  //         (item.project.customerEmail &&
-  //           item.project.customerEmail.toLowerCase().startsWith(key)) ||
-  //         (item.productDetail.productCodeName &&
-  //           item.productDetail.productCodeName.toLowerCase().startsWith(key))
-  //     );
-  //   } else {
-  //     this.projectProducts = this.projectProducts;
-  //   }
-  // }
   onsearchProjectProductsForm(key) {
     if (key) {
       this.projectProducts = this.projectProductsCopy.filter(
         (item) =>
+          //console.log(item)
           item.project.customerName.toLowerCase().indexOf(key.toLowerCase()) >
             -1 ||
-          item.project.customerName.toLowerCase().indexOf(key.toLowerCase()) >
+          item.project.customerEmail.toLowerCase().indexOf(key.toLowerCase()) >
             -1 ||
+          item.project.projectTypeName
+            .toLowerCase()
+            .indexOf(key.toLowerCase()) > -1 ||
+          item.project.projectManagerName
+            .toLowerCase()
+            .indexOf(key.toLowerCase()) > -1 ||
+          item.expirationPeriodType.toLowerCase().indexOf(key.toLowerCase()) >
+            -1 ||
+          item.licenseTypeName.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
           item.productDetail.productCodeName
             .toLowerCase()
             .indexOf(key.toLowerCase()) > -1
@@ -746,11 +752,13 @@ export class ProjectProductComponent implements OnInit {
         if (customerEmail.length < 1) {
           swal("Error");
           this.ProjectIdUploadFile.licenses = data;
-          this.ProjectIdUploadFile.isFile = false;
+          this.form.controls["search"].reset();
+          //this.ProjectIdUploadFile.isFile = false;
         } else {
           swal("File Uploaded Sucessfully");
           this.ProjectIdUploadFile.licenses = data;
           this.ProjectIdUploadFile.isFile = false;
+          this.form.controls["search"].reset();
         }
       },
       (error) => {
@@ -758,38 +766,4 @@ export class ProjectProductComponent implements OnInit {
       }
     );
   }
-  // uploadedFile(event, project) {
-  //   console.log(event);
-
-  //   console.log(project);
-  //   console.log(event.target.files[0]);
-  //   this.fileUploaded = event.target.files[0];
-  //   //this.readExcel();
-
-  // }
-
-  // readExcel() {
-  //   let readFile = new FileReader();
-  //   readFile.onload = (e) => {
-  //     this.storeData = readFile.result;
-  //     var data = new Uint8Array(this.storeData);
-  //     var arr = new Array();
-  //     for (var i = 0; i != data.length; ++i)
-  //       arr[i] = String.fromCharCode(data[i]);
-  //     var bstr = arr.join("");
-  //     var workbook = XLSX.read(bstr, { type: "binary" });
-  //     var first_sheet_name = workbook.SheetNames[0];
-  //     this.worksheet = workbook.Sheets[first_sheet_name];
-  //   };
-  //   readFile.readAsArrayBuffer(this.fileUploaded);
-  //   this.readAsJson();
-  // }
-  // readAsJson() {
-  //   this.jsonData = XLSX.utils.sheet_to_json(this.worksheet, { raw: false });
-  //   this.jsonData = JSON.stringify(this.jsonData);
-  //   console.log(this.jsonData);
-  //   //const data: Blob = new Blob([this.jsonData], { type: "application/json" });
-  //   //console.log(data);
-  //   //FileSaver.saveAs(data, "JsonFile" + new Date().getTime() + ".json");
-  // }
 }

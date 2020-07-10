@@ -193,7 +193,7 @@ export class AddProductComponent implements OnInit, OnChanges {
       const requestBody = this.productForm.getRawValue();
       this.projectservice.addProduct(requestBody).subscribe(
         (data) => {
-          //console.log(data);
+          console.log(data);
           this.loaderbutton = false;
           this.getProductsByProjectId();
           swal({
@@ -204,13 +204,10 @@ export class AddProductComponent implements OnInit, OnChanges {
             dangerMode: true,
           }).then((willDelete) => {
             if (willDelete) {
-              //console.log(data);
-              //swal("New Product Added successfully!");
               this.route.navigate(["projects"]);
             } else {
-              //swal("New Product Added successfully!");
               this.loaderbutton = false;
-              //console.log(data);
+
               this.ngOnInit();
               //this.productForm.reset();
               //this.productForm.controls["startDate"].patchValue(this.todayDate);

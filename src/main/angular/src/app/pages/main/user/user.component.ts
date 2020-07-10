@@ -126,10 +126,13 @@ export class UserComponent implements OnInit {
       this.users = this.usersCopy.filter(
         (item) =>
           //console.log(item)
-          item.name.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
-          item.username.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
-          item.email.toLowerCase().indexOf(key.toLowerCase()) > -1 ||
-          item.contactNo.toLowerCase().indexOf(key.toLowerCase()) > -1
+          (item.name &&
+            item.name.toLowerCase().indexOf(key.toLowerCase()) > -1) ||
+          (item.username &&
+            item.username.toLowerCase().indexOf(key.toLowerCase()) > -1) ||
+          (item.email &&
+            item.email.toLowerCase().indexOf(key.toLowerCase()) > -1) ||
+          (item.contactNo && item.contactNo.indexOf(key) > -1)
       );
     } else {
       this.users = this.usersCopy;

@@ -141,24 +141,23 @@
                   >comments
                 </a>
               </td>
-              <td
-                *ngIf="
-                  project.status == 'DRAFT' &&
-                  (hasAuthority('PROJECT_PRODUCT_UPDATE') ||
-                    hasAuthority('PROJECT_PRODUCT_DELETE') ||
-                    hasAuthority('PROJECT_PRODUCT_SUBMIT'))
-                "
-              >
+              <td>
                 <a
                   class="edit_button text-success"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_UPDATE')"
+                  *ngIf="
+                    project.status == 'DRAFT' &&
+                    hasAuthority('PROJECT_PRODUCT_UPDATE')
+                  "
                   (click)="editProduct(project)"
                 >
                   <i class="fa fa-edit"></i>
                 </a>
                 <a
                   class="delete_button text-danger"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_DELETE')"
+                  *ngIf="
+                    project.status == 'DRAFT' &&
+                    hasAuthority('PROJECT_PRODUCT_DELETE')
+                  "
                   (click)="deleteProduct(project)"
                 >
                   <i class="fa fa-trash"></i>
@@ -166,24 +165,35 @@
                 <button
                   type="button"
                   class="t_save_btn"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_SUBMIT')"
+                  *ngIf="
+                    project.status == 'DRAFT' &&
+                    hasAuthority('PROJECT_PRODUCT_SUBMIT')
+                  "
                   (click)="submitProductStatus(project)"
                 >
                   Submit
                 </button>
-              </td>
-              <td
-                *ngIf="
-                  project.status == 'SUBMIT' &&
-                  (hasAuthority('PROJECT_PRODUCT_REVIEW') ||
-                    hasAuthority('PROJECT_PRODUCT_REJECT') ||
-                    hasAuthority('PROJECT_PRODUCT_UNDO'))
-                "
-              >
+                <button
+                  type="button"
+                  class="t_save_btn bg-success"
+                  (click)="recallProductStatus(project)"
+                  *ngIf="
+                    project.status == 'SUBMIT' &&
+                    checkRole('submitter') &&
+                    hasAuthority('PROJECT_PRODUCT_UNDO')
+                  "
+                >
+                  Recall
+                </button>
+
                 <button
                   type="button"
                   class="t_save_btn"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_REVIEW')"
+                  *ngIf="
+                    project.status == 'SUBMIT' &&
+                    checkRole('Project Manager') &&
+                    hasAuthority('PROJECT_PRODUCT_REVIEW')
+                  "
                   (click)="reviewProductStatus(project)"
                 >
                   Review
@@ -192,38 +202,33 @@
                   type="button"
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_REJECT')"
+                  *ngIf="
+                    project.status == 'SUBMIT' &&
+                    checkRole('Project Manager') &&
+                    hasAuthority('PROJECT_PRODUCT_REJECT')
+                  "
                 >
                   Reject
                 </button>
                 <button
-                  type="button"
-                  class="t_save_btn bg-success"
-                  (click)="recallProductStatus(project)"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
-                >
-                  Recall
-                </button>
-              </td>
-              <td
-                *ngIf="
-                  project.status == 'REVIEWED' &&
-                  (hasAuthority('PROJECT_PRODUCT_APPROVE') ||
-                    hasAuthority('PROJECT_PRODUCT_REJECT') ||
-                    hasAuthority('PROJECT_PRODUCT_UNDO'))
-                "
-              >
-                <button
                   class="t_save_btn"
                   type="button"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_APPROVE')"
+                  *ngIf="
+                    project.status == 'REVIEWED' &&
+                    checkRole('Approver') &&
+                    hasAuthority('PROJECT_PRODUCT_APPROVE')
+                  "
                   (click)="approveProductStatus(project)"
                 >
                   Approve
                 </button>
                 <button
                   type="button"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_REJECT')"
+                  *ngIf="
+                    project.status == 'REVIEWED' &&
+                    checkRole('Approver') &&
+                    hasAuthority('PROJECT_PRODUCT_REJECT')
+                  "
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                 >
@@ -233,23 +238,19 @@
                   type="button"
                   class="t_save_btn bg-success"
                   (click)="recallProductStatus(project)"
-                  *ngIf="hasAuthority('PROJECT_PRODUCT_UNDO')"
+                  *ngIf="
+                    project.status == 'REVIEWED' &&
+                    checkRole('Project Manager') &&
+                    hasAuthority('PROJECT_PRODUCT_UNDO')
+                  "
                 >
                   Recall
                 </button>
-              </td>
-              <td
-                *ngIf="
-                  project.status == 'APPROVED' &&
-                  (hasAuthority('PROJECT_PRODUCT_RENEW') ||
-                    hasAuthority('LICENSE_FETCH') ||
-                    hasAuthority('LICENSE_REQUEST_CREATE'))
-                "
-              >
                 <button
                   type="button"
                   class="roleactive"
                   *ngIf="
+                    project.status == 'APPROVED' &&
                     hasAuthority('PROJECT_PRODUCT_RENEW') &&
                     hasRenewDays(project) &&
                     project.licenseTypeName == 'COMMERCIAL'
@@ -266,89 +267,92 @@
                   data-toggle="collapse"
                   [attr.data-target]="'#collapse' + i"
                   #c
-                  *ngIf="hasAuthority('LICENSE_FETCH')"
+                  *ngIf="
+                    project.status == 'APPROVED' &&
+                    hasAuthority('LICENSE_FETCH')
+                  "
                 >
                   View License
                 </button>
-                <!-- <button type="button" class="t_save_btn"
-                (click)="OpenExcel()">
-                  Upload By Excel
-                </button> -->
-                <div>
+                <form
+                  [formGroup]="form"
+                  *ngIf="
+                    project.status == 'APPROVED' &&
+                    hasAuthority('LICENSE_FETCH')
+                  "
+                >
                   <input
                     type="file"
                     (change)="uploadedFile($event, project)"
                     accept=".xlsx"
+                    formControlName="search"
                   />
-
                   <button (click)="sendExcel()" *ngIf="project.isFile">
                     send
                   </button>
-                </div>
+                </form>
                 <button
                   type="button"
                   class="mt-1 roleactive"
-                  *ngIf="hasAuthority('LICENSE_REQUEST_CREATE')"
+                  *ngIf="
+                    project.status == 'APPROVED' &&
+                    hasAuthority('LICENSE_REQUEST_CREATE')
+                  "
                   (click)="saveProjectLicenseById(project)"
                 >
                   Request
                 </button>
-              </td>
-              <td
-                *ngIf="
-                  project.status == 'RENEWED' &&
-                  (hasAuthority('PROJECT_PRODUCT_RENEW') ||
-                    hasAuthority('LICENSE_FETCH') ||
-                    hasAuthority('LICENSE_REQUEST_CREATE'))
-                "
-              >
-                <!-- <button
-                  type="button"
-                  *ngIf="
-                    hasAuthority('PROJECT_PRODUCT_RENEW') &&
-                    hasRenewDays(project) &&
-                    project.licenseTypeName == 'COMMERCIAL'
-                  "
-                  class="roleactive mb-2"
-                  (click)="
-                    renewProductStatus(project); $event.stopPropagation()
-                  "
-                >
-                  Renew
-                </button> -->
+
                 <button
                   type="button"
                   class="t_save_btn"
                   data-toggle="collapse"
                   [attr.data-target]="'#collapse' + i"
                   #c
-                  *ngIf="hasAuthority('LICENSE_FETCH')"
+                  *ngIf="
+                    project.status == 'RENEWED' && hasAuthority('LICENSE_FETCH')
+                  "
                 >
                   View License
                 </button>
-                <!-- <button type="button" class="t_save_btn"
-                (click)="OpenExcel()">
-                  Upload By Excel
-                </button> -->
-                <div>
+                <form
+                  [formGroup]="form"
+                  *ngIf="
+                    project.status == 'RENEWED' && hasAuthority('LICENSE_FETCH')
+                  "
+                >
                   <input
                     type="file"
                     (change)="uploadedFile($event, project)"
                     accept=".xlsx"
+                    formControlName="search"
                   />
                   <button (click)="sendExcel()" *ngIf="project.isFile">
                     send
                   </button>
-                </div>
+                </form>
 
                 <button
                   type="button"
                   class="roleactive mt-1"
-                  *ngIf="hasAuthority('LICENSE_REQUEST_CREATE')"
+                  *ngIf="
+                    project.status == 'RENEWED' &&
+                    hasAuthority('LICENSE_REQUEST_CREATE')
+                  "
                   (click)="saveProjectLicenseById(project)"
                 >
                   Request
                 </button>
+                <a
+                  class="edit_button text-success"
+                  *ngIf="
+                    project.status == 'REJECT' &&
+                    hasAuthority('PROJECT_PRODUCT_UPDATE')
+                  "
+                  (click)="editProduct(project)"
+                >
+                  <i class="fa fa-edit"></i>
+                </a>
               </td>
             </tr>
             <tr>
