@@ -18,9 +18,7 @@
             </tr>
           </thead>
           <tbody>
-            <h2 *ngIf="!productAcceptedRequests?.length && !isloader">
-              No products Available Now
-            </h2>
+            
             <tr
               id="{{ product.id }}"
               class=""
@@ -56,6 +54,13 @@
         <div *ngIf="isloader" class="loader">
           <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
         </div>
+        <div class="no_product" *ngIf="!productAcceptedRequests?.length && !isloader">
+          <h2> <img src="assets/images/alert.svg" alt="">
+            No Accepted Requests Available Now </h2>
+         </div>
+         <!-- <h2 *ngIf="!productAcceptedRequests?.length && !isloader">
+          No products Available Now
+        </h2> -->
       </div>
     </div>
   </div>
