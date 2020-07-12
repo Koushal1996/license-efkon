@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
@@ -94,7 +95,7 @@ public class ProjectProductController {
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_SUBMIT)
 	public ProjectProductResponse submit(@PathVariable Long id, @RequestBody ProjectProductCommentRequest request) {
-		return projectProductService.updateStatus(id, ProjectProductStatus.SUBMIT, request.getComment());
+		return projectProductService.updateStatus(id, ProjectProductStatus.SUBMITTED, request.getComment());
 	}
 
 	@PutMapping(value = "project/product/{id}/review", produces = { "application/json" }, consumes = {
@@ -122,7 +123,7 @@ public class ProjectProductController {
 			@ApiResponse(description = "If required field are not filled properly or project/product not exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	@Secured({ AuthorityUtils.PROJECT_PRODUCT_REJECT })
 	public ProjectProductResponse reject(@PathVariable Long id, @RequestBody ProjectProductCommentRequest request) {
-		return projectProductService.updateStatus(id, ProjectProductStatus.REJECT, request.getComment());
+		return projectProductService.updateStatus(id, ProjectProductStatus.REJECTED, request.getComment());
 	}
 
 	@PutMapping(value = "project/product/{id}/undo", produces = { "application/json" }, consumes = {
@@ -171,6 +172,18 @@ public class ProjectProductController {
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductResponse> findAll() {
 		return projectProductService.findAll();
+	}
+
+	@GetMapping(value = "project/product/report", produces = { "application/json" })
+	@Operation(summary = "Find projects product report", description = "return project product report", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project product report", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<?> findReport(@RequestParam(required = false) String customerEmail) {
+		if (customerEmail != null) {
+			return projectProductService.findByApprovedStatusAndCustomerEmail(customerEmail);
+		}
+		return projectProductService.findCountByApprovedStatusAndGroupByCustomerEmail();
 	}
 
 	@GetMapping(value = "project/product/excel", produces = { "application/json" })

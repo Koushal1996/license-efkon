@@ -168,6 +168,16 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO FETCH PROJECT PRODUCT
 	 */
 	public static final String PROJECT_PRODUCT_FETCH = "ROLE_PROJECT_PRODUCT_FETCH";
+	
+	/**
+	 * AUTHORITY TO FETCH DASHBOARD
+	 */
+	public static final String DASHBOARD_FETCH = "ROLE_DASHBOARD_FETCH";
+	
+	/**
+	 * AUTHORITY TO FETCH REPORT
+	 */
+	public static final String REPORT_FETCH = "ROLE_REPORT_FETCH";
 
 	/**
 	 * AUTHORITY TO CREATE PROJECT PRODUCT

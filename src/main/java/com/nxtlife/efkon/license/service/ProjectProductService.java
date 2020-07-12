@@ -34,10 +34,12 @@ public interface ProjectProductService {
 	 * @param request
 	 * @return {@link ProjectProductResponse} after updating product information in
 	 *         project
-	 * @throws ValidationException if project or product not exist and product ids
-	 *                             already exist in project product
-	 * @throws                     com.nxtlife.efkon.license.ex.NotFoundException if
-	 *                             project product id is not found
+	 * @throws ValidationException                            if project or product
+	 *                                                        not exist and product
+	 *                                                        ids already exist in
+	 *                                                        project product
+	 * @throws com.nxtlife.efkon.license.ex.NotFoundException if project product id
+	 *                                                        is not found
 	 */
 	public ProjectProductResponse update(Long id, ProjectProductRequest request);
 
@@ -123,5 +125,20 @@ public interface ProjectProductService {
 	public Resource findByProjectIdPdf(Long projectId);
 
 	public ProjectProductResponse undo(Long id, String comment);
+
+	/**
+	 * return customer name with email and its product, license count
+	 * 
+	 * @return list of {@link ProjectProductGraphResponse}
+	 */
+	public List<ProjectProductGraphResponse> findCountByApprovedStatusAndGroupByCustomerEmail();
+
+	/**
+	 * return project products for customer email
+	 * 
+	 * @param email
+	 * @return list of {@link ProjectProductResponse}
+	 */
+	public List<ProjectProductResponse> findByApprovedStatusAndCustomerEmail(String email);
 
 }

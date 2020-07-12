@@ -389,12 +389,12 @@ public class ProjectProductLicenseRequestServiceImpl extends BaseService
 
 			endDate = setEndDate(request.getStartDate(), expirationMonth);
 			projectProduct.setEndDate(endDate);
-			projectProduct.setStatus(ProjectProductStatus.SUBMIT);
+			projectProduct.setStatus(ProjectProductStatus.SUBMITTED);
 			projectProductDao.save(projectProduct);
 
 			projectProductCommentJpaDao
 					.save(new ProjectProductComment("This product was created using customer request", getUserId(),
-							ProjectProductStatus.SUBMIT.name(), projectProduct.getId()));
+							ProjectProductStatus.SUBMITTED.name(), projectProduct.getId()));
 
 			int rows;
 			rows = projectProductLicenseRequestDao.update(unmaskId, status, getUserId(), new Date());

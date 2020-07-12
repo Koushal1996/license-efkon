@@ -155,6 +155,10 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 		user.setPassword(userPasswordEncoder.encode("12345"));
 		user.setCode(String.format("%04d", sequenceGenerator("User")));
 		user = userJpaDao.save(user);
+		Long customerRoleId = roleDao.findIdByName("Customer");
+		if (customerRoleId != null && request.getRoleIds().contains(customerRoleId)) {
+			throw new ValidationException("You can't create customer");
+		}
 		for (Long roleId : request.getRoleIds()) {
 			userRoleJpaDao.save(user.getId(), roleId);
 		}
