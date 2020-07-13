@@ -380,7 +380,7 @@
                               class="t_save_btn bg-success"
                               (click)="recallProductStatus(pro)"
                               *ngIf="
-                                pro.status == 'SUBMIT' &&
+                                pro.status == 'SUBMITTED' &&
                                 checkRole('submitter') &&
                                 hasAuthority('PROJECT_PRODUCT_UNDO')
                               "
@@ -391,7 +391,7 @@
                               type="button"
                               class="t_save_btn"
                               *ngIf="
-                                pro.status == 'SUBMIT' &&
+                                pro.status == 'SUBMITTED' &&
                                 checkRole('Project Manager') &&
                                 hasAuthority('PROJECT_PRODUCT_REVIEW')
                               "
@@ -404,7 +404,7 @@
                               class="t_save_btn bg-danger"
                               (click)="rejectProductStatus(pro)"
                               *ngIf="
-                                pro.status == 'SUBMIT' &&
+                                pro.status == 'SUBMITTED' &&
                                 checkRole('Project Manager') &&
                                 hasAuthority('PROJECT_PRODUCT_REJECT')
                               "
@@ -463,7 +463,7 @@
                             <a
                               class="edit_button text-success"
                               *ngIf="
-                                pro.status == 'REJECT' &&
+                                pro.status == 'REJECTED' &&
                                 hasAuthority('PROJECT_PRODUCT_UPDATE')
                               "
                               (click)="editProduct(pro)"

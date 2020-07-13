@@ -8,20 +8,24 @@
               <th scope="col">#</th>
               <th scope="col">Customer name</th>
               <th scope="col">Total License Distributed</th>
+              <th scope="col">Total Product Distributed</th>
             </tr>
           </thead>
           <tbody id="accordion">
             <ng-container *ngFor="let report of licebseReports; index as i">
               <tr id="{{ report.id }}" class="">
                 <td>{{ i + 1 }}</td>
-                <td>{{ report.customer_name }}</td>
+                <td>{{ report.name }}</td>
+                <td>
+                  {{ report.licenseCount }}
+                </td>
                 <td
                   data-toggle="collapse"
                   [attr.data-target]="'#collapse' + i"
                   (click)="getLicenseByEmail(report)"
                   class="cursor"
                 >
-                  {{ report.total_license_distributed }}
+                  {{ report.productCount }}
                 </td>
               </tr>
               <tr>
@@ -42,18 +46,19 @@
                           alt=""
                         />
                       </div>
-                      <h3>License Reports By Email</h3>
+                      <h3>Projects Products Reports By Email</h3>
                       <table>
                         <thead class="users_table_hader">
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Customer name</th>
+
                             <th scope="col">startDate</th>
                             <th scope="col">endDate</th>
-                            <th scope="col">expiration</th>
-                            <th scope="col">licenseType</th>
-                            <th scope="col">productFamily</th>
-                            <th scope="col">Total License Distributed</th>
+                            <th scope="col">expirationMonthCount</th>
+                            <th scope="col">expirationPeriodType</th>
+                            <th scope="col">licenseCount</th>
+                            <th scope="col">licenseTypeName</th>
+                            <th scope="col">status</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -64,13 +69,13 @@
                             "
                           >
                             <td>{{ i + 1 }}</td>
-                            <td>{{ report.customerName }}</td>
                             <td>{{ report.startDate }}</td>
                             <td>{{ report.endDate }}</td>
-                            <td>{{ report.expiration }}</td>
-                            <td>{{ report.licenseType }}</td>
-                            <td>{{ report.productFamily }}</td>
-                            <td>{{ report.totalLicenseDistributed }}</td>
+                            <td>{{ report.expirationMonthCount }}</td>
+                            <td>{{ report.expirationPeriodType }}</td>
+                            <td>{{ report.licenseCount }}</td>
+                            <td>{{ report.licenseTypeName }}</td>
+                            <td>{{ report.status }}</td>
                           </tr>
                         </tbody>
                       </table>

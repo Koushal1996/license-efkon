@@ -9,7 +9,7 @@ import {
   FormArray,
 } from "@angular/forms";
 import swal from "sweetalert";
-
+import { SpaceValidator } from "./../../../space.validators";
 @Component({
   selector: "app-create-family",
   templateUrl: "./create-family.component.html",
@@ -37,9 +37,12 @@ export class CreateFamilyComponent implements OnInit {
 
   initCreateFamilyForm() {
     return this.fb.group({
-      name: ["", [Validators.required]],
-      code: ["", [Validators.required]],
-      description: ["", [Validators.required]],
+      name: ["", [Validators.required, SpaceValidator.cannotContainSpace]],
+      code: ["", [Validators.required, SpaceValidator.cannotContainSpace]],
+      description: [
+        "",
+        [Validators.required, SpaceValidator.cannotContainSpace],
+      ],
       productCodes: this.fb.array([]),
     });
   }

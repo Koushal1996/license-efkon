@@ -42,8 +42,8 @@
           (ngModelChange)="getStatus($event)"
         >
           <option>All</option>
-          <option *ngFor="let project of productCountsStatus">
-            {{ project.status }}
+          <option *ngFor="let project of filterStatus">
+            {{ project }}
           </option>
         </select>
       </div>
@@ -163,7 +163,7 @@
                   class="t_save_btn bg-success"
                   (click)="recallProductStatus(project)"
                   *ngIf="
-                    project.status == 'SUBMIT' &&
+                    project.status == 'SUBMITTED' &&
                     checkRole('submitter') &&
                     hasAuthority('PROJECT_PRODUCT_UNDO')
                   "
@@ -175,7 +175,7 @@
                   type="button"
                   class="t_save_btn"
                   *ngIf="
-                    project.status == 'SUBMIT' &&
+                    project.status == 'SUBMITTED' &&
                     checkRole('Project Manager') &&
                     hasAuthority('PROJECT_PRODUCT_REVIEW')
                   "
@@ -331,7 +331,7 @@
                 <a
                   class="edit_button text-success"
                   *ngIf="
-                    project.status == 'REJECT' &&
+                    project.status == 'REJECTED' &&
                     hasAuthority('PROJECT_PRODUCT_UPDATE')
                   "
                   (click)="editProduct(project)"

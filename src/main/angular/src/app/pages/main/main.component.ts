@@ -15,7 +15,7 @@ export class MainComponent implements OnInit {
     {
       route: "/dashboard",
       title: "Dashboard",
-      privilege: "PROJECT_PRODUCT_FETCH",
+      privilege: "DASHBOARD_FETCH",
       imagePath: "assets/images/dashboard.png",
     },
     {
@@ -45,7 +45,7 @@ export class MainComponent implements OnInit {
     {
       route: "/report",
       title: "Report",
-      privilege: "LICENSE_FETCH",
+      privilege: "REPORT_FETCH",
       imagePath: "assets/images/google.svg",
     },
     {

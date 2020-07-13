@@ -31,7 +31,7 @@ export class DeshboardComponent implements OnInit {
   }
   getStatus(status) {
     //console.log(status);
-    console.log(status.status);
-    this.route.navigate(["dashboard", status.status.toLowerCase()]);
+    console.log(status.name);
+    this.route.navigate(["dashboard", status.name.toLowerCase()]);
   }
 }

@@ -48,7 +48,7 @@ export class ProjectProductComponent implements OnInit {
   productCountsStatus: any;
   filterStatusForm: FormGroup;
   form: FormGroup;
-  projectProductsCopy: any;
+  projectProductsCopy: any[] = [];
   productStatus: any;
   selectedComment: any;
   searchProjectProductsForm: FormGroup;
@@ -59,7 +59,7 @@ export class ProjectProductComponent implements OnInit {
   file: any;
   userRoles: any[] = [];
   selectedUserRole: any;
-
+  filterStatus: any[] = [];
   constructor(
     private _projectService: ProjectService,
     private _storageService: StorageService,
@@ -150,18 +150,43 @@ export class ProjectProductComponent implements OnInit {
     // }
   }
   getProjectProducts() {
-    this._projectService.getProjectProducts().subscribe((data) => {
-      this.projectProducts = data;
-      this.projectProductsCopy = data;
-      this.filterStatusForm.controls["productStatus"].patchValue("All");
-      if (this.productStatus) {
-        this.filterStatusForm
-          .get("productStatus")
-          .patchValue(this.productStatus);
+    this._projectService.getProjectProducts().subscribe(
+      (data) => {
+        this.projectProducts = data;
+        this.projectProductsCopy = data;
+        this.productCountsStatus = this.projectProductsCopy.map(
+          (item) => item.status
+        );
+        console.log(this.productCountsStatus);
+        let count = 0;
+        let start = false;
+        for (var j = 0; j < this.productCountsStatus.length; j++) {
+          for (var k = 0; k < this.filterStatus.length; k++) {
+            if (this.productCountsStatus[j] == this.filterStatus[k]) {
+              start = true;
+            }
+          }
+          count++;
+          if (count == 1 && start == false) {
+            this.filterStatus.push(this.productCountsStatus[j]);
+          }
+          start = false;
+          count = 0;
+        }
+        console.log(this.filterStatus);
+        this.filterStatusForm.controls["productStatus"].patchValue("All");
+        if (this.productStatus) {
+          this.filterStatusForm
+            .get("productStatus")
+            .patchValue(this.productStatus);
+        }
+        console.log(data);
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
       }
-      console.log(data);
-      this.isloader = false;
-    });
+    );
   }
 
   hasAuthority(authority) {
@@ -659,15 +684,15 @@ export class ProjectProductComponent implements OnInit {
     console.log(this.selectedProduct);
   }
   getproductCountByStatus() {
-    this._projectService.productCountByStatus().subscribe(
-      (data) => {
-        console.log(data);
-        this.productCountsStatus = data;
-      },
-      (error) => {
-        this.isloader = false;
-      }
-    );
+    // this._projectService.productCountByStatus().subscribe(
+    //   (data) => {
+    //     console.log(data);
+    //     this.productCountsStatus = data;
+    //   },
+    //   (error) => {
+    //     this.isloader = false;
+    //   }
+    // );
   }
   getStatus() {
     this.projectProducts = this.projectProductsCopy;

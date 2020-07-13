@@ -1,25 +1,31 @@
-<!-- <table>
+<table>
   <thead>
     <tr>
       <th scope="col">status</th>
-      <th scope="col">count</th>
+      <th scope="col">No of License</th>
+      <th scope="col">No of Product</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let status of productCounts">
-      <td>{{ status.status }}</td>
+      <td>{{ status.name }}</td>
       <td>
-        <label class="badge custom_badge cursor" (click)="getStatus(status)">{{
-          status.count
+        <label class="badge custom_badge cursor">
+          {{ status.licenseCount }}
+        </label>
+      </td>
+      <td>
+        <label (click)="getStatus(status)" class="badge custom_badge cursor">{{
+          status.productCount
         }}</label>
       </td>
     </tr>
   </tbody>
-</table> -->
+</table>
 <div *ngIf="isloader" class="loader">
   <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
 </div>
-<div class="row">
+<!-- <div class="row">
   <div class="header_bottom">
     <div class="header_title">
       <h3>DASHBOARD</h3>
@@ -35,10 +41,9 @@
           <h3>{{ status.status }}</h3>
         </div>
         <div class="icon">
-          <!-- <img src="assets/images/approped.svg" alt=""> -->
           <i class="fa fa-tags" aria-hidden="true"></i>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div> -->

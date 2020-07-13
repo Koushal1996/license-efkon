@@ -35,7 +35,6 @@
               </tr>
             </thead>
             <tbody>
-             
               <ng-container *ngFor="let detail of productDetail; index as i">
                 <tr>
                   <td [attr.rowspan]="getDetailRowspan(detail)">{{ i + 1 }}</td>
@@ -99,9 +98,11 @@
           </div>
 
           <div class="no_product" *ngIf="!productDetail?.length && !isloader">
-            <h2> <img src="assets/images/alert.svg" alt="">
-              No Product Details Available Now </h2>
-           </div>
+            <h2>
+              <img src="assets/images/alert.svg" alt="" /> No Product Details
+              Available Now
+            </h2>
+          </div>
 
           <!-- <div *ngIf="!productDetail?.length && !isloader">
             No Product Details Available Now
@@ -212,6 +213,11 @@
                 *ngIf="createDetailForm.get('version').errors.required"
                 class="error"
                 >Version is required</span
+              >
+              <span
+                *ngIf="createDetailForm.get('version').errors.pattern"
+                class="error"
+                >Only number and dot is valid</span
               >
             </span>
           </div>

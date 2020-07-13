@@ -79,10 +79,10 @@ export class ProductService {
   viewRequestById(id) {
     return this.api.get(`api/project-request/${id}`);
   }
-  getlicenseReport() {
-    return this.api.get("api/license/report");
-  }
-  getlicenseReportbyEmail(email) {
-    return this.api.get(`api/license/report/${email}`);
-  }
+  // getlicenseReport() {
+  //   return this.api.get("api/license/report");
+  // }
+  // getlicenseReportbyEmail(email) {
+  //   return this.api.get(`api/license/report/${email}`);
+  // }
 }

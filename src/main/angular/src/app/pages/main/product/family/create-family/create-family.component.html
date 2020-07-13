@@ -32,6 +32,13 @@
                       class="error"
                       >Name is required</span
                     >
+                    <span
+                      *ngIf="
+                        createFamilyForm.get('name').errors.cannotContainSpace
+                      "
+                      class="error"
+                      >Name can not contain space in start</span
+                    >
                   </span>
                 </div>
               </div>
@@ -56,6 +63,13 @@
                       *ngIf="createFamilyForm.get('code').errors.required"
                       class="error"
                       >Code is required</span
+                    >
+                    <span
+                      *ngIf="
+                        createFamilyForm.get('code').errors.cannotContainSpace
+                      "
+                      class="error"
+                      >Code can not contain space in start</span
                     >
                   </span>
                 </div>
@@ -83,6 +97,14 @@
                       "
                       class="error"
                       >Description is required</span
+                    >
+                    <span
+                      *ngIf="
+                        createFamilyForm.get('description').errors
+                          .cannotContainSpace
+                      "
+                      class="error"
+                      >Description can not contain space in start</span
                     >
                   </span>
                 </div>

@@ -78,7 +78,7 @@ export class DetailComponent implements OnInit {
     return this.fb.group({
       productFamilyId: ["", [Validators.required]],
       productCodeId: ["", [Validators.required]],
-      version: ["", [Validators.required]],
+      version: ["", [Validators.required, Validators.pattern("^[0-9.]+$")]],
       description: ["", [Validators.required]],
     });
   }
