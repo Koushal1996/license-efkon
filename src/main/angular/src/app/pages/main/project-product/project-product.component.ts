@@ -659,10 +659,15 @@ export class ProjectProductComponent implements OnInit {
     console.log(this.selectedProduct);
   }
   getproductCountByStatus() {
-    this._projectService.productCountByStatus().subscribe((data) => {
-      console.log(data);
-      this.productCountsStatus = data;
-    });
+    this._projectService.productCountByStatus().subscribe(
+      (data) => {
+        console.log(data);
+        this.productCountsStatus = data;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
   }
   getStatus() {
     this.projectProducts = this.projectProductsCopy;
@@ -750,7 +755,7 @@ export class ProjectProductComponent implements OnInit {
         const customerEmail = data.filter((item) => item.accessId);
         console.log(customerEmail);
         if (customerEmail.length < 1) {
-          swal("Error");
+          swal("File not uploaded");
           this.ProjectIdUploadFile.licenses = data;
           this.form.controls["search"].reset();
           //this.ProjectIdUploadFile.isFile = false;

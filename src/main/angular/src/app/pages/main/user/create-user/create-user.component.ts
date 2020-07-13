@@ -11,7 +11,7 @@ import { Component, OnInit, OnChanges, ViewChild } from "@angular/core";
 import { AdminService } from "./../../../../services/admin/admin.service";
 import swal from "sweetalert";
 import { Observable } from "rxjs";
-
+import { SpaceValidator } from "./../../space.validators";
 @Component({
   selector: "app-create-user",
   templateUrl: "./create-user.component.html",
@@ -55,8 +55,15 @@ export class CreateUserComponent implements OnInit {
 
   initCreateUserForm() {
     return this.fb.group({
-      name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
-      username: ["", [Validators.required]],
+      name: [
+        "",
+        [
+          Validators.required,
+          SpaceValidator.cannotContainSpace,
+          Validators.pattern("^[a-zA-Z ]*$"),
+        ],
+      ],
+      username: ["", [Validators.required, SpaceValidator.cannotContainSpace]],
       email: [
         "",
         [

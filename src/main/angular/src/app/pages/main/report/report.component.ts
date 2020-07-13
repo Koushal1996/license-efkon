@@ -11,6 +11,7 @@ export class ReportComponent implements OnInit {
   licebseReports: any;
   projects = [];
   licebseReportsByEmail: any;
+  isloader: boolean = true;
 
   constructor(
     private productservice: ProductService,
@@ -18,13 +19,21 @@ export class ReportComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.productservice.getlicenseReport().subscribe((data) => {
-      console.log(data);
-      this.licebseReports = data;
-    });
+    this.productservice.getlicenseReport().subscribe(
+      (data) => {
+        console.log(data);
+        this.licebseReports = data;
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
     this.getProjects();
   }
   getLicenseByEmail(report) {
+    report.productLoader = true;
+
     console.log(report);
     const customerEmail = this.projects.filter(
       (item) => item.customerName == report.customer_name
@@ -34,10 +43,16 @@ export class ReportComponent implements OnInit {
     console.log(onlyEmail);
     var first = onlyEmail[0];
     console.log(first);
-    this.productservice.getlicenseReportbyEmail(first).subscribe((data) => {
-      console.log(data);
-      this.licebseReportsByEmail = data;
-    });
+    this.productservice.getlicenseReportbyEmail(first).subscribe(
+      (data) => {
+        console.log(data);
+        this.licebseReportsByEmail = data;
+        report.productLoader = false;
+      },
+      (error) => {
+        report.productLoader = false;
+      }
+    );
   }
   getProjects() {
     this.projectservice.getProjects().subscribe(

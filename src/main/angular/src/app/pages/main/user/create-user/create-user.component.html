@@ -36,6 +36,11 @@
                     class="error"
                     >only alphabets are allowed</span
                   >
+                  <span
+                    *ngIf="createUserForm.get('name').errors.cannotContainSpace"
+                    class="error"
+                    >Name can not contain space in start</span
+                  >
                 </span>
               </div>
             </div>
@@ -61,6 +66,13 @@
                     *ngIf="createUserForm.get('username').errors.required"
                     class="error"
                     >username is required</span
+                  >
+                  <span
+                    *ngIf="
+                      createUserForm.get('username').errors.cannotContainSpace
+                    "
+                    class="error"
+                    >username can not contain space in start</span
                   >
                 </span>
               </div>
@@ -143,13 +155,14 @@
             </div>
             <div class="col-12">
               <div class="form-group mb-0">
-                <label class="mb-0">Select Role <span class="required">*</span></label>
+                <label class="mb-0"
+                  >Select Role <span class="required">*</span></label
+                >
                 <small class="text-danger" *ngIf="selected"
-                >Please select atleast one role</small
-              >
+                  >Please select atleast one role</small
+                >
               </div>
               <div class="authorities_main" id="roles">
-             
                 <div *ngFor="let item of dropdownList" class="checkbox_main">
                   <div class="checkbox_box">
                     <input

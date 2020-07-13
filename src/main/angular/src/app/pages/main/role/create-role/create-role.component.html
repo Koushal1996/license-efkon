@@ -37,13 +37,20 @@
                       class="field_error"
                       >Only alphabets are allowed.
                     </span>
+                    <span
+                      *ngIf="
+                        createRoleForm.get('name').errors.cannotContainSpace
+                      "
+                      class="error"
+                      >name can not contain space in start</span
+                    >
                   </span>
                 </div>
               </div>
               <div class="col-12">
                 <div class="">
                   <label for="exampleInputPassword1" class="mb-0"
-                    >Authorities <span class="required">*</span> 
+                    >Authorities <span class="required">*</span>
                   </label>
                   <!-- <span
                     class="badge badge-secondary custom_bdg"
@@ -60,7 +67,7 @@
                   </span> -->
                   <div class="error" *ngIf="eventValue">
                     Please Select Authority
-                  </div> 
+                  </div>
 
                   <div class="authorities_main" id="authorities">
                     <div class="check_main">

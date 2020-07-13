@@ -33,7 +33,7 @@ const routes: Routes = [
     path: "",
     component: MainComponent,
     children: [
-      { path: "", redirectTo: "projects", pathMatch: "full" },
+      //{ path: "", redirectTo: "projects", pathMatch: "full" },
       { path: "roles", component: RoleComponent },
       {
         path: "roles/create",

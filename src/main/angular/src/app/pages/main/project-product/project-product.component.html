@@ -77,22 +77,7 @@
               <!-- <button (click)="sortAphabetically()">up</button>
               <button (click)="reverseAphabetically()">down</button> -->
             </th>
-            <th
-              scope="col"
-              style="min-width: 112px;"
-              *ngIf="
-                hasAuthority('PROJECT_PRODUCT_REVIEW') ||
-                hasAuthority('PROJECT_PRODUCT_REJECT') ||
-                hasAuthority('PROJECT_PRODUCT_APPROVE') ||
-                hasAuthority('PROJECT_PRODUCT_UPDATE') ||
-                hasAuthority('PROJECT_PRODUCT_DELETE') ||
-                hasAuthority('PROJECT_PRODUCT_SUBMIT') ||
-                hasAuthority('PROJECT_PRODUCT_RENEW') ||
-                hasAuthority('LICENSE_FETCH') ||
-                hasAuthority('LICENSE_REQUEST_CREATE') ||
-                hasAuthority('PROJECT_PRODUCT_UNDO')
-              "
-            >
+            <th scope="col" style="min-width: 112px;">
               Action
             </th>
           </tr>

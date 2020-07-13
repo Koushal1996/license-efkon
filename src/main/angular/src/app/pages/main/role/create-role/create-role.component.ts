@@ -17,6 +17,7 @@ import { IDropdownSettings } from "ng-multiselect-dropdown";
 import { Router, ActivatedRoute } from "@angular/router";
 import swal from "sweetalert";
 import { NgForm } from "@angular/forms";
+import { SpaceValidator } from "./../../space.validators";
 
 @Component({
   selector: "app-create-role",
@@ -50,7 +51,14 @@ export class CreateRoleComponent implements OnInit {
 
   ngOnInit() {
     this.createRoleForm = this.fb.group({
-      name: ["", [Validators.required, Validators.pattern("^[a-zA-Z ]*$")]],
+      name: [
+        "",
+        [
+          Validators.required,
+          SpaceValidator.cannotContainSpace,
+          Validators.pattern("^[a-zA-Z ]*$"),
+        ],
+      ],
       //authorityIds: this.fb.array([]),
       authorityIds: ["", Validators.required],
     });

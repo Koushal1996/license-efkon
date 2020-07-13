@@ -18,11 +18,16 @@ export class DeshboardComponent implements OnInit {
     this.getproductCountByStatus();
   }
   getproductCountByStatus() {
-    this._projectService.productCountByStatus().subscribe((data) => {
-      console.log(data);
-      this.productCounts = data;
-      this.isloader = false;
-    });
+    this._projectService.productCountByStatus().subscribe(
+      (data) => {
+        console.log(data);
+        this.productCounts = data;
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
   }
   getStatus(status) {
     //console.log(status);
