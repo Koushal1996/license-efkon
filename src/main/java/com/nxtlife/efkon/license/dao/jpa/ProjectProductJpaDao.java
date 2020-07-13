@@ -204,4 +204,7 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public Tuple countProductAndSumLicenseCountByStatusAndModifiedByIdAndActive(ProjectProductStatus status,
 			Long userId, Boolean active);
 
+	public List<ProjectProductResponse> findByStatusAndProjectCustomerEmailAndActive(ProjectProductStatus approved,
+			String email, Boolean b);
+
 }
