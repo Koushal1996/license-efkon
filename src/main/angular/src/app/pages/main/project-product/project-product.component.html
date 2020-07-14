@@ -91,6 +91,15 @@
                 <span>{{ project.productDetail.productFamilyName }}</span>
                 <span>{{ project.productDetail.productCodeName }}</span>
                 <span> {{ project.productDetail.versionName }} </span>
+                <span
+                  class="badge badge-warning"
+                  *ngIf="project.pastProjectProductId"
+                >
+                  RENEWED
+                </span>
+                <span class="badge badge-secondary" *ngIf="hasExpired(project)"
+                  >EXPIRED
+                </span>
               </td>
               <td>
                 {{ project.licenseCount }}
@@ -130,8 +139,10 @@
                 <a
                   class="edit_button text-success"
                   *ngIf="
-                    project.status == 'DRAFT' &&
-                    hasAuthority('PROJECT_PRODUCT_UPDATE')
+                    (project.status == 'DRAFT' &&
+                      hasAuthority('PROJECT_PRODUCT_UPDATE')) ||
+                    (project.status == 'REJECTED' &&
+                      hasAuthority('PROJECT_PRODUCT_UPDATE'))
                   "
                   (click)="editProduct(project)"
                 >
@@ -163,21 +174,23 @@
                   class="t_save_btn bg-success"
                   (click)="recallProductStatus(project)"
                   *ngIf="
-                    project.status == 'SUBMITTED' &&
-                    checkRole('submitter') &&
-                    hasAuthority('PROJECT_PRODUCT_UNDO')
+                    (project.status == 'SUBMITTED' &&
+                      hasAuthority('PROJECT_PRODUCT_UNDO') &&
+                      hasAuthority('PROJECT_PRODUCT_SUBMIT')) ||
+                    (project.status == 'REVIEWED' &&
+                      hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                      hasAuthority('PROJECT_PRODUCT_UNDO'))
                   "
                 >
                   Recall
                 </button>
-
                 <button
                   type="button"
                   class="t_save_btn"
                   *ngIf="
                     project.status == 'SUBMITTED' &&
-                    checkRole('Project Manager') &&
-                    hasAuthority('PROJECT_PRODUCT_REVIEW')
+                    hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                    hasAuthority('PROJECT_PRODUCT_REJECT')
                   "
                   (click)="reviewProductStatus(project)"
                 >
@@ -188,9 +201,12 @@
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                   *ngIf="
-                    project.status == 'SUBMITTED' &&
-                    checkRole('Project Manager') &&
-                    hasAuthority('PROJECT_PRODUCT_REJECT')
+                    (project.status == 'SUBMITTED' &&
+                      hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                      hasAuthority('PROJECT_PRODUCT_REJECT')) ||
+                    (project.status == 'REVIEWED' &&
+                      hasAuthority('PROJECT_PRODUCT_APPROVE') &&
+                      hasAuthority('PROJECT_PRODUCT_REJECT'))
                   "
                 >
                   Reject
@@ -200,36 +216,11 @@
                   type="button"
                   *ngIf="
                     project.status == 'REVIEWED' &&
-                    checkRole('Approver') &&
                     hasAuthority('PROJECT_PRODUCT_APPROVE')
                   "
                   (click)="approveProductStatus(project)"
                 >
                   Approve
-                </button>
-                <button
-                  type="button"
-                  *ngIf="
-                    project.status == 'REVIEWED' &&
-                    checkRole('Approver') &&
-                    hasAuthority('PROJECT_PRODUCT_REJECT')
-                  "
-                  class="t_save_btn bg-danger"
-                  (click)="rejectProductStatus(project)"
-                >
-                  Reject
-                </button>
-                <button
-                  type="button"
-                  class="t_save_btn bg-success"
-                  (click)="recallProductStatus(project)"
-                  *ngIf="
-                    project.status == 'REVIEWED' &&
-                    checkRole('Project Manager') &&
-                    hasAuthority('PROJECT_PRODUCT_UNDO')
-                  "
-                >
-                  Recall
                 </button>
                 <button
                   type="button"
@@ -253,7 +244,8 @@
                   [attr.data-target]="'#collapse' + i"
                   #c
                   *ngIf="
-                    project.status == 'APPROVED' &&
+                    (project.status == 'APPROVED' ||
+                      project.status == 'RENEWED') &&
                     hasAuthority('LICENSE_FETCH')
                   "
                 >
@@ -262,7 +254,8 @@
                 <form
                   [formGroup]="form"
                   *ngIf="
-                    project.status == 'APPROVED' &&
+                    (project.status == 'APPROVED' ||
+                      project.status == 'RENEWED') &&
                     hasAuthority('LICENSE_FETCH')
                   "
                 >
@@ -280,55 +273,15 @@
                   type="button"
                   class="mt-1 roleactive"
                   *ngIf="
-                    project.status == 'APPROVED' &&
+                    (project.status == 'APPROVED' ||
+                      project.status == 'RENEWED') &&
                     hasAuthority('LICENSE_REQUEST_CREATE')
                   "
                   (click)="saveProjectLicenseById(project)"
                 >
                   Request
                 </button>
-
-                <button
-                  type="button"
-                  class="t_save_btn"
-                  data-toggle="collapse"
-                  [attr.data-target]="'#collapse' + i"
-                  #c
-                  *ngIf="
-                    project.status == 'RENEWED' && hasAuthority('LICENSE_FETCH')
-                  "
-                >
-                  View License
-                </button>
-                <form
-                  [formGroup]="form"
-                  *ngIf="
-                    project.status == 'RENEWED' && hasAuthority('LICENSE_FETCH')
-                  "
-                >
-                  <input
-                    type="file"
-                    (change)="uploadedFile($event, project)"
-                    accept=".xlsx"
-                    formControlName="search"
-                  />
-                  <button (click)="sendExcel()" *ngIf="project.isFile">
-                    send
-                  </button>
-                </form>
-
-                <button
-                  type="button"
-                  class="roleactive mt-1"
-                  *ngIf="
-                    project.status == 'RENEWED' &&
-                    hasAuthority('LICENSE_REQUEST_CREATE')
-                  "
-                  (click)="saveProjectLicenseById(project)"
-                >
-                  Request
-                </button>
-                <a
+                <!-- <a
                   class="edit_button text-success"
                   *ngIf="
                     project.status == 'REJECTED' &&
@@ -337,7 +290,7 @@
                   (click)="editProduct(project)"
                 >
                   <i class="fa fa-edit"></i>
-                </a>
+                </a> -->
               </td>
             </tr>
             <tr>

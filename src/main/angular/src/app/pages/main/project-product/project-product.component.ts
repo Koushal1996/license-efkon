@@ -49,7 +49,7 @@ export class ProjectProductComponent implements OnInit {
   filterStatusForm: FormGroup;
   form: FormGroup;
   projectProductsCopy: any[] = [];
-  productStatus: any;
+  productStatusValue: any;
   selectedComment: any;
   searchProjectProductsForm: FormGroup;
   //storeData: string | ArrayBuffer;
@@ -86,10 +86,10 @@ export class ProjectProductComponent implements OnInit {
       Search: [""],
     });
     this.activate.params.subscribe((params) => {
-      this.productStatus = params["status"];
-      //console.log(this.productStatus);
-      if (this.productStatus) {
-        this.productStatus = this.productStatus.toUpperCase();
+      this.productStatusValue = params["status"];
+      console.log(this.productStatusValue);
+      if (this.productStatusValue) {
+        this.productStatusValue = this.productStatusValue.toUpperCase();
       }
     });
     this.form = new FormGroup({
@@ -98,7 +98,7 @@ export class ProjectProductComponent implements OnInit {
     this.mainService.getLoginUser().subscribe((data) => {
       //console.log(data);
       this.userRoles = data.roles;
-      console.log(this.userRoles[0].name);
+      //console.log(this.userRoles[0].name);
       this.selectedUserRole = this.userRoles[0].name;
     });
   }
@@ -111,6 +111,18 @@ export class ProjectProductComponent implements OnInit {
       this.startDateChange = data.startDateChange;
       //console.log(this.showBeforeDays);
     });
+  }
+  hasExpired(project) {
+    let currentDate = new Date().toISOString().split("T")[0];
+    console.log("current" + currentDate);
+    console.log("end" + project.endDate);
+    if (currentDate >= project.endDate) {
+      //return false;
+      return true;
+    } else {
+      //return true;
+      return false;
+    }
   }
   hasRenewDays(project) {
     let currentDate = new Date().toISOString().split("T")[0];
@@ -157,7 +169,7 @@ export class ProjectProductComponent implements OnInit {
         this.productCountsStatus = this.projectProductsCopy.map(
           (item) => item.status
         );
-        console.log(this.productCountsStatus);
+        //console.log(this.productCountsStatus);
         let count = 0;
         let start = false;
         for (var j = 0; j < this.productCountsStatus.length; j++) {
@@ -173,12 +185,15 @@ export class ProjectProductComponent implements OnInit {
           start = false;
           count = 0;
         }
-        console.log(this.filterStatus);
-        this.filterStatusForm.controls["productStatus"].patchValue("All");
-        if (this.productStatus) {
+        //console.log(this.filterStatus);
+        console.log(this.productStatusValue);
+
+        if (this.productStatusValue) {
           this.filterStatusForm
             .get("productStatus")
-            .patchValue(this.productStatus);
+            .patchValue(this.productStatusValue);
+        } else {
+          this.filterStatusForm.controls["productStatus"].patchValue("All");
         }
         console.log(data);
         this.isloader = false;
@@ -201,6 +216,9 @@ export class ProjectProductComponent implements OnInit {
     return roles.includes(role);
   }
 
+  checkLicense(licenses) {
+    console.log(licenses);
+  }
   initpopUpForm() {
     return this.fb.group({
       comment: ["", [Validators.required]],
@@ -597,31 +615,50 @@ export class ProjectProductComponent implements OnInit {
     return this.renewStartDate;
   }
   onSubmitStartDate() {
-    console.log(this.popUpStartDateForm.value);
-    this._projectService
-      .renewProjectProduct(
-        this.selectedProduct.id,
-        this.popUpStartDateForm.value
-      )
-      .subscribe(
-        (data) => {
-          console.log("renewProjectProduct");
-          console.log(data);
-          this.selectedProduct.status = data.status;
-          this.selectedProduct.endDate = data.endDate;
-          this.selectedProduct.startDate = data.startDate;
-          this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
-          this.showRenewModal = false;
-          this.popUpStartDateForm.reset();
-          $("#" + this.selectedProduct.id).removeClass("highlight");
-          swal("Project Product Renewed Successfully!");
-        },
-        (error) => {
-          this.popUpStartDateForm.reset();
-          this.showRenewModal = false;
-          $("#" + this.selectedProduct.id).removeClass("highlight");
-        }
-      );
+    this.showRenewModal = false;
+    swal({
+      //title: "Are you sure?",
+      text: `Are you sure,You want to Renew (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $("#" + this.selectedProduct.id).removeClass("highlight");
+      } else {
+        console.log(this.popUpStartDateForm.value);
+        this._projectService
+          .renewProjectProduct(
+            this.selectedProduct.id,
+            this.popUpStartDateForm.value
+          )
+          .subscribe(
+            (data) => {
+              console.log("renewProjectProduct");
+              console.log(data);
+              //this.selectedProduct = data;
+              this.selectedProduct.status = data.status;
+              this.selectedProduct.endDate = data.endDate;
+              this.selectedProduct.startDate = data.startDate;
+              this.selectedProduct.expirationMonthCount =
+                data.expirationMonthCount;
+              this.showRenewModal = false;
+              this.popUpStartDateForm.reset();
+              $("#" + this.selectedProduct.id).removeClass("highlight");
+              // swal("Project Product Renewed Successfully!");
+              swal(
+                `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) renewed successfully!`
+              );
+            },
+            (error) => {
+              this.popUpStartDateForm.reset();
+              this.showRenewModal = false;
+              $("#" + this.selectedProduct.id).removeClass("highlight");
+            }
+          );
+      }
+    });
   }
   sortAphabetically() {
     console.log(this.projectProducts);
@@ -696,7 +733,7 @@ export class ProjectProductComponent implements OnInit {
   }
   getStatus() {
     this.projectProducts = this.projectProductsCopy;
-    //console.log(this.filterStatusForm.controls["productStatus"].value);
+    console.log(this.filterStatusForm.controls["productStatus"].value);
     let key = this.filterStatusForm.controls["productStatus"].value;
     //console.log("Filter Key : " + this.projectProducts);
     if (key) {

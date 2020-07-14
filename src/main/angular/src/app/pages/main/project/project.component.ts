@@ -134,6 +134,18 @@ export class ProjectComponent implements OnInit {
       console.log(this.showBeforeDays);
     });
   }
+  hasExpired(pro) {
+    let currentDate = new Date().toISOString().split("T")[0];
+    console.log("current" + currentDate);
+    console.log("end" + pro.endDate);
+    if (currentDate >= pro.endDate) {
+      //return false;
+      return true;
+    } else {
+      //return true;
+      return false;
+    }
+  }
   hasRenewDays(pro) {
     let currentDate = new Date().toISOString().split("T")[0];
     //console.log(currentDate);
@@ -506,32 +518,50 @@ export class ProjectComponent implements OnInit {
     $("#" + selectedProduct).removeClass("highlight");
   }
   onSubmitStartDate() {
+    this.showRenewModal = false;
     console.log(this.popUpStartDateForm.value);
-    this.projectservice
-      .renewProjectProduct(
-        this.selectedProduct.id,
-        this.popUpStartDateForm.value
-      )
-      .subscribe(
-        (data) => {
-          console.log(data);
-          this.selectedProduct.status = data.status;
-          this.selectedProduct.endDate = data.endDate;
-          this.selectedProduct.startDate = data.startDate;
-          this.selectedProduct.expirationMonthCount = data.expirationMonthCount;
-          this.showRenewModal = false;
-          this.popUpStartDateForm.reset();
-          this.productsCount(this.totolProductsCount);
-          this.getProjects();
-          swal("Product Renewed successfully!");
-          $("#" + this.selectedProduct.id).removeClass("highlight");
-        },
-        (error) => {
-          this.popUpStartDateForm.reset();
-          this.showRenewModal = false;
-          $("#" + this.selectedProduct.id).removeClass("highlight");
-        }
-      );
+    swal({
+      //title: "Are you sure?",
+      text: `Are you sure,You want to Renew (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $("#" + this.selectedProduct.id).removeClass("highlight");
+      } else {
+        this.projectservice
+          .renewProjectProduct(
+            this.selectedProduct.id,
+            this.popUpStartDateForm.value
+          )
+          .subscribe(
+            (data) => {
+              console.log(data);
+              this.selectedProduct.status = data.status;
+              this.selectedProduct.endDate = data.endDate;
+              this.selectedProduct.startDate = data.startDate;
+              this.selectedProduct.expirationMonthCount =
+                data.expirationMonthCount;
+              this.showRenewModal = false;
+              this.popUpStartDateForm.reset();
+              this.productsCount(this.totolProductsCount);
+              this.getProjects();
+              //swal(" Renewed successfully!");
+              swal(
+                `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) renewed successfully!`
+              );
+              $("#" + this.selectedProduct.id).removeClass("highlight");
+            },
+            (error) => {
+              this.popUpStartDateForm.reset();
+              this.showRenewModal = false;
+              $("#" + this.selectedProduct.id).removeClass("highlight");
+            }
+          );
+      }
+    });
   }
 
   viewLicenses(project) {

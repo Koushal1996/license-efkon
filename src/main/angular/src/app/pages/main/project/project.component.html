@@ -277,19 +277,7 @@
                           <th scope="col">Start Date</th>
                           <th scope="col">End Date</th>
                           <th scope="col">Status</th>
-                          <th
-                            scope="col"
-                            *ngIf="
-                              hasAuthority('PROJECT_PRODUCT_REVIEW') ||
-                              hasAuthority('PROJECT_PRODUCT_REJECT') ||
-                              hasAuthority('PROJECT_PRODUCT_APPROVE') ||
-                              hasAuthority('PROJECT_PRODUCT_UPDATE') ||
-                              hasAuthority('PROJECT_PRODUCT_DELETE') ||
-                              hasAuthority('PROJECT_PRODUCT_SUBMIT') ||
-                              hasAuthority('PROJECT_PRODUCT_RENEW') ||
-                              hasAuthority('PROJECT_PRODUCT_UNDO')
-                            "
-                          >
+                          <th scope="col">
                             Action
                           </th>
                         </tr>
@@ -307,6 +295,17 @@
                               {{ pro.productDetail.productCodeName }}
                             </span>
                             <span>{{ pro.productDetail.versionName }}</span>
+                            <span
+                              class="badge badge-success"
+                              *ngIf="pro.pastProjectProductId"
+                            >
+                              RENEWED
+                            </span>
+                            <span
+                              class="badge badge-secondary"
+                              *ngIf="hasExpired(pro)"
+                              >EXPIRED
+                            </span>
                           </td>
                           <td>{{ pro.licenseCount }}</td>
                           <!-- <td>{{ pro.licenseTypeName }}</td> -->
@@ -334,8 +333,10 @@
                             <a
                               class="edit_button top_tooltip text-success"
                               *ngIf="
-                                pro.status == 'DRAFT' &&
-                                hasAuthority('PROJECT_PRODUCT_UPDATE')
+                                (pro.status == 'DRAFT' &&
+                                  hasAuthority('PROJECT_PRODUCT_UPDATE')) ||
+                                (pro.status == 'REJECTED' &&
+                                  hasAuthority('PROJECT_PRODUCT_UPDATE'))
                               "
                               (click)="editProduct(project, pro)"
                             >
@@ -380,9 +381,12 @@
                               class="t_save_btn bg-success"
                               (click)="recallProductStatus(pro)"
                               *ngIf="
-                                pro.status == 'SUBMITTED' &&
-                                checkRole('submitter') &&
-                                hasAuthority('PROJECT_PRODUCT_UNDO')
+                                (pro.status == 'SUBMITTED' &&
+                                  hasAuthority('PROJECT_PRODUCT_UNDO') &&
+                                  hasAuthority('PROJECT_PRODUCT_SUBMIT')) ||
+                                (pro.status == 'REVIEWED' &&
+                                  hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                                  hasAuthority('PROJECT_PRODUCT_UNDO'))
                               "
                             >
                               Recall
@@ -392,8 +396,8 @@
                               class="t_save_btn"
                               *ngIf="
                                 pro.status == 'SUBMITTED' &&
-                                checkRole('Project Manager') &&
-                                hasAuthority('PROJECT_PRODUCT_REVIEW')
+                                hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                                hasAuthority('PROJECT_PRODUCT_REJECT')
                               "
                               (click)="reviewProductStatus(pro)"
                             >
@@ -404,48 +408,26 @@
                               class="t_save_btn bg-danger"
                               (click)="rejectProductStatus(pro)"
                               *ngIf="
-                                pro.status == 'SUBMITTED' &&
-                                checkRole('Project Manager') &&
-                                hasAuthority('PROJECT_PRODUCT_REJECT')
+                                (pro.status == 'SUBMITTED' &&
+                                  hasAuthority('PROJECT_PRODUCT_REVIEW') &&
+                                  hasAuthority('PROJECT_PRODUCT_REJECT')) ||
+                                (pro.status == 'REVIEWED' &&
+                                  hasAuthority('PROJECT_PRODUCT_APPROVE') &&
+                                  hasAuthority('PROJECT_PRODUCT_REJECT'))
                               "
                             >
                               Reject
                             </button>
                             <button
-                              type="button"
-                              class="t_save_btn bg-success"
-                              (click)="recallProductStatus(pro)"
-                              *ngIf="
-                                pro.status == 'REVIEWED' &&
-                                checkRole('Project Manager') &&
-                                hasAuthority('PROJECT_PRODUCT_UNDO')
-                              "
-                            >
-                              Recall
-                            </button>
-                            <button
-                              class="roleactive mr-2"
+                              class="t_save_btn"
                               type="button"
                               *ngIf="
                                 pro.status == 'REVIEWED' &&
-                                checkRole('Approver') &&
                                 hasAuthority('PROJECT_PRODUCT_APPROVE')
                               "
                               (click)="approveProductStatus(pro)"
                             >
                               Approve
-                            </button>
-                            <button
-                              class="roleactive bg-danger"
-                              type="button"
-                              (click)="rejectProductStatus(pro)"
-                              *ngIf="
-                                pro.status == 'REVIEWED' &&
-                                checkRole('Approver') &&
-                                hasAuthority('PROJECT_PRODUCT_REJECT')
-                              "
-                            >
-                              Reject
                             </button>
                             <button
                               type="button"
@@ -460,16 +442,6 @@
                             >
                               Renew
                             </button>
-                            <a
-                              class="edit_button text-success"
-                              *ngIf="
-                                pro.status == 'REJECTED' &&
-                                hasAuthority('PROJECT_PRODUCT_UPDATE')
-                              "
-                              (click)="editProduct(pro)"
-                            >
-                              <i class="fa fa-edit"></i>
-                            </a>
                           </td>
                         </tr>
                       </table>
