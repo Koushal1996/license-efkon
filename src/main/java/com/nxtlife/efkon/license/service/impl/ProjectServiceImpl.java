@@ -1,9 +1,7 @@
 package com.nxtlife.efkon.license.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,7 +25,6 @@ import com.nxtlife.efkon.license.dao.jpa.UserRoleJpaDao;
 import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.entity.user.UserRole;
-import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
@@ -165,12 +162,8 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		User user = getUser();
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		List<ProjectResponse> projects;
-		List<Map<String, Object>> projectProductCounts;
 		if (roles.contains("Customer")) {
 			projects = projectDao.findByCustomerEmailAndActive(user.getEmail(), true);
-			projectProductCounts = projectProductDao
-					.findProjectIdAndCountByGroupByProjectIdAndActiveAndCustomerEmailAndNotStatus(true, user.getEmail(),
-							ProjectProductStatus.DRAFT);
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -179,22 +172,10 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 			}
 			if (roles.isEmpty() && isProjectManager) {
 				projects = projectDao.findByProjectManagerIdAndActive(user.getUserId(), true);
-				projectProductCounts = projectProductDao
-						.findProjectIdAndCountByGroupByProjectIdAndActiveAndProjectManagerId(true, user.getUserId());
 			} else {
 				projects = projectDao.findByActive(true);
-				projectProductCounts = projectProductDao.findProjectIdAndCountByGroupByProjectIdAndActive(true);
 			}
 		}
-
-		Map<Long, Long> projectProductCountLookup = new HashMap<>();
-		projectProductCounts.forEach(projectProductCount -> {
-			projectProductCountLookup.putIfAbsent(Long.parseLong(projectProductCount.get("id").toString()),
-					Long.parseLong(projectProductCount.get("count").toString()));
-		});
-		projects.forEach(project -> {
-			project.setProductsCount(projectProductCountLookup.get(unmask(project.getId())));
-		});
 		return projects;
 	}
 

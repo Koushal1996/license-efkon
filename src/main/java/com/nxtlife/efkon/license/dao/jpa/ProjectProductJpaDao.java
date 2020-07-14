@@ -2,7 +2,6 @@ package com.nxtlife.efkon.license.dao.jpa;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Tuple;
 
@@ -71,17 +70,6 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	@Query(value = "select project.projectManager.id from ProjectProduct projectProduct inner join Project project on projectProduct.project.id=project.id where projectProduct.id =?1")
 	public Long findProjectManagerIdByProjectProductId(Long id);
-
-	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 group by project.id")
-	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActive(Boolean active);
-
-	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 and project.customerEmail = ?2 and status is not ?3 group by project.id")
-	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndCustomerEmailAndNotStatus(
-			Boolean active, String customerEmail, ProjectProductStatus status);
-
-	@Query(value = "select project.id as id, count(id) as count from ProjectProduct where active = ?1 and project.projectManager.id=?2 group by project.id ")
-	public List<Map<String, Object>> findProjectIdAndCountByGroupByProjectIdAndActiveAndProjectManagerId(Boolean active,
-			Long projectManagerId);
 
 	@Query(value = "select projectProduct.status from ProjectProduct projectProduct inner join Project project on projectProduct.project.id = project.id where projectProduct.id =?1 and project.projectManager.id=?2 and projectProduct.active=?3")
 	public ProjectProductStatus findStatusByIdAndProjectProjectManagerIdAndActive(Long id, Long projectManagerId,

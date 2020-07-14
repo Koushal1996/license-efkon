@@ -191,11 +191,6 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		if (!productDetailDao.existsByIdAndActive(unmaskId, true)) {
 			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
 		}
-		if (projectProductDao.existsByProductDetailIdAndActive(unmaskId, true)) {
-			throw new ValidationException(String.format(
-					"Product detail(%s) can't be delete as some of the project are related to this product detail ",
-					id));
-		}
 		int rows = productDetailDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("Product detail {} successfully deleted", unmaskId);

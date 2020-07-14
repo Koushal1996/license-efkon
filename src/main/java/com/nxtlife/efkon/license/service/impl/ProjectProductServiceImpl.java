@@ -271,13 +271,17 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						responseList.add(new ProjectProductGraphResponse(null, "Rejected by me",
 								rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l,
 								rejectedCount != null ? rejectedCount.get("licenseCount", Long.class) : 0l));
-						responseList.add(new ProjectProductGraphResponse(
-								"Rejected by approver or other project manager", status.name(),
-								tuple.get("productCount", Long.class)
-										- (rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l),
-								tuple.get("licenseCount", Long.class)
-										- (rejectedCount != null ? rejectedCount.get("licenseCount", Long.class)
-												: 0l)));
+						responseList
+								.add(new ProjectProductGraphResponse("Rejected by approver or other project manager",
+										status.name(),
+										tuple.get("productCount", Long.class)
+												- (rejectedCount != null ? rejectedCount.get("productCount", Long.class)
+														: 0l),
+										tuple.get("licenseCount", Long.class)
+												- (rejectedCount != null
+														? (rejectedCount.get("licenseCount", Long.class) == null ? 0l
+																: rejectedCount.get("licenseCount", Long.class))
+														: 0l)));
 						available = true;
 						break;
 					} else if (tuple.get("status", ProjectProductStatus.class).equals(status)) {
@@ -332,7 +336,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				Boolean available = false;
 				String name = null;
 				for (Tuple tuple : statusWiseProductCount) {
-					if (tuple.get("status", String.class).equalsIgnoreCase(status.name())) {
+					if (tuple.get("status", ProjectProductStatus.class).equals(status)) {
 						if (status.equals(ProjectProductStatus.APPROVED)) {
 							name = "Approved by me";
 						} else if (status.equals(ProjectProductStatus.REVIEWED)) {
@@ -340,7 +344,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						} else {
 							name = status.name();
 						}
-						responseList.add(new ProjectProductGraphResponse(null, name,
+						responseList.add(new ProjectProductGraphResponse(status.name(), name,
 								tuple.get("productCount", Long.class), tuple.get("licenseCount", Long.class)));
 						available = true;
 						break;
@@ -354,7 +358,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					} else {
 						name = status.name();
 					}
-					responseList.add(new ProjectProductGraphResponse(null, name, 0l, 0l));
+					responseList.add(new ProjectProductGraphResponse(status.name(), name, 0l, 0l));
 				}
 			}
 		}
@@ -544,9 +548,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			projectProductResponseList = projectProductDao
 					.findByStatusAndProjectCustomerEmailAndActive(ProjectProductStatus.APPROVED, user.getEmail(), true);
 		} else {
-
 			projectProductResponseList = projectProductDao.findByActive(true);
-
 			if (roles.contains("SuperAdmin")) {
 
 			} else if (roles.contains("Approver")) {
@@ -557,94 +559,6 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				projectProductResponseList = this.getProductsForSubmitter(projectProductResponseList, user);
 			}
 		}
-//			Boolean isProjectManager = false;
-//			if (roles.contains("Project Manager")) {
-//				isProjectManager = true;
-//				roles.remove("Project Manager");
-//			}
-//			if (roles.isEmpty() && isProjectManager) {
-//				projectProductResponseList = projectProductDao.findByProjectProjectManagerIdAndActive(user.getUserId(),
-//						true);
-//
-//				for (int k = 0; k < projectProductResponseList.size(); k++) {
-//					ProjectProductResponse ppResponse = projectProductResponseList.get(k);
-//
-//					if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
-//							&& !ppResponse.getCreatedById().equals(user.getUserId())) {
-//						projectProductResponseList.remove(k);
-//						k--;
-//					}
-//
-//					else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
-//							&& !ppResponse.getModifiedById().equals(user.getUserId())) {
-//						projectProductResponseList.remove(k);
-//						k--;
-//
-//					}
-//
-//					else if (ppResponse.getStatus().equals(ProjectProductStatus.REVIEWED)) {
-//						projectProductResponseList.remove(k);
-//						k--;
-//					}
-//				}
-//			} else {
-//				projectProductResponseList = projectProductDao.findByActive(true);
-//
-//				if (roles.contains("Approver")) {
-//					Boolean isApprover = true;
-//					roles.remove("Approver");
-//					if (roles.isEmpty() && isApprover) {
-//						for (int k = 0; k < projectProductResponseList.size(); k++) {
-//							ProjectProductResponse ppResponse = projectProductResponseList.get(k);
-//
-//							if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
-//									&& !ppResponse.getCreatedById().equals(user.getUserId())) {
-//								projectProductResponseList.remove(k);
-//								k--;
-//							} else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
-//									&& !ppResponse.getModifiedById().equals(user.getUserId())) {
-//								projectProductResponseList.remove(k);
-//								k--;
-//							} else if (ppResponse.getStatus().equals(ProjectProductStatus.APPROVED)
-//									&& !ppResponse.getModifiedById().equals(user.getUserId())) {
-//								projectProductResponseList.remove(k);
-//								k--;
-//							} else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED)) {
-//								projectProductResponseList.remove(k);
-//								k--;
-//							}
-//						}
-//
-//					}
-//				}
-//
-//				if (roles.contains("Submitter")) {
-//					Boolean isSubmitter = true;
-//					roles.remove("Submitter");
-//					if (roles.isEmpty() && isSubmitter) {
-//						for (int k = 0; k < projectProductResponseList.size(); k++) {
-//							ProjectProductResponse ppResponse = projectProductResponseList.get(k);
-//
-//							if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
-//									&& !ppResponse.getCreatedById().equals(user.getUserId())) {
-//								projectProductResponseList.remove(k);
-//								k--;
-//							} /*
-//								 * else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED) &&
-//								 * !ppResponse.getModifiedById().equals(user.getUserId())) {
-//								 * projectProductResponseList.remove(k); k--; }
-//								 */
-//						}
-//
-//					}
-//				}
-//
-//			}
-//		}
-//		projectProductResponseList = projectProductResponseList.stream()
-//				.filter(projectProduct -> !(projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)
-//						&& !projectProduct.getCreatedById().equals(getUserId())))
-//				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
 			projectProduct
 					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
@@ -796,8 +710,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				throw new ValidationException("You can approve project product after review only");
 			}
 			if (status.equals(ProjectProductStatus.SUBMITTED)
-					&& !projectProductStatus.equals(ProjectProductStatus.DRAFT)) {
-				throw new ValidationException("You can SUBMITTED project product after draft only");
+					&& (!projectProductStatus.equals(ProjectProductStatus.DRAFT)
+							|| !projectProductStatus.equals(ProjectProductStatus.REJECTED))) {
+				throw new ValidationException("You can submit project product after draft/reject only");
 			}
 			if (status.equals(ProjectProductStatus.REVIEWED)
 					&& !projectProductStatus.equals(ProjectProductStatus.SUBMITTED)) {
@@ -977,6 +892,10 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			if (projectProduct.getLicenseTypeName().equals(LicenseTypeEnum.DEMO.name())) {
 				throw new ValidationException("You can't renew demo product");
 			}
+			if (projectProduct.getStatus().equals(ProjectProductStatus.RENEWED)) {
+				throw new ValidationException(
+						String.format("This product (%s) already renewed", projectProduct.getId()));
+			}
 			if (!projectProduct.getStatus().equals(ProjectProductStatus.APPROVED)) {
 				throw new ValidationException(
 						String.format("You can't renew if project product(%s) not approved", projectProduct.getId()));
@@ -1006,6 +925,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			renewedProjectProduct = projectProductDao.save(renewedProjectProduct);
 			projectProductCommentDao.save(new ProjectProductComment("Project Renewed", getUserId(),
 					ProjectProductStatus.RENEWED.name(), renewedProjectProduct.getId()));
+			projectProductDao.update(unmaskId, ProjectProductStatus.RENEWED, getUserId(), new Date());
 			ProjectProductResponse projectProductResponse = projectProductDao
 					.findResponseById(renewedProjectProduct.getId());
 			projectProductResponse.setProductDetail(
