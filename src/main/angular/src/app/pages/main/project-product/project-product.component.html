@@ -188,7 +188,7 @@
                   class="t_save_btn bg-danger"
                   (click)="rejectProductStatus(project)"
                   *ngIf="
-                    project.status == 'SUBMIT' &&
+                    project.status == 'SUBMITTED' &&
                     checkRole('Project Manager') &&
                     hasAuthority('PROJECT_PRODUCT_REJECT')
                   "
