@@ -446,6 +446,94 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		return projectProductResponse;
 	}
 
+	private List<ProjectProductResponse> getProductsForApprover(List<ProjectProductResponse> projectProductResponseList,
+			User user) {
+
+		if (projectProductResponseList.isEmpty() || projectProductResponseList == null) {
+			throw new NotFoundException("no project product found for this user");
+		}
+
+		for (int k = 0; k < projectProductResponseList.size(); k++) {
+			ProjectProductResponse ppResponse = projectProductResponseList.get(k);
+
+			if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
+					&& !ppResponse.getCreatedById().equals(user.getUserId())) {
+				projectProductResponseList.remove(k);
+				k--;
+			} else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
+					&& !ppResponse.getModifiedById().equals(user.getUserId())) {
+				projectProductResponseList.remove(k);
+				k--;
+			} else if (ppResponse.getStatus().equals(ProjectProductStatus.APPROVED)
+					&& !ppResponse.getModifiedById().equals(user.getUserId())) {
+				projectProductResponseList.remove(k);
+				k--;
+			} else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED)) {
+				projectProductResponseList.remove(k);
+				k--;
+			}
+		}
+		return projectProductResponseList;
+
+	}
+
+	private List<ProjectProductResponse> getProductsForProjectManager(User user) {
+		List<ProjectProductResponse> projectProductResponseList = projectProductDao
+				.findByProjectProjectManagerIdAndActive(user.getUserId(), true);
+
+		if (projectProductResponseList.isEmpty() || projectProductResponseList == null) {
+			throw new NotFoundException("no project product found for this user");
+		}
+
+		for (int k = 0; k < projectProductResponseList.size(); k++) {
+			ProjectProductResponse ppResponse = projectProductResponseList.get(k);
+
+			if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
+					&& !ppResponse.getCreatedById().equals(user.getUserId())) {
+				projectProductResponseList.remove(k);
+				k--;
+			}
+
+			else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
+					&& !ppResponse.getModifiedById().equals(user.getUserId())) {
+				projectProductResponseList.remove(k);
+				k--;
+
+			}
+
+			else if (ppResponse.getStatus().equals(ProjectProductStatus.REVIEWED)) {
+				projectProductResponseList.remove(k);
+				k--;
+			}
+		}
+
+		return projectProductResponseList;
+	}
+
+	private List<ProjectProductResponse> getProductsForSubmitter(
+			List<ProjectProductResponse> projectProductResponseList, User user) {
+
+		if (projectProductResponseList.isEmpty() || projectProductResponseList == null) {
+			throw new NotFoundException("no project product found for this user");
+		}
+
+		for (int k = 0; k < projectProductResponseList.size(); k++) {
+			ProjectProductResponse ppResponse = projectProductResponseList.get(k);
+
+			if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
+					&& !ppResponse.getCreatedById().equals(user.getUserId())) {
+				projectProductResponseList.remove(k);
+				k--;
+			} /*
+				 * else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED) &&
+				 * !ppResponse.getModifiedById().equals(user.getUserId())) {
+				 * projectProductResponseList.remove(k); k--; }
+				 */
+		}
+
+		return projectProductResponseList;
+	}
+
 	@Override
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
 	public List<ProjectProductResponse> findAll() {
@@ -453,24 +541,110 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		List<ProjectProductResponse> projectProductResponseList;
 		if (roles.contains("Customer")) {
-			projectProductResponseList = projectProductDao.findByProjectCustomerEmailAndActive(user.getEmail(), true);
+			projectProductResponseList = projectProductDao
+					.findByStatusAndProjectCustomerEmailAndActive(ProjectProductStatus.APPROVED, user.getEmail(), true);
 		} else {
-			Boolean isProjectManager = false;
-			if (roles.contains("Project Manager")) {
-				isProjectManager = true;
-				roles.remove("Project Manager");
-			}
-			if (roles.isEmpty() && isProjectManager) {
-				projectProductResponseList = projectProductDao.findByProjectProjectManagerIdAndActive(user.getUserId(),
-						true);
+
+			projectProductResponseList = projectProductDao.findByActive(true);
+
+			if (roles.contains("SuperAdmin")) {
+
+			} else if (roles.contains("Approver")) {
+				projectProductResponseList = this.getProductsForApprover(projectProductResponseList, user);
+			} else if (roles.contains("Project Manager")) {
+				projectProductResponseList = this.getProductsForProjectManager(user);
 			} else {
-				projectProductResponseList = projectProductDao.findByActive(true);
+				projectProductResponseList = this.getProductsForSubmitter(projectProductResponseList, user);
 			}
 		}
-		projectProductResponseList = projectProductResponseList.stream()
-				.filter(projectProduct -> !(projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)
-						&& !projectProduct.getCreatedById().equals(getUserId())))
-				.collect(Collectors.toList());
+//			Boolean isProjectManager = false;
+//			if (roles.contains("Project Manager")) {
+//				isProjectManager = true;
+//				roles.remove("Project Manager");
+//			}
+//			if (roles.isEmpty() && isProjectManager) {
+//				projectProductResponseList = projectProductDao.findByProjectProjectManagerIdAndActive(user.getUserId(),
+//						true);
+//
+//				for (int k = 0; k < projectProductResponseList.size(); k++) {
+//					ProjectProductResponse ppResponse = projectProductResponseList.get(k);
+//
+//					if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
+//							&& !ppResponse.getCreatedById().equals(user.getUserId())) {
+//						projectProductResponseList.remove(k);
+//						k--;
+//					}
+//
+//					else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
+//							&& !ppResponse.getModifiedById().equals(user.getUserId())) {
+//						projectProductResponseList.remove(k);
+//						k--;
+//
+//					}
+//
+//					else if (ppResponse.getStatus().equals(ProjectProductStatus.REVIEWED)) {
+//						projectProductResponseList.remove(k);
+//						k--;
+//					}
+//				}
+//			} else {
+//				projectProductResponseList = projectProductDao.findByActive(true);
+//
+//				if (roles.contains("Approver")) {
+//					Boolean isApprover = true;
+//					roles.remove("Approver");
+//					if (roles.isEmpty() && isApprover) {
+//						for (int k = 0; k < projectProductResponseList.size(); k++) {
+//							ProjectProductResponse ppResponse = projectProductResponseList.get(k);
+//
+//							if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
+//									&& !ppResponse.getCreatedById().equals(user.getUserId())) {
+//								projectProductResponseList.remove(k);
+//								k--;
+//							} else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
+//									&& !ppResponse.getModifiedById().equals(user.getUserId())) {
+//								projectProductResponseList.remove(k);
+//								k--;
+//							} else if (ppResponse.getStatus().equals(ProjectProductStatus.APPROVED)
+//									&& !ppResponse.getModifiedById().equals(user.getUserId())) {
+//								projectProductResponseList.remove(k);
+//								k--;
+//							} else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED)) {
+//								projectProductResponseList.remove(k);
+//								k--;
+//							}
+//						}
+//
+//					}
+//				}
+//
+//				if (roles.contains("Submitter")) {
+//					Boolean isSubmitter = true;
+//					roles.remove("Submitter");
+//					if (roles.isEmpty() && isSubmitter) {
+//						for (int k = 0; k < projectProductResponseList.size(); k++) {
+//							ProjectProductResponse ppResponse = projectProductResponseList.get(k);
+//
+//							if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
+//									&& !ppResponse.getCreatedById().equals(user.getUserId())) {
+//								projectProductResponseList.remove(k);
+//								k--;
+//							} /*
+//								 * else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED) &&
+//								 * !ppResponse.getModifiedById().equals(user.getUserId())) {
+//								 * projectProductResponseList.remove(k); k--; }
+//								 */
+//						}
+//
+//					}
+//				}
+//
+//			}
+//		}
+//		projectProductResponseList = projectProductResponseList.stream()
+//				.filter(projectProduct -> !(projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)
+//						&& !projectProduct.getCreatedById().equals(getUserId())))
+//				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
 			projectProduct
 					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));

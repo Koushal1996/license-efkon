@@ -71,6 +71,9 @@ public class ProjectProductResponse implements Response {
 	@JsonIgnore
 	private Long createdById;
 
+	@JsonIgnore
+	private Long modifiedById;
+
 	private List<LicenseResponse> licenses;
 
 	private List<ProjectProductCommentResponse> comments;
@@ -78,7 +81,7 @@ public class ProjectProductResponse implements Response {
 	public ProjectProductResponse(Long id, Integer licenseCount, Long licenseTypeId, String licenseTypeName,
 			String licenseTypeCode, ExpirationPeriodType expirationPeriodType, Integer expirationMonthCount,
 			String startDate, String endDate, ProjectProductStatus status, String createdAt, Date modifiedAt,
-			Long projectId, Long productDetailId, Long createdById, Long pastProjectProductId) {
+			Long projectId, Long productDetailId, Long createdById, Long pastProjectProductId, Long modifiedById) {
 		super();
 		this.id = id;
 		this.licenseCount = licenseCount;
@@ -91,11 +94,12 @@ public class ProjectProductResponse implements Response {
 		this.endDate = endDate;
 		this.status = status;
 		this.createdAt = createdAt;
-		this.modifiedAt = modifiedAt;
 		this.projectId = projectId;
 		this.productDetailId = productDetailId;
 		this.createdById = createdById;
 		this.pastProjectProductId = pastProjectProductId;
+		this.modifiedAt = modifiedAt;
+		this.modifiedById = modifiedById;
 	}
 
 	public Long getId() {
@@ -242,6 +246,14 @@ public class ProjectProductResponse implements Response {
 		this.createdById = createdById;
 	}
 
+	public Long getModifiedById() {
+		return modifiedById;
+	}
+
+	public void setModifiedById(Long modifiedById) {
+		this.modifiedById = modifiedById;
+	}
+
 	public List<ProjectProductCommentResponse> getComments() {
 		return comments;
 	}
@@ -265,7 +277,7 @@ public class ProjectProductResponse implements Response {
 					projectProduct.getLicenseType().getName(), projectProduct.getLicenseType().getCode(),
 					projectProduct.getExpirationPeriodType(), projectProduct.getExpirationMonthCount(),
 					projectProduct.getStartDate(), projectProduct.getEndDate(), projectProduct.getStatus(),
-					projectProduct.getCreatedAt(), projectProduct.getModifiedAt(), null, null, null, null);
+					projectProduct.getCreatedAt(), projectProduct.getModifiedAt(), null, null, null, null, null);
 			return response;
 		}
 		return null;
