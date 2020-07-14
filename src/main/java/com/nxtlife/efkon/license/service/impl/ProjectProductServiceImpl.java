@@ -501,10 +501,10 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 
 			}
 
-			else if (ppResponse.getStatus().equals(ProjectProductStatus.REVIEWED)) {
-				projectProductResponseList.remove(k);
-				k--;
-			}
+//			else if (ppResponse.getStatus().equals(ProjectProductStatus.REVIEWED)) {
+//				projectProductResponseList.remove(k);
+//				k--;
+//			}
 		}
 
 		return projectProductResponseList;
