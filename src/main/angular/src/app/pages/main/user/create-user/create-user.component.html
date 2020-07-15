@@ -140,13 +140,19 @@
                     >Only numbers are required</span
                   >
                   <span
-                    *ngIf="createUserForm.get('contactNo').errors.maxlength"
+                    *ngIf="
+                      createUserForm.get('contactNo').errors.maxlength &&
+                      !createUserForm.get('contactNo').errors.pattern
+                    "
                     class="error"
                   >
                     maximum 10 digits allowed</span
                   >
                   <span
-                    *ngIf="createUserForm.get('contactNo').errors.minlength"
+                    *ngIf="
+                      createUserForm.get('contactNo').errors.minlength &&
+                      !createUserForm.get('contactNo').errors.pattern
+                    "
                     class="error"
                     >mimimum 10 digits required</span
                   >

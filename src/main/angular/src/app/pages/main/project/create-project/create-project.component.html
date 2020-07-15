@@ -46,7 +46,6 @@
                       class="field_error"
                       >only alphabets are allowed</span
                     >
-                    
                   </span>
                 </div>
               </div>
@@ -120,14 +119,16 @@
                     >
                     <span
                       *ngIf="
-                        projectForm.get('customerContactNo').errors.maxlength
+                        projectForm.get('customerContactNo').errors.maxlength &&
+                        !projectForm.get('customerContactNo').errors.pattern
                       "
                       class="field_error"
                       >maximum 10 digits is required</span
                     >
                     <span
                       *ngIf="
-                        projectForm.get('customerContactNo').errors.minlength
+                        projectForm.get('customerContactNo').errors.minlength &&
+                        !projectForm.get('customerContactNo').errors.pattern
                       "
                       class="field_error"
                       >minimum 10 digits is required</span
@@ -146,9 +147,9 @@
                     name="projectTypeId"
                     formControlName="projectTypeId"
                   >
-                    <option value="" disabled>Project Type</option>
+                    <!-- <option value="" disabled>Project Type</option> -->
                     <option
-                      *ngFor="let type of projectTypes"
+                      *ngFor="let type of activeProjectType"
                       value="{{ type.id }}"
                     >
                       {{ type.name }}
@@ -180,7 +181,7 @@
                     name="projectManagerId"
                     formControlName="projectManagerId"
                   >
-                    <option value="" disabled>Project Manager</option>
+                    <!-- <option value="" disabled>Project Manager</option> -->
                     <option
                       *ngFor="let Manager of projectManager"
                       value="{{ Manager.id }}"

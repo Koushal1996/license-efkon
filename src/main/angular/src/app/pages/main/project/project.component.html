@@ -264,7 +264,10 @@
                         </p>
                       </div> -->
                       <h3>Added Product Details</h3>
-                      <table class="">
+                      <table
+                        class=""
+                        *ngFor="let pro of project.products; index as i"
+                      >
                         <tr
                           class="text-primary"
                           *ngIf="project.products && project.products.length"
@@ -362,7 +365,8 @@
                               class="t_save_btn ml-2 top_tooltip"
                               type="button"
                               *ngIf="
-                                pro.status == 'DRAFT' &&
+                                (pro.status == 'DRAFT' ||
+                                  pro.status == 'REJECTED') &&
                                 hasAuthority('PROJECT_PRODUCT_SUBMIT')
                               "
                               (click)="submitProductStatus(pro)"

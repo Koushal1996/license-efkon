@@ -139,10 +139,12 @@ export class LoginComponent implements OnInit {
     console.log(szRoll);
     if (szRoll == "admin") {
       this.router.navigate(["/roles"]);
-    } else if (szRoll == "Customer") {
+    }
+    // else if (szRoll == "Customer" || ) {
+    //   this.router.navigate(["/dashboard"]);
+    //}
+    else {
       this.router.navigate(["/dashboard"]);
-    } else {
-      this.router.navigate(["/projects"]);
     }
   }
 }

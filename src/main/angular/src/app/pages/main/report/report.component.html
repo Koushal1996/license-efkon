@@ -12,7 +12,7 @@
             </tr>
           </thead>
           <tbody id="accordion">
-            <ng-container *ngFor="let report of licebseReports; index as i">
+            <ng-container *ngFor="let report of licenseReports; index as i">
               <tr id="{{ report.id }}" class="">
                 <td>{{ i + 1 }}</td>
                 <td>{{ report.name }}</td>
@@ -51,13 +51,17 @@
                         <thead class="users_table_hader">
                           <tr>
                             <th scope="col">#</th>
-
-                            <th scope="col">startDate</th>
-                            <th scope="col">endDate</th>
-                            <th scope="col">expirationMonthCount</th>
-                            <th scope="col">expirationPeriodType</th>
-                            <th scope="col">licenseCount</th>
-                            <th scope="col">licenseTypeName</th>
+                            <th scope="col">Product Detail</th>
+                            <th scope="col">No of License</th>
+                            <th scope="col">License Type</th>
+                            <th scope="col" style="min-width: 100px;">
+                              Start Date
+                            </th>
+                            <th scope="col" style="min-width: 100px;">
+                              End Date
+                            </th>
+                            <!-- <th scope="col">Expiry(in Month)</th> -->
+                            <!-- <th scope="col">expirationPeriodType</th> -->
                             <th scope="col">status</th>
                           </tr>
                         </thead>
@@ -69,12 +73,33 @@
                             "
                           >
                             <td>{{ i + 1 }}</td>
-                            <td>{{ report.startDate }}</td>
-                            <td>{{ report.endDate }}</td>
-                            <td>{{ report.expirationMonthCount }}</td>
-                            <td>{{ report.expirationPeriodType }}</td>
+                            <td class="product_family">
+                              <span>{{
+                                report.productDetail.productFamilyName
+                              }}</span>
+                              <span>{{
+                                report.productDetail.productCodeName
+                              }}</span>
+                              <span>
+                                {{ report.productDetail.versionName }}
+                              </span>
+                              <!-- <span
+                                class="badge badge-warning"
+                                *ngIf="project.pastProjectProductId"
+                              >
+                                RENEWED
+                              </span>
+                              <span class="badge badge-secondary" *ngIf="hasExpired(project)"
+                                >EXPIRED
+                              </span> -->
+                            </td>
                             <td>{{ report.licenseCount }}</td>
                             <td>{{ report.licenseTypeName }}</td>
+                            <td>{{ report.startDate }}</td>
+                            <td>{{ report.endDate }}</td>
+                            <!-- <td>{{ report.expirationMonthCount }}</td> -->
+                            <!-- <td>{{ report.expirationPeriodType }}</td> -->
+
                             <td>{{ report.status }}</td>
                           </tr>
                         </tbody>
@@ -89,7 +114,7 @@
         <div *ngIf="isloader" class="loader">
           <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
         </div>
-        <div class="no_product" *ngIf="!licebseReports?.length && !isloader">
+        <div class="no_product" *ngIf="!licenseReports?.length && !isloader">
           <h2>
             <img src="assets/images/alert.svg" alt="" /> No Reports Available
             Now
