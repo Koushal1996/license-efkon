@@ -136,11 +136,16 @@ export class DetailComponent implements OnInit {
   }
 
   getProductDetail() {
-    this._productService.getProductDetails().subscribe((data) => {
-      this.productDetail = data;
-      console.log(data);
-      this.isloader = false;
-    });
+    this._productService.getProductDetails().subscribe(
+      (data) => {
+        this.productDetail = data;
+        console.log(data);
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
   }
 
   close() {

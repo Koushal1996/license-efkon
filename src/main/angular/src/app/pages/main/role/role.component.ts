@@ -39,6 +39,7 @@ export class RoleComponent implements OnInit {
       },
       (error) => {
         console.log(error);
+        this.isloader = false;
       }
     );
 

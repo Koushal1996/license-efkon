@@ -188,7 +188,9 @@ export class ProjectComponent implements OnInit {
         this.projectsCopy = JSON.parse(JSON.stringify(data));
         this.isloader = false;
       },
-      (error) => {}
+      (error) => {
+        this.isloader = false;
+      }
     );
   }
   createpProject() {

@@ -824,9 +824,9 @@ export class ProjectProductComponent implements OnInit {
     this._projectService.upLoadLicenseDetailByExcel(formData).subscribe(
       (data) => {
         console.log(data);
-        const customerEmail = data.filter((item) => item.accessId);
-        console.log(customerEmail);
-        if (customerEmail.length < 1) {
+        const fileAcessId = data.filter((item) => item.accessId);
+        console.log(fileAcessId);
+        if (fileAcessId.length < 1) {
           swal("File not uploaded");
           this.ProjectIdUploadFile.licenses = data;
           this.form.controls["search"].reset();

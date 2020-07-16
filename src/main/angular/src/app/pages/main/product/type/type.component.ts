@@ -44,11 +44,16 @@ export class TypeComponent implements OnInit {
     return authorities.includes(authority);
   }
   getProjectTypes() {
-    this.projectservice.getProjectTypes().subscribe((data) => {
-      this.projectTypes = data;
-      console.log(data);
-      this.isloader = false;
-    });
+    this.projectservice.getProjectTypes().subscribe(
+      (data) => {
+        this.projectTypes = data;
+        console.log(data);
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
   }
 
   deleteProjectTypes(type) {
