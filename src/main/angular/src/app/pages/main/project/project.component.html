@@ -254,20 +254,8 @@
                           alt=""
                         />
                       </div>
-                      <!-- <div
-                        *ngIf="
-                          !project.products?.length && !project.productLoader
-                        "
-                      >
-                        <p>
-                          No Products Available Now
-                        </p>
-                      </div> -->
                       <h3>Added Product Details</h3>
-                      <table
-                        class=""
-                        *ngFor="let pro of project.products; index as i"
-                      >
+                      <table class="">
                         <tr
                           class="text-primary"
                           *ngIf="project.products && project.products.length"
