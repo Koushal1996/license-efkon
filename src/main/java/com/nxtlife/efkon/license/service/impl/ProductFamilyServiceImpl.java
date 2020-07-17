@@ -164,11 +164,11 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		if (!productFamilyDao.existsById(unmaskId)) {
 			throw new NotFoundException(String.format("Product Family (%s) not found", id));
 		}
-//		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
-//			throw new ValidationException(String.format(
-//					"Product family(%s) can't be delete as some of the products are related to this product family ",
-//					unmaskId));
-//		}
+		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
+			throw new ValidationException(String.format(
+					"Product family(%s) can't be delete as some of the products are related to this product family ",
+					unmaskId));
+		}
 		productCodeDao.deleteByProductFamilyId(unmaskId, getUserId(), new Date());
 		int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {

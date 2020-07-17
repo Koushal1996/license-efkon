@@ -37,7 +37,7 @@ public class ProductDetailController {
 	@Autowired
 	public ProductDetailService productDetailService;
 
-	@GetMapping(value = "product/details", produces = { "application/json" })
+	@GetMapping(value = "product/details/all", produces = { "application/json" })
 	@Operation(summary = "Find all product details", description = "return list of product details ", tags = {
 			"Product Detail" })
 	@ApiResponses(value = {
@@ -45,6 +45,16 @@ public class ProductDetailController {
 			@ApiResponse(description = "If user doesn't have access to fetch list of product details", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProductFamilyResponse> findAll() {
 		return productDetailService.findAll();
+	}
+	
+	@GetMapping(value = "product/details", produces = { "application/json" })
+	@Operation(summary = "Find all product details", description = "return list of product details ", tags = {
+			"Product Detail" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "product details successfully fetched", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProductFamilyResponse.class)))),
+			@ApiResponse(description = "If user doesn't have access to fetch list of product details", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<ProductFamilyResponse> findByActiveTrue() {
+		return productDetailService.findByActiveTrue();
 	}
 
 	@PostMapping(value = "product/detail", consumes = { "application/json" }, produces = { "application/json" })

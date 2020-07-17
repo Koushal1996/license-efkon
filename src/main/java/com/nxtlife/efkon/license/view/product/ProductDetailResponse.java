@@ -11,6 +11,7 @@ public class ProductDetailResponse implements Response {
 
 	@Schema(description = "Id of the product detail")
 	private Long id;
+	private Boolean active;
 
 	@Schema(description = "Description of the product detail")
 	private String description;
@@ -45,11 +46,12 @@ public class ProductDetailResponse implements Response {
 	@Schema(description = "version of product detail")
 	private VersionResponse version;
 
-	public ProductDetailResponse(Long id, String description, Long productFamilyId, String productFamilyName,
-			String productFamilyCode, String productFamilyDescription, Long productCodeId, String productCodeName,
-			String productCodeCode, Long versionId, String versionVersion) {
+	public ProductDetailResponse(Long id, Boolean active, String description, Long productFamilyId,
+			String productFamilyName, String productFamilyCode, String productFamilyDescription, Long productCodeId,
+			String productCodeName, String productCodeCode, Long versionId, String versionVersion) {
 		super();
 		this.id = id;
+		this.active = active;
 		this.description = description;
 		this.productFamilyId = productFamilyId;
 		this.productFamilyName = productFamilyName;
@@ -68,6 +70,14 @@ public class ProductDetailResponse implements Response {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public String getDescription() {

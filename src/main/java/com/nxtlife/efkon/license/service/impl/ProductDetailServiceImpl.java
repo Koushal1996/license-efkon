@@ -73,7 +73,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_FETCH)
-	public List<ProductFamilyResponse> findAll() {
+	public List<ProductFamilyResponse> findByActiveTrue() {
 		List<ProductDetailResponse> productDetailResponseList = productDetailDao
 				.findByActiveOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc(true);
 		Long familyId = null, codeId = null;
@@ -85,7 +85,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 			if (!productDetail.getProductFamilyId().equals(familyId)) {
 				productFamily = new ProductFamilyResponse(unmask(productDetail.getProductFamilyId()),
 						productDetail.getProductFamilyName(), productDetail.getProductFamilyCode(),
-						productDetail.getProductFamilyDescription());
+						productDetail.getProductFamilyDescription(), null);
 				productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
 						productDetail.getProductCodeName());
 				version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
@@ -118,6 +118,58 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		}
 		return productFamilies;
 	}
+	
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_DETAIL_FETCH)
+	public List<ProductFamilyResponse> findAll() {
+		List<ProductDetailResponse> productDetailResponseList = productDetailDao
+				.findByOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc();
+		Long familyId = null, codeId = null;
+		List<ProductFamilyResponse> productFamilies = new ArrayList<>();
+		ProductFamilyResponse productFamily = null;
+		ProductCodeResponse productCode = null;
+		VersionResponse version;
+		for (ProductDetailResponse productDetail : productDetailResponseList) {
+			if (!productDetail.getProductFamilyId().equals(familyId)) {
+				productFamily = new ProductFamilyResponse(unmask(productDetail.getProductFamilyId()),
+						productDetail.getProductFamilyName(), productDetail.getProductFamilyCode(),
+						productDetail.getProductFamilyDescription(), null);
+				productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
+						productDetail.getProductCodeName());
+				version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
+				version.setProductDetailId(unmask(productDetail.getId()));
+				version.setDescription(productDetail.getDescription());
+				version.setActive(productDetail.getActive());
+				productCode.setVersions(new ArrayList<>());
+				productCode.getVersions().add(version);
+				productFamily.setProductCodes(new ArrayList<>());
+				productFamily.getProductCodes().add(productCode);
+				productFamilies.add(productFamily);
+			} else {
+				if (!productDetail.getProductCodeId().equals(codeId)) {
+					productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
+							productDetail.getProductCodeName());
+					version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
+					version.setProductDetailId(unmask(productDetail.getId()));
+					version.setDescription(productDetail.getDescription());
+					version.setActive(productDetail.getActive());
+					productCode.setVersions(new ArrayList<>());
+					productCode.getVersions().add(version);
+					productFamily.getProductCodes().add(productCode);
+				} else {
+					version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
+					version.setProductDetailId(unmask(productDetail.getId()));
+					version.setDescription(productDetail.getDescription());
+					version.setActive(productDetail.getActive());
+					productCode.getVersions().add(version);
+				}
+			}
+			familyId = productDetail.getProductFamilyId();
+			codeId = productDetail.getProductCodeId();
+		}
+		return productFamilies;
+	}
+
 
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_CREATE)

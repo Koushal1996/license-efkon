@@ -11,6 +11,9 @@ public class VersionResponse implements Response {
 
 	@Schema(description = "Id of the version")
 	private Long id;
+	
+	@Schema(description = "active")
+	private Boolean active;
 
 	@Schema(description = "Version of the product", example = "2.2")
 	private String version;
@@ -32,6 +35,14 @@ public class VersionResponse implements Response {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
 	}
 
 	public String getVersion() {
