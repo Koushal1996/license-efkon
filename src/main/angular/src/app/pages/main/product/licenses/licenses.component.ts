@@ -40,11 +40,16 @@ export class LicensesComponent implements OnInit {
     return authorities.includes(authority);
   }
   getLicenseType() {
-    this.projectservice.getLicenseType().subscribe((data) => {
-      this.licenseType = data;
-      console.log(data);
-      this.isloader = false;
-    });
+    this.projectservice.getLicenseType().subscribe(
+      (data) => {
+        this.licenseType = data;
+        console.log(data);
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
   }
 
   editMonthCount(license) {

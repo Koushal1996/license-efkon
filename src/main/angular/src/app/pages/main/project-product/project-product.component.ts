@@ -114,8 +114,8 @@ export class ProjectProductComponent implements OnInit {
   }
   hasExpired(project) {
     let currentDate = new Date().toISOString().split("T")[0];
-    console.log("current" + currentDate);
-    console.log("end" + project.endDate);
+    //console.log("current" + currentDate);
+    // console.log("end" + project.endDate);
     if (currentDate >= project.endDate) {
       //return false;
       return true;
@@ -185,15 +185,15 @@ export class ProjectProductComponent implements OnInit {
           start = false;
           count = 0;
         }
-        //console.log(this.filterStatus);
         console.log(this.productStatusValue);
-
+        this.filterStatusForm.controls["productStatus"].patchValue("All");
         if (this.productStatusValue) {
           this.filterStatusForm
             .get("productStatus")
             .patchValue(this.productStatusValue);
-        } else {
-          this.filterStatusForm.controls["productStatus"].patchValue("All");
+          // this.filterStatusForm.controls["productStatus"].patchValue(
+          //   this.productStatusValue
+          //);
         }
         console.log(data);
         this.isloader = false;
@@ -639,10 +639,10 @@ export class ProjectProductComponent implements OnInit {
               console.log(data);
               //this.selectedProduct = data;
               this.selectedProduct.status = data.status;
-              this.selectedProduct.endDate = data.endDate;
-              this.selectedProduct.startDate = data.startDate;
-              this.selectedProduct.expirationMonthCount =
-                data.expirationMonthCount;
+              // this.selectedProduct.endDate = data.endDate;
+              // this.selectedProduct.startDate = data.startDate;
+              // this.selectedProduct.expirationMonthCount =
+              //   data.expirationMonthCount;
               this.showRenewModal = false;
               this.popUpStartDateForm.reset();
               $("#" + this.selectedProduct.id).removeClass("highlight");
@@ -778,25 +778,35 @@ export class ProjectProductComponent implements OnInit {
   }
 
   exportProjectProducts() {
-    this._projectService.getProjectProductsExcel().subscribe((data) => {
-      console.log(data);
-      const blob = new Blob([data.body], {
-        type:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      //FileSaver.saveAs(blob, data.headers.get("fileName"));
-      FileSaver.saveAs(blob, "ProjectProducts");
-    });
+    this._projectService.getProjectProductsExcel().subscribe(
+      (data) => {
+        console.log(data);
+        const blob = new Blob([data.body], {
+          type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        //FileSaver.saveAs(blob, data.headers.get("fileName"));
+        FileSaver.saveAs(blob, "ProjectProducts");
+      },
+      (error) => {
+        swal("Error");
+      }
+    );
   }
   PdfProjectProducts() {
-    this._projectService.getProjectProductsPdf().subscribe((data) => {
-      console.log(data);
-      const blob = new Blob([data.body], {
-        type: "  application/pdf;base64",
-      });
-      //FileSaver.saveAs(blob, data.headers.get("fileName"));
-      FileSaver.saveAs(blob, "ProjectProducts");
-    });
+    this._projectService.getProjectProductsPdf().subscribe(
+      (data) => {
+        console.log(data);
+        const blob = new Blob([data.body], {
+          type: "  application/pdf;base64",
+        });
+        //FileSaver.saveAs(blob, data.headers.get("fileName"));
+        FileSaver.saveAs(blob, "ProjectProducts");
+      },
+      (error) => {
+        swal("Error");
+      }
+    );
   }
 
   uploadedFile(event, project) {
@@ -814,9 +824,9 @@ export class ProjectProductComponent implements OnInit {
     this._projectService.upLoadLicenseDetailByExcel(formData).subscribe(
       (data) => {
         console.log(data);
-        const customerEmail = data.filter((item) => item.accessId);
-        console.log(customerEmail);
-        if (customerEmail.length < 1) {
+        const fileAcessId = data.filter((item) => item.accessId);
+        console.log(fileAcessId);
+        if (fileAcessId.length < 1) {
           swal("File not uploaded");
           this.ProjectIdUploadFile.licenses = data;
           this.form.controls["search"].reset();

@@ -54,6 +54,7 @@ export class ProjectComponent implements OnInit {
   selectedComment: any;
   form: FormGroup;
   userRoles: any[] = [];
+  selectedProject: any;
 
   constructor(
     private projectservice: ProjectService,
@@ -136,8 +137,8 @@ export class ProjectComponent implements OnInit {
   }
   hasExpired(pro) {
     let currentDate = new Date().toISOString().split("T")[0];
-    console.log("current" + currentDate);
-    console.log("end" + pro.endDate);
+    //console.log("current" + currentDate);
+    // console.log("end" + pro.endDate);
     if (currentDate >= pro.endDate) {
       //return false;
       return true;
@@ -187,7 +188,9 @@ export class ProjectComponent implements OnInit {
         this.projectsCopy = JSON.parse(JSON.stringify(data));
         this.isloader = false;
       },
-      (error) => {}
+      (error) => {
+        this.isloader = false;
+      }
     );
   }
   createpProject() {
@@ -487,6 +490,7 @@ export class ProjectComponent implements OnInit {
     }
   }
   renewProductStatus(pro, project) {
+    this.selectedProject = project;
     $("#" + pro.id).addClass("highlight");
     // console.log(project.productsCount);
     this.selectedProduct = pro;
@@ -540,14 +544,15 @@ export class ProjectComponent implements OnInit {
             (data) => {
               console.log(data);
               this.selectedProduct.status = data.status;
-              this.selectedProduct.endDate = data.endDate;
-              this.selectedProduct.startDate = data.startDate;
-              this.selectedProduct.expirationMonthCount =
-                data.expirationMonthCount;
+              // this.selectedProduct.endDate = data.endDate;
+              // this.selectedProduct.startDate = data.startDate;
+              // this.selectedProduct.expirationMonthCount =
+              //   data.expirationMonthCount;
               this.showRenewModal = false;
               this.popUpStartDateForm.reset();
               this.productsCount(this.totolProductsCount);
-              this.getProjects();
+              //this.selectedProject.push(data);
+              //this.getProjects();
               //swal(" Renewed successfully!");
               swal(
                 `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) renewed successfully!`

@@ -18,6 +18,7 @@ export class CreateProjectComponent implements OnInit {
   projectcustomers: any[] = [];
   loaderbutton: boolean = false;
   projectId: any;
+  activeProjectType: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -96,18 +97,23 @@ export class CreateProjectComponent implements OnInit {
   getProjectTypes() {
     this._projectService.getProjectTypes().subscribe((data) => {
       this.projectTypes = data;
+      console.log(data);
+      this.activeProjectType = this.projectTypes.filter((p) => p.active);
+      console.log(this.activeProjectType);
     });
   }
 
   getProjectManagers() {
     this._projectService.getProjectManager().subscribe((data) => {
       this.projectManager = data;
+      console.log(data);
     });
   }
 
   getCustomer() {
     this._projectService.getCustomer().subscribe((data) => {
       this.projectcustomers = data;
+      console.log(data);
     });
   }
 

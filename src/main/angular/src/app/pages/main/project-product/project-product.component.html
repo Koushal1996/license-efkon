@@ -32,8 +32,6 @@
 
     <form [formGroup]="filterStatusForm">
       <div class="search_bar">
-        <!-- <label>Product Status </label> -->
-        <!-- <span class="fa fa-filter" aria-hidden="true"></span> -->
         <label>Filter by Status</label>
         <select
           class="form-control"
@@ -162,7 +160,8 @@
                   type="button"
                   class="t_save_btn"
                   *ngIf="
-                    project.status == 'DRAFT' &&
+                    (project.status == 'DRAFT' ||
+                      project.status == 'REJECTED') &&
                     hasAuthority('PROJECT_PRODUCT_SUBMIT')
                   "
                   (click)="submitProductStatus(project)"
@@ -184,6 +183,7 @@
                 >
                   Recall
                 </button>
+
                 <button
                   type="button"
                   class="t_save_btn"

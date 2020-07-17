@@ -39,7 +39,9 @@ export class UserComponent implements OnInit {
         this.isloader = false;
         this.filterRoleForm.controls["productStatus"].patchValue("All");
       },
-      (error) => {}
+      (error) => {
+        this.isloader = false;
+      }
     );
     this.serachUserForm = this.fb.group({
       name: [""],

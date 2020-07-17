@@ -9,7 +9,7 @@ import { ProjectService } from "./../../../services/project/project.service";
   styleUrls: ["./report.component.scss"],
 })
 export class ReportComponent implements OnInit {
-  licebseReports: any;
+  licenseReports: any;
   projects = [];
   licebseReportsByEmail: any;
   isloader: boolean = true;
@@ -24,7 +24,7 @@ export class ReportComponent implements OnInit {
     this.reportservice.getProjectProductReport().subscribe(
       (data) => {
         console.log(data);
-        this.licebseReports = data;
+        this.licenseReports = data;
         this.isloader = false;
       },
       (error) => {
