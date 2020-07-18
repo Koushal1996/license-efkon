@@ -9,6 +9,7 @@
               <th scope="col">Customer name</th>
               <th scope="col">Total License Distributed</th>
               <th scope="col">Total Product Distributed</th>
+              <th>Export project Product</th>
             </tr>
           </thead>
           <tbody id="accordion">
@@ -26,6 +27,14 @@
                   class="cursor"
                 >
                   {{ report.productCount }}
+                </td>
+                <td>
+                  <button (click)="getProjectProductReportExcel(report)">
+                    <span style="min-width: 120px;">Export report</span>
+                  </button>
+                  <button (click)="getProjectProductReportPdf(report)">
+                    <span style="min-width: 120px;">Download Pdf</span>
+                  </button>
                 </td>
               </tr>
               <tr>
@@ -61,8 +70,8 @@
                               End Date
                             </th>
                             <!-- <th scope="col">Expiry(in Month)</th> -->
-                            <!-- <th scope="col">expirationPeriodType</th> -->
-                            <th scope="col">status</th>
+                            <th scope="col">Expiration Period Type</th>
+                            <!-- <th scope="col">status</th> -->
                           </tr>
                         </thead>
                         <tbody>
@@ -98,9 +107,9 @@
                             <td>{{ report.startDate }}</td>
                             <td>{{ report.endDate }}</td>
                             <!-- <td>{{ report.expirationMonthCount }}</td> -->
-                            <!-- <td>{{ report.expirationPeriodType }}</td> -->
+                            <td>{{ report.expirationPeriodType }}</td>
 
-                            <td>{{ report.status }}</td>
+                            <!-- <td>{{ report.status }}</td> -->
                           </tr>
                         </tbody>
                       </table>

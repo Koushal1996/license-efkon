@@ -67,7 +67,7 @@ export class RoleComponent implements OnInit {
     $("#" + item.id).addClass("highlight");
     swal({
       //title: "You sure?",
-      text: `Are you sure, You want to delete ${item.name}?`,
+      text: `Are you sure, You want to deactivate Role(${item.name})?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -79,7 +79,7 @@ export class RoleComponent implements OnInit {
         this._adminService.deleteRole(item.id).subscribe(
           (data) => {
             item.active = false;
-            swal(`${item.name} deleted successfully!`);
+            swal(`Role (${item.name}) deactivated successfully!`);
             $("#" + item.id).removeClass("highlight");
           },
           (error) => {
@@ -94,7 +94,7 @@ export class RoleComponent implements OnInit {
     $("#" + item.id).addClass("highlight");
     swal({
       //title: "Are you sure?",
-      text: `Are you sure, You want to activate ${item.name}?`,
+      text: `Are you sure, You want to activate Role(${item.name})?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -106,7 +106,7 @@ export class RoleComponent implements OnInit {
         this._adminService.activateRole(item.id).subscribe(
           (data) => {
             item.active = true;
-            swal(`${item.name} activated successfully!`);
+            swal(`Role (${item.name}) activated successfully!`);
             $("#" + item.id).removeClass("highlight");
           },
           (error) => {

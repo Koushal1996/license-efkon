@@ -41,6 +41,7 @@ export class CreateRoleComponent implements OnInit {
   authoritiesCopy: any;
   checkbox: boolean;
   totalAuthoritiesCopy: any;
+  serachAuthorityForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -70,6 +71,9 @@ export class CreateRoleComponent implements OnInit {
     });
 
     this.patchavalue();
+    this.serachAuthorityForm = this.fb.group({
+      name: [""],
+    });
   }
   showAuthoities() {
     this._adminService.getauthorities().subscribe(
@@ -81,7 +85,7 @@ export class CreateRoleComponent implements OnInit {
         //);
         this.totalAuthoritiesCopy = this.authoritiesCopy.length;
         //console.log("get" + this.roleValues.authorities.length);
-        console.log("gettttcopy" + this.roleValues);
+        //console.log("gettttcopy" + this.roleValues);
         if (this.roleValues != undefined) {
           if (this.totalAuthoritiesCopy == this.roleValues.authorities.length) {
             this.checkbox = true;
@@ -207,7 +211,7 @@ export class CreateRoleComponent implements OnInit {
           (data) => {
             console.log();
             this.route.navigate(["roles"]);
-            swal("Role updated successfully!");
+            swal(`Role (${data.name}) updated successfully!`);
           },
           (error) => {
             this.loaderbutton = false;
@@ -232,5 +236,18 @@ export class CreateRoleComponent implements OnInit {
 
   cancel() {
     this.patchavalue();
+  }
+  onSearchAuthority() {
+    let key = this.serachAuthorityForm.get("name").value;
+    console.log(key);
+    if (key) {
+      this.authorities = this.authoritiesCopy.filter(
+        (item) =>
+          //console.log(item)
+          item.name.toLowerCase().indexOf(key.toLowerCase()) > -1
+      );
+    } else {
+      this.authorities = this.authoritiesCopy;
+    }
   }
 }

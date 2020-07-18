@@ -70,6 +70,17 @@
                   </div>
 
                   <div class="authorities_main" id="authorities">
+                    <form [formGroup]="serachAuthorityForm">
+                      <div class="search_bar">
+                        <input
+                          type="text"
+                          formControlName="name"
+                          class="form-control"
+                          placeholder=" Search here.."
+                          (keyup)="onSearchAuthority()"
+                        />
+                      </div>
+                    </form>
                     <div class="check_main">
                       <input
                         id="select-all"
