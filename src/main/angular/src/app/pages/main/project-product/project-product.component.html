@@ -128,7 +128,7 @@
                 <br />
                 <a
                   class="comments"
-                  *ngIf="project.comments.length"
+                  *ngIf="project.comments?.length"
                   (click)="showComments(project); $event.stopPropagation()"
                   >comments
                 </a>
