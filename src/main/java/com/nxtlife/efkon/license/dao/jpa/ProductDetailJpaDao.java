@@ -19,8 +19,8 @@ public interface ProductDetailJpaDao extends JpaRepository<ProductDetail, Long> 
 
 	public ProductDetailResponse findResponseById(Long id);
 
-	// public List<ProductDetailResponse> findByActive(Boolean active);
-
+	public List<ProductDetailResponse> findByOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc();
+	
 	public List<ProductDetailResponse> findByActiveOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc(
 			Boolean active);
 

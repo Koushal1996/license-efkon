@@ -2,9 +2,7 @@ package com.nxtlife.efkon.license.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,34 +73,19 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_FETCH)
-	public List<ProductFamilyResponse> findAll() {
+	public List<ProductFamilyResponse> findByActiveTrue() {
 		List<ProductDetailResponse> productDetailResponseList = productDetailDao
 				.findByActiveOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc(true);
-
-		Map<Long, ProductFamilyResponse> productFamilyCollector = new HashMap<Long, ProductFamilyResponse>();
-
 		Long familyId = null, codeId = null;
 		List<ProductFamilyResponse> productFamilies = new ArrayList<>();
 		ProductFamilyResponse productFamily = null;
 		ProductCodeResponse productCode = null;
 		VersionResponse version;
 		for (ProductDetailResponse productDetail : productDetailResponseList) {
-
-			if (productFamilyCollector.containsKey(productDetail.getProductFamilyId())) {
-				productDetail.setProductFamily(productFamilyCollector.get(productDetail.getProductFamilyId()));
-			} else {
-				ProductFamilyResponse productFamilyResponse = productFamilyDao
-						.findResponseById(unmask(productDetail.getProductFamilyId()));
-				if (productFamilyResponse != null) {
-					productFamilyCollector.put(productDetail.getProductFamilyId(), productFamilyResponse);
-				}
-				productDetail.setProductFamily(productFamilyCollector.get(productDetail.getProductFamilyId()));
-			}
-
 			if (!productDetail.getProductFamilyId().equals(familyId)) {
 				productFamily = new ProductFamilyResponse(unmask(productDetail.getProductFamilyId()),
 						productDetail.getProductFamilyName(), productDetail.getProductFamilyCode(),
-						productDetail.getProductFamilyDescription(), productDetail.getProductFamily().getActive());
+						productDetail.getProductFamilyDescription(), null);
 				productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
 						productDetail.getProductCodeName());
 				version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
@@ -135,6 +118,58 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		}
 		return productFamilies;
 	}
+	
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_DETAIL_FETCH)
+	public List<ProductFamilyResponse> findAll() {
+		List<ProductDetailResponse> productDetailResponseList = productDetailDao
+				.findByOrderByProductFamilyNameAscProductCodeNameAscVersionVersionAsc();
+		Long familyId = null, codeId = null;
+		List<ProductFamilyResponse> productFamilies = new ArrayList<>();
+		ProductFamilyResponse productFamily = null;
+		ProductCodeResponse productCode = null;
+		VersionResponse version;
+		for (ProductDetailResponse productDetail : productDetailResponseList) {
+			if (!productDetail.getProductFamilyId().equals(familyId)) {
+				productFamily = new ProductFamilyResponse(unmask(productDetail.getProductFamilyId()),
+						productDetail.getProductFamilyName(), productDetail.getProductFamilyCode(),
+						productDetail.getProductFamilyDescription(), null);
+				productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
+						productDetail.getProductCodeName());
+				version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
+				version.setProductDetailId(unmask(productDetail.getId()));
+				version.setDescription(productDetail.getDescription());
+				version.setActive(productDetail.getActive());
+				productCode.setVersions(new ArrayList<>());
+				productCode.getVersions().add(version);
+				productFamily.setProductCodes(new ArrayList<>());
+				productFamily.getProductCodes().add(productCode);
+				productFamilies.add(productFamily);
+			} else {
+				if (!productDetail.getProductCodeId().equals(codeId)) {
+					productCode = new ProductCodeResponse(unmask(productDetail.getProductCodeId()),
+							productDetail.getProductCodeName());
+					version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
+					version.setProductDetailId(unmask(productDetail.getId()));
+					version.setDescription(productDetail.getDescription());
+					version.setActive(productDetail.getActive());
+					productCode.setVersions(new ArrayList<>());
+					productCode.getVersions().add(version);
+					productFamily.getProductCodes().add(productCode);
+				} else {
+					version = new VersionResponse(unmask(productDetail.getVersionId()), productDetail.getVersionName());
+					version.setProductDetailId(unmask(productDetail.getId()));
+					version.setDescription(productDetail.getDescription());
+					version.setActive(productDetail.getActive());
+					productCode.getVersions().add(version);
+				}
+			}
+			familyId = productDetail.getProductFamilyId();
+			codeId = productDetail.getProductCodeId();
+		}
+		return productFamilies;
+	}
+
 
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_CREATE)
@@ -190,11 +225,6 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		Long unmaskId = unmask(id);
 		if (!productDetailDao.existsByIdAndActive(unmaskId, true)) {
 			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
-		}
-		if (projectProductDao.existsByProductDetailIdAndActive(unmaskId, true)) {
-			throw new ValidationException(String.format(
-					"Product detail(%s) can't be delete as some of the project are related to this product detail ",
-					id));
 		}
 		int rows = productDetailDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {

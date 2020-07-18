@@ -373,6 +373,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
 			List<Map<String, Object>> licenseAccessIds = findSheetRowValues(workbook, "LICENSE ACCESS ID",
 					(licenses.size() + 1), errors);
+			if (!errors.isEmpty()) {
+				throw new ValidationException(String.format("Errors : %s", String.join(",", errors)));
+			}
 			for (Map<String, Object> licenseAccessId : licenseAccessIds) {
 				license = licenses.get(i++);
 				accessId = licenseAccessId.get("ACCESS ID").toString();
@@ -384,7 +387,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			throw new ValidationException(e.getLocalizedMessage());
 		}
 		licenses = licenseDao.findByProjectProductIdAndActive(unmaskId, true);
 		projectProductResponse = projectProductDao.findResponseById(unmaskId);

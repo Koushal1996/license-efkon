@@ -18,6 +18,8 @@ public interface ProductDetailService {
      */
 
 	public List<ProductFamilyResponse> findAll();
+	
+	public List<ProductFamilyResponse> findByActiveTrue();
 
     /**
      * this method used to save product  detail.
