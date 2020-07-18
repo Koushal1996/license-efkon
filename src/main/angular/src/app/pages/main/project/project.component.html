@@ -142,7 +142,12 @@
                     <span style="min-width: 140px;">Added Product Details</span>
                   </div>
                 </td>
-                <td *ngIf="hasAuthority('LICENSE_FETCH')">
+                <td
+                  *ngIf="
+                    hasAuthority('LICENSE_FETCH') &&
+                    project.approvedProductsCount > 0
+                  "
+                >
                   <button
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                     class="top_tooltip rahul"
@@ -171,6 +176,14 @@
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     <span style="min-width: 120px;">Download Pdf</span>
                   </button>
+                </td>
+                <td
+                  *ngIf="
+                    hasAuthority('LICENSE_FETCH') &&
+                    !project.approvedProductsCount
+                  "
+                >
+                  NA
                 </td>
                 <td *ngIf="hasAuthority('PROJECT_UPDATE')">
                   <button
@@ -214,6 +227,7 @@
                         <thead>
                           <tr>
                             <th scope="col">#</th>
+                            <th scope="col">Product Detail</th>
                             <th scope="col">Code</th>
                             <th scope="col">Generated Key</th>
                             <th scope="col">Remarks</th>
@@ -228,6 +242,22 @@
                         <tbody>
                           <tr *ngFor="let license of licenses; index as i">
                             <td>{{ i + 1 }}</td>
+                            <td *ngIf="license.projectProduct.productDetail">
+                              {{
+                                license.projectProduct.productDetail
+                                  .productFamilyName
+                              }}
+                              {{
+                                license.projectProduct.productDetail
+                                  .productCodeName
+                              }}
+                              {{
+                                license.projectProduct.productDetail.versionName
+                              }}
+                            </td>
+                            <td *ngIf="!license.projectProduct.productDetail">
+                              NA
+                            </td>
                             <td>{{ license.code }}</td>
                             <td>{{ license.generatedKey }}</td>
                             <td>{{ license.name }}</td>

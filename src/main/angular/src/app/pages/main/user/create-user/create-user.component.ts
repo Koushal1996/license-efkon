@@ -160,7 +160,7 @@ export class CreateUserComponent implements OnInit {
           (data) => {
             console.log(data);
             this.route.navigate(["users"]);
-            swal("User updated Successfully!");
+            swal(`User (${data.name}) updated Successfully!`);
             this.loaderbutton = false;
           },
           (error) => {

@@ -2,6 +2,8 @@ import { ReportService } from "./../../../services/report/report.service";
 import { ProductService } from "./../../../services/product/product.service";
 import { Component, OnInit } from "@angular/core";
 import { ProjectService } from "./../../../services/project/project.service";
+import * as FileSaver from "file-saver";
+import swal from "sweetalert";
 
 @Component({
   selector: "app-report",
@@ -53,6 +55,42 @@ export class ReportComponent implements OnInit {
       },
       (error) => {
         report.productLoader = false;
+      }
+    );
+  }
+  getProjectProductReportExcel(report) {
+    var res = report.name.split("(");
+    var res2 = res[1].split(")");
+    console.log(res2[0]);
+    this.reportservice.getProjectProductReportExcel(res2[0]).subscribe(
+      (data) => {
+        console.log(data);
+        const blob = new Blob([data.body], {
+          type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        FileSaver.saveAs(blob);
+      },
+      (error) => {
+        swal("Error");
+      }
+    );
+  }
+
+  getProjectProductReportPdf(report) {
+    var res = report.name.split("(");
+    var res2 = res[1].split(")");
+    console.log(res2[0]);
+    this.reportservice.getProjectProductReportPdf(res2[0]).subscribe(
+      (data) => {
+        console.log(data);
+        const blob = new Blob([data.body], {
+          type: "application/pdf;base64",
+        });
+        FileSaver.saveAs(blob);
+      },
+      (error) => {
+        swal("Error");
       }
     );
   }
