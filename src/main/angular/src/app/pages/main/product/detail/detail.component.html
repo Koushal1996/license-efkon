@@ -35,7 +35,7 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let detail of productDetail; index as i">
+              <ng-container *ngFor="let detail of productDetailAll; index as i">
                 <tr>
                   <td [attr.rowspan]="getDetailRowspan(detail)">{{ i + 1 }}</td>
                   <td [attr.rowspan]="getDetailRowspan(detail)">
@@ -59,8 +59,9 @@
                       <td *ngIf="!version.description">NA</td>
                       <td
                         *ngIf="
-                          hasAuthority('PRODUCT_DETAIL_UPDATE') ||
-                          hasAuthority('PRODUCT_DETAIL_DELETE')
+                          (hasAuthority('PRODUCT_DETAIL_UPDATE') ||
+                            hasAuthority('PRODUCT_DETAIL_DELETE')) &&
+                          version.active
                         "
                       >
                         <button
@@ -85,6 +86,27 @@
                         >
                           <i class="fa fa-trash"></i>
                           <span>Delete</span>
+                        </button>
+                      </td>
+                      <td
+                        *ngIf="
+                          (hasAuthority('PRODUCT_DETAIL_UPDATE') ||
+                            hasAuthority('PRODUCT_DETAIL_DELETE')) &&
+                          !version.active
+                        "
+                      >
+                        <button
+                          *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
+                          (click)="
+                            activateProductDetail(
+                              detail,
+                              code,
+                              version.productDetailId,
+                              version
+                            )
+                          "
+                        >
+                          Activate
                         </button>
                       </td>
                     </tr>

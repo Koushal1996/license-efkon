@@ -14,4 +14,14 @@ export class ReportService {
   getProjectProductReportByEmail(email) {
     return this.api.get("api/project/product/report?customerEmail=" + email);
   }
+  getProjectProductReportPdf(email) {
+    return this.api.getFile(
+      "api​/project​/product​/report​/pdf?customerEmail=" + email
+    );
+  }
+  getProjectProductReportExcel(email) {
+    return this.api.getFile(
+      "api/project/product/report/excel?customerEmail=" + email
+    );
+  }
 }

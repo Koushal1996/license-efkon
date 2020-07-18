@@ -137,8 +137,8 @@ export class LoginComponent implements OnInit {
   /**navigate to control-room interface after successfull login */
   navigate(szRoll: string) {
     console.log(szRoll);
-    if (szRoll == "admin") {
-      this.router.navigate(["/roles"]);
+    if (szRoll == "Admin") {
+      this.router.navigate(["/users"]);
     }
     // else if (szRoll == "Customer" || ) {
     //   this.router.navigate(["/dashboard"]);

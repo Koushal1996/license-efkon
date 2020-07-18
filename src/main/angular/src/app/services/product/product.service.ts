@@ -26,12 +26,18 @@ export class ProductService {
   getProductDetails() {
     return this.api.get("api​/product​/details");
   }
+  getAllProductDetails() {
+    return this.api.get("api​/product​/details/all");
+  }
   addProductDetail(data) {
     // debugger
     return this.api.post("api​/product​/detail", data);
   }
   deleteProductDetail(Id) {
     return this.api.delete(`api/product/detail/${Id}`);
+  }
+  activateProductDetail(Id) {
+    return this.api.put(`​api​/product​/detail/${Id}/activate​`, {});
   }
   updateProductDetail(Id, data) {
     return this.api.put(`api/product/detail/${Id}`, data);

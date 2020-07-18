@@ -164,12 +164,13 @@ export class ProjectProductComponent implements OnInit {
   getProjectProducts() {
     this._projectService.getProjectProducts().subscribe(
       (data) => {
+        console.log(data);
         this.projectProducts = data;
         this.projectProductsCopy = data;
         this.productCountsStatus = this.projectProductsCopy.map(
           (item) => item.status
         );
-        //console.log(this.productCountsStatus);
+        console.log(this.productCountsStatus);
         let count = 0;
         let start = false;
         for (var j = 0; j < this.productCountsStatus.length; j++) {

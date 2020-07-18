@@ -28,6 +28,7 @@ export class DetailComponent implements OnInit {
   productVersion: any;
   currentProductFamilyData: any;
   currentProductVersion: any;
+  productDetailAll: any;
   constructor(
     private _productService: ProductService,
     private fb: FormBuilder,
@@ -38,6 +39,7 @@ export class DetailComponent implements OnInit {
     this.createDetailForm = this.initProductDetailForm();
     this.getProductFamilies();
     this.getProductDetail();
+    this.getAllProductDetails();
   }
   hasAuthority(authority) {
     const authorities: any[] = this._storageService
@@ -98,7 +100,7 @@ export class DetailComponent implements OnInit {
         .subscribe(
           (data) => {
             console.log(data);
-            this.getProductDetail();
+            this.getAllProductDetails();
             this.isCreateDetail = false;
             this.detailId = "";
             this.loaderbutton = false;
@@ -122,7 +124,7 @@ export class DetailComponent implements OnInit {
             swal(
               `Product’s details (${data.productFamilyName} ${data.productCodeName} ${data.versionName}) added successfully`
             );
-            this.getProductDetail();
+            this.getAllProductDetails();
             this.isCreateDetail = false;
             this.loaderbutton = false;
             this.createDetailForm.reset();
@@ -139,6 +141,18 @@ export class DetailComponent implements OnInit {
     this._productService.getProductDetails().subscribe(
       (data) => {
         this.productDetail = data;
+        console.log(data);
+        this.isloader = false;
+      },
+      (error) => {
+        this.isloader = false;
+      }
+    );
+  }
+  getAllProductDetails() {
+    this._productService.getAllProductDetails().subscribe(
+      (data) => {
+        this.productDetailAll = data;
         console.log(data);
         this.isloader = false;
       },
@@ -177,7 +191,7 @@ export class DetailComponent implements OnInit {
   deleteProductDetail(detail, code, productDetailId, version) {
     $("#" + productDetailId).addClass("highlight");
     swal({
-      text: `Are you sure, You want to delete Product detail (${detail.name} ${code.name} ${version.version})?`,
+      text: `Are you sure, You want to deactivate Product detail (${detail.name} ${code.name} ${version.version})?`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -188,25 +202,55 @@ export class DetailComponent implements OnInit {
       } else {
         this._productService.deleteProductDetail(productDetailId).subscribe(
           (data) => {
+            console.log(data);
             if (code.versions.length > 1) {
-              code.versions.splice(
-                code.versions.findIndex(
-                  (v) => v.productDetailId == productDetailId
-                ),
-                1
-              );
+              // code.versions.splice(
+              //   code.versions.findIndex(
+              //     (v) => v.productDetailId == productDetailId
+              //   ),
+              //   1
+              // );
+              version.active = false;
             } else if (detail.productCodes.length > 1) {
-              detail.productCodes.splice(
-                detail.productCodes.findIndex((c) => c.id == code.id),
-                1
-              );
+              // detail.productCodes.splice(
+              //   detail.productCodes.findIndex((c) => c.id == code.id),
+              //   1
+              // );
+              version.active = false;
             } else {
-              this.productDetail.splice(
-                this.productDetail.findIndex((pd) => pd.id == detail.id)
-              );
+              version.active = false;
+              // this.productDetail.splice(
+              //   this.productDetail.findIndex((pd) => pd.id == detail.id)
+              // );
             }
             swal(
-              `Product’s details (${detail.name} ${code.name} ${version.version}) deleted successfully!`
+              `Product’s details (${detail.name} ${code.name} ${version.version}) deactivated successfully!`
+            );
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
+
+  activateProductDetail(detail, code, productDetailId, version) {
+    $("#" + productDetailId).addClass("highlight");
+    swal({
+      text: `Are you sure, You want to activate Product detail (${detail.name} ${code.name} ${version.version})?`,
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      $("#" + productDetailId).removeClass("highlight");
+      if (willDelete) {
+      } else {
+        this._productService.activateProductDetail(productDetailId).subscribe(
+          (data) => {
+            console.log(data);
+            version.active = true;
+            swal(
+              `Product’s details (${detail.name} ${code.name} ${version.version}) activated successfully!`
             );
           },
           (error) => {}
