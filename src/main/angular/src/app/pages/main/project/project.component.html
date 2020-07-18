@@ -315,7 +315,7 @@
                             <br />
                             <a
                               class="comments"
-                              *ngIf="pro.comments.length"
+                              *ngIf="pro.comments?.length"
                               (click)="showComments(pro)"
                               >comments
                             </a>
