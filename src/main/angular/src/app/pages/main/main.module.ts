@@ -29,6 +29,7 @@ import { PendingComponent } from "./viewrequest/pending/pending.component";
 import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
 import { TypeComponent } from "./product/type/type.component";
 import { ReportComponent } from './report/report.component';
+import { StatusComponent } from './deshboard/status/status.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -64,6 +65,7 @@ import { ReportComponent } from './report/report.component';
     EditProductComponent,
     TypeComponent,
     ReportComponent,
+    StatusComponent,
   ],
 })
 export class MainModule {}

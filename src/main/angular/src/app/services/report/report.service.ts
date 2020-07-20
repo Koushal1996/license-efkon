@@ -24,4 +24,13 @@ export class ReportService {
       "api/project/product/report/excel?customerEmail=" + email
     );
   }
+  getLicenseReportByEmail(email) {
+    return this.api.get("api/license/report?email=" + email);
+  }
+  getLicenseReportExcel(email) {
+    return this.api.getFile("api/license/report/excel?email=" + email);
+  }
+  getLicenseReportPdf(email) {
+    return this.api.getFile("api/license/report/pdf?email=" + email);
+  }
 }

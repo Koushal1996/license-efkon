@@ -87,7 +87,10 @@ export class CreateUserComponent implements OnInit {
   }
   onChangeRole(item) {
     let index = this.selectedRole.indexOf(item.id);
+    console.log(index);
     if (index === -1) {
+      this.selectedRole = [];
+
       this.selectedRole.push(item.id);
       this.selectedRoles.push(item);
     } else {

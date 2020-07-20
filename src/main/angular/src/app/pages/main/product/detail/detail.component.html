@@ -95,7 +95,8 @@
                           !version.active
                         "
                       >
-                        <button class="t_save_btn bg-success"
+                        <button
+                          class="t_save_btn bg-success"
                           *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
                           (click)="
                             activateProductDetail(
@@ -119,7 +120,10 @@
             <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
           </div>
 
-          <div class="no_product" *ngIf="!productDetail?.length && !isloader">
+          <div
+            class="no_product"
+            *ngIf="!productDetailAll?.length && !isloader"
+          >
             <h2>
               <img src="assets/images/alert.svg" alt="" /> No Product Details
               Available Now

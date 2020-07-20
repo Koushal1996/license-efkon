@@ -89,10 +89,7 @@
                 <span>{{ project.productDetail.productFamilyName }}</span>
                 <span>{{ project.productDetail.productCodeName }}</span>
                 <span> {{ project.productDetail.versionName }} </span>
-                <span
-                  
-                  *ngIf="project.pastProjectProductId"
-                >
+                <span *ngIf="project.pastProjectProductId">
                   RENEWED
                 </span>
                 <span class="badge badge-secondary" *ngIf="hasExpired(project)"
@@ -256,22 +253,27 @@
                   *ngIf="
                     (project.status == 'APPROVED' ||
                       project.status == 'RENEWED') &&
-                    hasAuthority('LICENSE_FETCH')
+                    hasAuthority('LICENSE_FETCH') &&
+                    project.generatedLicenseCount == '0'
                   "
                 >
-                 <div class="uploadfile">
-                  <input
-                  type="file"
-                  (change)="uploadedFile($event, project)"
-                  accept=".xlsx"
-                  formControlName="search"
-                />
-                <button class="send bg-success" (click)="sendExcel()" *ngIf="project.isFile">
-                  Send
-                </button>
-                <!-- <span><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload
+                  <div class="uploadfile">
+                    <input
+                      type="file"
+                      (change)="uploadedFile($event, project)"
+                      accept=".xlsx"
+                      formControlName="search"
+                    />
+                    <button
+                      class="send bg-success"
+                      (click)="sendExcel()"
+                      *ngIf="project.isFile"
+                    >
+                      Send
+                    </button>
+                    <!-- <span><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload
                 </span> -->
-                 </div>
+                  </div>
                 </form>
                 <button
                   type="button"
@@ -424,12 +426,10 @@
         <div class="modal-header mb-0">
           <h4 class="modal-title">
             Enter Comment for
-            
-              
-             <span>{{ selectedProductFamily }}</span>
-              <span>{{ selectedProductCode }}</span>
-              <span>{{ selectedProductVersion }} </span
-            >
+
+            <span>{{ selectedProductFamily }}</span>
+            <span>{{ selectedProductCode }}</span>
+            <span>{{ selectedProductVersion }} </span>
           </h4>
 
           <button
@@ -505,8 +505,8 @@
           <h4 class="modal-title">
             Comments for
             <span>{{ selectedProductFamily }}</span>
-             <span> {{ selectedProductCode }}</span>
-               <span>{{ selectedProductVersion }} </span>
+            <span> {{ selectedProductCode }}</span>
+            <span>{{ selectedProductVersion }} </span>
           </h4>
           <button
             type="button"
@@ -611,9 +611,9 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Renew for
-            <span>{{ selectedProductFamily }}</span >
-             <span> {{ selectedProductCode }}</span>
-             <span> {{ selectedProductVersion }} </span>
+            <span>{{ selectedProductFamily }}</span>
+            <span> {{ selectedProductCode }}</span>
+            <span> {{ selectedProductVersion }} </span>
           </h4>
           <button
             type="button"
@@ -715,9 +715,9 @@
           <h4 class="modal-title">
             License for
             <span> {{ selectedProductFamily }} </span>
-             <span>{{ selectedProductCode }}</span> 
+            <span>{{ selectedProductCode }}</span>
 
-             <span>{{ selectedProductVersion }}</span >
+            <span>{{ selectedProductVersion }}</span>
           </h4>
           <button
             type="button"

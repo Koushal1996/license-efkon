@@ -810,6 +810,9 @@ export class ProjectProductComponent implements OnInit {
   }
 
   uploadedFile(event, project) {
+    // this._projectService.getexcelTemplate().subscribe((data) => {
+    //   console.log(data);
+    // });
     console.log(event);
     console.log(project);
     this.ProjectIdUploadFile = project;
@@ -834,12 +837,16 @@ export class ProjectProductComponent implements OnInit {
         } else {
           swal("File Uploaded Sucessfully");
           this.ProjectIdUploadFile.licenses = data;
+          //this.ProjectIdUploadFile;
+          this.getProjectProducts();
           this.ProjectIdUploadFile.isFile = false;
           this.form.controls["search"].reset();
         }
       },
       (error) => {
         console.log(error);
+        this.ProjectIdUploadFile.isFile = false;
+        this.form.controls["search"].reset();
       }
     );
   }

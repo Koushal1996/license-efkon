@@ -19,6 +19,7 @@
                     formControlName="name"
                     name="name"
                     placeholder="Name"
+                    [readOnly]="roleId"
                   />
                   <span
                     *ngIf="
@@ -70,24 +71,23 @@
                   </div>
 
                   <div class="authorities_main" id="authorities">
-                
                     <div class="check_main">
-                   <div class="selectaall">
-                    <input
-                    id="select-all"
-                    type="checkbox"
-                    selected="true"
-                    name="check"
-                    [checked]="checkbox"
-                    (change)="onSelectDeselectAll($event)"
-                  />
-                  <label for="select-all" *ngIf="!checkbox"
-                    >Select All</label
-                  >
-                  <label for="select-all" *ngIf="checkbox"
-                    >Unselect All</label
-                  >
-                   </div>
+                      <div class="selectaall">
+                        <input
+                          id="select-all"
+                          type="checkbox"
+                          selected="true"
+                          name="check"
+                          [checked]="checkbox"
+                          (change)="onSelectDeselectAll($event)"
+                        />
+                        <label for="select-all" *ngIf="!checkbox"
+                          >Select All</label
+                        >
+                        <label for="select-all" *ngIf="checkbox"
+                          >Unselect All</label
+                        >
+                      </div>
                       <form [formGroup]="serachAuthorityForm">
                         <div class="search_bar">
                           <input
@@ -103,7 +103,10 @@
                     </div>
 
                     <div class="pl-2 pr-2 pb-2">
-                      <div *ngFor="let item of authorities" class="checkbox_main">
+                      <div
+                        *ngFor="let item of authorities"
+                        class="checkbox_main"
+                      >
                         <div class="checkbox_box">
                           <input
                             type="checkbox"

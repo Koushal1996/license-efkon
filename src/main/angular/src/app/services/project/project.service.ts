@@ -57,6 +57,9 @@ export class ProjectService {
   deleteProjectTypeById(id) {
     return this.api.delete(`api/project/type/${id}`);
   }
+  // editProjectType(name) {
+  //   return this.api.put("api/project/type?name=" + name, {});
+  // }
   activateProjectTypeById(id) {
     return this.api.put(`api/project/type/reactivate/${id}`, {});
   }
@@ -105,6 +108,9 @@ export class ProjectService {
   productCountByStatus() {
     return this.api.get("api/dashboard/product-status");
   }
+  countsOfProductStatus(status) {
+    return this.api.get(`api/dashboard/product/${status}`);
+  }
   renewConfiguration() {
     return this.api.get("api/renew-configuration");
   }
@@ -119,6 +125,10 @@ export class ProjectService {
   }
   upLoadLicenseDetailByExcel(formData: FormData) {
     return this.api.put("api/license/generate-key/excel-upload", formData);
+  }
+
+  getexcelTemplate() {
+    return this.api.get("api/license/generate-key/excel-template");
   }
   // upLoadLicenseDetailByExcel(file, projectProductId) {
   //   return this.api.put(

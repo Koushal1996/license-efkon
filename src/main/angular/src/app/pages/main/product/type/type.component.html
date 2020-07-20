@@ -24,8 +24,11 @@
               (click)="deleteProjectTypes(type)"
               *ngIf="hasAuthority('PROJECT_TYPE_DELETE')"
             >
-              delete
+              deactivate
             </button>
+            <!-- <button (click)="editProjectTypes(type)">
+              Edit
+            </button> -->
           </td>
           <td *ngIf="!type.active">
             <button

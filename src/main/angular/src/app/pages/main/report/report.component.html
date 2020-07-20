@@ -8,6 +8,7 @@
               <th scope="col">#</th>
               <th scope="col">Customer name</th>
               <th scope="col">Total License Distributed</th>
+              <th class="text-center">Export Licenses</th>
               <th scope="col">Total Product Distributed</th>
               <th class="text-center">Export project Product</th>
             </tr>
@@ -17,21 +18,45 @@
               <tr id="{{ report.id }}" class="">
                 <td>{{ i + 1 }}</td>
                 <td>{{ report.name }}</td>
-                <td>
+                <td
+                  data-toggle="collapse"
+                  [attr.data-target]="'#collapse' + i"
+                  class="cursor"
+                  (click)="getLicenseReportByEmail(report)"
+                >
                   {{ report.licenseCount }}
+                </td>
+                <td class="text-center">
+                  <button
+                    class="top_tooltip rahul border-seccess text-seccess"
+                    (click)="getLicenseReportExcel(report)"
+                  >
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    <span>Export Licenses</span>
+                  </button>
+                  <button
+                    class="top_tooltip rahul pdf"
+                    (click)="getLicenseReportPdf(report)"
+                  >
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                    <span>Download Pdf</span>
+                  </button>
                 </td>
                 <td
                   data-toggle="collapse"
                   [attr.data-target]="'#collapse' + i"
-                  (click)="getLicenseByEmail(report)"
+                  (click)="getProjectProductReportByEmail(report)"
                   class="cursor"
                 >
                   {{ report.productCount }}
                 </td>
                 <td class="text-center">
-                  <button class="top_tooltip rahul border-seccess text-seccess" (click)="getProjectProductReportExcel(report)">
+                  <button
+                    class="top_tooltip rahul border-seccess text-seccess"
+                    (click)="getProjectProductReportExcel(report)"
+                  >
                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                    <span >Export Licenses</span>
+                    <span>Export Licenses</span>
                   </button>
                   <!-- <button
                     class="top_tooltip rahul border-seccess text-seccess"
@@ -41,7 +66,10 @@
                     
                   </button> -->
 
-                  <button  class="top_tooltip rahul pdf" (click)="getProjectProductReportPdf(report)">
+                  <button
+                    class="top_tooltip rahul pdf"
+                    (click)="getProjectProductReportPdf(report)"
+                  >
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     <span>Download Pdf</span>
                   </button>
@@ -54,7 +82,10 @@
                     class="collapse"
                     data-parent="#accordion"
                   >
-                    <div class="sub_table mt-3 p-0">
+                    <div
+                      class="sub_table mt-3 p-0"
+                      *ngIf="report.ProductActive"
+                    >
                       <div
                         *ngIf="report.productLoader"
                         class="text-center w-100"
@@ -80,14 +111,14 @@
                               End Date
                             </th>
                             <!-- <th scope="col">Expiry(in Month)</th> -->
-                            <th scope="col">Expiration Period Type</th>
+                            <th scope="col">Expiration Period</th>
                             <!-- <th scope="col">status</th> -->
                           </tr>
                         </thead>
                         <tbody>
                           <tr
                             *ngFor="
-                              let report of licebseReportsByEmail;
+                              let report of projectProductReportsByEmail;
                               index as i
                             "
                           >
@@ -120,6 +151,73 @@
                             <td>{{ report.expirationPeriodType }}</td>
 
                             <!-- <td>{{ report.status }}</td> -->
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div
+                      class="sub_table mt-3 p-0"
+                      *ngIf="report.licenceActive"
+                    >
+                      <div
+                        *ngIf="report.licenseLoader"
+                        class="text-center w-100"
+                      >
+                        <img
+                          width="100px"
+                          src="assets/images/loader3.gif"
+                          alt=""
+                        />
+                      </div>
+                      <h3>License Details</h3>
+                      <table>
+                        <thead class="users_table_hader">
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Product Detail</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Generated Key</th>
+                            <th scope="col">Access Id</th>
+                            <th scope="col" style="min-width: 95px;">
+                              Start Date
+                            </th>
+                            <th scope="col" style="min-width: 95px;">
+                              End Date
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            *ngFor="
+                              let report of licebseReportsByEmail;
+                              index as i
+                            "
+                          >
+                            <td>{{ i + 1 }}</td>
+                            <td *ngIf="report.projectProduct.productDetail">
+                              <span>{{
+                                report.projectProduct.productDetail
+                                  .productFamilyName
+                              }}</span>
+                              <span>{{
+                                report.projectProduct.productDetail
+                                  .productCodeName
+                              }}</span>
+                              <span>
+                                {{
+                                  report.projectProduct.productDetail
+                                    .versionName
+                                }}
+                              </span>
+                            </td>
+                            <td *ngIf="!report.projectProduct.productDetail">
+                              NA
+                            </td>
+                            <td>{{ report.code }}</td>
+                            <td>{{ report.generatedKey }}</td>
+                            <td>{{ report.accessId }}</td>
+                            <td>{{ report.projectProduct.startDate }}</td>
+                            <td>{{ report.projectProduct.endDate }}</td>
                           </tr>
                         </tbody>
                       </table>

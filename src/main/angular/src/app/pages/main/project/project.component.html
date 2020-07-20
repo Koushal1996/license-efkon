@@ -68,14 +68,20 @@
               >
                 Products
               </th>
-              <th 
+              <th
                 scope="col"
                 *ngIf="hasAuthority('LICENSE_FETCH')"
-                style="min-width: 120px; text-align:center ;"
+                style="min-width: 120px; text-align: center;"
               >
                 Licenses
               </th>
-              <th class="text-center" scope="col" *ngIf="hasAuthority('PROJECT_UPDATE')">Edit</th>
+              <th
+                class="text-center"
+                scope="col"
+                *ngIf="hasAuthority('PROJECT_UPDATE')"
+              >
+                Edit
+              </th>
             </tr>
           </thead>
           <!-- <div *ngIf="!projects?.length">
@@ -101,7 +107,8 @@
                 <td>{{ project.customerContactNo }}</td>
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
-                <td class="text-center"
+                <td
+                  class="text-center"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_CREATE') ||
                     hasAuthority('PROJECT_PRODUCT_FETCH')
@@ -113,7 +120,7 @@
                       (click)="addProduct(project)"
                       *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
                     >
-                    Add
+                      Add
                     </button>
                     <span>Add Product</span>
                   </div>
@@ -136,10 +143,11 @@
                       Added
                     </button>
                     <!-- {{ project.productsCount }} -->
-                    <span >Added Product Details</span>
+                    <span>Added Product Details</span>
                   </div>
                 </td>
-                <td class="text-center"
+                <td
+                  class="text-center"
                   *ngIf="
                     hasAuthority('LICENSE_FETCH') &&
                     project.approvedProductsCount > 0
@@ -174,7 +182,8 @@
                     <span>Download Pdf</span>
                   </button>
                 </td>
-                <td class="text-center"
+                <td
+                  class="text-center"
                   *ngIf="
                     hasAuthority('LICENSE_FETCH') &&
                     !project.approvedProductsCount
@@ -188,7 +197,9 @@
                     (click)="editProject(project)"
                   >
                     <i class="fa fa-edit" aria-hidden="true"></i>
-                    <span style="width: 100px; text-align: center;">Edit Project</span>
+                    <span style="width: 100px; text-align: center;"
+                      >Edit Project</span
+                    >
                   </button>
                 </td>
               </tr>
@@ -199,12 +210,6 @@
                     class="collapse"
                     data-parent="#accordion"
                   >
-                    <!-- <div class="text-center" *ngIf="project.productLoader">
-                      <div
-                        class="spinner-border text-danger mt-2"
-                        style="width: 3rem; height: 3rem;"
-                      ></div>
-                    </div> -->
                     <div
                       class="sub_table mt-3 p-0"
                       *ngIf="project.licenceActive"
@@ -313,10 +318,7 @@
                               {{ pro.productDetail.productCodeName }}
                             </span>
                             <span>{{ pro.productDetail.versionName }}</span>
-                            <span
-                              
-                              *ngIf="pro.pastProjectProductId"
-                            >
+                            <span *ngIf="pro.pastProjectProductId">
                               RENEWED
                             </span>
                             <span
@@ -575,13 +577,13 @@
             <span>{{ selectedProductVersion }}</span>
           </h4>
           <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          (click)="hideCommentModel(selectedComment)"
-        >
-          &times;
-        </button>
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            (click)="hideCommentModel(selectedComment)"
+          >
+            &times;
+          </button>
         </div>
         <div class="modal-body overflow-hidden p-3 mb-3">
           <!-- <div class="product_details_popup text-center">

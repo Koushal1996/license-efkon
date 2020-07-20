@@ -22,6 +22,7 @@ export class TypeComponent implements OnInit {
   projectTypeForm: FormGroup;
   showForm: boolean;
   isloader: boolean = true;
+  selectedProjectTypeId: any;
 
   constructor(
     private projectservice: ProjectService,
@@ -59,7 +60,7 @@ export class TypeComponent implements OnInit {
   deleteProjectTypes(type) {
     $("#" + type.id).addClass("highlight");
     swal({
-      text: `Are you sure, You want to delete Project Type (${type.name})`,
+      text: `Are you sure, You want to deactivate Project Type (${type.name})`,
       icon: "warning",
       closeOnClickOutside: false,
       buttons: ["Yes", "No"],
@@ -72,13 +73,19 @@ export class TypeComponent implements OnInit {
         this.projectservice.deleteProjectTypeById(type.id).subscribe((data) => {
           console.log(data);
           type.active = false;
-          swal(`Project Type (${type.name}) deleted successfully!`);
+          swal(`Project Type (${type.name}) deactiavted successfully!`);
 
           //this.getProjectTypes();
         });
         $("#" + type.id).removeClass("highlight");
       }
     });
+  }
+
+  editProjectTypes(type) {
+    console.log(type);
+    this.showForm = true;
+    this.selectedProjectTypeId = type.id;
   }
   activateProjectTypes(type) {
     $("#" + type.id).addClass("highlight");
@@ -113,13 +120,24 @@ export class TypeComponent implements OnInit {
   }
   onSubmit() {
     console.log(this.projectTypeForm.value);
-    this.projectservice
-      .addProjectType(this.projectTypeForm.value.name)
-      .subscribe((data) => {
-        console.log(data);
-        this.showForm = false;
-        swal(`New Project Type (${data.name}) added Sucessfully!`);
-        this.getProjectTypes();
-      });
+    if (this.selectedProjectTypeId) {
+      // this.projectservice
+      //   .editProjectType(this.projectTypeForm.value.name)
+      //   .subscribe((data) => {
+      //     console.log(data);
+      //     this.showForm = false;
+      //     swal(`Project Type (${data.name}) updated Sucessfully!`);
+      //     this.getProjectTypes();
+      //   });
+    } else {
+      this.projectservice
+        .addProjectType(this.projectTypeForm.value.name)
+        .subscribe((data) => {
+          console.log(data);
+          this.showForm = false;
+          swal(`New Project Type (${data.name}) added Sucessfully!`);
+          this.getProjectTypes();
+        });
+    }
   }
 }

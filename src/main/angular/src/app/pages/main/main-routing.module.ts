@@ -27,6 +27,7 @@ import { RejectedComponent } from "./viewrequest/rejected/rejected.component";
 import { PendingComponent } from "./viewrequest/pending/pending.component";
 import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
 import { ReportComponent } from "./report/report.component";
+import { StatusComponent } from "./deshboard/status/status.component";
 
 const routes: Routes = [
   {
@@ -91,7 +92,7 @@ const routes: Routes = [
       { path: "profile", component: ProfileComponent },
       { path: "projectproduct", component: ProjectProductComponent },
       { path: "dashboard", component: DeshboardComponent },
-      { path: "dashboard/:status", component: ProjectProductComponent },
+      { path: "dashboard/:status", component: StatusComponent },
       { path: "report", component: ReportComponent },
     ],
   },

@@ -1,0 +1,58 @@
+<button (click)="onBack()">Back</button>
+
+<table class="m-0">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Product Detail</th>
+      <th scope="col">No of License</th>
+      <th scope="col">License Type</th>
+      <th scope="col" style="min-width: 100px;">Start Date</th>
+      <th scope="col" style="min-width: 100px;">End Date</th>
+      <!-- <th scope="col">Customer Details</th>-->
+      <th scope="col">Expiration Period</th>
+    </tr>
+  </thead>
+  <tr
+    id="{{ project.id }}"
+    class=""
+    *ngFor="let project of projectProducts; index as i"
+  >
+    <td>{{ i + 1 }}</td>
+    <td class="product_family">
+      <span>{{ project.productDetail.productFamilyName }}</span>
+      <span>{{ project.productDetail.productCodeName }}</span>
+      <span> {{ project.productDetail.versionName }} </span>
+      <span *ngIf="project.pastProjectProductId">
+        RENEWED
+      </span>
+      <span class="badge badge-secondary" *ngIf="hasExpired(project)"
+        >EXPIRED
+      </span>
+    </td>
+    <td>
+      {{ project.licenseCount }}
+    </td>
+
+    <td *ngIf="project.licenseTypeName">
+      {{ project.licenseTypeName }}
+    </td>
+    <td *ngIf="!project.licenseTypeName">NA</td>
+    <!-- <td>{{ project.expirationPeriodType }}</td>
+  <td *ngIf="project.expirationPeriodType == 'LIMITED'">
+    {{ project.expirationMonthCount }}
+  </td> -->
+    <!-- <td *ngIf="project.expirationPeriodType == 'LIFETIME'">NA</td> -->
+    <td>{{ project.startDate }}</td>
+    <td>
+      {{ project.endDate }}
+    </td>
+
+    <!-- <td>
+      {{ project.project.customerName }}
+      <br />
+      ({{ project.project.customerEmail }})
+    </td> -->
+    <td>{{ project.expirationPeriodType }}</td>
+  </tr>
+</table>
