@@ -70,46 +70,52 @@
                   </div>
 
                   <div class="authorities_main" id="authorities">
-                    <form [formGroup]="serachAuthorityForm">
-                      <div class="search_bar">
-                        <input
-                          type="text"
-                          formControlName="name"
-                          class="form-control"
-                          placeholder=" Search here.."
-                          (keyup)="onSearchAuthority()"
-                        />
-                      </div>
-                    </form>
+                
                     <div class="check_main">
-                      <input
-                        id="select-all"
-                        type="checkbox"
-                        selected="true"
-                        name="check"
-                        [checked]="checkbox"
-                        (change)="onSelectDeselectAll($event)"
-                      />
-                      <label for="select-all" *ngIf="!checkbox"
-                        >Select All</label
-                      >
-                      <label for="select-all" *ngIf="checkbox"
-                        >Unselect All</label
-                      >
+                   <div class="selectaall">
+                    <input
+                    id="select-all"
+                    type="checkbox"
+                    selected="true"
+                    name="check"
+                    [checked]="checkbox"
+                    (change)="onSelectDeselectAll($event)"
+                  />
+                  <label for="select-all" *ngIf="!checkbox"
+                    >Select All</label
+                  >
+                  <label for="select-all" *ngIf="checkbox"
+                    >Unselect All</label
+                  >
+                   </div>
+                      <form [formGroup]="serachAuthorityForm">
+                        <div class="search_bar">
+                          <input
+                            type="text"
+                            formControlName="name"
+                            class="form-control"
+                            placeholder=" Search here.."
+                            (keyup)="onSearchAuthority()"
+                          />
+                          <i class="fa fa-search" aria-hidden="true"></i>
+                        </div>
+                      </form>
                     </div>
 
-                    <div *ngFor="let item of authorities" class="checkbox_main">
-                      <div class="checkbox_box">
-                        <input
-                          type="checkbox"
-                          selected="true"
-                          [checked]="isChecked(item)"
-                          name="check"
-                          id="authCheck"
-                          value="{{ item.id }}"
-                          (change)="onChangeAuthorities(item)"
-                        />
-                        <span>{{ item.name }}</span>
+                    <div class="pl-2 pr-2 pb-2">
+                      <div *ngFor="let item of authorities" class="checkbox_main">
+                        <div class="checkbox_box">
+                          <input
+                            type="checkbox"
+                            selected="true"
+                            [checked]="isChecked(item)"
+                            name="check"
+                            id="authCheck"
+                            value="{{ item.id }}"
+                            (change)="onChangeAuthorities(item)"
+                          />
+                          <span>{{ item.name }}</span>
+                        </div>
                       </div>
                     </div>
                   </div>

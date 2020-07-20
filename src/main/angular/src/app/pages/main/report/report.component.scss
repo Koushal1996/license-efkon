@@ -7,3 +7,42 @@
 .table_scroll {
   height: calc(100vh - 73px);
 }
+
+.rahul {
+  padding: 0px 5px !important;
+  border: 1px solid #29aba4;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 21px;
+  background: transparent !important;
+  color: #29aba4;
+  border-radius: 3px;
+  margin: 2px 4px;
+  .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 15px;
+    // vertical-align: bottom;
+    font-weight: bold;
+    line-height: normal;
+    vertical-align: text-top;
+  }
+&.added_product {
+  border: 1px solid #58b687;
+  i{
+    margin: 0;
+    padding: 0 5px;
+    vertical-align: middle;
+    color: #58b687;
+  }
+}
+}
+.view {
+  color: #795548;
+  border: 1px solid #795548;
+}
+.pdf{
+  color: #2e2e2e;
+  border: 1px solid #2e2e2e;
+}

@@ -59,7 +59,7 @@
               <th scope="col">Project Type</th>
               <th scope="col">Project Manager</th>
               <th
-                style="min-width: 109px;"
+                style="min-width: 121px; text-align: center;"
                 scope="col"
                 *ngIf="
                   hasAuthority('PROJECT_PRODUCT_CREATE') ||
@@ -68,14 +68,14 @@
               >
                 Products
               </th>
-              <th
+              <th 
                 scope="col"
                 *ngIf="hasAuthority('LICENSE_FETCH')"
-                style="min-width: 120px;"
+                style="min-width: 120px; text-align:center ;"
               >
                 Licenses
               </th>
-              <th scope="col" *ngIf="hasAuthority('PROJECT_UPDATE')">Edit</th>
+              <th class="text-center" scope="col" *ngIf="hasAuthority('PROJECT_UPDATE')">Edit</th>
             </tr>
           </thead>
           <!-- <div *ngIf="!projects?.length">
@@ -101,7 +101,7 @@
                 <td>{{ project.customerContactNo }}</td>
                 <td>{{ project.projectTypeName }}</td>
                 <td>{{ project.projectManagerName }}</td>
-                <td
+                <td class="text-center"
                   *ngIf="
                     hasAuthority('PROJECT_PRODUCT_CREATE') ||
                     hasAuthority('PROJECT_PRODUCT_FETCH')
@@ -109,22 +109,18 @@
                 >
                   <div class="top_tooltip">
                     <button
-                      class="rahul"
+                      class="t_save_btn"
                       (click)="addProduct(project)"
                       *ngIf="hasAuthority('PROJECT_PRODUCT_CREATE')"
                     >
-                      <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
-                      <!-- <i class="fa fa-plus-square" aria-hidden="true"></i> -->
-                      <i class="material-icons">
-                        add
-                      </i>
+                    Add
                     </button>
                     <span>Add Product</span>
                   </div>
 
                   <div class="info top_tooltip">
                     <button
-                      class="rahul added_product"
+                      class="info_btn_tbl"
                       data-toggle="collapse"
                       [attr.data-target]="'#collapse' + i"
                       (click)="productsCount(project)"
@@ -136,13 +132,14 @@
                       <!-- <i class="material-icons m-0 border-success text-success"
                         >add_to_queue</i
                       > -->
-                      <i class="fa fa-info" aria-hidden="true"></i>
+                      <!-- <i class="fa fa-info" aria-hidden="true"></i> -->
+                      Added
                     </button>
                     <!-- {{ project.productsCount }} -->
-                    <span style="min-width: 140px;">Added Product Details</span>
+                    <span >Added Product Details</span>
                   </div>
                 </td>
-                <td
+                <td class="text-center"
                   *ngIf="
                     hasAuthority('LICENSE_FETCH') &&
                     project.approvedProductsCount > 0
@@ -158,7 +155,7 @@
                     class="top_tooltip rahul view"
                   >
                     <i class="fa fa-eye" aria-hidden="true"></i>
-                    <span style="min-width: 120px;">View Licenses</span>
+                    <span>View Licenses</span>
                   </button>
                   <button
                     class="top_tooltip rahul border-seccess text-seccess"
@@ -166,7 +163,7 @@
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                    <span style="min-width: 120px;">Export Licenses</span>
+                    <span>Export Licenses</span>
                   </button>
                   <button
                     class="top_tooltip rahul pdf"
@@ -174,10 +171,10 @@
                     *ngIf="hasAuthority('LICENSE_FETCH')"
                   >
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                    <span style="min-width: 120px;">Download Pdf</span>
+                    <span>Download Pdf</span>
                   </button>
                 </td>
-                <td
+                <td class="text-center"
                   *ngIf="
                     hasAuthority('LICENSE_FETCH') &&
                     !project.approvedProductsCount
@@ -191,7 +188,7 @@
                     (click)="editProject(project)"
                   >
                     <i class="fa fa-edit" aria-hidden="true"></i>
-                    <span style="width: 100px;">Edit Project</span>
+                    <span style="width: 100px; text-align: center;">Edit Project</span>
                   </button>
                 </td>
               </tr>
@@ -317,7 +314,7 @@
                             </span>
                             <span>{{ pro.productDetail.versionName }}</span>
                             <span
-                              class="badge badge-success"
+                              
                               *ngIf="pro.pastProjectProductId"
                             >
                               RENEWED
@@ -577,14 +574,14 @@
             <span>{{ selectedProductCode }}</span>
             <span>{{ selectedProductVersion }}</span>
           </h4>
-          <!-- <button
+          <button
           type="button"
           class="close"
           data-dismiss="modal"
           (click)="hideCommentModel(selectedComment)"
         >
           &times;
-        </button> -->
+        </button>
         </div>
         <div class="modal-body overflow-hidden p-3 mb-3">
           <!-- <div class="product_details_popup text-center">
@@ -653,7 +650,7 @@
             </div>
           </div>
         </div>
-        <div class="modal_footer">
+        <!-- <div class="modal_footer">
           <button
             class="cancelBtn"
             type="button"
@@ -662,7 +659,7 @@
           >
             Close
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

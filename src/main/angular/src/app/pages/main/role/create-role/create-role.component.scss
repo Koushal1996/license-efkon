@@ -84,7 +84,7 @@
         width: 100%;
         display: inline-block;
         border: 1px solid #ddd;
-        padding: 0px 10px 10px;
+        // padding: 0px 10px 10px;
         margin-top: 4px;
         .checkbox_box {
             position: relative;
@@ -150,10 +150,13 @@
 
     .check_main {
         position: relative;
-        display: flex;
+        // display: flex;
         align-items: center;
-        margin-top: 10px;
+        padding-top: 10px;
         border-bottom: 1px solid #ddd;
+        float: left;
+        width: 100%;
+        background: #fbfbfb;
       }
       .check_main label:after {
          position: absolute;
@@ -192,4 +195,37 @@
         margin-left: 26px;
         text-transform: uppercase;
         cursor: pointer;
+        font-weight: 500 !important;
       }
+
+      .search_bar input {
+        opacity: 1 !important;
+        width: 100% !important;
+        position: static !important;
+        height: auto !important;
+    }
+    .search_bar i{
+        position: static;
+    }
+    form {
+        // width: auto;
+        float: right;
+    }
+    .search_bar{
+        max-width: auto;
+        float: right;
+        display: inline-flex;
+        position: relative;
+        margin-bottom: 10px;
+        margin: 0;
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+    .selectaall {
+        width: auto;
+        float: left;
+        display: flex;
+        margin-top: 7px;
+        position: relative;
+        margin-left: 10px;
+    }

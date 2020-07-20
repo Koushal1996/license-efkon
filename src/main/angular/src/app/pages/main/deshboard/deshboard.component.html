@@ -1,19 +1,13 @@
-<table>
+<!-- <table>
   <thead>
     <tr>
       <th scope="col">Name</th>
-      <!-- <th scope="col">No of License</th> -->
       <th scope="col">No of Product</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let status of productCounts">
       <td>{{ status.name }}</td>
-      <!-- <td>
-        <label class="badge custom_badge cursor">
-          {{ status.licenseCount }}
-        </label>
-      </td> -->
       <td>
         <label (click)="getStatus(status)" class="badge custom_badge cursor">{{
           status.productCount
@@ -21,29 +15,33 @@
       </td>
     </tr>
   </tbody>
-</table>
-<div *ngIf="isloader" class="loader">
-  <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
-</div>
-<!-- <div class="row">
+</table> -->
+<div class="row">
   <div class="header_bottom">
     <div class="header_title">
       <h3>DASHBOARD</h3>
     </div>
   </div>
 </div>
-<div class="dashboard">
-  <div class="row">
-    <div *ngFor="let status of productCounts" class="col-4 mb-4">
-      <div class="col-main" (click)="getStatus(status)">
-        <div class="text_content">
-          <h4>{{ status.count }}</h4>
-          <h3>{{ status.status }}</h3>
-        </div>
-        <div class="icon">
-          <i class="fa fa-tags" aria-hidden="true"></i>
+
+
+    <div class="dashboard">
+      <div class="row">
+        <div *ngFor="let status of productCounts" class="col-4 mb-3">
+          <div class="col-main" (click)="getStatus(status)">
+            <div class="text_content">
+              <h4>{{ status.productCount }}</h4>
+              <h3>{{ status.name }}</h3>
+            </div>
+            <div class="icon">
+              <i class="fa fa-tags" aria-hidden="true"></i>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div> -->
+      <div  class="loader" *ngIf="isloader">
+        <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+      </div>
+    </div> 
+    
+ 

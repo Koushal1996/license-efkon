@@ -90,7 +90,7 @@
                 <span>{{ project.productDetail.productCodeName }}</span>
                 <span> {{ project.productDetail.versionName }} </span>
                 <span
-                  class="badge badge-warning"
+                  
                   *ngIf="project.pastProjectProductId"
                 >
                   RENEWED
@@ -259,15 +259,19 @@
                     hasAuthority('LICENSE_FETCH')
                   "
                 >
+                 <div class="uploadfile">
                   <input
-                    type="file"
-                    (change)="uploadedFile($event, project)"
-                    accept=".xlsx"
-                    formControlName="search"
-                  />
-                  <button (click)="sendExcel()" *ngIf="project.isFile">
-                    send
-                  </button>
+                  type="file"
+                  (change)="uploadedFile($event, project)"
+                  accept=".xlsx"
+                  formControlName="search"
+                />
+                <button class="send bg-success" (click)="sendExcel()" *ngIf="project.isFile">
+                  Send
+                </button>
+                <!-- <span><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload
+                </span> -->
+                 </div>
                 </form>
                 <button
                   type="button"
@@ -420,11 +424,11 @@
         <div class="modal-header mb-0">
           <h4 class="modal-title">
             Enter Comment for
-            <span>
-              (
-              {{ selectedProductFamily }}
-              {{ selectedProductCode }}
-              {{ selectedProductVersion }} )</span
+            
+              
+             <span>{{ selectedProductFamily }}</span>
+              <span>{{ selectedProductCode }}</span>
+              <span>{{ selectedProductVersion }} </span
             >
           </h4>
 
@@ -500,21 +504,18 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Comments for
-            <span>
-              (
-              {{ selectedProductFamily }}
-              {{ selectedProductCode }}
-              {{ selectedProductVersion }} )
-            </span>
+            <span>{{ selectedProductFamily }}</span>
+             <span> {{ selectedProductCode }}</span>
+               <span>{{ selectedProductVersion }} </span>
           </h4>
-          <!-- <button
+          <button
             type="button"
             class="close"
             data-dismiss="modal"
             (click)="hideCommentModel(selectedComment)"
           >
             &times;
-          </button> -->
+          </button>
         </div>
 
         <div class="modal-body overflow-hidden mb-3">
@@ -584,7 +585,7 @@
             </div>
           </div>
         </div>
-        <div class="modal_footer">
+        <!-- <div class="modal_footer">
           <button
             class="cancelBtn"
             type="button"
@@ -593,7 +594,7 @@
           >
             Close
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -610,11 +611,9 @@
         <div class="modal-header">
           <h4 class="modal-title">
             Renew for
-            <span
-              >( {{ selectedProductFamily }}
-              {{ selectedProductCode }}
-              {{ selectedProductVersion }} )</span
-            >
+            <span>{{ selectedProductFamily }}</span >
+             <span> {{ selectedProductCode }}</span>
+             <span> {{ selectedProductVersion }} </span>
           </h4>
           <button
             type="button"
@@ -715,14 +714,10 @@
         <div class="modal-header">
           <h4 class="modal-title">
             License for
-            <span
-              >(
-              {{ selectedProductFamily }}
-              {{ selectedProductCode }}
+            <span> {{ selectedProductFamily }} </span>
+             <span>{{ selectedProductCode }}</span> 
 
-              {{ selectedProductVersion }} )</span
-            >
-            Product
+             <span>{{ selectedProductVersion }}</span >
           </h4>
           <button
             type="button"

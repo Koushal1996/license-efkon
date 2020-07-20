@@ -20,13 +20,13 @@
       <div class="user" (click)="userProfile()">
         <div class="user-img">
           <img
-            src="assets/images/profile.jpg"
+            src="assets/images/user.svg"
             alt=""
             style="cursor: pointer;"
           />
         </div>
         <div class="user-name" style="cursor: pointer;">
-          {{ UserInfo }}
+         <h3> {{ UserInfo }}</h3>
 
           <h6 *ngFor="let role of UserRole">
             {{ role.name }}

@@ -9,7 +9,7 @@
               <th scope="col">Customer name</th>
               <th scope="col">Total License Distributed</th>
               <th scope="col">Total Product Distributed</th>
-              <th>Export project Product</th>
+              <th class="text-center">Export project Product</th>
             </tr>
           </thead>
           <tbody id="accordion">
@@ -28,12 +28,22 @@
                 >
                   {{ report.productCount }}
                 </td>
-                <td>
-                  <button (click)="getProjectProductReportExcel(report)">
-                    <span style="min-width: 120px;">Export report</span>
+                <td class="text-center">
+                  <button class="top_tooltip rahul border-seccess text-seccess" (click)="getProjectProductReportExcel(report)">
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                    <span >Export Licenses</span>
                   </button>
-                  <button (click)="getProjectProductReportPdf(report)">
-                    <span style="min-width: 120px;">Download Pdf</span>
+                  <!-- <button
+                    class="top_tooltip rahul border-seccess text-seccess"
+                    (click)="createExcelLicense(project)"
+                    *ngIf="hasAuthority('LICENSE_FETCH')"
+                  >
+                    
+                  </button> -->
+
+                  <button  class="top_tooltip rahul pdf" (click)="getProjectProductReportPdf(report)">
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                    <span>Download Pdf</span>
                   </button>
                 </td>
               </tr>
