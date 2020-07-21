@@ -53,7 +53,7 @@ export class DetailComponent implements OnInit {
     const family = this.Family.find((item) => item.id == productFamilyId);
     if (family) {
       this.productCodes = family.productCodes;
-      this.currentProductFamilyData = this.productDetail.find(
+      this.currentProductFamilyData = this.productDetailAll.find(
         (item) => item.id == productFamilyId
       );
     } else {
