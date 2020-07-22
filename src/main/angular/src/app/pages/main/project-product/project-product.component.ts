@@ -78,7 +78,7 @@ export class ProjectProductComponent implements OnInit {
     this.popUpForm = this.initpopUpForm();
     this.popUpStartDateForm = this.initpopUpStartDateForm();
     this.popUpRequestForm = this.initpopUpRequestForm();
-    this.getproductCountByStatus();
+    // this.getproductCountByStatus();
     this.filterStatusForm = this.fb.group({
       productStatus: [""],
     });
@@ -808,7 +808,11 @@ export class ProjectProductComponent implements OnInit {
       }
     );
   }
-
+  getexcelTemplate() {
+    this._projectService.getexcelTemplate().subscribe((data) => {
+      console.log(data);
+    });
+  }
   uploadedFile(event, project) {
     // this._projectService.getexcelTemplate().subscribe((data) => {
     //   console.log(data);

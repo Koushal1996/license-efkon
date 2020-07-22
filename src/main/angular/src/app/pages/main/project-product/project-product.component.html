@@ -257,7 +257,8 @@
                     project.generatedLicenseCount == '0'
                   "
                 >
-                  <div class="uploadfile">
+                  <div>
+                    <button (click)="getexcelTemplate()">template</button>
                     <input
                       type="file"
                       (change)="uploadedFile($event, project)"
