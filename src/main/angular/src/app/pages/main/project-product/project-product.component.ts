@@ -789,7 +789,7 @@ export class ProjectProductComponent implements OnInit {
         FileSaver.saveAs(blob, "ProjectProducts");
       },
       (error) => {
-        swal("Error");
+        // swal("Error");
       }
     );
   }
@@ -809,9 +809,23 @@ export class ProjectProductComponent implements OnInit {
     );
   }
   getexcelTemplate() {
-    this._projectService.getexcelTemplate().subscribe((data) => {
-      console.log(data);
-    });
+    this._projectService.getexcelTemplate().subscribe(
+      (data) => {
+        console.log(data);
+        const blob = new Blob([data.body], {
+          type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        //FileSaver.saveAs(blob, "ProjectProducts");
+        const file = new File([blob], "xlsx", {
+          type: "application/vnd.ms.excel",
+        });
+        saveAs(file);
+      },
+      (error) => {
+        //swal("Error");
+      }
+    );
   }
   uploadedFile(event, project) {
     // this._projectService.getexcelTemplate().subscribe((data) => {

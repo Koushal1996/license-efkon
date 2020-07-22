@@ -591,9 +591,6 @@ export class StatusComponent implements OnInit {
   }
 
   uploadedFile(event, project) {
-    // this._projectService.getexcelTemplate().subscribe((data) => {
-    //   console.log(data);
-    // });
     console.log(event);
     console.log(project);
     this.ProjectIdUploadFile = project;
@@ -628,6 +625,25 @@ export class StatusComponent implements OnInit {
         console.log(error);
         this.ProjectIdUploadFile.isFile = false;
         this.form.controls["search"].reset();
+      }
+    );
+  }
+  getexcelTemplate() {
+    this._projectService.getexcelTemplate().subscribe(
+      (data) => {
+        console.log(data);
+        const blob = new Blob([data.body], {
+          type:
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        //FileSaver.saveAs(blob, "ProjectProducts");
+        const file = new File([blob], "xlsx", {
+          type: "application/vnd.ms.excel",
+        });
+        saveAs(file);
+      },
+      (error) => {
+        swal("Error");
       }
     );
   }
