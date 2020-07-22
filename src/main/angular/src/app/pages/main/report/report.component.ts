@@ -39,11 +39,12 @@ export class ReportComponent implements OnInit {
     this.getProjects();
   }
 
-  getProjectProductReportByEmail(report) {
+  getProjectProductReportByEmail(report, event) {
+    console.log(event);
     report.productLoader = true;
     //report.ProductActive = true;
     //console.log(report);
-    console.log(report.name);
+    // console.log(report.name);
     var res = report.name.split("(");
     //var arNAme = res[0];
     //console.log(arNAme);
@@ -52,7 +53,7 @@ export class ReportComponent implements OnInit {
 
     this.reportservice.getProjectProductReportByEmail(res2[0]).subscribe(
       (data) => {
-        console.log(data);
+        //console.log(data);
         this.projectProductReportsByEmail = data;
         report.productLoader = false;
         report.ProductActive = true;
@@ -66,19 +67,20 @@ export class ReportComponent implements OnInit {
     );
   }
 
-  getLicenseReportByEmail(report) {
+  getLicenseReportByEmail(report, event) {
+    console.log(event);
     report.licenseLoader = true;
     //console.log(report);
-    console.log(report.name);
+    //console.log(report.name);
     var res = report.name.split("(");
     //var arNAme = res[0];
     //console.log(arNAme);
     var res2 = res[1].split(")");
-    console.log(res2[0]);
+    //console.log(res2[0]);
 
     this.reportservice.getLicenseReportByEmail(res2[0]).subscribe(
       (data) => {
-        console.log(data);
+        //console.log(data);
         this.licebseReportsByEmail = data;
         report.licenceActive = true;
         report.ProductActive = false;

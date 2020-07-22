@@ -24,12 +24,7 @@ export class MainComponent implements OnInit {
       privilege: "PROJECT_FETCH",
       imagePath: "assets/images/project.png",
     },
-    {
-      route: "/products/family",
-      title: "Configuration",
-      privilege: "PRODUCT_DETAIL_FETCH",
-      imagePath: "assets/images/configuration.png",
-    },
+
     {
       route: "/projectproduct",
       title: "Project-Products",
@@ -47,6 +42,12 @@ export class MainComponent implements OnInit {
       title: "Report",
       privilege: "REPORT_FETCH",
       imagePath: "assets/images/google.svg",
+    },
+    {
+      route: "/products/family",
+      title: "Configuration",
+      privilege: "PRODUCT_DETAIL_FETCH",
+      imagePath: "assets/images/configuration.png",
     },
     {
       route: "/roles",

@@ -8,9 +8,8 @@
               <th scope="col">#</th>
               <th scope="col">Customer name</th>
               <th scope="col">Total License Distributed</th>
-              <th class="text-center">Export Licenses</th>
+
               <th scope="col">Total Product Distributed</th>
-              <th class="text-center">Export project Product</th>
             </tr>
           </thead>
           <tbody id="accordion">
@@ -18,15 +17,17 @@
               <tr id="{{ report.id }}" class="">
                 <td>{{ i + 1 }}</td>
                 <td>{{ report.name }}</td>
-                <td
-                  data-toggle="collapse"
-                  [attr.data-target]="'#collapse' + i"
-                  class="cursor"
-                  (click)="getLicenseReportByEmail(report)"
-                >
-                  {{ report.licenseCount }}
-                </td>
-                <td class="text-center">
+                <td id="{{ report.id }}">
+                  <span
+                    data-toggle="collapse"
+                    [attr.data-target]="'#collapse' + i"
+                    class="cursor"
+                    class="btn btn-link collapsed"
+                    aria-expanded="false"
+                    #c
+                    (click)="getLicenseReportByEmail(report, c)"
+                    >{{ report.licenseCount }}</span
+                  >
                   <button
                     class="top_tooltip rahul border-seccess text-seccess"
                     (click)="getLicenseReportExcel(report)"
@@ -42,15 +43,18 @@
                     <span>Download Pdf</span>
                   </button>
                 </td>
-                <td
-                  data-toggle="collapse"
-                  [attr.data-target]="'#collapse' + i"
-                  (click)="getProjectProductReportByEmail(report)"
-                  class="cursor"
-                >
-                  {{ report.productCount }}
-                </td>
-                <td class="text-center">
+                <td id="{{ report.id }}">
+                  <span
+                    data-toggle="collapse"
+                    [attr.data-target]="'#collapse' + i"
+                    class="cursor"
+                    class="btn btn-link collapsed"
+                    aria-expanded="false"
+                    #c
+                    (click)="getProjectProductReportByEmail(report, c)"
+                    >{{ report.productCount }}</span
+                  >
+
                   <button
                     class="top_tooltip rahul border-seccess text-seccess"
                     (click)="getProjectProductReportExcel(report)"
@@ -58,13 +62,6 @@
                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
                     <span>Export Licenses</span>
                   </button>
-                  <!-- <button
-                    class="top_tooltip rahul border-seccess text-seccess"
-                    (click)="createExcelLicense(project)"
-                    *ngIf="hasAuthority('LICENSE_FETCH')"
-                  >
-                    
-                  </button> -->
 
                   <button
                     class="top_tooltip rahul pdf"
@@ -107,8 +104,8 @@
                             <th scope="col">Version</th>
                             <th scope="col">License Count</th>
                             <th scope="col">License Type</th>
-                            <th scope="col">Expiration Period</th>
-                            <th scope="col">Expiration Months</th>
+                            <th scope="col">Expiration Type</th>
+                            <th scope="col">Expiration Period (in Months)</th>
                             <th scope="col" style="min-width: 100px;">
                               Start Date
                             </th>
