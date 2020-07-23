@@ -816,11 +816,11 @@ export class ProjectProductComponent implements OnInit {
           type:
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-        //FileSaver.saveAs(blob, "ProjectProducts");
-        const file = new File([blob], "xlsx", {
-          type: "application/vnd.ms.excel",
-        });
-        saveAs(file);
+        FileSaver.saveAs(blob, "LicenseTemplate");
+        // const file = new File([blob], "xlsx", {
+        //   type: "application/vnd.ms.excel",
+        // });
+        // saveAs(file);
       },
       (error) => {
         //swal("Error");
