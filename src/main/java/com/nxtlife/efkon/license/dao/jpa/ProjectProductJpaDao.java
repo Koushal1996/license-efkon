@@ -25,22 +25,67 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	public List<ProjectProductResponse> findByProjectProjectManagerIdAndActive(Long projectManagerId, Boolean active);
 
-	public List<ProjectProductResponse> findByProjectProjectManagerIdAndProjectCustomerEmailAndActiveAndStatus(
-			Long projectManagerId, String customerEmail, Boolean active, ProjectProductStatus status);
+	public List<ProjectProductResponse> findByProjectProjectManagerIdAndProjectCustomerEmailAndActiveAndStatusIn(
+			Long projectManagerId, String customerEmail, Boolean active, List<ProjectProductStatus> statuses);
 
 	public List<ProjectProductResponse> findByProjectIdAndProjectProjectManagerIdAndActive(Long projectId,
 			Long projectManagerId, Boolean active);
 
 	public List<ProjectProductResponse> findByProjectCustomerEmailAndActive(String customerEmail, Boolean active);
 
-	public List<ProjectProductResponse> findByProjectCustomerEmailAndActiveAndStatus(String customerEmail,
-			Boolean active, ProjectProductStatus status);
+	public List<ProjectProductResponse> findByProjectCustomerEmailAndActiveAndStatusIn(String customerEmail,
+			Boolean active, List<ProjectProductStatus> statuses);
 
-	public List<ProjectProductResponse> findByProjectIdAndProjectCustomerEmailAndActive(Long projectId,
-			String customerEmail, Boolean active);
+	public List<ProjectProductResponse> findByActiveAndStatus(Boolean active, ProjectProductStatus status);
+
+	public List<ProjectProductResponse> findByActiveAndStatusAndProjectProjectManagerId(Boolean active,
+			ProjectProductStatus status, Long projectManagerId);
+
+	public List<ProjectProductResponse> findByActiveAndStatusAndEndDateLessThanEqual(Boolean active,
+			ProjectProductStatus status, String endDate);
+
+	public List<ProjectProductResponse> findByActiveAndStatusAndProjectProjectManagerIdAndEndDateLessThanEqual(
+			Boolean active, ProjectProductStatus status, Long projectManagerId, String endDate);
+
+	public List<ProjectProductResponse> findByActiveAndStatusAndCreatedById(Boolean active, ProjectProductStatus status,
+			Long userId);
+
+	public List<ProjectProductResponse> findByActiveAndStatusAndModifiedById(Boolean active,
+			ProjectProductStatus status, Long userId);
+
+	public List<ProjectProductResponse> findByActiveAndStatusAndProjectProjectManagerIdAndModifiedByIdNot(
+			Boolean active, ProjectProductStatus status, Long projectManagerId, Long userId);
+
+	public List<ProjectProductResponse> findByProjectIdAndProjectCustomerEmailAndActiveAndStatus(Long projectId,
+			String customerEmail, Boolean active, ProjectProductStatus status);
+
+	@Query(value = "select project.id as projectId, count(productDetail.id) as productCount, sum(case when status = 'APPROVED' then 1 else 0 end) as approvedProductCount from ProjectProduct where project.customerEmail = ?1 "
+			+ "and active =?2 and status = ?3 group by project.id")
+	public List<Tuple> findProjectIdAndProductCountByProjectCustomerEmailAndActiveAndProjectProductStatus(
+			String customerEmail, Boolean active, ProjectProductStatus status);
 
 	public ProjectProductResponse findByIdAndProjectProjectManagerIdAndActive(Long id, Long projectManagerId,
 			Boolean active);
+
+	@Query(value = "select project.id as projectId, count(productDetail.id) as productCount, sum(case when status = 'APPROVED' then 1 else 0 end) as approvedProductCount from ProjectProduct where project.projectManager.id = ?1 "
+			+ "and active =?2 and status = ?3 and createdBy.id = ?1 group by project.id")
+	public List<Tuple> findProjectIdAndProductCountByProjectProjectManagerIdAndActiveAndProjectProductStatus(
+			Long projectManagerId, Boolean active, ProjectProductStatus status);
+
+	@Query(value = "select project.id as projectId, count(productDetail.id) as productCount, sum(case when status = 'APPROVED' then 1 else 0 end) as approvedProductCount from ProjectProduct where project.projectManager.id = ?1 "
+			+ "and active =?2 and status != ?3 group by project.id")
+	public List<Tuple> findProjectIdAndProductCountByProjectProjectManagerIdAndActiveAndProjectProductStatusNotEq(
+			Long projectManagerId, Boolean active, ProjectProductStatus status);
+
+	@Query(value = "select project.id as projectId, count(productDetail.id) as productCount, sum(case when status = 'APPROVED' then 1 else 0 end) as approvedProductCount from ProjectProduct where  "
+			+ "active =?2 and status = ?3 and createdBy.id = ?1 group by project.id")
+	public List<Tuple> findProjectIdAndProductCountByActiveAndProjectProductStatus(Long userId, Boolean active,
+			ProjectProductStatus status);
+
+	@Query(value = "select project.id as projectId, count(productDetail.id) as productCount, sum(case when status = 'APPROVED' then 1 else 0 end) as approvedProductCount from ProjectProduct where"
+			+ " active =?1 and status != ?2 group by project.id")
+	public List<Tuple> findProjectIdAndProductCountByActiveAndNotEqProjectProductStatus(Boolean active,
+			ProjectProductStatus status);
 
 	public ProjectProductResponse findByIdAndProjectCustomerEmailAndActive(Long id, String customerEmail,
 			Boolean active);
@@ -111,29 +156,29 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 
 	@Query(value = "SELECT COUNT(pp.id) as productCount, SUM(pp.licenseCount) as licenseCount "
 			+ "FROM ProjectProduct pp inner join Project p on pp.project.id = p.id where p.projectManager.id=?2 "
-			+ "and pp.active =?3 and pp.status = ?1 and pp.endDate<=?4")
-	public Tuple countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndBeforeEndDate(
-			ProjectProductStatus status, Long userId, Boolean active, String date);
+			+ "and pp.active =?3 and pp.status = ?1 and pp.endDate<=?4 and pp.licenseType.name = ?5")
+	public Tuple countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndBeforeEndDateAndLicenseTypeName(
+			ProjectProductStatus status, Long userId, Boolean active, String date, String licenseType);
 
 	@Query(value = "SELECT pp.status as status, COUNT(pp.id) as productCount, SUM(pp.licenseCount) as licenseCount "
 			+ "FROM ProjectProduct AS pp where pp.active =?1 and pp.status not in ?2 GROUP BY pp.status")
 	public List<Tuple> countProductAndSumLicenseCountByStatusAndActiveAndNotInStatus(Boolean active,
 			List<ProjectProductStatus> statusList);
 
-	@Query(value = "SELECT COUNT(pp.id) as productCount, SUM(pp.licenseCount) as licenseCount "
-			+ "FROM ProjectProduct AS pp where pp.active =?2 and pp.status = ?1 and pp.endDate <= ?3")
-	public Tuple countProductAndSumLicenseCountByStatusAndActiveAndBeforeEndDate(ProjectProductStatus status,
-			Boolean active, String date);
+	@Query(value = "SELECT COUNT(distinct pp.id) as productCount, SUM(pp.licenseCount) as licenseCount "
+			+ "FROM ProjectProduct AS pp where pp.active =?2 and pp.status = ?1 and pp.endDate <= ?3 and pp.licenseType.name = ?4")
+	public Tuple countProductAndSumLicenseCountByStatusAndActiveAndBeforeEndDateAndLicenseTypeName(
+			ProjectProductStatus status, Boolean active, String date, String licenseType);
 
 	@Query(value = "SELECT max(p.customerName) as customerName, p.customerEmail as customerEmail, COUNT(pp.id) as productCount, SUM(pp.licenseCount) as licenseCount "
-			+ "FROM ProjectProduct AS pp inner join Project p on pp.project.id = p.id where pp.active =?2 and pp.status = ?1 group by p.customerEmail")
-	public List<Tuple> countProductAndSumLicenseCountByStatusAndActiveAndGroupByCustomerEmail(
-			ProjectProductStatus status, Boolean active);
+			+ "FROM ProjectProduct AS pp inner join Project p on pp.project.id = p.id where pp.active =?2 and pp.status in ?1 group by p.customerEmail")
+	public List<Tuple> countProductAndSumLicenseCountByStatusesAndActiveAndGroupByCustomerEmail(
+			List<ProjectProductStatus> statuses, Boolean active);
 
 	@Query(value = "SELECT max(p.customerName) as customerName, p.customerEmail as customerEmail, COUNT(pp.id) as productCount, SUM(pp.licenseCount) as licenseCount "
-			+ "FROM ProjectProduct AS pp inner join Project p on pp.project.id = p.id where p.projectManager.id=?1 and pp.active =?3 and pp.status = ?2 group by p.customerEmail")
-	public List<Tuple> countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndGroupByCustomerEmail(
-			Long userId, ProjectProductStatus status, Boolean active);
+			+ "FROM ProjectProduct AS pp inner join Project p on pp.project.id = p.id where p.projectManager.id=?1 and pp.active =?3 and pp.status in ?2 group by p.customerEmail")
+	public List<Tuple> countProductAndSumLicenseCountByStatusesAndProjectProjectManagerIdAndActiveAndGroupByCustomerEmail(
+			Long userId, List<ProjectProductStatus> statuses, Boolean active);
 
 	@Query(value = "select  new com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse((case when pp.endDate >=curdate() then 'active' else 'expired' end) as status, sum(pp.licenseCount) as count) "
 			+ "from ProjectProduct pp where pp.active=true "
@@ -161,7 +206,8 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 			+ "inner join ProductDetail pd on pp.productDetail.id=pd.id "
 			+ "inner join ProductFamily pf on pd.productFamily.id=pf.id "
 			+ "inner join ProductCode pc on pd.productCode.id = pc.id "
-			+ "inner join LicenseType lt on pp.licenseType.id=lt.id " + "where p.customerEmail=?1 and pp.status=?2")
+			+ "inner join LicenseType lt on pp.licenseType.id=lt.id "
+			+ "where p.customerEmail=?1 and pp.status=?2 and pp.active=true")
 	public List<LicenseReportResponse> findLicenseReportByCustomerEmailAndStatus(String email,
 			ProjectProductStatus approved);
 
@@ -171,7 +217,7 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 			+ "inner join ProductFamily pf on pd.productFamily.id=pf.id "
 			+ "inner join ProductCode pc on pd.productCode.id = pc.id "
 			+ "inner join LicenseType lt on pp.licenseType.id=lt.id "
-			+ "where p.customerEmail=?1 and pp.status=?2 and p.projectManager.id=?3")
+			+ "where p.customerEmail=?1 and pp.status=?2 and p.projectManager.id=?3 and pp.active=true")
 	public List<LicenseReportResponse> findLicenseReportByCustomerEmailAndStatusByProjectManagerId(String email,
 			ProjectProductStatus approved, Long userId);
 

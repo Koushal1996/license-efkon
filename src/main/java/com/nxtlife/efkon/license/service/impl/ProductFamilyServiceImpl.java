@@ -166,15 +166,14 @@ public class ProductFamilyServiceImpl extends BaseService implements ProductFami
 		}
 		if (productDetailDao.existsByProductFamilyIdAndActive(unmaskId, true)) {
 			throw new ValidationException(String.format(
-					"Product family(%s) can't be delete as some of the products are related to this product family ",
-					unmaskId));
+					"This product family can't be deactivate as some of the products are related to this product family "));
 		}
 		productCodeDao.deleteByProductFamilyId(unmaskId, getUserId(), new Date());
 		int rows = productFamilyDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
 			logger.info("Product family {} successfuly deleted", unmaskId);
 		}
-		return new SuccessResponse(HttpStatus.OK.value(), "Product family deleted successfully");
+		return new SuccessResponse(HttpStatus.OK.value(), "Product family deactivated successfully");
 	}
 
 	@Override

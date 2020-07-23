@@ -141,4 +141,10 @@ public interface ProjectProductService {
 	 */
 	public List<ProjectProductResponse> findByApprovedStatusAndCustomerEmail(String email);
 
+	public Resource findExcelByApprovedStatusAndCustomerEmail(String email);
+
+	public Resource findPdfByApprovedStatusAndCustomerEmail(String email);
+
+	public List<ProjectProductResponse> findByStatus(String name);
+
 }

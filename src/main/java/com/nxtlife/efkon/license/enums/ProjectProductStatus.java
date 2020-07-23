@@ -1,7 +1,14 @@
 package com.nxtlife.efkon.license.enums;
 
 public enum ProjectProductStatus {
-	DRAFT, SUBMITTED, REVIEWED, APPROVED, REJECTED, RENEWED;
+	DRAFT("Draft"), SUBMITTED("Submitted"), REVIEWED("Reviewed"), APPROVED("Approved"), REJECTED("Rejected"),
+	RENEWED("Renewed");
+
+	private String name;
+
+	private ProjectProductStatus(String name) {
+		this.name = name;
+	}
 
 	public static boolean matches(String status) {
 		for (ProjectProductStatus projectProductStatus : ProjectProductStatus.values()) {
@@ -11,4 +18,9 @@ public enum ProjectProductStatus {
 		}
 		return false;
 	}
+
+	public String getName() {
+		return name;
+	}
+
 }

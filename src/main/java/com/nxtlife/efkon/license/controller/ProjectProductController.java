@@ -186,6 +186,26 @@ public class ProjectProductController {
 		return projectProductService.findCountByApprovedStatusAndGroupByCustomerEmail();
 	}
 
+	@GetMapping(value = "project/product/report/pdf", produces = { "application/json" })
+	@Operation(summary = "Find projects product report pdf", description = "return project product report pdf", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project product report", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findReportPdf(@RequestParam String customerEmail, HttpServletResponse response) throws IOException {
+		Resource resource = projectProductService.findPdfByApprovedStatusAndCustomerEmail(customerEmail);
+		Response.setFileResponseHeader(resource, "application/pdf", response);
+	}
+
+	@GetMapping(value = "project/product/report/excel", produces = { "application/json" })
+	@Operation(summary = "Find projects product report excel", description = "return project product report excel", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project product report", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findReportExcel(@RequestParam String customerEmail, HttpServletResponse response) throws IOException {
+		Resource resource = projectProductService.findExcelByApprovedStatusAndCustomerEmail(customerEmail);
+		Response.setFileResponseHeader(resource, "application/octet-stream", response);
+	}
+
 	@GetMapping(value = "project/product/excel", produces = { "application/json" })
 	@Operation(summary = "Find all projects products and create excel", description = "return excel file of all the products of all the projects", tags = {
 			"Projects products" })
@@ -213,7 +233,6 @@ public class ProjectProductController {
 	@GetMapping(value = "project/{projectId}/product", produces = { "application/json" })
 	@Operation(summary = "Find all product types", description = "return a list of product types", tags = { "Project" })
 	@ApiResponses(value = {
-
 			@ApiResponse(responseCode = "200", description = "Project products  successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch project products", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductResponse> findByProjectId(@PathVariable Long projectId) {
@@ -247,10 +266,20 @@ public class ProjectProductController {
 	@Operation(summary = "Find count of products by status", description = "return a list of product status and their count", tags = {
 			"Project" })
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "count successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "200", description = "count successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductGraphResponse.class)))),
 			@ApiResponse(responseCode = "403", description = "user don't have access to fetch count of products by status", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public List<ProjectProductGraphResponse> findCountByStatus() {
 		return projectProductService.findCountByStatus();
+	}
+
+	@GetMapping(value = "dashboard/product/{status}", produces = { "application/json" })
+	@Operation(summary = "Find count of products by status", description = "return a list of product status and their count", tags = {
+			"Project" })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "count successfully fetched", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ProjectProductResponse.class)))),
+			@ApiResponse(responseCode = "403", description = "user don't have access to fetch count of products by status", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public List<ProjectProductResponse> findByStatus(@PathVariable String status) {
+		return projectProductService.findByStatus(status);
 	}
 
 	@DeleteMapping(value = "project/product/{id}", produces = { "application/json" })

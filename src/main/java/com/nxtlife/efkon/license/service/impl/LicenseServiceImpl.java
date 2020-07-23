@@ -46,7 +46,6 @@ import com.nxtlife.efkon.license.dao.jpa.UserJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.enums.LicenseStatus;
-import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
@@ -60,7 +59,6 @@ import com.nxtlife.efkon.license.util.LicenseExcelUtil;
 import com.nxtlife.efkon.license.util.PdfHeaderFooterPageEvent;
 import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
-import com.nxtlife.efkon.license.view.license.LicenseReportResponse;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
@@ -139,6 +137,30 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 
 	}
 
+	private void createReportExcel(List<LicenseResponse> licenseResponseList, String fileName, String heading) {
+		SXSSFWorkbook workbook = new SXSSFWorkbook();
+		try {
+			Sheet sheet = workbook.createSheet(heading);
+			List<String> columnHeaders = LicenseResponse.licenseReportColumnHeaders();
+			CellStyle headerStyle = WorkBookUtil.getHeaderCellStyle(workbook);
+			WorkBookUtil.createRow(headerStyle, sheet, columnHeaders, 0);
+			Integer row = 1;
+			for (LicenseResponse iterate : licenseResponseList) {
+				List<String> columnValues = iterate.reportColumnValues();
+				WorkBookUtil.createRow(sheet, columnValues, row++);
+			}
+			FileOutputStream fout = new FileOutputStream(fileName);
+			workbook.write(fout);
+			workbook.close();
+			workbook.dispose();
+			fout.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new ValidationException(String.format("Couldn't create excel file because of %s", e.getMessage()));
+		}
+
+	}
+
 	private void createPdf(List<LicenseResponse> licenseResponseList, String fileName, String heading) {
 		Document document = new Document(PageSize.A4, 10f, 10f, 10f, 30f);
 		try {
@@ -165,6 +187,33 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				columnValues.add(iterate.getProjectProduct().getProductDetail().getVersionName() == null ? "NA"
 						: iterate.getProjectProduct().getProductDetail().getVersionName());
 				columnValues.add(iterate.getName() == null ? "NA" : iterate.getName());
+				PdfTableUtil.addTableRows(pdfTable, columnValues);
+			}
+			pdfTable.setWidthPercentage(95f);
+			document.add(pdfTable);
+			document.close();
+			fout.close();
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void createReportPdf(List<LicenseResponse> licenseResponseList, String fileName, String heading) {
+		Document document = new Document(PageSize.A4, 10f, 10f, 10f, 30f);
+		try {
+			FileOutputStream fout = new FileOutputStream(fileName);
+			PdfWriter pdfWriter = PdfWriter.getInstance(document, fout);
+			List<String> columnHeaders = LicenseResponse.licenseReportColumnHeaders();
+			int length = columnHeaders.size();
+			PdfPTable headerPdfTable = new PdfPTable(length);
+			PdfTableUtil.addTableHeader(headerPdfTable, columnHeaders);
+			String generatedDate = DateUtil.get(new Date(), "dd-MM-yyyy HH:mm:ss");
+			pdfWriter.setPageEvent(new PdfHeaderFooterPageEvent(heading, headerPdfTable, generatedDate));
+			document.open();
+			ITextPdfUtil.setDocumentProperties(document);
+			PdfPTable pdfTable = new PdfPTable(length);
+			for (LicenseResponse iterate : licenseResponseList) {
+				List<String> columnValues = iterate.reportColumnValues();
 				PdfTableUtil.addTableRows(pdfTable, columnValues);
 			}
 			pdfTable.setWidthPercentage(95f);
@@ -301,7 +350,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		for (LicenseResponse iterate : responseList) {
 			iterate.setProjectProduct(projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
 			iterate.getProjectProduct().setProductDetail(
-					productDetailDao.findByIdAndActive(unmask(iterate.getProjectProduct().getProductDetailId()), true));
+					productDetailDao.findResponseById(unmask(iterate.getProjectProduct().getProductDetailId())));
 		}
 
 		return responseList;
@@ -430,8 +479,8 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		for (LicenseResponse iterate1 : responseList) {
 			iterate1.setProjectProduct(
 					projectProductDao.findByIdAndActive(unmask(iterate1.getProjectProductId()), true));
-			iterate1.getProjectProduct().setProductDetail(productDetailDao
-					.findByIdAndActive(unmask(iterate1.getProjectProduct().getProductDetailId()), true));
+			iterate1.getProjectProduct().setProductDetail(
+					productDetailDao.findResponseById(unmask(iterate1.getProjectProduct().getProductDetailId())));
 		}
 		return responseList;
 	}
@@ -441,7 +490,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	public Resource findLicensesByProjectIdAndProductIdExcel(Long projectId, Long productId) {
 		List<LicenseResponse> licenseResponseList = findByProjectIdAndProductId(projectId, productId);
 		ProjectResponse projectResponse = projectDao.findByIdAndActive(unmask(projectId), true);
-		ProductDetailResponse productDetailResponse = productDetailDao.findByIdAndActive(unmask(productId), true);
+		ProductDetailResponse productDetailResponse = productDetailDao.findResponseById(unmask(productId));
 
 		String fileName = excelDirectory + projectResponse.getProjectTypeName().replaceAll("\\s", "") + "_"
 				+ projectResponse.getCustomerName() + "(" + projectResponse.getCustomerEmail() + ")" + "_"
@@ -457,7 +506,7 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	public Resource findLicensesByProjectIdAndProductIdPdf(Long projectId, Long productId) {
 		List<LicenseResponse> licenseResponseList = findByProjectIdAndProductId(projectId, productId);
 		ProjectResponse projectResponse = projectDao.findByIdAndActive(unmask(projectId), true);
-		ProductDetailResponse productDetailResponse = productDetailDao.findByIdAndActive(unmask(productId), true);
+		ProductDetailResponse productDetailResponse = productDetailDao.findResponseById(unmask(productId));
 
 		String fileName = pdfDirectory + projectResponse.getProjectTypeName().replaceAll("\\s", "") + "_"
 				+ projectResponse.getCustomerName() + "(" + projectResponse.getCustomerEmail() + ")" + "_"
@@ -528,10 +577,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 					String.format("No license is generated for the project having id [%s]", projectId));
 		}
 		for (LicenseResponse iterate : responseList) {
-
 			iterate.setProjectProduct(projectProductDao.findByIdAndActive(unmask(iterate.getProjectProductId()), true));
 			iterate.getProjectProduct().setProductDetail(
-					productDetailDao.findByIdAndActive(unmask(iterate.getProjectProduct().getProductDetailId()), true));
+					productDetailDao.findResponseById(unmask(iterate.getProjectProduct().getProductDetailId())));
 
 		}
 
@@ -588,52 +636,23 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 	}
 
 	@Override
-	@Secured(AuthorityUtils.LICENSE_FETCH)
-	public List<Map<String, Integer>> licenseReport() {
-		User user = getUser();
-		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
-		List<Map<String, Integer>> licenseCounts;
-		if (roles.contains("Customer")) {
-			licenseCounts = licenseDao.findTotalLicenseCountByCustomerEmail(user.getEmail());
-		} else {
-			Boolean isProjectManager = false;
-			if (roles.contains("Project Manager")) {
-				isProjectManager = true;
-				roles.remove("Project Manager");
-			}
-			if (roles.isEmpty() && isProjectManager) {
-				licenseCounts = licenseDao.findTotalLicenseCountByProjectManagerId(user.getUserId());
-
-			} else {
-				licenseCounts = licenseDao.findTotalLicenseCount();
-			}
-		}
-
-		if (licenseCounts.isEmpty() || licenseCounts == null) {
-			throw new NotFoundException("no license found");
-		}
-
-		return licenseCounts;
-	}
-
-	@Override
-	@Secured(AuthorityUtils.LICENSE_FETCH)
-	public List<LicenseReportResponse> licenseReportByEmail(String email) {
-
+	@Secured(AuthorityUtils.REPORT_FETCH)
+	public List<LicenseResponse> licenseReportByEmail(String email) {
 		if (email == null) {
 			throw new ValidationException("email can't be null");
 		}
-
 		if (!userDao.existsByEmail(email)) {
-			throw new NotFoundException(String.format("no customer found having email (%s)", email));
+			throw new NotFoundException(String.format("No customer found having email (%s)", email));
 		}
-
 		User user = getUser();
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
-		List<LicenseReportResponse> licenseReportResponse;
+		List<LicenseResponse> licenses;
 		if (roles.contains("Customer")) {
-			licenseReportResponse = projectProductDao.findLicenseReportByCustomerEmailAndStatus(user.getEmail(),
-					ProjectProductStatus.APPROVED);
+			if (email.equalsIgnoreCase(user.getEmail()))
+				licenses = licenseDao.findByProjectProductProjectCustomerEmailAndActive(user.getEmail(), true);
+			else {
+				return new ArrayList<>();
+			}
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -641,68 +660,42 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				roles.remove("Project Manager");
 			}
 			if (roles.isEmpty() && isProjectManager) {
-				licenseReportResponse = projectProductDao.findLicenseReportByCustomerEmailAndStatusByProjectManagerId(
-						user.getEmail(), ProjectProductStatus.APPROVED, user.getUserId());
+				licenses = licenseDao
+						.findByProjectProductProjectProjectManagerIdAndProjectProductProjectCustomerEmailAndActive(
+								user.getUserId(), email, true);
 
 			} else {
-				licenseReportResponse = projectProductDao.findLicenseReportByCustomerEmailAndStatus(email,
-						ProjectProductStatus.APPROVED);
+				licenses = licenseDao.findByProjectProductProjectCustomerEmailAndActive(email, true);
 			}
 		}
-
-		if (licenseReportResponse == null || licenseReportResponse.isEmpty()) {
-			throw new NotFoundException(String.format("No License found of customer having email (%s)", email));
-		}
-
-		return licenseReportResponse;
+		List<ProjectProductResponse> projectProductResponses = projectProductService
+				.findByApprovedStatusAndCustomerEmail(email);
+		Map<Long, ProjectProductResponse> projectProductLookup = new HashMap<>();
+		projectProductResponses.forEach(projectProductResponse -> {
+			projectProductLookup.putIfAbsent(projectProductResponse.getId(), projectProductResponse);
+		});
+		licenses.forEach(license -> {
+			license.setProjectProduct(projectProductLookup.get(license.getProjectProductId()));
+		});
+		return licenses;
 	}
 
 	@Override
-	@Secured(AuthorityUtils.LICENSE_FETCH)
-	public Map<String, Integer> findGeneratedLicenseCountOfProject(Long projectId) {
-		User user = getUser();
-		Long unmaskProjectId = unmask(projectId);
-		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+	@Secured(AuthorityUtils.REPORT_FETCH)
+	public Resource findLicensesReportExcelByEmail(String email) {
+		List<LicenseResponse> licenseResponseList = licenseReportByEmail(email);
+		String fileName = excelDirectory + String.format("LicenseReport(%s).xlsx", email);
+		createReportExcel(licenseResponseList, fileName, "License Report for " + email);
+		return FileStorageService.fetchFile(fileName);
+	}
 
-		// problem in status, gives error, i'll check later
-		Integer totalCount = projectProductDao.sumByLicenseCountAndProjectIdAndStatusAndActive(unmaskProjectId,
-				ProjectProductStatus.APPROVED, true);
-
-		if (totalCount == null) {
-			throw new NotFoundException(String.format("no license count found for project having id %d", projectId));
-		}
-
-		Integer generatedLicenseCount = 0;
-		if (roles.contains("Customer")) {
-			generatedLicenseCount = licenseDao
-					.findCountByProjectIdAndAccessIdNotNullAndProjectProductProjectCustomerEmailAndActive(
-							unmaskProjectId, user.getEmail(), true);
-		} else {
-			Boolean isProjectManager = false;
-			if (roles.contains("Project Manager")) {
-				isProjectManager = true;
-				roles.remove("Project Manager");
-			}
-			if (roles.isEmpty() && isProjectManager) {
-				generatedLicenseCount = licenseDao
-						.findCountByProjectIdAndAccessIdNotNullAndProjectProductProjectProjectManagerIdAndActive(
-								unmaskProjectId, user.getUserId(), true);
-
-			} else {
-				generatedLicenseCount = licenseDao.findByProjectProductIdAndAccessIdNotNullAndActive(unmaskProjectId,
-						true);
-			}
-		}
-		Map<String, Integer> map = new HashMap<String, Integer>();
-
-		if (generatedLicenseCount > totalCount) {
-			throw new ValidationException("generated licenses are more than total license");
-		}
-
-		map.put("generatedLicenses", generatedLicenseCount);
-		map.put("nonGeneratedLicense", totalCount - generatedLicenseCount);
-
-		return map;
+	@Override
+	@Secured(AuthorityUtils.REPORT_FETCH)
+	public Resource findLicensesReportPdfByEmail(String email) {
+		List<LicenseResponse> licenseResponseList = licenseReportByEmail(email);
+		String fileName = pdfDirectory + String.format("LicenseReport(%s).pdf", email);
+		createReportPdf(licenseResponseList, fileName, "License Report for " + email);
+		return FileStorageService.fetchFile(fileName);
 	}
 
 	@Override
@@ -748,8 +741,8 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		for (LicenseResponse iterate1 : licenseResponseList) {
 			iterate1.setProjectProduct(
 					projectProductDao.findByIdAndActive(unmask(iterate1.getProjectProductId()), true));
-			iterate1.getProjectProduct().setProductDetail(productDetailDao
-					.findByIdAndActive(unmask(iterate1.getProjectProduct().getProductDetailId()), true));
+			iterate1.getProjectProduct().setProductDetail(
+					productDetailDao.findResponseById(unmask(iterate1.getProjectProduct().getProductDetailId())));
 		}
 
 		return licenseResponseList;

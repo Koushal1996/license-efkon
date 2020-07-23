@@ -50,7 +50,10 @@ public class ProjectResponse implements Response {
 	private List<ProjectProductResponse> products;
 
 	@Schema(description = "count of all the products in a project", example = "1")
-	private Long productsCount = 1l;
+	private Long productsCount = 0l;
+	
+	@Schema(description = "count of all approved products in a project", example = "1")
+	private Long approvedProductsCount = 0l;
 
 	public ProjectResponse(Long id, String createdAt, String customerCode, String customerName, String customerEmail,
 			Boolean isEmailSend, String customerContactNo, Long projectTypeId, String projectTypeName,
@@ -179,6 +182,14 @@ public class ProjectResponse implements Response {
 
 	public void setProductsCount(Long productsCount) {
 		this.productsCount = productsCount;
+	}
+
+	public Long getApprovedProductsCount() {
+		return approvedProductsCount;
+	}
+
+	public void setApprovedProductsCount(Long approvedProductsCount) {
+		this.approvedProductsCount = approvedProductsCount;
 	}
 
 	public static ProjectResponse get(Project project) {
