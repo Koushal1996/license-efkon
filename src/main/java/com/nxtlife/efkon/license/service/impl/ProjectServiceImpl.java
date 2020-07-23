@@ -1,9 +1,13 @@
 package com.nxtlife.efkon.license.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +29,7 @@ import com.nxtlife.efkon.license.dao.jpa.UserRoleJpaDao;
 import com.nxtlife.efkon.license.entity.project.Project;
 import com.nxtlife.efkon.license.entity.user.User;
 import com.nxtlife.efkon.license.entity.user.UserRole;
+import com.nxtlife.efkon.license.enums.ProjectProductStatus;
 import com.nxtlife.efkon.license.ex.NotFoundException;
 import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
@@ -162,8 +167,12 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 		User user = getUser();
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		List<ProjectResponse> projects;
+		List<Tuple> projectProductCounts;
 		if (roles.contains("Customer")) {
 			projects = projectDao.findByCustomerEmailAndActive(user.getEmail(), true);
+			projectProductCounts = projectProductDao
+					.findProjectIdAndProductCountByProjectCustomerEmailAndActiveAndProjectProductStatus(user.getEmail(),
+							true, ProjectProductStatus.APPROVED);
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -172,10 +181,56 @@ public class ProjectServiceImpl extends BaseService implements ProjectService {
 			}
 			if (roles.isEmpty() && isProjectManager) {
 				projects = projectDao.findByProjectManagerIdAndActive(user.getUserId(), true);
+				projectProductCounts = projectProductDao
+						.findProjectIdAndProductCountByProjectProjectManagerIdAndActiveAndProjectProductStatusNotEq(
+								user.getUserId(), true, ProjectProductStatus.DRAFT);
+				projectProductCounts.addAll(projectProductDao
+						.findProjectIdAndProductCountByProjectProjectManagerIdAndActiveAndProjectProductStatus(
+								user.getUserId(), true, ProjectProductStatus.DRAFT));
 			} else {
 				projects = projectDao.findByActive(true);
+				projectProductCounts = projectProductDao
+						.findProjectIdAndProductCountByActiveAndNotEqProjectProductStatus(true,
+								ProjectProductStatus.DRAFT);
+				projectProductCounts.addAll(
+						projectProductDao.findProjectIdAndProductCountByActiveAndProjectProductStatus(user.getUserId(),
+								true, ProjectProductStatus.DRAFT));
 			}
 		}
+		Map<Long, Long> projectProductCountLookup = new HashMap<>();
+		Map<Long, Long> approvedprojectProductCountLookup = new HashMap<>();
+		projectProductCounts.forEach(projectProductCount -> {
+			System.out.println("Project : " + projectProductCount.get("projectId", Long.class) + " Product : "
+					+ projectProductCount.get("productCount", Long.class));
+			if (projectProductCountLookup.containsKey(projectProductCount.get("projectId", Long.class))) {
+				projectProductCountLookup.put(projectProductCount.get("projectId", Long.class),
+						projectProductCountLookup.get(projectProductCount.get("projectId", Long.class))
+								+ (projectProductCount.get("productCount", Long.class) != null
+										? projectProductCount.get("productCount", Long.class)
+										: 0l));
+			} else {
+				projectProductCountLookup.put(projectProductCount.get("projectId", Long.class),
+						projectProductCount.get("productCount", Long.class) != null
+								? projectProductCount.get("productCount", Long.class)
+								: 0l);
+			}
+			if (approvedprojectProductCountLookup.containsKey(projectProductCount.get("projectId", Long.class))) {
+				approvedprojectProductCountLookup.put(projectProductCount.get("projectId", Long.class),
+						approvedprojectProductCountLookup.get(projectProductCount.get("projectId", Long.class))
+								+ (projectProductCount.get("approvedProductCount", Long.class) != null
+										? projectProductCount.get("approvedProductCount", Long.class)
+										: 0l));
+			} else {
+				approvedprojectProductCountLookup.put(projectProductCount.get("projectId", Long.class),
+						projectProductCount.get("approvedProductCount", Long.class) != null
+								? projectProductCount.get("approvedProductCount", Long.class)
+								: 0l);
+			}
+		});
+		projects.forEach(project -> {
+			project.setProductsCount(projectProductCountLookup.get(unmask(project.getId())));
+			project.setApprovedProductsCount(approvedprojectProductCountLookup.get(unmask(project.getId())));
+		});
 		return projects;
 	}
 

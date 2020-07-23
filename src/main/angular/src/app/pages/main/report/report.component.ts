@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from "@angular/router";
 import { ReportService } from "./../../../services/report/report.service";
 import { ProductService } from "./../../../services/product/product.service";
 import { Component, OnInit } from "@angular/core";
@@ -22,7 +23,9 @@ export class ReportComponent implements OnInit {
   constructor(
     private productservice: ProductService,
     private projectservice: ProjectService,
-    private reportservice: ReportService
+    private reportservice: ReportService,
+    private router: ActivatedRoute,
+    private route: Router
   ) {}
 
   ngOnInit() {
@@ -40,31 +43,17 @@ export class ReportComponent implements OnInit {
   }
 
   getProjectProductReportByEmail(report, event) {
-    console.log(event);
+    //console.log(event);
     report.productLoader = true;
     //report.ProductActive = true;
     //console.log(report);
     // console.log(report.name);
     var res = report.name.split("(");
-    //var arNAme = res[0];
-    //console.log(arNAme);
+    var arNAme = res[0];
+    console.log(arNAme);
     var res2 = res[1].split(")");
     console.log(res2[0]);
-
-    this.reportservice.getProjectProductReportByEmail(res2[0]).subscribe(
-      (data) => {
-        //console.log(data);
-        this.projectProductReportsByEmail = data;
-        report.productLoader = false;
-        report.ProductActive = true;
-        report.licenceActive = false;
-      },
-      (error) => {
-        report.productLoader = false;
-        report.ProductActive = false;
-        report.licenceActive = false;
-      }
-    );
+    this.route.navigate([`report/${arNAme}/${res2[0]}/product`]);
   }
 
   getLicenseReportByEmail(report, event) {
@@ -73,25 +62,12 @@ export class ReportComponent implements OnInit {
     //console.log(report);
     //console.log(report.name);
     var res = report.name.split("(");
-    //var arNAme = res[0];
-    //console.log(arNAme);
+    var arNAme = res[0];
+    console.log(arNAme);
     var res2 = res[1].split(")");
     //console.log(res2[0]);
-
-    this.reportservice.getLicenseReportByEmail(res2[0]).subscribe(
-      (data) => {
-        //console.log(data);
-        this.licebseReportsByEmail = data;
-        report.licenceActive = true;
-        report.ProductActive = false;
-        report.licenseLoader = false;
-      },
-      (error) => {
-        report.licenceActive = false;
-        report.ProductActive = false;
-        report.licenseLoader = false;
-      }
-    );
+    this.route.navigate([`report/${arNAme}/${res2[0]}/license`]);
+    //this.route.navigate(["report", res2[0]]);
   }
   getLicenseReportExcel(report) {
     var res = report.name.split("(");

@@ -128,7 +128,7 @@ export class ProjectService {
   }
 
   getexcelTemplate() {
-    return this.api.get("api/license/generate-key/excel-template");
+    return this.api.getFile("api/license/generate-key/excel-template");
   }
   // upLoadLicenseDetailByExcel(file, projectProductId) {
   //   return this.api.put(

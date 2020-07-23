@@ -33,13 +33,13 @@ export class MainComponent implements OnInit {
     },
     {
       route: "/viewrequest/pending",
-      title: "View-Request",
+      title: "View-Requests",
       privilege: "LICENSE_REQUEST_FETCH",
       imagePath: "assets/images/view_request.png",
     },
     {
       route: "/report",
-      title: "Report",
+      title: "Reports",
       privilege: "REPORT_FETCH",
       imagePath: "assets/images/google.svg",
     },

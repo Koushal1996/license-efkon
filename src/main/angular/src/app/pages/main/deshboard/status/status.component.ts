@@ -5,6 +5,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 declare let $: any;
 import swal from "sweetalert";
+import * as FileSaver from "file-saver";
+
 import {
   FormGroup,
   FormControl,
@@ -636,11 +638,11 @@ export class StatusComponent implements OnInit {
           type:
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-        //FileSaver.saveAs(blob, "ProjectProducts");
-        const file = new File([blob], "xlsx", {
-          type: "application/vnd.ms.excel",
-        });
-        saveAs(file);
+        FileSaver.saveAs(blob, "LicenseTemplate");
+        // const file = new File([blob], "xlsx", {
+        //   type: "application/vnd.ms.excel",
+        // });
+        // saveAs(file);
       },
       (error) => {
         swal("Error");

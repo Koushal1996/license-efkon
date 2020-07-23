@@ -28,6 +28,8 @@ import { PendingComponent } from "./viewrequest/pending/pending.component";
 import { EditProductComponent } from "./viewrequest/pending/edit-product/edit-product.component";
 import { ReportComponent } from "./report/report.component";
 import { StatusComponent } from "./deshboard/status/status.component";
+import { LicenseComponent } from "./report/license/license.component";
+import { TotalProductComponent } from "./report/total-product/total-product.component";
 
 const routes: Routes = [
   {
@@ -93,7 +95,16 @@ const routes: Routes = [
       { path: "projectproduct", component: ProjectProductComponent },
       { path: "dashboard", component: DeshboardComponent },
       { path: "dashboard/:status", component: StatusComponent },
-      { path: "report", component: ReportComponent },
+      {
+        path: "report",
+        component: ReportComponent,
+        // children: [
+        //   { path: "emailLicense", component: LicenseComponent },
+        //   { path: "emailProduct", component: TotalProductComponent },
+        // ],
+      },
+      { path: "report/:name/:email/license", component: LicenseComponent },
+      { path: "report/:name/:email/product", component: TotalProductComponent },
     ],
   },
 ];

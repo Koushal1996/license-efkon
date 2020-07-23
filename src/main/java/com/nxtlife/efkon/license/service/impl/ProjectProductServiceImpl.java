@@ -8,7 +8,9 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,7 +64,9 @@ import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
 import com.nxtlife.efkon.license.view.RenewConfigurationResponse;
 import com.nxtlife.efkon.license.view.SuccessResponse;
+import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
+import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
@@ -134,15 +138,12 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			List<String> columnHeaders = ProjectProductResponse.projectProductsColumnHeaders();
 			int length = columnHeaders.size();
 			PdfPTable headerPdfTable = new PdfPTable(length);
-			headerPdfTable.setTotalWidth(ProjectProductResponse.columnWidth());
 			PdfTableUtil.addTableHeader(headerPdfTable, columnHeaders);
 			String generatedDate = DateUtil.get(new Date(), "dd-MM-yyyy HH:mm:ss");
 			pdfWriter.setPageEvent(new PdfHeaderFooterPageEvent(heading, headerPdfTable, generatedDate));
 			document.open();
 			ITextPdfUtil.setProjectProductDocumentProperties(document);
 			PdfPTable pdfTable = new PdfPTable(length);
-			pdfTable.setTotalWidth(ProjectProductResponse.columnWidth());
-
 			for (ProjectProductResponse iterate : projectProductResponseList) {
 				PdfTableUtil.addTableRows(pdfTable, iterate.columnValues());
 			}
@@ -230,28 +231,30 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				Arrays.asList(ProjectProductStatus.DRAFT));
 		for (ProjectProductStatus status : ProjectProductStatus.values()) {
 			if (status.equals(ProjectProductStatus.DRAFT)) {
-				responseList.add(new ProjectProductGraphResponse(null, status.name(),
+				responseList.add(new ProjectProductGraphResponse(status.name(), status.getName(),
 						draftCount.get("productCount", Long.class), draftCount.get("licenseCount", Long.class)));
 			} else {
 				Boolean available = false;
 				for (Tuple tuple : statusWiseProductCount) {
 					if (tuple.get("status", ProjectProductStatus.class).equals(status)) {
-						responseList.add(new ProjectProductGraphResponse(null, status.name(),
+						responseList.add(new ProjectProductGraphResponse(status.name(), status.getName(),
 								tuple.get("productCount", Long.class), tuple.get("licenseCount", Long.class)));
 						available = true;
 						break;
 					}
 				}
 				if (!available) {
-					responseList.add(new ProjectProductGraphResponse(null, status.name(), 0l, 0l));
+					responseList.add(new ProjectProductGraphResponse(status.name(), status.getName(), 0l, 0l));
 				}
 			}
 		}
 		LocalDate date = LocalDate.now();
-		date.plusDays(showBeforeDays);
-		Tuple renewalCount = projectProductDao.countProductAndSumLicenseCountByStatusAndActiveAndBeforeEndDate(
-				ProjectProductStatus.APPROVED, true, date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		responseList.add(new ProjectProductGraphResponse(null, "Renewal Pending",
+		date = date.plusDays(showBeforeDays);
+		Tuple renewalCount = projectProductDao
+				.countProductAndSumLicenseCountByStatusAndActiveAndBeforeEndDateAndLicenseTypeName(
+						ProjectProductStatus.APPROVED, true, date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+						LicenseTypeEnum.COMMERCIAL.name());
+		responseList.add(new ProjectProductGraphResponse("RENEWALP", "Renewal Pending",
 				renewalCount != null ? renewalCount.get("productCount", Long.class) : 0l,
 				renewalCount != null ? renewalCount.get("licenseCount", Long.class) : 0l));
 		return responseList;
@@ -265,7 +268,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		statusWiseProductCount = projectProductDao
 				.countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndNotInStatus(getUserId(),
 						true, Arrays.asList(ProjectProductStatus.DRAFT));
-		
+
 		for (ProjectProductStatus status : ProjectProductStatus.values()) {
 			if (status.equals(ProjectProductStatus.DRAFT)) {
 			} else {
@@ -274,15 +277,13 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				for (Tuple tuple : statusWiseProductCount) {
 					if (status.equals(ProjectProductStatus.REJECTED)
 							&& tuple.get("status", ProjectProductStatus.class).equals(status)) {
-						responseList.add(new ProjectProductGraphResponse(null, "Rejected by me",
+						responseList.add(new ProjectProductGraphResponse("REJECTEDM", "Rejected by me",
 								rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l,
 								rejectedCount != null ? rejectedCount.get("licenseCount", Long.class) : 0l));
 						responseList
-								.add(new ProjectProductGraphResponse(status.name(),
-										"Rejected by approver or other project manager",
-										tuple.get("productCount", Long.class)
-												- (rejectedCount != null ? rejectedCount.get("productCount", Long.class)
-														: 0l),
+								.add(new ProjectProductGraphResponse(status.name(), "Rejected by others", tuple.get(
+										"productCount", Long.class)
+										- (rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l),
 										tuple.get("licenseCount", Long.class)
 												- (rejectedCount != null
 														? (rejectedCount.get("licenseCount", Long.class) == null ? 0l
@@ -294,9 +295,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						if (status.equals(ProjectProductStatus.SUBMITTED)) {
 							name = "Pending for review";
 						} else {
-							name = status.name();
+							name = status.getName();
 						}
-						responseList.add(new ProjectProductGraphResponse(null, name,
+						responseList.add(new ProjectProductGraphResponse(status.name(), name,
 								tuple.get("productCount", Long.class), tuple.get("licenseCount", Long.class)));
 						available = true;
 						break;
@@ -305,25 +306,25 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				if (!available) {
 					if (status.equals(ProjectProductStatus.SUBMITTED)) {
 						name = "Pending for review";
-					} else if(status.equals(ProjectProductStatus.REJECTED)){
-						responseList.add(new ProjectProductGraphResponse(null, "Rejected by me",
+					} else if (status.equals(ProjectProductStatus.REJECTED)) {
+						responseList.add(new ProjectProductGraphResponse("REJECTEDM", "Rejected by me",
 								rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l,
 								rejectedCount != null ? rejectedCount.get("licenseCount", Long.class) : 0l));
-						name = "Rejected by approver or other project manager";
-					}else{
-						name = status.name();
+						name = "Rejected by others";
+					} else {
+						name = status.getName();
 					}
 					responseList.add(new ProjectProductGraphResponse(status.name(), name, 0l, 0l));
 				}
 			}
 		}
 		LocalDate date = LocalDate.now();
-		date.plusDays(showBeforeDays);
+		date = date.plusDays(showBeforeDays);
 		Tuple renewalCount = projectProductDao
-				.countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndBeforeEndDate(
+				.countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndBeforeEndDateAndLicenseTypeName(
 						ProjectProductStatus.APPROVED, getUserId(), true,
-						date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-		responseList.add(new ProjectProductGraphResponse(null, "Renewal Pending",
+						date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), LicenseTypeEnum.COMMERCIAL.name());
+		responseList.add(new ProjectProductGraphResponse("RENEWALP", "Renewal Pending",
 				renewalCount != null ? renewalCount.get("productCount", Long.class) : 0l,
 				renewalCount != null ? renewalCount.get("licenseCount", Long.class) : 0l));
 		return responseList;
@@ -338,7 +339,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				Arrays.asList(ProjectProductStatus.DRAFT, ProjectProductStatus.SUBMITTED,
 						ProjectProductStatus.REJECTED));
 		for (ProjectProductStatus status : ProjectProductStatus.values()) {
-			if (status.equals(ProjectProductStatus.DRAFT)) {
+			if (status.equals(ProjectProductStatus.DRAFT) || status.equals(ProjectProductStatus.SUBMITTED)) {
 			} else if (status.equals(ProjectProductStatus.REJECTED)) {
 				responseList.add(new ProjectProductGraphResponse(status.name(), "Rejected by me",
 						rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l,
@@ -352,11 +353,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				for (Tuple tuple : statusWiseProductCount) {
 					if (tuple.get("status", ProjectProductStatus.class).equals(status)) {
 						if (status.equals(ProjectProductStatus.APPROVED)) {
-							name = "Approved by me";
+							name = "Approved";
 						} else if (status.equals(ProjectProductStatus.REVIEWED)) {
 							name = "Pending for approval";
 						} else {
-							name = status.name();
+							name = status.getName();
 						}
 						responseList.add(new ProjectProductGraphResponse(status.name(), name,
 								tuple.get("productCount", Long.class),
@@ -368,11 +369,11 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				}
 				if (!available) {
 					if (status.equals(ProjectProductStatus.APPROVED)) {
-						name = "Approved by me";
+						name = "Approved";
 					} else if (status.equals(ProjectProductStatus.REVIEWED)) {
 						name = "Pending for approval";
 					} else {
-						name = status.name();
+						name = status.getName();
 					}
 					responseList.add(new ProjectProductGraphResponse(status.name(), name, 0l, 0l));
 				}
@@ -459,94 +460,6 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		return projectProductResponse;
 	}
 
-	private List<ProjectProductResponse> getProductsForApprover(List<ProjectProductResponse> projectProductResponseList,
-			User user) {
-
-		if (projectProductResponseList.isEmpty() || projectProductResponseList == null) {
-			throw new NotFoundException("no project product found for this user");
-		}
-
-		for (int k = 0; k < projectProductResponseList.size(); k++) {
-			ProjectProductResponse ppResponse = projectProductResponseList.get(k);
-
-			if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
-					&& !ppResponse.getCreatedById().equals(user.getUserId())) {
-				projectProductResponseList.remove(k);
-				k--;
-			} else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
-					&& !ppResponse.getModifiedById().equals(user.getUserId())) {
-				projectProductResponseList.remove(k);
-				k--;
-			} else if (ppResponse.getStatus().equals(ProjectProductStatus.APPROVED)
-					&& !ppResponse.getModifiedById().equals(user.getUserId())) {
-				projectProductResponseList.remove(k);
-				k--;
-			} else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED)) {
-				projectProductResponseList.remove(k);
-				k--;
-			}
-		}
-		return projectProductResponseList;
-
-	}
-
-	private List<ProjectProductResponse> getProductsForProjectManager(User user) {
-		List<ProjectProductResponse> projectProductResponseList = projectProductDao
-				.findByProjectProjectManagerIdAndActive(user.getUserId(), true);
-
-		if (projectProductResponseList.isEmpty() || projectProductResponseList == null) {
-			throw new NotFoundException("no project product found for this user");
-		}
-
-		for (int k = 0; k < projectProductResponseList.size(); k++) {
-			ProjectProductResponse ppResponse = projectProductResponseList.get(k);
-
-			if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
-					&& !ppResponse.getCreatedById().equals(user.getUserId())) {
-				projectProductResponseList.remove(k);
-				k--;
-			}
-
-			else if (ppResponse.getStatus().equals(ProjectProductStatus.REJECTED)
-					&& !ppResponse.getModifiedById().equals(user.getUserId())) {
-				projectProductResponseList.remove(k);
-				k--;
-
-			}
-
-//			else if (ppResponse.getStatus().equals(ProjectProductStatus.REVIEWED)) {
-//				projectProductResponseList.remove(k);
-//				k--;
-//			}
-		}
-
-		return projectProductResponseList;
-	}
-
-	private List<ProjectProductResponse> getProductsForSubmitter(
-			List<ProjectProductResponse> projectProductResponseList, User user) {
-
-		if (projectProductResponseList.isEmpty() || projectProductResponseList == null) {
-			throw new NotFoundException("no project product found for this user");
-		}
-
-		for (int k = 0; k < projectProductResponseList.size(); k++) {
-			ProjectProductResponse ppResponse = projectProductResponseList.get(k);
-
-			if (ppResponse.getStatus().equals(ProjectProductStatus.DRAFT)
-					&& !ppResponse.getCreatedById().equals(user.getUserId())) {
-				projectProductResponseList.remove(k);
-				k--;
-			} /*
-				 * else if (ppResponse.getStatus().equals(ProjectProductStatus.SUBMITTED) &&
-				 * !ppResponse.getModifiedById().equals(user.getUserId())) {
-				 * projectProductResponseList.remove(k); k--; }
-				 */
-		}
-
-		return projectProductResponseList;
-	}
-
 	@Override
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
 	public List<ProjectProductResponse> findAll() {
@@ -557,24 +470,37 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			projectProductResponseList = projectProductDao
 					.findByStatusAndProjectCustomerEmailAndActive(ProjectProductStatus.APPROVED, user.getEmail(), true);
 		} else {
-			projectProductResponseList = projectProductDao.findByActive(true);
-			if (roles.contains("SuperAdmin")) {
-
-			} else if (roles.contains("Approver")) {
-				projectProductResponseList = this.getProductsForApprover(projectProductResponseList, user);
-			} else if (roles.contains("Project Manager")) {
-				projectProductResponseList = this.getProductsForProjectManager(user);
+			Boolean isProjectManager = false;
+			if (roles.contains("Project Manager")) {
+				isProjectManager = true;
+				roles.remove("Project Manager");
+			}
+			if (roles.isEmpty() && isProjectManager) {
+				projectProductResponseList = projectProductDao.findByProjectProjectManagerIdAndActive(user.getUserId(),
+						true);
 			} else {
-				projectProductResponseList = this.getProductsForSubmitter(projectProductResponseList, user);
+				projectProductResponseList = projectProductDao.findByActive(true);
 			}
 		}
+		projectProductResponseList = projectProductResponseList.stream()
+				.filter(projectProduct -> !(projectProduct.getStatus().equals(ProjectProductStatus.DRAFT)
+						&& !projectProduct.getCreatedById().equals(getUserId())))
+				.collect(Collectors.toList());
 		projectProductResponseList.forEach(projectProduct -> {
 			projectProduct
 					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
-			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
-			projectProduct
-					.setLicenses(licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()), true));
+			if (!roles.contains("Customer"))
+				projectProduct
+						.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
+			List<LicenseResponse> licenses = licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()),
+					true);
+			licenses.forEach(license -> {
+				if (license.getGeneratedKey() != null) {
+					projectProduct.setGeneratedLicenseCount(projectProduct.getGeneratedLicenseCount() + 1);
+				}
+			});
+			projectProduct.setLicenses(licenses);
 		});
 		return projectProductResponseList;
 	}
@@ -605,8 +531,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
 		List<ProjectProductResponse> projectProductResponseList;
 		if (roles.contains("Customer")) {
-			projectProductResponseList = projectProductDao
-					.findByProjectIdAndProjectCustomerEmailAndActive(unmaskProjectId, user.getEmail(), true);
+			projectProductResponseList = projectProductDao.findByProjectIdAndProjectCustomerEmailAndActiveAndStatus(
+					unmaskProjectId, user.getEmail(), true, ProjectProductStatus.APPROVED);
 		} else {
 			Boolean isProjectManager = false;
 			if (roles.contains("Project Manager")) {
@@ -628,7 +554,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			projectProduct
 					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
-			projectProduct.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
+			if (!roles.contains("Customer"))
+				projectProduct
+						.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
 		});
 		return projectProductResponseList;
 	}
@@ -956,8 +884,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		if (roles.contains("Customer")) {
 			Long approvedProjectProductCount = projectProductDao.countProductByStatusAndProjectCustomerEmailAndActive(
 					ProjectProductStatus.APPROVED, user.getEmail(), true);
-			return Arrays.asList(
-					new ProjectProductGraphResponse(ProjectProductStatus.APPROVED, approvedProjectProductCount));
+			return Arrays.asList(new ProjectProductGraphResponse(ProjectProductStatus.APPROVED.name(),
+					ProjectProductStatus.APPROVED.name(), approvedProjectProductCount, null));
 		} else {
 			List<RenewConfigurationResponse> renewConfigurationResponses = renewConfigurationJpaDao.findByActiveTrue();
 			RenewConfigurationResponse renewConfiguration = null;
@@ -979,6 +907,96 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	}
 
 	@Override
+	@Secured(AuthorityUtils.DASHBOARD_FETCH)
+	public List<ProjectProductResponse> findByStatus(String name) {
+		User user = getUser();
+		Set<String> roles = user.getRoles().stream().map(role -> role.getName()).collect(Collectors.toSet());
+		List<ProjectProductResponse> projectProducts = null;
+		if (roles.contains("Customer")) {
+			if (name.equalsIgnoreCase(ProjectProductStatus.APPROVED.name())) {
+				projectProducts = projectProductDao.findByProjectCustomerEmailAndActiveAndStatusIn(user.getEmail(),
+						true, Arrays.asList(ProjectProductStatus.APPROVED));
+			} else {
+				return new ArrayList<>();
+			}
+		} else {
+			List<RenewConfigurationResponse> renewConfigurationResponses = renewConfigurationJpaDao.findByActiveTrue();
+			RenewConfigurationResponse renewConfiguration = null;
+			if (!renewConfigurationResponses.isEmpty()) {
+				renewConfiguration = renewConfigurationResponses.get(0);
+			} else {
+				throw new ValidationException("Renew configuration details not found");
+			}
+			if (roles.contains("SuperAdmin")) {
+				return new ArrayList<>();
+			} else if (roles.contains("Approver")) {
+				if (name.equalsIgnoreCase(ProjectProductStatus.REJECTED.name())) {
+					projectProducts = projectProductDao.findByActiveAndStatusAndModifiedById(true,
+							ProjectProductStatus.REJECTED, getUserId());
+				} else {
+					projectProducts = projectProductDao.findByActiveAndStatus(true, ProjectProductStatus.valueOf(name));
+				}
+			} else if (roles.contains("Project Manager")) {
+				if (name.equalsIgnoreCase(ProjectProductStatus.DRAFT.name())) {
+					projectProducts = new ArrayList<>();
+				} else if (name.equalsIgnoreCase(ProjectProductStatus.REJECTED.name())) {
+					projectProducts = projectProductDao
+							.findByActiveAndStatusAndProjectProjectManagerIdAndModifiedByIdNot(true,
+									ProjectProductStatus.REJECTED, getUserId(), getUserId());
+				} else if (name.equalsIgnoreCase("REJECTEDM")) {
+					projectProducts = projectProductDao.findByActiveAndStatusAndModifiedById(true,
+							ProjectProductStatus.REJECTED, getUserId());
+				} else if (name.equalsIgnoreCase("RENEWALP")) {
+					LocalDate date = LocalDate.now();
+					date = date.plusDays(renewConfiguration.getShowBeforeDays());
+					projectProducts = projectProductDao
+							.findByActiveAndStatusAndProjectProjectManagerIdAndEndDateLessThanEqual(true,
+									ProjectProductStatus.APPROVED, getUserId(),
+									date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+					projectProducts = projectProducts.stream().filter(projectProduct -> projectProduct
+							.getLicenseTypeName().equalsIgnoreCase(LicenseTypeEnum.COMMERCIAL.name()))
+							.collect(Collectors.toList());
+				} else {
+					projectProducts = projectProductDao.findByActiveAndStatusAndProjectProjectManagerId(true,
+							ProjectProductStatus.valueOf(name), getUserId());
+				}
+			} else {
+				if (name.equalsIgnoreCase(ProjectProductStatus.DRAFT.name())) {
+					projectProducts = projectProductDao.findByActiveAndStatusAndCreatedById(true,
+							ProjectProductStatus.DRAFT, getUserId());
+				} else if (name.equalsIgnoreCase("RENEWALP")) {
+					LocalDate date = LocalDate.now();
+					date = date.plusDays(renewConfiguration.getShowBeforeDays());
+					projectProducts = projectProductDao.findByActiveAndStatusAndEndDateLessThanEqual(true,
+							ProjectProductStatus.APPROVED, date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+					projectProducts = projectProducts.stream().filter(projectProduct -> projectProduct
+							.getLicenseTypeName().equalsIgnoreCase(LicenseTypeEnum.COMMERCIAL.name()))
+							.collect(Collectors.toList());
+				} else {
+					projectProducts = projectProductDao.findByActiveAndStatus(true, ProjectProductStatus.valueOf(name));
+				}
+			}
+		}
+		projectProducts.forEach(projectProduct -> {
+			projectProduct
+					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
+			projectProduct.setProject(projectDao.findResponseById(unmask(projectProduct.getProjectId())));
+			if (!roles.contains("Customer"))
+				projectProduct
+						.setComments(projectProductCommentDao.findByProjectProductId(unmask(projectProduct.getId())));
+			List<LicenseResponse> licenses = licenseDao.findByProjectProductIdAndActive(unmask(projectProduct.getId()),
+					true);
+			licenses.forEach(license -> {
+				if (license.getGeneratedKey() != null) {
+					projectProduct.setGeneratedLicenseCount(projectProduct.getGeneratedLicenseCount() + 1);
+				}
+			});
+			projectProduct.setLicenses(licenses);
+		});
+		return projectProducts;
+	}
+
+	@Override
 	@Secured(AuthorityUtils.REPORT_FETCH)
 	public List<ProjectProductGraphResponse> findCountByApprovedStatusAndGroupByCustomerEmail() {
 		User user = getUser();
@@ -989,11 +1007,12 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		}
 		if (roles.contains("Project Manager")) {
 			tuples = projectProductDao
-					.countProductAndSumLicenseCountByStatusAndProjectProjectManagerIdAndActiveAndGroupByCustomerEmail(
-							getUserId(), ProjectProductStatus.APPROVED, true);
+					.countProductAndSumLicenseCountByStatusesAndProjectProjectManagerIdAndActiveAndGroupByCustomerEmail(
+							getUserId(), Arrays.asList(ProjectProductStatus.APPROVED, ProjectProductStatus.RENEWED),
+							true);
 		} else {
-			tuples = projectProductDao.countProductAndSumLicenseCountByStatusAndActiveAndGroupByCustomerEmail(
-					ProjectProductStatus.APPROVED, true);
+			tuples = projectProductDao.countProductAndSumLicenseCountByStatusesAndActiveAndGroupByCustomerEmail(
+					Arrays.asList(ProjectProductStatus.APPROVED, ProjectProductStatus.RENEWED), true);
 		}
 		List<ProjectProductGraphResponse> responseList = new ArrayList<>();
 		tuples.forEach(tuple -> {
@@ -1014,18 +1033,46 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		if (getUserId() == null) {
 			throw new ValidationException("User id not found");
 		}
-		if (roles.contains("Project Manager")) {
-			projectProducts = projectProductDao.findByProjectProjectManagerIdAndProjectCustomerEmailAndActiveAndStatus(
-					getUserId(), email, true, ProjectProductStatus.APPROVED);
-		} else {
-			projectProducts = projectProductDao.findByProjectCustomerEmailAndActiveAndStatus(email, true,
-					ProjectProductStatus.APPROVED);
+		if (roles.contains("Customer") && !user.getEmail().equalsIgnoreCase(email)) {
+			return new ArrayList<>();
 		}
+		if (roles.contains("Project Manager")) {
+			projectProducts = projectProductDao
+					.findByProjectProjectManagerIdAndProjectCustomerEmailAndActiveAndStatusIn(getUserId(), email, true,
+							Arrays.asList(ProjectProductStatus.APPROVED, ProjectProductStatus.RENEWED));
+		} else {
+			projectProducts = projectProductDao.findByProjectCustomerEmailAndActiveAndStatusIn(email, true,
+					Arrays.asList(ProjectProductStatus.APPROVED, ProjectProductStatus.RENEWED));
+		}
+		List<ProjectResponse> projects = projectDao.findByCustomerEmailAndActive(email, true);
+		Map<Long, ProjectResponse> projectLookup = new HashMap<>();
+		projects.forEach(project -> {
+			projectLookup.putIfAbsent(project.getId(), project);
+		});
 		projectProducts.forEach(projectProduct -> {
+			projectProduct.setProject(projectLookup.get(projectProduct.getProjectId()));
 			projectProduct
 					.setProductDetail(productDetailDao.findResponseById(unmask(projectProduct.getProductDetailId())));
 		});
 		return projectProducts;
+	}
+
+	@Override
+	@Secured(AuthorityUtils.REPORT_FETCH)
+	public Resource findExcelByApprovedStatusAndCustomerEmail(String email) {
+		List<ProjectProductResponse> projectProducts = findByApprovedStatusAndCustomerEmail(email);
+		String fileName = excelDirectory + String.format("Report(%s).xlsx", email);
+		createExcel(projectProducts, fileName, "Product Report For " + email);
+		return FileStorageService.fetchFile(fileName);
+	}
+
+	@Override
+	@Secured(AuthorityUtils.REPORT_FETCH)
+	public Resource findPdfByApprovedStatusAndCustomerEmail(String email) {
+		List<ProjectProductResponse> projectProducts = findByApprovedStatusAndCustomerEmail(email);
+		String fileName = pdfDirectory + String.format("Report(%s).pdf", email);
+		createPdf(projectProducts, fileName, "Product report for " + email);
+		return FileStorageService.fetchFile(fileName);
 	}
 
 	@Override

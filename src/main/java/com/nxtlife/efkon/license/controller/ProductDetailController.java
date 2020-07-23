@@ -46,7 +46,7 @@ public class ProductDetailController {
 	public List<ProductFamilyResponse> findAll() {
 		return productDetailService.findAll();
 	}
-	
+
 	@GetMapping(value = "product/details", produces = { "application/json" })
 	@Operation(summary = "Find all product details", description = "return list of product details ", tags = {
 			"Product Detail" })
@@ -77,6 +77,17 @@ public class ProductDetailController {
 			@ApiResponse(description = "If required field are not filled or detail already exist", responseCode = "400", content = @Content(schema = @Schema(implementation = ApiError.class))) })
 	public ProductDetailResponse update(@PathVariable Long id, @Valid @RequestBody ProductDetailRequest request) {
 		return productDetailService.update(id, request);
+	}
+
+	@PutMapping(value = "product/detail/{id}/activate", consumes = { "application/json" }, produces = {
+			"application/json" })
+	@Operation(summary = "Activate product detail ", description = "return success messgae after activating product detail details", tags = {
+			"Product Detail" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "Product Detail info after updating product  details", responseCode = "200", content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+			@ApiResponse(description = "If user doesn't have access to update product detail", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public SuccessResponse activate(@PathVariable Long id) {
+		return productDetailService.activate(id);
 	}
 
 	@DeleteMapping(value = "product/detail/{id}", produces = { "application/json" })
