@@ -27,7 +27,10 @@
               <span *ngIf="license.name == 'COMMERCIAL'">(Lifetime)</span>
             </td>
             <td>{{ license.maxMonthCount }}</td>
-            <td (click)="editExeryMonth(license)">
+            <td
+              *ngIf="hasAuthority('LICENSE_TYPE_UPDATE')"
+              (click)="editExeryMonth(license)"
+            >
               <button type="button">Edit</button>
             </td>
           </tr>
