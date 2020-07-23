@@ -35,4 +35,18 @@ public interface Response {
 		}
 	}
 
+	public static void setTemplateResponseHeader(Resource resource, String contentType, HttpServletResponse response)
+			throws IOException {
+		response.setContentType(contentType);
+		response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"");
+		response.addHeader("fileName", resource.getFilename());
+		OutputStream out = response.getOutputStream();
+		FileInputStream in = new FileInputStream(resource.getFile());
+		// copy from in to out
+		IOUtils.copy(in, out);
+		out.flush();
+		in.close();
+		out.close();
+	}
+
 }

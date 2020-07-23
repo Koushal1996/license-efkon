@@ -2,14 +2,13 @@ package com.nxtlife.efkon.license.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nxtlife.efkon.license.LicenseManagementApp;
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.view.Response;
-import com.nxtlife.efkon.license.view.license.LicenseReportResponse;
 import com.nxtlife.efkon.license.view.license.LicenseRequest;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
@@ -70,11 +69,18 @@ public class LicenseController {
 		return licenseService.generateKey(id, request);
 	}
 
-	@Transactional
 	@RequestMapping(value = "/license/generate-key/excel-upload", method = RequestMethod.PUT)
 	public List<LicenseResponse> generateLicenseKeyFromExcel(@RequestParam("file") MultipartFile file,
 			@RequestParam(required = true, value = "projectProductId") Long projectProductId) {
 		return licenseService.generateLicenseKeyFromExcel(file, projectProductId);
+	}
+
+	@GetMapping(value = "license/generate-key/excel-template")
+	public void fetchTemplate(HttpServletResponse response) throws IOException {
+		String filepath = LicenseManagementApp.class.getClassLoader().getResource("LicenseTemplate.xlsx").toString();
+		Resource resource = new UrlResource(filepath);
+		Response.setTemplateResponseHeader(resource, "application/octet-stream", response);
+
 	}
 
 	@GetMapping(value = "licenses", produces = { "application/json" })
@@ -207,33 +213,39 @@ public class LicenseController {
 	}
 
 	@GetMapping(value = "license/report", produces = { "application/json" })
-	@Operation(summary = "Report of the licenses", description = "return a license report", tags = { "License" })
-	@ApiResponses(value = {
-			@ApiResponse(description = "license report", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
-			@ApiResponse(description = "If user doesn't have access to fetch license report ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public List<Map<String, Integer>> licenseReport() {
-		return licenseService.licenseReport();
-	}
-
-	@GetMapping(value = "license/report/{email}", produces = { "application/json" })
 	@Operation(summary = "Report of the licenses by customer email", description = "return a license report", tags = {
 			"License" })
 	@ApiResponses(value = {
 			@ApiResponse(description = "license report", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
 			@ApiResponse(description = "If user doesn't have access to fetch license report ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public List<LicenseReportResponse> licenseReportByEmail(@PathVariable String email) {
+	public List<LicenseResponse> licenseReportByEmail(@RequestParam(value = "email") String email) {
 		return licenseService.licenseReportByEmail(email);
 	}
 
-	@GetMapping(value = "project/{projectId}/generated-license-count", produces = { "application/json" })
-	@Operation(summary = "Find count of generated licenses of a project", description = "return count of generated license", tags = {
+	@GetMapping(value = "license/report/excel")
+	@Operation(summary = "Find licenses report and create excel", description = "return a excel file of licenses", tags = {
 			"License" })
 	@ApiResponses(value = {
-			@ApiResponse(description = "generated licenses count", responseCode = "200", content = @Content(array = @ArraySchema(schema = @Schema(implementation = LicenseResponse.class)))),
 			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
-			@ApiResponse(description = "If project id or product detail id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
-	public Map<String, Integer> findGeneratedLicenseCountOfProject(@PathVariable Long projectId) {
-		return licenseService.findGeneratedLicenseCountOfProject(projectId);
+			@ApiResponse(description = "If project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findLicensesReportExcelByEmail(@RequestParam(value = "email") String email,
+			HttpServletResponse response) throws IOException {
+		Resource resource = licenseService.findLicensesReportExcelByEmail(email);
+		Response.setFileResponseHeader(resource, "application/octet-stream", response);
+
+	}
+
+	@GetMapping(value = "license/report/pdf")
+	@Operation(summary = "Find licenses report and create pdf", description = "return a pdf file of licenses", tags = {
+			"License" })
+	@ApiResponses(value = {
+			@ApiResponse(description = "If user doesn't have access to fetch license details ", responseCode = "403", content = @Content(schema = @Schema(implementation = ApiError.class))),
+			@ApiResponse(description = "If project id is incorrect", responseCode = "404", content = @Content(schema = @Schema(implementation = ApiError.class))) })
+	public void findLicensesReportPdfByEmail(@RequestParam(value = "email") String email, HttpServletResponse response)
+			throws IOException {
+		Resource resource = licenseService.findLicensesReportPdfByEmail(email);
+		Response.setFileResponseHeader(resource, "application/octet-stream", response);
+
 	}
 
 	@GetMapping(value = "project/product/{productId}/generated-license", produces = { "application/json" })

@@ -1,5 +1,8 @@
 package com.nxtlife.efkon.license.view.project.product;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -11,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
 import com.nxtlife.efkon.license.enums.ExpirationPeriodType;
 import com.nxtlife.efkon.license.enums.ProjectProductStatus;
-import com.nxtlife.efkon.license.service.BaseService;
+import com.nxtlife.efkon.license.util.DateUtil;
 import com.nxtlife.efkon.license.view.Response;
 import com.nxtlife.efkon.license.view.license.LicenseResponse;
 import com.nxtlife.efkon.license.view.product.ProductDetailResponse;
@@ -25,6 +28,7 @@ public class ProjectProductResponse implements Response {
 	@Schema(description = " Id of the project product", example = "1")
 	private Long id;
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private String createdAt;
 
 	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
@@ -40,6 +44,9 @@ public class ProjectProductResponse implements Response {
 
 	@Schema(description = "No of license", example = "4")
 	private Integer licenseCount;
+
+	@Schema(description = "Generated license count", example = "2")
+	private Integer generatedLicenseCount = 0;
 
 	@Schema(description = "Type id of license", example = "1")
 	private Long licenseTypeId;
@@ -116,6 +123,14 @@ public class ProjectProductResponse implements Response {
 
 	public void setLicenseCount(Integer licenseCount) {
 		this.licenseCount = licenseCount;
+	}
+
+	public Integer getGeneratedLicenseCount() {
+		return generatedLicenseCount;
+	}
+
+	public void setGeneratedLicenseCount(Integer generatedLicenseCount) {
+		this.generatedLicenseCount = generatedLicenseCount;
 	}
 
 	public Long getLicenseTypeId() {
@@ -207,6 +222,16 @@ public class ProjectProductResponse implements Response {
 	}
 
 	public String getCreatedAt() {
+		if (createdAt != null) {
+			try {
+				DateFormat dateFormate = new SimpleDateFormat(DateUtil.defaultFormat);
+				DateFormat dateFormate1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+				Date date = dateFormate.parse(createdAt);
+				createdAt = dateFormate1.format(date);
+			} catch (ParseException e) {
+				return createdAt;
+			}
+		}
 		return createdAt;
 	}
 
@@ -285,25 +310,34 @@ public class ProjectProductResponse implements Response {
 
 	public List<String> columnValues() {
 		List<String> columnValues = new ArrayList<>();
-		columnValues.add(id == null ? "NA" : BaseService.unmask(id) + "");
-		columnValues.add(createdAt == null ? "NA" : createdAt);
-		columnValues.add(projectId == null ? "NA" : BaseService.unmask(projectId) + "");
-		columnValues.add(productDetailId == null ? "NA" : BaseService.unmask(productDetailId) + "");
+		if (project == null) {
+			columnValues.add("NA");
+		} else {
+			columnValues.add(project.getProjectTypeName() == null ? "NA" : project.getProjectTypeName());
+		}
+		columnValues.add(createdAt == null ? "NA" : getCreatedAt());
+		if (productDetail == null) {
+			columnValues.add("NA");
+			columnValues.add("NA");
+		} else {
+			columnValues.add(String.format("%s-%s",
+					productDetail.getProductFamilyName() == null ? "NA" : productDetail.getProductFamilyName(),
+					productDetail.getProductCodeName() == null ? "NA" : productDetail.getProductCodeName()));
+			columnValues.add(productDetail.getVersionName() == null ? "NA" : productDetail.getVersionName());
+		}
 		columnValues.add(licenseCount == null ? "NA" : licenseCount + "");
 		columnValues.add(licenseTypeName == null ? "NA" : licenseTypeName);
 		columnValues.add(expirationPeriodType == null ? "NA" : expirationPeriodType + "");
 		columnValues.add(expirationMonthCount == null ? "NA" : expirationMonthCount + "");
 		columnValues.add(startDate == null ? "NA" : startDate);
 		columnValues.add(endDate == null ? "NA" : endDate);
-		columnValues.add(status == null ? "NA" : status + "");
 		return columnValues;
 
 	}
 
 	public static List<String> projectProductsColumnHeaders() {
-		List<String> columnHeaders = Arrays.asList("Id", "CreatedAt", "Project Id", "Product Detail Id",
-				"License Count", "License Type", "Expiration Period", "Expiration Months", "Start Date", "End Date",
-				"Status");
+		List<String> columnHeaders = Arrays.asList("Project Type", "CreatedAt", "Product Family-Code", "Version",
+				"License Count", "License Type", "Expiration Period", "Expiration Months", "Start Date", "End Date");
 		return columnHeaders;
 	}
 

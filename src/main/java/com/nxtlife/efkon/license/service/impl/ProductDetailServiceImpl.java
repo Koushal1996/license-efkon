@@ -118,7 +118,7 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		}
 		return productFamilies;
 	}
-	
+
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_FETCH)
 	public List<ProductFamilyResponse> findAll() {
@@ -170,7 +170,6 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		return productFamilies;
 	}
 
-
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_CREATE)
 	public ProductDetailResponse save(ProductDetailRequest request) {
@@ -221,6 +220,33 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 
 	@Override
 	@Secured(AuthorityUtils.PRODUCT_DETAIL_DELETE)
+	public SuccessResponse activate(Long id) {
+		Long unmaskId = unmask(id);
+		ProductDetailResponse productDetail = productDetailDao.findResponseById(unmaskId);
+		if (productDetail == null) {
+			throw new NotFoundException(String.format("Product Detail (%s) not found", id));
+		}
+		if (!productFamilyDao.existsByIdAndActive(unmask(productDetail.getProductFamilyId()), true)) {
+			throw new ValidationException(
+					String.format("Product family (%s) isn't active currently. Please activate product family.",
+							productDetail.getProductFamilyName()));
+		}
+
+		if (!productCodeDao.existsByIdAndProductFamilyIdAndActive(unmask(productDetail.getProductCodeId()),
+				unmask(productDetail.getProductFamilyId()), true)) {
+			throw new ValidationException(
+					String.format("Product code (%s) isn't active currently. Please activate product code.",
+							productDetail.getProductCodeName()));
+		}
+		int rows = productDetailDao.activate(unmaskId, getUserId(), new Date());
+		if (rows > 0) {
+			logger.info("Product detail {} successfully activated", unmaskId);
+		}
+		return new SuccessResponse(HttpStatus.OK.value(), "Product detail  successfully activated");
+	}
+
+	@Override
+	@Secured(AuthorityUtils.PRODUCT_DETAIL_DELETE)
 	public SuccessResponse delete(Long id) {
 		Long unmaskId = unmask(id);
 		if (!productDetailDao.existsByIdAndActive(unmaskId, true)) {
@@ -228,9 +254,9 @@ public class ProductDetailServiceImpl extends BaseService implements ProductDeta
 		}
 		int rows = productDetailDao.delete(unmaskId, getUserId(), new Date());
 		if (rows > 0) {
-			logger.info("Product detail {} successfully deleted", unmaskId);
+			logger.info("Product detail {} successfully deactivated", unmaskId);
 		}
-		return new SuccessResponse(HttpStatus.OK.value(), "Product detail  successfully deleted");
+		return new SuccessResponse(HttpStatus.OK.value(), "Product detail  successfully deactivated");
 	}
 
 }

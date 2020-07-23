@@ -114,9 +114,48 @@ public class LicenseResponse implements Response {
 
 	}
 
+	public List<String> reportColumnValues() {
+		List<String> columnValues = new ArrayList<>();
+		if (projectProduct == null) {
+			columnValues.addAll(
+					Arrays.asList("NA", "NA", "NA", "NA", "NA", "NA", generatedKey == null ? "NA" : generatedKey));
+		} else if (projectProduct != null && projectProduct.getProductDetail() == null) {
+			columnValues.addAll(Arrays.asList("NA", "NA",
+					projectProduct.getLicenseTypeName() == null ? "NA" : projectProduct.getLicenseTypeName(),
+					projectProduct.getExpirationMonthCount() == null ? "NA"
+							: projectProduct.getExpirationMonthCount() + " Months",
+					projectProduct.getStartDate() == null ? "NA" : projectProduct.getStartDate(),
+					projectProduct.getEndDate() == null ? "NA" : projectProduct.getEndDate(),
+					generatedKey == null ? "NA" : generatedKey));
+		} else {
+			columnValues.addAll(Arrays.asList(
+					String.format("%s-%s",
+							projectProduct.getProductDetail().getProductFamilyName() == null ? "NA"
+									: projectProduct.getProductDetail().getProductFamilyName(),
+							projectProduct.getProductDetail().getProductCodeName() == null ? "NA"
+									: projectProduct.getProductDetail().getProductCodeName()),
+					projectProduct.getProductDetail().getVersionName() == null ? "NA"
+							: projectProduct.getProductDetail().getVersionName(),
+					projectProduct.getLicenseTypeName() == null ? "NA" : projectProduct.getLicenseTypeName(),
+					projectProduct.getExpirationMonthCount() == null ? "NA"
+							: projectProduct.getExpirationMonthCount() + " Months",
+					projectProduct.getStartDate() == null ? "NA" : projectProduct.getStartDate(),
+					projectProduct.getEndDate() == null ? "NA" : projectProduct.getEndDate(),
+					generatedKey == null ? "NA" : generatedKey));
+		}
+		return columnValues;
+
+	}
+
 	public static List<String> licenseColumnHeaders() {
 		List<String> columnHeaders = Arrays.asList("Access Id", "Generated Key", "Product Code", "Product Family",
 				"Version", "Remark");
+		return columnHeaders;
+	}
+
+	public static List<String> licenseReportColumnHeaders() {
+		List<String> columnHeaders = Arrays.asList("Product Family-Code", "Version", "LicenseType", "Expiration",
+				"Start Date", "End Date", "License Key");
 		return columnHeaders;
 	}
 
