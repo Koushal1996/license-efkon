@@ -248,6 +248,8 @@
                 >
                   View License
                 </button>
+                <button class="roleactive" (click)="getexcelTemplate()">template</button>
+
                 <form
                   [formGroup]="form"
                   *ngIf="
@@ -257,8 +259,8 @@
                     project.generatedLicenseCount == '0'
                   "
                 >
-                  <div>
-                    <button (click)="getexcelTemplate()">template</button>
+
+                  <div class="uploadfile">
                     <input
                       type="file"
                       (change)="uploadedFile($event, project)"

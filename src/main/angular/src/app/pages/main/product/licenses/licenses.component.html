@@ -31,7 +31,10 @@
               *ngIf="hasAuthority('LICENSE_TYPE_UPDATE')"
               (click)="editExeryMonth(license)"
             >
-              <button type="button">Edit</button>
+              <button  class="edit_button top_tooltip" type="button">
+                <i class="fa fa-edit"></i>
+                <span>Edit</span>
+              </button>
             </td>
           </tr>
           <!-- <tr *ngFor="let license of licenseType; index as i">

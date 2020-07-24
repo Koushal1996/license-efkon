@@ -1,7 +1,29 @@
-<h3>License Details</h3>
+<div class="row">
+  <div class="smallheader">
+    <div class="page_title">
+      <button (click)="back()"><span class="material-icons">
+        reply
+        </span></button>
+      <h3>License Details</h3>
+      </div>
+      <div class="customet_details">
+        <div class="label">
+          <label>Customer Namer -</label> <span> {{ CustomerName }}</span>
+        </div>
+        <div class="label">
+          <label>Customer Email -</label> <span> {{ CustomerEmail }}</span>
+        </div>
+      </div>
+     
+  </div>
+</div>
+<!-- <h3>License Details</h3>
 <h5>Customer Details :</h5>
 <p>{{ CustomerName }} ({{ CustomerEmail }})</p>
-<button (click)="back()">Back</button>
+<button (click)="back()">Back</button> -->
+<div class="site_main">
+  <div class="container-fluid p-0">
+    <div class="col-12 p-0">
 <form [formGroup]="searchLicenseForm">
   <div class="search_bar">
     <input
@@ -14,57 +36,69 @@
     <i class="fa fa-search" aria-hidden="true"></i>
   </div>
 </form>
-<table>
-  <thead class="users_table_hader">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Product Family-Code</th>
-      <th scope="col">Version</th>
-      <th scope="col">LicenseType</th>
-      <th scope="col">Expiration</th>
-      <th scope="col" style="min-width: 95px;">
-        Start Date
-      </th>
-      <th scope="col" style="min-width: 95px;">
-        End Date
-      </th>
-      <th scope="col">License Key</th>
-      <!-- <th scope="col">Code</th>
-      <th scope="col">Generated Key</th>
-      <th scope="col">Access Id</th> -->
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let report of licebseReportsByEmail; index as i">
-      <td>{{ i + 1 }}</td>
-      <td *ngIf="report.projectProduct.productDetail">
-        <span>{{ report.projectProduct.productDetail.productFamilyName }}</span>
-        -
-        <span>{{ report.projectProduct.productDetail.productCodeName }}</span>
-      </td>
-      <td>
-        {{ report.projectProduct.productDetail.versionName }}
-      </td>
-      <td>{{ report.projectProduct.licenseTypeName }}</td>
-      <td>
-        {{ report.projectProduct.expirationMonthCount }}
-        Months
-      </td>
-      <td>{{ report.projectProduct.startDate }}</td>
-      <td>{{ report.projectProduct.endDate }}</td>
-      <td *ngIf="report.generatedKey">
-        {{ report.generatedKey }}
-      </td>
-      <td *ngIf="!report.generatedKey">NA</td>
-    </tr>
-  </tbody>
-</table>
-
+<div class="table_scroll">
+  <table>
+    <thead class="users_table_hader">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Product Family-Code</th>
+        <th scope="col">Version</th>
+        <th scope="col">LicenseType</th>
+        <th scope="col">Expiration</th>
+        <th scope="col" style="min-width: 95px;">
+          Start Date
+        </th>
+        <th scope="col" style="min-width: 95px;">
+          End Date
+        </th>
+        <th scope="col">License Key</th>
+        <!-- <th scope="col">Code</th>
+        <th scope="col">Generated Key</th>
+        <th scope="col">Access Id</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let report of licebseReportsByEmail; index as i">
+        <td>{{ i + 1 }}</td>
+        <td *ngIf="report.projectProduct.productDetail">
+          <span>{{ report.projectProduct.productDetail.productFamilyName }}</span>
+          -
+          <span>{{ report.projectProduct.productDetail.productCodeName }}</span>
+        </td>
+        <td>
+          {{ report.projectProduct.productDetail.versionName }}
+        </td>
+        <td>{{ report.projectProduct.licenseTypeName }}</td>
+        <td>
+          {{ report.projectProduct.expirationMonthCount }}
+          Months
+        </td>
+        <td>{{ report.projectProduct.startDate }}</td>
+        <td>{{ report.projectProduct.endDate }}</td>
+        <td *ngIf="report.generatedKey">
+          {{ report.generatedKey }}
+        </td>
+        <td *ngIf="!report.generatedKey">NA</td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="isLoader" class="loader">
+    <img class="loader_gif" src="assets/images/loader3.gif" alt="" />
+  </div>
+  <div class="no_product" style="display: none;">
+    <h2>
+      <img src="assets/images/alert.svg" alt="" /> No Projects Available
+      Now
+    </h2>
+  </div>
+  
+</div>
+</div>
+</div>
+</div>
 <!-- <div
 class="sub_table mt-3 p-0"
 *ngIf="licebseReportsByEmail.length"
 >
 </div> -->
-<div *ngIf="isLoader" class="text-center w-100">
-  <img width="100px" src="assets/images/loader3.gif" alt="" />
-</div>
+

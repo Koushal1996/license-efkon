@@ -44,7 +44,7 @@
       </form>
 
       <div class="table_scroll">
-        <table>
+        <table class="mb-4">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -180,12 +180,14 @@
             </button> 
           </div>
           <div class="modal-body p-3">
-            <p
+            <div class="authorities_main">
+              <p
               *ngFor="let auth of selectedAuthorites"
-              class="badge badge-light padding"
+              class=""
             >
               {{ auth.name }}
             </p>
+            </div>
           </div>
           <!-- <div class="modal_footer">
             <button

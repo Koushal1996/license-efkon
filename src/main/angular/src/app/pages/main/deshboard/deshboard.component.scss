@@ -27,6 +27,9 @@
     color: #29aba4;
     font-size: 30px;
     font-weight: 500;
+    transition: 0.7s;
+    display: inline-block;
+    width: auto;
 }
 }
 .icon {
@@ -45,6 +48,12 @@ i {
   font-size: 40px;
     color: #29aba4;
 }
+}
+&:hover{
+  h4{
+    transform: rotateY(360deg);
+    transform-origin: center;
+  }
 }
 }
 

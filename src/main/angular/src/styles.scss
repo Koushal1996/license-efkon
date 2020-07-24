@@ -155,9 +155,9 @@ table.table.table-bordered {
 }
 
 input, select, textarea{
-  border: 1px solid #29aba4;
+  border: 1px solid #ddd;
   box-shadow:  inherit !important;
-  outline: #29aba4;
+  outline: #ddd;
 }
 
 h2.text-center {
@@ -207,7 +207,7 @@ h2.text-center {
 }
 .roleactive{
   color: #ffffff;
-  background: #29aba4;
+  background: #206585;
   border: none;
   border-radius: 4px;
   transition: 0.4s;
@@ -218,7 +218,7 @@ h2.text-center {
   margin: 2px;
   // border: 1px solid #29aba4;
   &:hover{
-    background: #2b3643;
+    background: #327874;
   }
 }
 .save_btn_tbl{
@@ -492,6 +492,9 @@ table {
     font-size: 16px;
 }
   table{
+    input{
+      padding: 2px 5px;
+    }
     tr{
       th{
         background: #364150;
@@ -628,8 +631,9 @@ table {
     letter-spacing: 1px;
     padding: 3px 8px;
     font-size: 11px;
+    cursor: pointer;
     &:hover{
-      background: #29aba4;
+      background: #516174;
     }
   }
 
@@ -1367,4 +1371,78 @@ span {
 }
 .highlight .product_family span {
   background: #29aba4;
+}
+
+.smallheader {
+  width: 100%;
+  display: inline-block;
+  margin-top: -15px;
+  background: white;
+  padding: 5px 10px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+
+  .page_title {
+    display: flex;
+    width: 200px;
+    align-items: center;
+    // justify-content: space-around;
+    h3 {
+      display: inline-block;
+      font-size: 16px;
+      font-weight: normal;
+      margin: 0;
+      color: #133256;
+      font-weight: 500;
+  }
+    button {
+      background: transparent;
+    padding: 0;
+    line-height: 20px;
+    border: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /* margin-left: -12px; */
+    padding-top: 2px;
+    transition: 0.3s;
+    // margin-top: -2px;
+    margin-right: 4px;
+      &:hover{
+        background: #d8d8d8;
+      }
+  }
+}
+.filter {
+  min-width: 680px;
+  padding: 2px 0;
+}
+.label {
+  width: auto;
+  display: inline-block;
+  margin-left: 20px;
+  label {
+    margin: 0;
+    font-size: 14px !important;
+    margin-top: 5px;
+}
+span {
+  font-size: 14px;
+  color: #868686;
+}
+}
+}
+
+.custom_modal_main{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  min-height: 100vh;
+  -webkit-transform: inherit;
+  transform: inherit;
 }

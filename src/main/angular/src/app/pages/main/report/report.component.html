@@ -7,9 +7,9 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Customer Details</th>
-              <th scope="col">License Details</th>
+              <th class="text-center" scope="col">License Details</th>
 
-              <th scope="col">Product Details</th>
+              <th class="text-center" scope="col">Product Details</th>
             </tr>
           </thead>
           <tbody id="accordion">
@@ -17,16 +17,18 @@
               <tr id="{{ report.id }}" class="">
                 <td>{{ i + 1 }}</td>
                 <td>{{ report.name }}</td>
-                <td id="{{ report.id }}">
-                  <span
+                <td id="{{ report.id }}" class="text-center">
+                  <button
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     class="cursor"
-                    class="btn btn-link collapsed"
+                    class="btn btn-outline-info custom_button collapsed top_tooltip "
                     aria-expanded="false"
                     #c
                     (click)="getLicenseReportByEmail(report, c)"
-                    >{{ report.licenseCount }}</span
+                    >{{ report.licenseCount }}
+                    <span>More Details</span>
+                    </button
                   >
                   <button
                     class="top_tooltip rahul border-seccess text-seccess"
@@ -43,16 +45,16 @@
                     <span>Download Pdf</span>
                   </button>
                 </td>
-                <td id="{{ report.id }}">
-                  <span
+                <td id="{{ report.id }}" class="text-center">
+                  <button
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
-                    class="cursor"
-                    class="btn btn-link collapsed"
+                    class="btn btn-outline-info custom_button collapsed text-center top_tooltip"
                     aria-expanded="false"
                     #c
                     (click)="getProjectProductReportByEmail(report, c)"
-                    >{{ report.productCount }}</span
+                    >{{ report.productCount }}
+                    <span>More Details</span></button
                   >
 
                   <button
