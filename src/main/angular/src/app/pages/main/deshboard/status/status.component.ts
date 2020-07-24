@@ -649,4 +649,42 @@ export class StatusComponent implements OnInit {
       }
     );
   }
+  deleteProduct(project) {
+    $("#" + project.id).addClass("highlight");
+    swal({
+      //title: "You sure?",
+      // text: "You want to go ahead with deletion?",
+      text: `Are you sure, You want to delete ${project.productDetail.productFamilyName}  ${project.productDetail.productCodeName} ${project.productDetail.versionName} Product`,
+      icon: "warning",
+      closeOnClickOutside: false,
+      buttons: ["Yes", "No"],
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $("#" + project.id).removeClass("highlight");
+      } else {
+        this._projectService.deleteProduct(project.id).subscribe(
+          (data) => {
+            swal(
+              `${project.productDetail.productFamilyName}  ${project.productDetail.productCodeName} ${project.productDetail.versionName} deleted successfully!`
+            );
+            // this.getProjectProducts();
+            this.projectProducts.splice(
+              this.projectProducts.findIndex((pd) => pd.id == project.id),
+              1
+            );
+          },
+          (error) => {}
+        );
+        $("#" + project.id).removeClass("highlight");
+      }
+    });
+  }
+  editProduct(product) {
+    console.log(product);
+    this._projectService.selecetedProduct.next(product);
+    this.route.navigate([
+      `projects/${product.projectId}/product/${product.id}`,
+    ]);
+  }
 }
