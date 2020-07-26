@@ -1,8 +1,19 @@
+<div class="row">
+  <div class="smallheader">
+    <div class="page_title">
+      <button  (click)="backCreateProjectForm()"><span class="material-icons">
+        reply
+        </span></button>
+      <h3> {{ projectId ? "Edit" : "Create" }} Project</h3>
+      </div>
+  </div>
+</div>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 p-0">
       <form (ngSubmit)="onSubmit()" [formGroup]="projectForm" class="form_main">
-        <h3>{{ projectId ? "Edit" : "Create" }} Project</h3>
+        <!-- <h3>{{ projectId ? "Edit" : "Create" }} Project</h3> -->
         <div class="input_feild">
           <div class="category_col">
             <div class="row">
@@ -239,13 +250,13 @@
           <button class="saveBtn mr-2" *ngIf="loaderbutton">
             {{ projectId ? "Updating...." : "Submitting...." }}
           </button>
-          <button
+          <!-- <button
             type="button"
             class="cancelBtn mr-3"
             (click)="backCreateProjectForm()"
           >
             Back
-          </button>
+          </button> -->
         </div>
       </form>
     </div>
