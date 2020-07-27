@@ -1206,12 +1206,13 @@ span {
     border-radius: 0;
   }
   select {
-    padding: 5px 30px 5px 15px;
+    padding: 5px 30px 5px 11px;
     height: auto;
     border: 1px solid #ddd;
     font-size: 14px;
     width: 250px;
     cursor: pointer;
+    height: 31px;
   }
   span {
     padding-top: 6px;
@@ -1449,4 +1450,10 @@ span {
 ::-webkit-scrollbar:horizontal {
   width: 8px;
   height: 8px;
+}
+.template_bg{
+  background-color: #327874;
+  &:hover{
+    background-color: #295e5b;
+  }
 }

@@ -248,6 +248,18 @@
                 >
                   View License
                 </button>
+                <button
+                type="button"
+                class="mt-1 roleactive"
+                *ngIf="
+                  (project.status == 'APPROVED' ||
+                    project.status == 'RENEWED') &&
+                  hasAuthority('LICENSE_REQUEST_CREATE')
+                "
+                (click)="saveProjectLicenseById(project)"
+              >
+                Request
+              </button>
 
                 <form
                   [formGroup]="form"
@@ -258,11 +270,10 @@
                     project.generatedLicenseCount == '0'
                   "
                 >
+                <button class="roleactive template_bg" (click)="getexcelTemplate()">
+                  template
+                </button>
                   <div class="uploadfile">
-                    <button class="roleactive" (click)="getexcelTemplate()">
-                      template
-                    </button>
-
                     <input
                       type="file"
                       (change)="uploadedFile($event, project)"
@@ -280,7 +291,7 @@
                 </span> -->
                   </div>
                 </form>
-                <button
+                <!-- <button
                   type="button"
                   class="mt-1 roleactive"
                   *ngIf="
@@ -291,7 +302,7 @@
                   (click)="saveProjectLicenseById(project)"
                 >
                   Request
-                </button>
+                </button> -->
                 <!-- <a
                   class="edit_button text-success"
                   *ngIf="
