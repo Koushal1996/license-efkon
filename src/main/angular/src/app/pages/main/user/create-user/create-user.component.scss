@@ -23,7 +23,7 @@
         .checkbox_box {
             position: relative;
             margin-top: 10px;
-            padding: 3px 10px 5px 10px;
+            padding: 5px 12px 4px 10px;
             margin-right: 15px;
             color: #8a969e;
             border: 1px solid #ddd;
@@ -44,6 +44,7 @@
             span {
                 margin-left: 26px;
                 font-size: 13px;
+                transition: 0.3s;
                 // text-transform: lowercase;
                 /* font-weight: 600; */
                 &:after {
@@ -55,6 +56,8 @@
                     left: 8px;
                     top: 8px;
                     border: 1px solid #29aba4;
+                    border-radius: 50%;
+                    transition: 0.3s;
                 }
                 
             }
@@ -62,17 +65,20 @@
     }
 
     .checkbox_box input:checked + span:after {
-        content: "\f00c";
-        color: #29aba4;
-        font-family: FontAwesome;
-        font-weight: normal;
-        line-height: initial;
-        font-size: 12px;
-        text-align: center;
-        padding-top: 3px;
+        // content: "\f00c";
+        // color: #29aba4;
+        // font-family: FontAwesome;
+        // font-weight: normal;
+        // line-height: initial;
+        // font-size: 12px;
+        // text-align: center;
+        // padding-top: 3px;
+        background-color: #29aba4;
+        box-shadow: inset 0 0 0 3px white;
     }
     .checkbox_box input:checked + span{
        color: #333;
+       
     }
     .checkbox_main {
         width: 25%;

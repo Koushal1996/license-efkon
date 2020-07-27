@@ -442,6 +442,7 @@ table {
       border-bottom: none;
       z-index: 99;
       font-weight: 500;
+      box-shadow: 0 1px 0 #ddd;
      }
   }
   tr{
@@ -656,6 +657,7 @@ table {
   transform: translate(-50%, -50%);
   .modal-dialog{
   max-width: 600px;
+    animation: rahulll 0.9s ;
   .modal-header {
     padding: 11px 15px;
     background: #29aba4;
@@ -1212,7 +1214,9 @@ span {
     font-size: 14px;
     width: 250px;
     cursor: pointer;
-    height: 31px;
+    height: 30px;
+    color: #666;
+    letter-spacing: 0.5px;
   }
   span {
     padding-top: 6px;
@@ -1234,6 +1238,7 @@ span {
 
 .highlight {
   background-color: #29aba4 !important;
+  transition: 0.9s;
 }
 .highlight td {
   color: #fff;
@@ -1456,4 +1461,11 @@ span {
   &:hover{
     background-color: #295e5b;
   }
+}
+
+
+@keyframes rahulll{
+  0%{transform: translate(0px, -400px);}
+ 100%{transform: translate(0px, 0px);}
+
 }
