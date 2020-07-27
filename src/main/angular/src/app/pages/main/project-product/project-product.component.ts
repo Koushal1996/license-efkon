@@ -140,16 +140,20 @@ export class ProjectProductComponent implements OnInit {
     //   return false;
     // }
     this.sDate = project.endDate;
+    //console.log(this.sDate);
     var d = new Date(this.sDate);
+    //console.log(d);
+    console.log(this.showBeforeDays);
     d.setDate(d.getDate() - this.showBeforeDays);
+    console.log(d);
     function convert(d) {
       var date = new Date(d),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
         day = ("0" + date.getDate()).slice(-2);
       return [date.getFullYear(), mnth, day].join("-");
     }
-    //console.log(convert(d));
-    //console.log(currentDate);
+    console.log(convert(d));
+    console.log(currentDate);
     if (currentDate >= convert(d)) {
       return true;
     } else {

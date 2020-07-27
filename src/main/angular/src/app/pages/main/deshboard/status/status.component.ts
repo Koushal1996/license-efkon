@@ -75,14 +75,13 @@ export class StatusComponent implements OnInit {
     console.log(this.productStatusValue);
     this.countsOfProductStatus();
     this.mainService.getLoginUser().subscribe((data) => {
-      //console.log(data);
       this.userRoles = data.roles;
-      //console.log(this.userRoles[0].name);
       this.selectedUserRole = this.userRoles[0].name;
     });
     this.form = new FormGroup({
       search: new FormControl(null),
     });
+    this.getrenewConfiguration();
   }
   initpopUpForm() {
     return this.fb.group({
@@ -106,7 +105,6 @@ export class StatusComponent implements OnInit {
       .countsOfProductStatus(this.productStatusValue)
       .subscribe(
         (data) => {
-          console.log(data);
           this.projectProducts = data;
           this.isloader = false;
         },
@@ -117,17 +115,12 @@ export class StatusComponent implements OnInit {
   }
   getrenewConfiguration() {
     this._projectService.renewConfiguration().subscribe((data) => {
-      console.log("getrenewConfiguration");
-      //console.log(data);
       this.showBeforeDays = data.showBeforeDays;
       this.startDateChange = data.startDateChange;
-      //console.log(this.showBeforeDays);
     });
   }
   hasExpired(project) {
     let currentDate = new Date().toISOString().split("T")[0];
-    //console.log("current" + currentDate);
-    // console.log("end" + project.endDate);
     if (currentDate >= project.endDate) {
       //return false;
       return true;
@@ -141,7 +134,10 @@ export class StatusComponent implements OnInit {
 
     this.sDate = project.endDate;
     var d = new Date(this.sDate);
+    // console.log(d);
+    console.log(this.showBeforeDays);
     d.setDate(d.getDate() - this.showBeforeDays);
+    // console.log(d);
     function convert(d) {
       var date = new Date(d),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -224,7 +220,7 @@ export class StatusComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  console.log(data);
+                  //console.log(data);
                   this.countsOfProductStatus();
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
@@ -260,7 +256,7 @@ export class StatusComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  console.log(data);
+                  // console.log(data);
                   // this.selectedProduct.status = "REVIEWED";
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
@@ -333,7 +329,7 @@ export class StatusComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  console.log(data);
+                  //console.log(data);
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   this.countsOfProductStatus();
@@ -353,7 +349,7 @@ export class StatusComponent implements OnInit {
   }
   submitProductStatus(project) {
     $("#" + project.id).addClass("highlight");
-    console.log(project);
+    //console.log(project);
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
@@ -415,7 +411,7 @@ export class StatusComponent implements OnInit {
   }
   showComments(project) {
     $("#" + project.id).addClass("highlight");
-    console.log(project.comments);
+    //console.log(project.comments);
     this.selectedComment = project;
     this.comments = project.comments;
     if (this.comments.length > 0) {
