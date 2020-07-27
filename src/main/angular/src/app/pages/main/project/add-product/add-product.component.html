@@ -1,3 +1,14 @@
+<div class="row">
+  <div class="smallheader">
+    <div class="page_title">
+      <button  (click)="close()"><span class="material-icons">
+        reply
+        </span></button>
+      <h3>Edit Product</h3>
+      </div>
+  </div>
+</div>
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-6 pl-0">
@@ -348,9 +359,9 @@
               <i class="fa fa-refresh fa-spin"></i>
               {{ productId ? "Updating...." : "Submitting...." }}
             </button>
-            <button type="button" class="cancelBtn" (click)="close()">
+            <!-- <button type="button" class="cancelBtn" (click)="close()">
               Back
-            </button>
+            </button> -->
           </div>
         </div>
       </form>
