@@ -4,7 +4,7 @@
       <button  (click)="close()"><span class="material-icons">
         reply
         </span></button>
-      <h3>Edit Product</h3>
+      <h3> {{ productId ? "Edit Product" : "Add Product" }}</h3>
       </div>
   </div>
 </div>
@@ -330,7 +330,7 @@
               </div>
               <div class="col-6">
                 <div class="form-group">
-                  <label>End Date <span class="required">*</span> </label>
+                  <label>End Date <span class="required"></span> </label>
                   <input
                     type="date"
                     class="form-control"

@@ -55,29 +55,31 @@
               >
                 <td *ngIf="family.active">
                   <button
-                    class="edit_button top_tooltip"
+                    class="roleactive top_tooltip"
                     (click)="editFamilyDescription(family)"
                     *ngIf="hasAuthority('PRODUCT_FAMILY_UPDATE')"
                   >
-                    <i class="fa fa-edit"></i>
-                    <span>Edit</span>
+                  Edit
+                    <!-- <i class="fa fa-edit"></i> -->
+                    <!-- <span>Edit</span> -->
                   </button>
                   <button
-                    class="delete_button top_tooltip"
+                    class="roleactive bg-danger top_tooltip"
                     (click)="deleteFamilyDescription(family)"
                     *ngIf="hasAuthority('PRODUCT_FAMILY_DELETE')"
                   >
-                    <i class="fa fa-trash"></i>
-                    <span>Delete</span>
+                  Deactivate
+                    <!-- <i class="fa fa-trash"></i> -->
+                    <!-- <span>Delete</span> -->
                   </button>
                 </td>
                 <td *ngIf="!family.active">
                   <button
-                    class="roleactive"
+                    class="roleactive bg-success"
                     (click)="activateFamilyDescription(family)"
                     *ngIf="hasAuthority('PRODUCT_FAMILY_DELETE')"
                   >
-                    activate
+                    Activate
                   </button>
                 </td>
               </ng-container>
