@@ -285,7 +285,7 @@
                       (click)="sendExcel()"
                       *ngIf="project.isFile"
                     >
-                      Send
+                    Generate
                     </button>
                     <!-- <span><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload
                 </span> -->
@@ -393,10 +393,11 @@
                         >
                           <button
                             type="button"
-                            class="edit_button text-success"
+                            class="roleactive "
                             (click)="editLicensekey(license)"
                           >
-                            <i class="fa fa-edit"></i>
+                          Edit
+                            <!-- <i class="fa fa-edit"></i> -->
                           </button>
                         </td>
                         <td *ngIf="!license.generatedKey">
