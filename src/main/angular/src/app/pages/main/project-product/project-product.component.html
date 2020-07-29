@@ -249,17 +249,17 @@
                   View License
                 </button>
                 <button
-                type="button"
-                class="mt-1 roleactive"
-                *ngIf="
-                  (project.status == 'APPROVED' ||
-                    project.status == 'RENEWED') &&
-                  hasAuthority('LICENSE_REQUEST_CREATE')
-                "
-                (click)="saveProjectLicenseById(project)"
-              >
-                Request
-              </button>
+                  type="button"
+                  class="mt-1 roleactive"
+                  *ngIf="
+                    (project.status == 'APPROVED' ||
+                      project.status == 'RENEWED') &&
+                    hasAuthority('LICENSE_REQUEST_CREATE')
+                  "
+                  (click)="saveProjectLicenseById(project)"
+                >
+                  Request
+                </button>
 
                 <form
                   [formGroup]="form"
@@ -270,9 +270,12 @@
                     project.generatedLicenseCount == '0'
                   "
                 >
-                <button class="roleactive template_bg" (click)="getexcelTemplate()">
-                  template
-                </button>
+                  <button
+                    class="roleactive template_bg"
+                    (click)="getexcelTemplate()"
+                  >
+                    template
+                  </button>
                   <div class="uploadfile">
                     <input
                       type="file"
@@ -285,7 +288,7 @@
                       (click)="sendExcel()"
                       *ngIf="project.isFile"
                     >
-                    Generate
+                      Generate
                     </button>
                     <!-- <span><i class="fa fa-cloud-upload" aria-hidden="true"></i> Upload
                 </span> -->
@@ -340,7 +343,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Code</th>
                         <th scope="col">Remarks</th>
-                        <th scope="col">Unique Access ID.</th>
+                        <th scope="col">Unique Access ID. *</th>
                         <th scope="col">Generated License Key</th>
                         <th scope="col">Action</th>
                       </tr>
@@ -351,7 +354,7 @@
                           <input
                             class="tableinput"
                             type="text"
-                            placeholder="Name"
+                            placeholder="Remarks"
                             name="name"
                             [(ngModel)]="license.name"
                           />
@@ -362,8 +365,12 @@
                             type="text"
                             placeholder="Access ID"
                             name="accessId"
+                            (ngModelChange)="vadiation($event, license)"
                             [(ngModel)]="license.accessId"
                           />
+                          <!-- <span style="color: red;" *ngIf="!license.accessId">
+                            required
+                          </span> -->
                         </td>
                         <td *ngIf="license.generatedKey && !license.edit">
                           {{ license.name }}
@@ -380,6 +387,10 @@
                             *ngIf="hasAuthority('LICENSE_UPDATE')"
                             type="button"
                             class="t_save_btn"
+                            [disabled]="!license.accessId"
+                            [ngStyle]="{
+                              opacity: !license.accessId ? '0.6' : '1'
+                            }"
                             (click)="updateLicensekey(license)"
                           >
                             Update License Key
@@ -393,10 +404,10 @@
                         >
                           <button
                             type="button"
-                            class="roleactive "
+                            class="roleactive"
                             (click)="editLicensekey(license)"
                           >
-                          Edit
+                            Edit
                             <!-- <i class="fa fa-edit"></i> -->
                           </button>
                         </td>
@@ -405,6 +416,10 @@
                             *ngIf="hasAuthority('LICENSE_UPDATE')"
                             type="button"
                             class="t_save_btn"
+                            [disabled]="!license.accessId"
+                            [ngStyle]="{
+                              opacity: !license.accessId ? '0.6' : '1'
+                            }"
                             (click)="generateLicensekey(license)"
                           >
                             Generate License Key

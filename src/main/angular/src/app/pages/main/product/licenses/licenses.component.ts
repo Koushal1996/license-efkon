@@ -25,15 +25,8 @@ export class LicensesComponent implements OnInit {
   showBeforeDays: any;
   startDateChange: any;
   isBeforeDaysEdit: boolean = true;
-  startRenewDateChange: any;
-  showBeforeRenewDays: any;
-  configuration;
-  rateInput;
   isValidMinInput: boolean = true;
   isValidMaxInput: boolean = true;
-  isValidDEMOMaxInput: boolean = true;
-  isValidCmInput: boolean = true;
-  isValidCmMaxInput: boolean = true;
   projectTypeForm: FormGroup;
   licenseTypeName: any;
   maxMonthCount: any;
@@ -76,30 +69,7 @@ export class LicensesComponent implements OnInit {
     e.edit = true;
     console.log(e);
   }
-  // onSubmit(license) {
-  //   console.log(license);
-  //   const object = {
-  //     monthCount: license.maxMonthCount,
-  //   };
-  //   this.projectservice
-  //     .updateLicenseType(this.selectedLicenseTypeId, object)
-  //     .subscribe(
-  //       (data) => {
-  //         console.log(data);
-  //         swal("Expiry Period Limit updated successfully!");
-  //         license.edit = false;
-  //       },
-  //       (error) => {}
-  //     );
-  // }
-  onBack(license) {
-    console.log(license);
-    license.edit = false;
-    this.getLicenseType();
-    this.isValidDEMOMaxInput = true;
-    this.isValidCmInput = true;
-    this.isValidCmMaxInput = true;
-  }
+
   ////// for renew configuration
 
   getrenewConfiguration() {
@@ -135,26 +105,7 @@ export class LicensesComponent implements OnInit {
     this.isBeforeDaysEdit = true;
     this.getrenewConfiguration();
   }
-  vadiation(e, license) {
-    //console.log(e.maxMonthCount);
-    console.log(e);
-    console.log(license);
 
-    if (license.name == "COMMERCIAL" && e > 360) {
-      this.isValidCmInput = false;
-    } else if (license.name == "DEMO" && e > 12) {
-      this.isValidDEMOMaxInput = false;
-    } else if (
-      (license.name == "COMMERCIAL" || license.name == "DEMO") &&
-      e <= 0
-    ) {
-      this.isValidCmMaxInput = false;
-    } else {
-      this.isValidDEMOMaxInput = true;
-      this.isValidCmInput = true;
-      this.isValidCmMaxInput = true;
-    }
-  }
   getToday(license) {
     console.log(license);
     if ((license.name = "DEMO")) {

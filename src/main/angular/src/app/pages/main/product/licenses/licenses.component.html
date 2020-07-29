@@ -31,7 +31,7 @@
               *ngIf="hasAuthority('LICENSE_TYPE_UPDATE')"
               (click)="editExeryMonth(license)"
             >
-              <button  class="edit_button top_tooltip" type="button">
+              <button class="edit_button top_tooltip" type="button">
                 <i class="fa fa-edit"></i>
                 <span>Edit</span>
               </button>
@@ -174,7 +174,7 @@
                   <option>true</option>
                   <option>false </option>
                 </select>
-  
+
                 <!-- <input
                   type="checkbox"
                   id="startDateChange"
@@ -279,7 +279,7 @@
                   *ngIf="projectTypeForm.get('maxMonthCount').errors.max"
                   class="field_error"
                 >
-                  maximum expiry period is{{ maxMonthCount }} months
+                  maximum expiry period is {{ maxMonthCount }} months
                 </span>
               </span>
             </div>
