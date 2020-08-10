@@ -96,6 +96,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	@Autowired
 	private RenewConfigurationJpaDao renewConfigurationJpaDao;
 
+	@Autowired
+	private EmailServiceImpl emailService;
+
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
 
@@ -408,7 +411,14 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		projectProduct.setEndDate(endDate);
 		projectProduct.setStatus(ProjectProductStatus.DRAFT);
 		projectProductDao.save(projectProduct);
-		return getProjectProductResponse(projectProduct, request.getProjectId(), request.getProductDetailId());
+		ProjectProductResponse projectProductResponse = getProjectProductResponse(projectProduct,
+				request.getProjectId(), request.getProductDetailId());
+
+		emailService.sendSimpleMessage(getUser().getEmail(), "CHANGE SUBJECT ACCORDING TO REQUIREMENT",
+				projectProductResponse.getProductDetail().getProductFamilyName()
+						+ projectProductResponse.getProductDetail().getProductCodeName()
+						+ projectProductResponse.getProductDetail().getVersion() + "saved successfully");
+		return projectProductResponse;
 	}
 
 	@Override
@@ -665,12 +675,20 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			int rows;
 			if (status.equals(ProjectProductStatus.REJECTED)) {
 				rows = projectProductDao.update(unmaskId, ProjectProductStatus.REJECTED, getUserId(), new Date());
+				// change TO,SUBJECT,PARAMETER according to recuirement
+
+				// emailService.sendSimpleMessageUsingTemplate(to, "CHANGE SUBJECT ACCORDING TO
+				// REQUIREMENTS", "REJECTED");
 			} else {
 				rows = projectProductDao.update(unmaskId, status, getUserId(), new Date());
+
+//				emailService.sendSimpleMessageUsingTemplate(to, "CHANGE SUBJECT ACCORDING TO REQUIREMENTS",
+//						status.toString());
 			}
 			if (comment != null && !comment.isEmpty()) {
 				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(), status.name(), unmaskId));
 			}
+
 			ProjectProductResponse projectProductResponse = projectProductDao.findByIdAndActive(unmaskId, true);
 			if (projectProductResponse != null) {
 				projectProductResponse.setProductDetail(

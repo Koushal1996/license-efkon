@@ -43,12 +43,12 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO FETCH USER
 	 */
 	public static final String USER_FETCH = "ROLE_USER_FETCH";
-	
+
 	/**
 	 * AUTHORITY TO FETCH PROJECT MANAGER
 	 */
 	public static final String PROJECT_MANAGER_FETCH = "ROLE_PROJECT_MANAGER_FETCH";
-	
+
 	/**
 	 * AUTHORITY TO FETCH CUSTOMER
 	 */
@@ -168,12 +168,12 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO FETCH PROJECT PRODUCT
 	 */
 	public static final String PROJECT_PRODUCT_FETCH = "ROLE_PROJECT_PRODUCT_FETCH";
-	
+
 	/**
 	 * AUTHORITY TO FETCH DASHBOARD
 	 */
 	public static final String DASHBOARD_FETCH = "ROLE_DASHBOARD_FETCH";
-	
+
 	/**
 	 * AUTHORITY TO FETCH REPORT
 	 */
@@ -288,10 +288,15 @@ public final class AuthorityUtils {
 	 * AUTHORITY TO UPDATE PROJECT TYPE
 	 */
 	public static final String PROJECT_TYPE_UPDATE = "ROLE_PROJECT_TYPE_UPDATE";
-	
+
 	/**
 	 * AUTHORITY TO DELETE PROJECT TYPE
 	 */
 	public static final String PROJECT_TYPE_DELETE = "ROLE_PROJECT_TYPE_DELETE";
+
+	/**
+	 * AUTHORITY TO SEND EMAIL
+	 */
+	public static final String SEND_EMAIL = "ROLE_SEND_EMAIL";
 
 }
