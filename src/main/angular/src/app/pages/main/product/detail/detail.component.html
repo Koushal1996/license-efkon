@@ -13,7 +13,7 @@
           </button>
         </ng-container>
         <div class="table_scroll">
-          <table>
+          <table class="mb-4">
             <thead class="users_table_hader">
               <tr>
                 <th scope="col">#</th>
@@ -65,15 +65,16 @@
                         "
                       >
                         <button
-                          class="edit_button top_tooltip"
+                          class="roleactive top_tooltip"
                           *ngIf="hasAuthority('PRODUCT_DETAIL_UPDATE')"
                           (click)="editProductDetail(detail, code, version)"
                         >
-                          <i class="fa fa-edit"></i>
-                          <span>Edit </span>
+                          Edit
+                          <!-- <i class="fa fa-edit"></i> -->
+                          <!-- <span>Edit </span> -->
                         </button>
                         <button
-                          class="delete_button top_tooltip"
+                          class="roleactive bg-danger top_tooltip"
                           *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
                           (click)="
                             deleteProductDetail(
@@ -84,8 +85,9 @@
                             )
                           "
                         >
-                          <i class="fa fa-trash"></i>
-                          <span>Delete</span>
+                          Deactivate
+                          <!-- <i class="fa fa-trash"></i> -->
+                          <!-- <span>Delete</span> -->
                         </button>
                       </td>
                       <td
@@ -96,7 +98,7 @@
                         "
                       >
                         <button
-                          class="t_save_btn bg-success"
+                          class="roleactive bg-success"
                           *ngIf="hasAuthority('PRODUCT_DETAIL_DELETE')"
                           (click)="
                             activateProductDetail(
@@ -176,7 +178,7 @@
               <span
                 *ngIf="createDetailForm.get('productFamilyId').errors.required"
                 class="error"
-                >project Family is required</span
+                >Product Family is required</span
               >
             </span>
           </div>
@@ -207,7 +209,7 @@
               <span
                 *ngIf="createDetailForm.get('productCodeId').errors.required"
                 class="error"
-                >project Code is required</span
+                >Product Code is required</span
               >
             </span>
           </div>

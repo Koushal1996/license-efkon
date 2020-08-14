@@ -1,12 +1,22 @@
 <div class="row">
+  <div class="smallheader">
+    <div class="page_title">
+      <button (click)="goback()"><span class="material-icons">
+        reply
+        </span></button>
+      <h3> {{ userId ? "Edit" : "Add" }} User</h3>
+      </div>
+  </div>
+</div>
+<div class="row">
   <div class="col-12">
     <form
       (ngSubmit)="onSubmit()"
       [formGroup]="createUserForm"
       class="form_main"
     >
-      <h3>{{ userId ? "Edit" : "Add" }} User</h3>
-      <div class="input_feild pt-0">
+      <!-- <h3>{{ userId ? "Edit" : "Add" }} User</h3> -->
+      <div class="input_feild pt-2">
         <div class="category_col">
           <div class="row">
             <div class="col-6">
@@ -211,9 +221,9 @@
             >
               <i class="fa fa-times"></i> Reset
             </button> -->
-        <button type="button" class="cancelBtn" (click)="goback()">
+        <!-- <button type="button" class="cancelBtn" (click)="goback()">
           Back
-        </button>
+        </button> -->
       </div>
     </form>
   </div>

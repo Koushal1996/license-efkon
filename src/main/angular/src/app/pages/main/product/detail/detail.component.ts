@@ -59,6 +59,7 @@ export class DetailComponent implements OnInit {
     } else {
       this.productCodes = [];
     }
+    this.createDetailForm.controls["productCodeId"].patchValue("");
     this.createDetailForm.controls["version"].reset();
     this.createDetailForm.controls["description"].reset();
   }

@@ -281,3 +281,10 @@ a.list-group-item i {
     0% {transform: translate(0px, 10px);}
     100% {transform: translate(0px, 0px);}
   }
+  .list-group-item {
+    span{
+      cursor: pointer;
+      position: relative;
+    z-index: 999999;
+    }
+  }

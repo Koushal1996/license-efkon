@@ -1,4 +1,15 @@
 <div class="row">
+  <div class="smallheader">
+    <div class="page_title">
+      <button (click)="goback()"><span class="material-icons">
+        reply
+        </span></button>
+      <h3> {{ roleId ? "Edit" : "Add" }} Role</h3>
+      </div>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-12">
     <div class="roal_create_roal">
       <form
@@ -6,8 +17,8 @@
         [formGroup]="createRoleForm"
         class="form_main"
       >
-        <h3>{{ roleId ? "Edit" : "Add" }} Role</h3>
-        <div class="input_feild pt-0">
+        <!-- <h3>{{ roleId ? "Edit" : "Add" }} Role</h3> -->
+        <div class="input_feild pt-2">
           <div class="category_col">
             <div class="row">
               <div class="col-12">
@@ -132,7 +143,7 @@
             <button
               type="submit"
               *ngIf="!loaderbutton"
-              class="saveBtn"
+              class="saveBtn mr-3"
               [disabled]="!createRoleForm.valid"
               [ngStyle]="{
                 opacity: !createRoleForm.valid ? '0.6' : '1'
@@ -140,17 +151,17 @@
             >
               {{ roleId ? "Update" : "Submit" }}
             </button>
-            <button class="saveBtn" *ngIf="loaderbutton">
+            <button class="saveBtn mr-3" *ngIf="loaderbutton">
               <i class="fa fa-refresh fa-spin"></i>
               {{ roleId ? "Updating...." : "Submitting...." }}
             </button>
-            <button
+            <!-- <button
               type="button"
               class="cancelBtn ml-3 mr-3"
               (click)="goback()"
             >
               Back
-            </button>
+            </button> -->
           </div>
         </div>
       </form>

@@ -46,3 +46,37 @@
   color: #2e2e2e;
   border: 1px solid #2e2e2e;
 }
+.custom_button{
+  padding: 0.8px 10px;
+  font-size: 13px;
+  min-width: 43px;
+  margin: 0 2px;
+}
+.top_tooltip{
+  position: relative;
+  display: inline-block;
+  width: auto;
+ span{
+  position: absolute;
+  top: -36px;
+  left: auto;
+  background: #29aba4 !important;
+  min-width: 90px;
+  text-align: center; 
+  right: 0px;
+  white-space: nowrap;
+  &:after{
+    content: "";
+    border-top: 10px solid #29aba4 !important;
+    bottom: -9px;
+    left: auto;
+    right: 3px;
+  }
+ }
+ &:hover{
+  span{
+    display: block;
+    animation: top .5s;
+  }
+}
+}

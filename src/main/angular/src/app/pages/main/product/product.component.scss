@@ -11,10 +11,20 @@
             text-transform: uppercase;
             font-size: 14px;
             a {
-                color: #b4bcc8;
+                color: #b4bcc8; 
+                padding: 8px 40px;
+                color: #c8c8c8;
+                display: inline-block;
+                text-decoration: none;
+                border-right: 1px solid #d8d8d8;
+                text-transform: uppercase;
+                font-size: 14px;
+                border-top: 7px solid #697a79;
+                transition: 0.4s;
                 &.active {
-                    background: #29aba4;
-                    color: white;
+                  background: #ffffff;
+                  color: #636060;
+                  border-top: 7px solid #29aba4;
                 }
             }
         }

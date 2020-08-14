@@ -357,4 +357,14 @@ export class AddProductComponent implements OnInit, OnChanges {
         (error) => {}
       );
   }
+  onSelectProductFamily(product) {
+    // console.log(product);
+    //this.productForm.controls["productCode"].untouched;
+
+    this.productCodes = product.productCodes;
+    if (this.productCodes) {
+      this.productForm.controls["productCode"].patchValue("");
+    }
+    console.log(this.productCodes);
+  }
 }

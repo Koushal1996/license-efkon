@@ -52,9 +52,7 @@ export class ProjectProductComponent implements OnInit {
   productStatusValue: any;
   selectedComment: any;
   searchProjectProductsForm: FormGroup;
-  //storeData: string | ArrayBuffer;
   fileUploaded: File;
-  worksheet: any;
   ProjectIdUploadFile: any;
   file: any;
   userRoles: any[] = [];
@@ -87,7 +85,6 @@ export class ProjectProductComponent implements OnInit {
     });
     this.activate.params.subscribe((params) => {
       this.productStatusValue = params["status"];
-      console.log(this.productStatusValue);
       if (this.productStatusValue) {
         this.productStatusValue = this.productStatusValue.toUpperCase();
       }
@@ -96,26 +93,20 @@ export class ProjectProductComponent implements OnInit {
       search: new FormControl(null),
     });
     this.mainService.getLoginUser().subscribe((data) => {
-      //console.log(data);
       this.userRoles = data.roles;
-      //console.log(this.userRoles[0].name);
       this.selectedUserRole = this.userRoles[0].name;
     });
   }
 
   getrenewConfiguration() {
     this._projectService.renewConfiguration().subscribe((data) => {
-      console.log("getrenewConfiguration");
-      //console.log(data);
       this.showBeforeDays = data.showBeforeDays;
       this.startDateChange = data.startDateChange;
-      //console.log(this.showBeforeDays);
     });
   }
   hasExpired(project) {
     let currentDate = new Date().toISOString().split("T")[0];
-    //console.log("current" + currentDate);
-    // console.log("end" + project.endDate);
+
     if (currentDate >= project.endDate) {
       //return false;
       return true;
@@ -140,8 +131,12 @@ export class ProjectProductComponent implements OnInit {
     //   return false;
     // }
     this.sDate = project.endDate;
+    //console.log(this.sDate);
     var d = new Date(this.sDate);
+    //console.log(d);
+    //console.log(this.showBeforeDays);
     d.setDate(d.getDate() - this.showBeforeDays);
+    //console.log(d);
     function convert(d) {
       var date = new Date(d),
         mnth = ("0" + (date.getMonth() + 1)).slice(-2),
@@ -169,7 +164,6 @@ export class ProjectProductComponent implements OnInit {
         this.productCountsStatus = this.projectProductsCopy.map(
           (item) => item.status
         );
-        //console.log(this.productCountsStatus);
         let count = 0;
         let start = false;
         for (var j = 0; j < this.productCountsStatus.length; j++) {
@@ -185,7 +179,7 @@ export class ProjectProductComponent implements OnInit {
           start = false;
           count = 0;
         }
-        console.log(this.productStatusValue);
+        //console.log(this.productStatusValue);
         this.filterStatusForm.controls["productStatus"].patchValue("All");
         if (this.productStatusValue) {
           this.filterStatusForm
@@ -195,7 +189,6 @@ export class ProjectProductComponent implements OnInit {
           //   this.productStatusValue
           //);
         }
-        console.log(data);
         this.isloader = false;
       },
       (error) => {
@@ -269,7 +262,6 @@ export class ProjectProductComponent implements OnInit {
   }
 
   editProduct(product) {
-    console.log(product);
     this._projectService.selecetedProduct.next(product);
     this.route.navigate([
       `projects/${product.projectId}/product/${product.id}`,
@@ -281,7 +273,6 @@ export class ProjectProductComponent implements OnInit {
     switch (this.commentSubmitButton) {
       case "Submit":
         swal({
-          //title: "Are you sure?",
           text: `Are you sure,You want to Submit (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) Product?`,
           icon: "warning",
           closeOnClickOutside: false,
@@ -301,7 +292,6 @@ export class ProjectProductComponent implements OnInit {
                   //this.selectedProduct.status = "SUBMIT";
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
-                  //swal("Product Submitted successfully!");
                   swal(
                     `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) submitted successfully!`
                   );
@@ -333,7 +323,6 @@ export class ProjectProductComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  console.log(data);
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   //swal("Product Rejected successfully!");
@@ -368,11 +357,8 @@ export class ProjectProductComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  console.log(data);
-                  // this.selectedProduct.status = "REVIEWED";
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
-                  // swal("Product Reviewed successfully!");
                   swal(
                     `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) reviewed successfully!`
                   );
@@ -440,7 +426,6 @@ export class ProjectProductComponent implements OnInit {
               )
               .subscribe(
                 (data) => {
-                  console.log(data);
                   this.selectedProduct.status = data.status;
                   this.selectedProduct.comments = data.comments;
                   this.getProjectProducts();
@@ -460,11 +445,9 @@ export class ProjectProductComponent implements OnInit {
   }
   submitProductStatus(project) {
     $("#" + project.id).addClass("highlight");
-    console.log(project);
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
-    console.log(this.selectedProductStatus);
     this.showModal = true;
     this.popUpForm.reset();
     this.commentSubmitButton = "Submit";
@@ -523,7 +506,6 @@ export class ProjectProductComponent implements OnInit {
   }
   showComments(project) {
     $("#" + project.id).addClass("highlight");
-    console.log(project.comments);
     this.selectedComment = project;
     this.comments = project.comments;
     if (this.comments.length > 0) {
@@ -552,13 +534,11 @@ export class ProjectProductComponent implements OnInit {
     this._projectService
       .generateLicenseKeyProduct(license.id, object)
       .subscribe((data) => {
-        console.log(data);
         license.generatedKey = data.generatedKey;
         swal("License Key generated successfully!");
       });
   }
   updateLicensekey(license) {
-    console.log(license);
     const object = {
       accessId: license.accessId,
       name: license.name,
@@ -569,7 +549,6 @@ export class ProjectProductComponent implements OnInit {
         .subscribe(
           (data) => {
             license.edit = false;
-            console.log(data);
             license.generatedKey = data.generatedKey;
             license.id = data.id;
             swal("License Key updated successfully!");
@@ -586,16 +565,13 @@ export class ProjectProductComponent implements OnInit {
   renewProductStatus(project) {
     $("#" + project.id).addClass("highlight");
     this.selectedProduct = project;
-    console.log(this.selectedProduct);
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
-    console.log(this.selectedProduct.endDate);
     let renewEndDate = this.selectedProduct.endDate;
     //this.sDate = project.endDate;
     let renewD = new Date(renewEndDate);
     renewD.setDate(renewD.getDate() + 1);
-    console.log(renewD);
     function convert(renewd) {
       var renewdate = new Date(renewD),
         mnth = ("0" + (renewdate.getMonth() + 1)).slice(-2),
@@ -627,7 +603,6 @@ export class ProjectProductComponent implements OnInit {
       if (willDelete) {
         $("#" + this.selectedProduct.id).removeClass("highlight");
       } else {
-        console.log(this.popUpStartDateForm.value);
         this._projectService
           .renewProjectProduct(
             this.selectedProduct.id,
@@ -635,18 +610,13 @@ export class ProjectProductComponent implements OnInit {
           )
           .subscribe(
             (data) => {
-              console.log("renewProjectProduct");
-              console.log(data);
+
               //this.selectedProduct = data;
               this.selectedProduct.status = data.status;
-              // this.selectedProduct.endDate = data.endDate;
-              // this.selectedProduct.startDate = data.startDate;
-              // this.selectedProduct.expirationMonthCount =
-              //   data.expirationMonthCount;
+            
               this.showRenewModal = false;
               this.popUpStartDateForm.reset();
               $("#" + this.selectedProduct.id).removeClass("highlight");
-              // swal("Project Product Renewed Successfully!");
               swal(
                 `Product (${this.selectedProduct.productDetail.productFamilyName} ${this.selectedProduct.productDetail.productCodeName} ${this.selectedProduct.productDetail.versionName}) renewed successfully!`
               );
@@ -661,7 +631,6 @@ export class ProjectProductComponent implements OnInit {
     });
   }
   sortAphabetically() {
-    console.log(this.projectProducts);
     this.projectProducts.sort(function (a, b) {
       var statusA = a.status.toLowerCase(),
         statusB = b.status.toLowerCase();
@@ -685,7 +654,6 @@ export class ProjectProductComponent implements OnInit {
     this.showRequestModal = false;
   }
   onSubmitRequest() {
-    console.log(this.popUpRequestForm.value);
     this._projectService
       .saveProjectLicenseById(
         this.selectedRequestProjectId,
@@ -693,10 +661,7 @@ export class ProjectProductComponent implements OnInit {
       )
       .subscribe(
         (data) => {
-          console.log(data);
-          // swal(
-          //   `save product license ${data.licenseCount}request in project successfully!`
-          // );
+          
           swal(` ${data.licenseCount} more License generated successfully!`);
           this.showRequestModal = false;
           this.popUpRequestForm.reset();
@@ -711,31 +676,20 @@ export class ProjectProductComponent implements OnInit {
   }
   saveProjectLicenseById(project) {
     $("#" + project.id).addClass("highlight");
-    console.log(project.id);
     this.selectedRequestProjectId = project.id;
     this.showRequestModal = true;
     this.selectedProduct = project;
     this.selectedProductCode = project.productDetail.productCodeName;
     this.selectedProductFamily = project.productDetail.productFamilyName;
     this.selectedProductVersion = project.productDetail.versionName;
-    console.log(this.selectedProduct);
   }
   getproductCountByStatus() {
-    // this._projectService.productCountByStatus().subscribe(
-    //   (data) => {
-    //     console.log(data);
-    //     this.productCountsStatus = data;
-    //   },
-    //   (error) => {
-    //     this.isloader = false;
-    //   }
-    // );
+    
   }
   getStatus() {
     this.projectProducts = this.projectProductsCopy;
     console.log(this.filterStatusForm.controls["productStatus"].value);
     let key = this.filterStatusForm.controls["productStatus"].value;
-    //console.log("Filter Key : " + this.projectProducts);
     if (key) {
       this.projectProducts = this.projectProducts.filter(
         (item) => item.status == key
@@ -752,7 +706,6 @@ export class ProjectProductComponent implements OnInit {
     if (key) {
       this.projectProducts = this.projectProductsCopy.filter(
         (item) =>
-          //console.log(item)
           item.project.customerName.toLowerCase().indexOf(key.toLowerCase()) >
             -1 ||
           item.project.customerEmail.toLowerCase().indexOf(key.toLowerCase()) >
@@ -796,7 +749,6 @@ export class ProjectProductComponent implements OnInit {
   PdfProjectProducts() {
     this._projectService.getProjectProductsPdf().subscribe(
       (data) => {
-        console.log(data);
         const blob = new Blob([data.body], {
           type: "  application/pdf;base64",
         });
@@ -816,11 +768,11 @@ export class ProjectProductComponent implements OnInit {
           type:
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         });
-        //FileSaver.saveAs(blob, "ProjectProducts");
-        const file = new File([blob], "xlsx", {
-          type: "application/vnd.ms.excel",
-        });
-        saveAs(file);
+        FileSaver.saveAs(blob, "LicenseTemplate");
+        // const file = new File([blob], "xlsx", {
+        //   type: "application/vnd.ms.excel",
+        // });
+        // saveAs(file);
       },
       (error) => {
         //swal("Error");
@@ -828,15 +780,14 @@ export class ProjectProductComponent implements OnInit {
     );
   }
   uploadedFile(event, project) {
-    // this._projectService.getexcelTemplate().subscribe((data) => {
-    //   console.log(data);
-    // });
-    console.log(event);
-    console.log(project);
+  
     this.ProjectIdUploadFile = project;
     console.log(event.target.files[0]);
     this.fileUploaded = event.target.files[0];
     project.isFile = true;
+    this.selectedProductCode = project.productDetail.productCodeName;
+    this.selectedProductFamily = project.productDetail.productFamilyName;
+    this.selectedProductVersion = project.productDetail.versionName;
   }
   sendExcel() {
     const formData = new FormData();
@@ -844,16 +795,18 @@ export class ProjectProductComponent implements OnInit {
     formData.append("file ", this.fileUploaded);
     this._projectService.upLoadLicenseDetailByExcel(formData).subscribe(
       (data) => {
-        console.log(data);
         const fileAcessId = data.filter((item) => item.accessId);
-        console.log(fileAcessId);
         if (fileAcessId.length < 1) {
-          swal("File not uploaded");
+          swal(
+            `Product (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) File not uploaded`
+          );
           this.ProjectIdUploadFile.licenses = data;
           this.form.controls["search"].reset();
-          //this.ProjectIdUploadFile.isFile = false;
+          this.ProjectIdUploadFile.isFile = false;
         } else {
-          swal("File Uploaded Sucessfully");
+          swal(
+            `Product (${this.selectedProductFamily} ${this.selectedProductCode} ${this.selectedProductVersion}) File Uploaded Sucessfully`
+          );
           this.ProjectIdUploadFile.licenses = data;
           //this.ProjectIdUploadFile;
           this.getProjectProducts();
@@ -862,10 +815,12 @@ export class ProjectProductComponent implements OnInit {
         }
       },
       (error) => {
-        console.log(error);
         this.ProjectIdUploadFile.isFile = false;
         this.form.controls["search"].reset();
       }
     );
+  }
+  vadiation(event, license) {
+    //license.validate = true;
   }
 }

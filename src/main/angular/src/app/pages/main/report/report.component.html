@@ -6,10 +6,10 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Customer name</th>
-              <th scope="col">Total License Distributed</th>
+              <th scope="col">Customer Details</th>
+              <th class="text-center" scope="col">License Details</th>
 
-              <th scope="col">Total Product Distributed</th>
+              <th class="text-center" scope="col">Product Details</th>
             </tr>
           </thead>
           <tbody id="accordion">
@@ -17,16 +17,18 @@
               <tr id="{{ report.id }}" class="">
                 <td>{{ i + 1 }}</td>
                 <td>{{ report.name }}</td>
-                <td id="{{ report.id }}">
-                  <span
+                <td id="{{ report.id }}" class="text-center">
+                  <button
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
                     class="cursor"
-                    class="btn btn-link collapsed"
+                    class="btn btn-outline-info custom_button collapsed top_tooltip "
                     aria-expanded="false"
                     #c
                     (click)="getLicenseReportByEmail(report, c)"
-                    >{{ report.licenseCount }}</span
+                    >{{ report.licenseCount }}
+                    <span>More Details</span>
+                    </button
                   >
                   <button
                     class="top_tooltip rahul border-seccess text-seccess"
@@ -43,16 +45,16 @@
                     <span>Download Pdf</span>
                   </button>
                 </td>
-                <td id="{{ report.id }}">
-                  <span
+                <td id="{{ report.id }}" class="text-center">
+                  <button
                     data-toggle="collapse"
                     [attr.data-target]="'#collapse' + i"
-                    class="cursor"
-                    class="btn btn-link collapsed"
+                    class="btn btn-outline-info custom_button collapsed text-center top_tooltip"
                     aria-expanded="false"
                     #c
                     (click)="getProjectProductReportByEmail(report, c)"
-                    >{{ report.productCount }}</span
+                    >{{ report.productCount }}
+                    <span>More Details</span></button
                   >
 
                   <button
@@ -60,7 +62,7 @@
                     (click)="getProjectProductReportExcel(report)"
                   >
                     <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-                    <span>Export Licenses</span>
+                    <span>Export Product Details</span>
                   </button>
 
                   <button
@@ -70,158 +72,6 @@
                     <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                     <span>Download Pdf</span>
                   </button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="9" class="padding">
-                  <div
-                    [attr.id]="'collapse' + i"
-                    class="collapse"
-                    data-parent="#accordion"
-                  >
-                    <div
-                      class="sub_table mt-3 p-0"
-                      *ngIf="report.ProductActive"
-                    >
-                      <div
-                        *ngIf="report.productLoader"
-                        class="text-center w-100"
-                      >
-                        <img
-                          width="100px"
-                          src="assets/images/loader3.gif"
-                          alt=""
-                        />
-                      </div>
-                      <h3>Project-Product Details</h3>
-                      <table>
-                        <thead class="users_table_hader">
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Project Type</th>
-                            <th scope="col">CreatedAt</th>
-                            <th scope="col">Product Family-Code</th>
-                            <th scope="col">Version</th>
-                            <th scope="col">License Count</th>
-                            <th scope="col">License Type</th>
-                            <th scope="col">Expiration Type</th>
-                            <th scope="col">Expiration Period (in Months)</th>
-                            <th scope="col" style="min-width: 100px;">
-                              Start Date
-                            </th>
-                            <th scope="col" style="min-width: 100px;">
-                              End Date
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr
-                            *ngFor="
-                              let report of projectProductReportsByEmail;
-                              index as i
-                            "
-                          >
-                            <td>{{ i + 1 }}</td>
-
-                            <td>{{ report.project.projectTypeName }}</td>
-                            <td>{{ report.createdAt }}</td>
-                            <td>
-                              <span>{{
-                                report.productDetail.productFamilyName
-                              }}</span>
-                              -
-                              <span>{{
-                                report.productDetail.productCodeName
-                              }}</span>
-                            </td>
-                            <td>
-                              {{ report.productDetail.versionName }}
-                            </td>
-                            <td>{{ report.licenseCount }}</td>
-                            <td>{{ report.licenseTypeName }}</td>
-                            <td>{{ report.expirationPeriodType }}</td>
-                            <td>{{ report.expirationMonthCount }}</td>
-                            <td>{{ report.startDate }}</td>
-                            <td>{{ report.endDate }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div
-                      class="sub_table mt-3 p-0"
-                      *ngIf="report.licenceActive"
-                    >
-                      <div
-                        *ngIf="report.licenseLoader"
-                        class="text-center w-100"
-                      >
-                        <img
-                          width="100px"
-                          src="assets/images/loader3.gif"
-                          alt=""
-                        />
-                      </div>
-                      <h3>License Details</h3>
-                      <table>
-                        <thead class="users_table_hader">
-                          <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Product Family-Code</th>
-                            <th scope="col">Version</th>
-                            <th scope="col">LicenseType</th>
-                            <th scope="col">Expiration</th>
-                            <th scope="col" style="min-width: 95px;">
-                              Start Date
-                            </th>
-                            <th scope="col" style="min-width: 95px;">
-                              End Date
-                            </th>
-                            <th scope="col">License Key</th>
-                            <!-- <th scope="col">Code</th>
-                            <th scope="col">Generated Key</th>
-                            <th scope="col">Access Id</th> -->
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr
-                            *ngFor="
-                              let report of licebseReportsByEmail;
-                              index as i
-                            "
-                          >
-                            <td>{{ i + 1 }}</td>
-                            <td *ngIf="report.projectProduct.productDetail">
-                              <span>{{
-                                report.projectProduct.productDetail
-                                  .productFamilyName
-                              }}</span>
-                              -
-                              <span>{{
-                                report.projectProduct.productDetail
-                                  .productCodeName
-                              }}</span>
-                            </td>
-                            <td>
-                              {{
-                                report.projectProduct.productDetail.versionName
-                              }}
-                            </td>
-                            <td>{{ report.projectProduct.licenseTypeName }}</td>
-                            <td>
-                              {{ report.projectProduct.expirationMonthCount }}
-                              Months
-                            </td>
-                            <td>{{ report.projectProduct.startDate }}</td>
-                            <td>{{ report.projectProduct.endDate }}</td>
-                            <td *ngIf="report.generatedKey">
-                              {{ report.generatedKey }}
-                            </td>
-                            <td *ngIf="!report.generatedKey">NA</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
                 </td>
               </tr>
             </ng-container>

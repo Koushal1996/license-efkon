@@ -45,3 +45,22 @@ span.badge {
   background: rgba(0, 0, 0, 0.5);
 
 }
+.authorities_main {
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+  p {
+    width: 31.8%;
+    display: inline-block;
+    font-size: 11px;
+    border: 1px solid #ddd;
+    padding: 5px 10px;
+    margin: 5px;
+    text-align: left;
+    background: #f9f9f9;
+    float: left;
+}
+}
+.custom_modal_main .modal-dialog {
+  max-width: 686px;
+}

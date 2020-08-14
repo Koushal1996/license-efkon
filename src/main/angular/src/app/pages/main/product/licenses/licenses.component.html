@@ -27,8 +27,14 @@
               <span *ngIf="license.name == 'COMMERCIAL'">(Lifetime)</span>
             </td>
             <td>{{ license.maxMonthCount }}</td>
-            <td (click)="editExeryMonth(license)">
-              <button type="button">Edit</button>
+            <td
+              *ngIf="hasAuthority('LICENSE_TYPE_UPDATE')"
+              (click)="editExeryMonth(license)"
+            >
+              <button class="edit_button top_tooltip" type="button">
+                <i class="fa fa-edit"></i>
+                <span>Edit</span>
+              </button>
             </td>
           </tr>
           <!-- <tr *ngFor="let license of licenseType; index as i">
@@ -120,94 +126,96 @@
       <div class="table_header">
         <h4>Renew Configuration</h4>
       </div>
-      <table>
-        <thead class="users_table_hader">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Show Before Days</th>
-            <th scope="col">Start Date Change</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td *ngIf="isBeforeDaysEdit">{{ showBeforeDays }}</td>
-            <td *ngIf="!isBeforeDaysEdit">
-              <input
-                class="tableinput"
-                type="number"
-                name="showBeforeDays"
-                id="showBeforeDays"
-                min="1"
-                max="120"
-                (keyup)="checkMaxValue(showBeforeDays)"
-                required
-                onkeypress="return
-              event.charCode >= 48"
-                [(ngModel)]="showBeforeDays"
-              />
-              <p *ngIf="!isValidMaxInput && isValidMinInput">
-                maximun show before days is 120
-              </p>
-              <p *ngIf="!isValidMinInput && isValidMaxInput">
-                minimun show before days is 1
-              </p>
-            </td>
-            <td *ngIf="isBeforeDaysEdit">
-              {{ startDateChange }}
-            </td>
-            <td *ngIf="!isBeforeDaysEdit">
-              <select
-                class="form-control"
-                name="startDateChange"
-                id="startDateChange"
-                [(ngModel)]="startDateChange"
-              >
-                <option>true</option>
-                <option>false </option>
-              </select>
+      <div class="p-3 border border-top-0">
+        <table>
+          <thead class="users_table_hader">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Show Before Days</th>
+              <th scope="col">Start Date Change</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td *ngIf="isBeforeDaysEdit">{{ showBeforeDays }}</td>
+              <td *ngIf="!isBeforeDaysEdit">
+                <input
+                  class="tableinput"
+                  type="number"
+                  name="showBeforeDays"
+                  id="showBeforeDays"
+                  min="1"
+                  max="120"
+                  (keyup)="checkMaxValue(showBeforeDays)"
+                  required
+                  onkeypress="return
+                event.charCode >= 48"
+                  [(ngModel)]="showBeforeDays"
+                />
+                <p *ngIf="!isValidMaxInput && isValidMinInput">
+                  maximun show before days is 120
+                </p>
+                <p *ngIf="!isValidMinInput && isValidMaxInput">
+                  minimun show before days is 1
+                </p>
+              </td>
+              <td *ngIf="isBeforeDaysEdit">
+                {{ startDateChange }}
+              </td>
+              <td *ngIf="!isBeforeDaysEdit">
+                <select
+                  class="form-control"
+                  name="startDateChange"
+                  id="startDateChange"
+                  [(ngModel)]="startDateChange"
+                >
+                  <option>true</option>
+                  <option>false </option>
+                </select>
 
-              <!-- <input
-                type="checkbox"
-                id="startDateChange"
-                [(ngModel)]="startDateChange"
-                checked
-                data-toggle="toggle"
-              /> -->
-            </td>
-            <td *ngIf="isBeforeDaysEdit">
-              <button
-                type="submit"
-                (click)="editshowBeforeDays()"
-                class="edit_button top_tooltip"
-              >
-                <span>Edit</span>
-                <i class="fa fa-edit"></i>
-              </button>
-            </td>
-            <td *ngIf="!isBeforeDaysEdit">
-              <button
-                type="submit"
-                *ngIf="isValidMinInput && isValidMaxInput"
-                (click)="
-                  onSubmitRenewConfiguration(startDateChange, showBeforeDays)
-                "
-                class="t_save_btn top_tooltip"
-              >
-                Submit
-              </button>
-              <button
-                type="submit"
-                (click)="onBackRenew()"
-                class="ml-2 t_save_btn bg-danger top_tooltip"
-              >
-                Cancel
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <!-- <input
+                  type="checkbox"
+                  id="startDateChange"
+                  [(ngModel)]="startDateChange"
+                  checked
+                  data-toggle="toggle"
+                /> -->
+              </td>
+              <td *ngIf="isBeforeDaysEdit">
+                <button
+                  type="submit"
+                  (click)="editshowBeforeDays()"
+                  class="edit_button top_tooltip"
+                >
+                  <span>Edit</span>
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+              <td *ngIf="!isBeforeDaysEdit">
+                <button
+                  type="submit"
+                  *ngIf="isValidMinInput && isValidMaxInput"
+                  (click)="
+                    onSubmitRenewConfiguration(startDateChange, showBeforeDays)
+                  "
+                  class="t_save_btn top_tooltip"
+                >
+                  Submit
+                </button>
+                <button
+                  type="submit"
+                  (click)="onBackRenew()"
+                  class="ml-2 t_save_btn bg-danger top_tooltip"
+                >
+                  Cancel
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
@@ -271,7 +279,7 @@
                   *ngIf="projectTypeForm.get('maxMonthCount').errors.max"
                   class="field_error"
                 >
-                  maximum expiry period is{{ maxMonthCount }} months
+                  maximum expiry period is {{ maxMonthCount }} months
                 </span>
               </span>
             </div>

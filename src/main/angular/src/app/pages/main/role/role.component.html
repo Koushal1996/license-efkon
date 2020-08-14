@@ -35,7 +35,7 @@
         </form>
       </div> -->
       <div class="table_scroll">
-        <table>
+        <table class="mb-4">
           <thead>
             <tr>
               <th scope="col">#</th>
@@ -58,7 +58,7 @@
               </th>
               <th scope="col">Authorities</th>
               <th
-                class="action_width"
+                class="action_width" style="min-width: 150px;"
                 scope="col"
                 *ngIf="
                   hasAuthority('ROLE_UPDATE') || hasAuthority('ROLE_DELETE')
@@ -92,29 +92,31 @@
               >
                 <td *ngIf="item.active">
                   <button
-                    class="edit_button top_tooltip"
+                    class="roleactive top_tooltip"
                     *ngIf="hasAuthority('ROLE_UPDATE')"
                     (click)="editrole(item)"
                   >
-                    <i class="fa fa-edit"></i>
-                    <span>Edit Role</span>
+                  Edit
+                    <!-- <i class="fa fa-edit"></i> -->
+                    <!-- <span>Edit Role</span> -->
                   </button>
                   <button
-                    class="delete_button top_tooltip"
+                    class="roleactive bg-danger top_tooltip"
                     *ngIf="hasAuthority('ROLE_DELETE')"
                     (click)="deleterole(item)"
                   >
-                    <i class="fa fa-trash"></i>
-                    <span>Delete Role</span>
+                  Deactivate 
+                    <!-- <i class="fa fa-trash"></i> -->
+                    <!-- <span>Delete Role</span> -->
                   </button>
                 </td>
                 <td *ngIf="!item.active">
                   <button
-                    class="roleactive"
+                    class="roleactive bg-success"
                     *ngIf="hasAuthority('ROLE_DELETE')"
                     (click)="activaterole(item)"
                   >
-                    activate
+                    Activate
                   </button>
                 </td>
               </ng-container>
