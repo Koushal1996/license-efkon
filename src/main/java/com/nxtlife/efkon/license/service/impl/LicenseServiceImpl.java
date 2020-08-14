@@ -52,6 +52,7 @@ import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.FileStorageService;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.service.ProjectProductService;
+import com.nxtlife.efkon.license.util.AESUtil;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.util.DateUtil;
 import com.nxtlife.efkon.license.util.ITextPdfUtil;
@@ -386,7 +387,9 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 					String.format("license key is already generated for license having id [%s]", id));
 		}
 		license.setAccessId(request.getAccessId());
-		license.setGeneratedKey(request.getAccessId().concat(license.getCode()) + UUID.randomUUID().toString());
+		AESUtil.setKey(request.getAccessId());
+		AESUtil.encrypt(UUID.randomUUID().toString().concat(license.getCode()));
+		license.setGeneratedKey(AESUtil.getEncryptedString());
 		if (request.getName() != null) {
 			license.setName(request.getName());
 		}
@@ -429,8 +432,10 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 				license = licenses.get(i++);
 				accessId = licenseAccessId.get("ACCESS ID").toString();
 				remark = licenseAccessId.get("REMARK").toString();
-				rows = licenseDao.update(unmask(license.getId()), accessId,
-						accessId.concat(UUID.randomUUID().toString()), remark, getUserId(), new Date());
+				AESUtil.setKey(accessId);
+				AESUtil.encrypt(UUID.randomUUID().toString().concat(license.getCode()));
+				rows = licenseDao.update(unmask(license.getId()), accessId, AESUtil.getEncryptedString(), remark,
+						getUserId(), new Date());
 				if (rows > 0) {
 					logger.info(" License {} updated successfully", unmaskId);
 				}
@@ -534,9 +539,11 @@ public class LicenseServiceImpl extends BaseService implements LicenseService {
 		if (rows > 0) {
 			logger.info(" License {} updated successfully", unmaskId);
 		}
-		License newLicense = licenseDao.save(new License(license.getCode(), request.getAccessId(),
-				request.getAccessId().concat(license.getCode()).concat(UUID.randomUUID().toString()), request.getName(),
-				LicenseStatus.ACTIVE, unmask(license.getProjectProductId())));
+		AESUtil.setKey(request.getAccessId());
+		AESUtil.encrypt(UUID.randomUUID().toString().concat(license.getCode()));
+		License newLicense = licenseDao
+				.save(new License(license.getCode(), request.getAccessId(), AESUtil.getEncryptedString(),
+						request.getName(), LicenseStatus.ACTIVE, unmask(license.getProjectProductId())));
 		LicenseResponse response = licenseDao.findResponseByIdAndActive(newLicense.getId(), true);
 		response.setProjectProduct(projectProductService.findById(response.getProjectProductId()));
 		return response;

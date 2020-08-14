@@ -2,6 +2,7 @@ package com.nxtlife.efkon.license.view;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,6 +43,19 @@ public interface Response {
 		response.addHeader("fileName", resource.getFilename());
 		OutputStream out = response.getOutputStream();
 		FileInputStream in = new FileInputStream(resource.getFile());
+		// copy from in to out
+		IOUtils.copy(in, out);
+		out.flush();
+		in.close();
+		out.close();
+	}
+
+	public static void setTemplateResponseHeader(InputStream in, String name, String contentType,
+			HttpServletResponse response) throws IOException {
+		response.setContentType(contentType);
+		response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + name + "\"");
+		response.addHeader("fileName", name);
+		OutputStream out = response.getOutputStream();
 		// copy from in to out
 		IOUtils.copy(in, out);
 		out.flush();

@@ -1,6 +1,8 @@
 package com.nxtlife.efkon.license.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,7 +10,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.nxtlife.efkon.license.LicenseManagementApp;
 import com.nxtlife.efkon.license.ex.ApiError;
 import com.nxtlife.efkon.license.service.LicenseService;
 import com.nxtlife.efkon.license.view.Response;
@@ -77,10 +77,12 @@ public class LicenseController {
 
 	@GetMapping(value = "license/generate-key/excel-template")
 	public void fetchTemplate(HttpServletResponse response) throws IOException {
-		String filepath = LicenseManagementApp.class.getClassLoader().getResource("LicenseTemplate.xlsx").toString();
-		Resource resource = new UrlResource(filepath);
-		Response.setTemplateResponseHeader(resource, "application/octet-stream", response);
-
+//		String filepath = LicenseManagementApp.class.getClassLoader().getResource("LicenseTemplate.xlsx").toString();
+//		Resource resource = new UrlResource(filepath);
+//		Response.setTemplateResponseHeader(resource, "application/octet-stream", response);
+		InputStream fis = new URL("https://efkon.s3.us-east-2.amazonaws.com/LicenseTemplate.xlsx").openStream();
+		Response.setTemplateResponseHeader(fis, "LicenseTemplate.xlsx", "application/octet-stream", response);
+		fis.close();
 	}
 
 	@GetMapping(value = "licenses", produces = { "application/json" })
