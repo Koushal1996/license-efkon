@@ -1,5 +1,6 @@
 package com.nxtlife.efkon.license.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -17,6 +18,7 @@ import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,12 +46,14 @@ import com.nxtlife.efkon.license.ex.ValidationException;
 import com.nxtlife.efkon.license.service.BaseService;
 import com.nxtlife.efkon.license.service.UserService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
+import com.nxtlife.efkon.license.util.MailUtil;
 import com.nxtlife.efkon.license.view.SuccessResponse;
 import com.nxtlife.efkon.license.view.user.UserRequest;
 import com.nxtlife.efkon.license.view.user.UserResponse;
 import com.nxtlife.efkon.license.view.user.security.AuthorityResponse;
 import com.nxtlife.efkon.license.view.user.security.PasswordRequest;
 import com.nxtlife.efkon.license.view.user.security.RoleResponse;
+import com.sendgrid.helpers.mail.objects.Content;
 
 @Service("userService")
 @Transactional
@@ -69,6 +73,12 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 
 	@Autowired
 	private RoleAuthorityJpaDao roleAuthorityDao;
+
+	@Value("${sendgrid.api-key}")
+	private String sendGripApiKey;
+
+	@Value("${sendgrid.sender.email}")
+	private String fromEmailId;
 
 	private static PasswordEncoder userPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -326,6 +336,13 @@ public class UserServiceImpl extends BaseService implements UserDetailsService, 
 			throw new ValidationException("User email/contact not register with us");
 		}
 		String generatedPassword = UUID.randomUUID().toString().substring(0, 6);
+		try {
+			MailUtil.sendEmail(sendGripApiKey, fromEmailId, response.get("email").toString(), new ArrayList<>(),
+					"Forgot password",
+					new Content("text/plain", "Temporary generated password is :" + generatedPassword));
+		} catch (IOException e) {
+			throw new ValidationException("Couldn't send email to customer");
+		}
 		logger.info("Password {} has been sent to email {}/contact {}", generatedPassword, response.get("email"),
 				response.get("contactNo"));
 		userJpaDao.setGeneratedPassword(username, userPasswordEncoder.encode(generatedPassword));

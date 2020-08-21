@@ -42,6 +42,7 @@ import com.nxtlife.efkon.license.dao.jpa.ProjectJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductCommentJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.RenewConfigurationJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.UserJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.license.LicenseType;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -59,6 +60,7 @@ import com.nxtlife.efkon.license.service.ProjectProductService;
 import com.nxtlife.efkon.license.util.AuthorityUtils;
 import com.nxtlife.efkon.license.util.DateUtil;
 import com.nxtlife.efkon.license.util.ITextPdfUtil;
+import com.nxtlife.efkon.license.util.MailUtil;
 import com.nxtlife.efkon.license.util.PdfHeaderFooterPageEvent;
 import com.nxtlife.efkon.license.util.PdfTableUtil;
 import com.nxtlife.efkon.license.util.WorkBookUtil;
@@ -70,6 +72,8 @@ import com.nxtlife.efkon.license.view.project.ProjectResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductGraphResponse;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductRequest;
 import com.nxtlife.efkon.license.view.project.product.ProjectProductResponse;
+import com.nxtlife.efkon.license.view.user.UserResponse;
+import com.sendgrid.helpers.mail.objects.Content;
 
 @Service("projectProductServiceImpl")
 @Transactional
@@ -99,11 +103,20 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	@Autowired
 	private EmailServiceImpl emailService;
 
+	@Autowired
+	private UserJpaDao userJpaDao;
+
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
 
 	@Value("${file.upload-pdf-dir}")
 	private String pdfDirectory;
+
+	@Value("${sendgrid.api-key}")
+	private String sendGripApiKey;
+
+	@Value("${sendgrid.sender.email}")
+	private String fromEmailId;
 
 	private static Logger logger = LoggerFactory.getLogger(ProjectProductServiceImpl.class);
 
@@ -883,6 +896,28 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					productDetailDao.findResponseById(unmask(projectProductResponse.getProductDetailId())));
 			projectProductResponse
 					.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
+			UserResponse projectManager = userJpaDao
+					.findResponseById(projectProductResponse.getProject().getProjectManagerId());
+			try {
+				MailUtil.sendEmail(sendGripApiKey, fromEmailId, projectManager.getEmail(),
+						Arrays.asList(user.getEmail()),
+						String.format("Renewed project product(Customer Email : %s)",
+								projectProductResponse.getProject().getCustomerEmail()),
+						new Content("text/html", String.format(
+								"Dear %s<br>One of the product has been renewed for customer %s (%s). Product Details are: <br>"
+										+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+										+ "<li>License type : %s</li>"
+										+ "<li>License count : %s</li><br>Thank you <br>-Efkon Team",
+								projectManager.getName(), projectProduct.getProject().getCustomerName(),
+								projectProduct.getProject().getCustomerEmail(),
+								projectProduct.getProductDetail().getProductFamilyName(),
+								projectProduct.getProductDetail().getProductCodeName(),
+								projectProduct.getProductDetail().getVersionName(), projectProduct.getLicenseTypeName(),
+								projectProduct.getLicenseCount())));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			logger.info("Project product {} renewed successfully", unmaskId);
 			projectProductResponse
 					.setComments(projectProductCommentDao.findByProjectProductId(renewedProjectProduct.getId()));

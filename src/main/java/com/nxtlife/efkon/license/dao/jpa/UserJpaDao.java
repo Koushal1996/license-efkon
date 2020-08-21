@@ -32,6 +32,9 @@ public interface UserJpaDao extends JpaRepository<User, Long> {
 	@Query(value = "select id from User where  email = ?1 and active = ?2")
 	public Long findIdByEmailAndActive(String email, Boolean active);
 
+	@Query(value = "select email from user where id= ?1", nativeQuery = true)
+	public String findEmailById(Long id);
+	
 	@Query(value = "select email, contact_no as contactNo from user where username= ?1", nativeQuery = true)
 	public Map<String, String> findEmailAndContactByUsername(String username);
 
