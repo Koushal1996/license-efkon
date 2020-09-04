@@ -27,8 +27,8 @@ public interface UserRoleJpaDao extends JpaRepository<UserRole, UserRoleKey> {
 	@Query(value = "SELECT * FROM user_role u_r inner join role r where u_r.user_id = ?1 and u_r.role_id=r.id", nativeQuery = true)
 	public List<UserRole> findByUserId(Long userId);
 
-//	@Query(value = "select user.id from UserRole where role_id=:roleId")
-//	public Set<Long> findUserIdsByRoleId(@Param("roleId") Long roleId);
+	// @Query(value = "select user.id from UserRole where role_id=:roleId")
+	// public Set<Long> findUserIdsByRoleId(@Param("roleId") Long roleId);
 
 	@Modifying
 	@Query(value = "delete from user_role where user_id=?1 and role_id=?2", nativeQuery = true)
@@ -36,4 +36,7 @@ public interface UserRoleJpaDao extends JpaRepository<UserRole, UserRoleKey> {
 
 	@Query(value = "select U.id from user_role UR inner join user U on UR.user_id=U.id where UR.role_id=?1 and U.active=?2 ", nativeQuery = true)
 	public Set<Long> findUserIdsByRoleIdAndActive(Long roleId, Boolean active);
+
+	@Query(value = "select user.email from UserRole where role.name=?1")
+	public List<String> findUserEmailByRoleName(String roleName);
 }

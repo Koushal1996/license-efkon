@@ -43,6 +43,7 @@ import com.nxtlife.efkon.license.dao.jpa.ProjectProductCommentJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.ProjectProductJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.RenewConfigurationJpaDao;
 import com.nxtlife.efkon.license.dao.jpa.UserJpaDao;
+import com.nxtlife.efkon.license.dao.jpa.UserRoleJpaDao;
 import com.nxtlife.efkon.license.entity.license.License;
 import com.nxtlife.efkon.license.entity.license.LicenseType;
 import com.nxtlife.efkon.license.entity.project.product.ProjectProduct;
@@ -101,10 +102,10 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	private RenewConfigurationJpaDao renewConfigurationJpaDao;
 
 	@Autowired
-	private EmailServiceImpl emailService;
+	private UserJpaDao userJpaDao;
 
 	@Autowired
-	private UserJpaDao userJpaDao;
+	private UserRoleJpaDao userRoleJpaDao;
 
 	@Value("${file.upload-excel-dir}")
 	private String excelDirectory;
@@ -212,11 +213,12 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 	}
 
 	/**
-	 * this method used to set end date according to start date and expiration month
-	 * count
+	 * this method used to set end date according to start date and expiration
+	 * month count
 	 * <p>
-	 * if addition of month of start date and expiration month count greater than 12
-	 * then year will be incremented and month will be add result minus 12.
+	 * if addition of month of start date and expiration month count greater
+	 * than 12 then year will be incremented and month will be add result minus
+	 * 12.
 	 *
 	 * @return String
 	 */
@@ -296,15 +298,13 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 						responseList.add(new ProjectProductGraphResponse("REJECTEDM", "Rejected by me",
 								rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l,
 								rejectedCount != null ? rejectedCount.get("licenseCount", Long.class) : 0l));
-						responseList
-								.add(new ProjectProductGraphResponse(status.name(), "Rejected by others", tuple.get(
-										"productCount", Long.class)
+						responseList.add(new ProjectProductGraphResponse(status.name(), "Rejected by others",
+								tuple.get("productCount", Long.class)
 										- (rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l),
-										tuple.get("licenseCount", Long.class)
-												- (rejectedCount != null
-														? (rejectedCount.get("licenseCount", Long.class) == null ? 0l
-																: rejectedCount.get("licenseCount", Long.class))
-														: 0l)));
+								tuple.get("licenseCount", Long.class) - (rejectedCount != null
+										? (rejectedCount.get("licenseCount", Long.class) == null ? 0l
+												: rejectedCount.get("licenseCount", Long.class))
+										: 0l)));
 						available = true;
 						break;
 					} else if (tuple.get("status", ProjectProductStatus.class).equals(status)) {
@@ -360,8 +360,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				responseList.add(new ProjectProductGraphResponse(status.name(), "Rejected by me",
 						rejectedCount != null ? rejectedCount.get("productCount", Long.class) : 0l,
 						rejectedCount != null ? (rejectedCount.get("licenseCount", Long.class) != null
-								? rejectedCount.get("licenseCount", Long.class)
-								: 0l) : 0l));
+								? rejectedCount.get("licenseCount", Long.class) : 0l) : 0l));
 
 			} else {
 				Boolean available = false;
@@ -376,9 +375,8 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 							name = status.getName();
 						}
 						responseList.add(new ProjectProductGraphResponse(status.name(), name,
-								tuple.get("productCount", Long.class),
-								tuple.get("licenseCount", Long.class) != null ? tuple.get("licenseCount", Long.class)
-										: 0l));
+								tuple.get("productCount", Long.class), tuple.get("licenseCount", Long.class) != null
+										? tuple.get("licenseCount", Long.class) : 0l));
 						available = true;
 						break;
 					}
@@ -426,11 +424,9 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		projectProductDao.save(projectProduct);
 		ProjectProductResponse projectProductResponse = getProjectProductResponse(projectProduct,
 				request.getProjectId(), request.getProductDetailId());
+		UserResponse projectManager = userJpaDao
+				.findResponseById(unmask(projectProductResponse.getProject().getProjectManagerId()));
 
-		emailService.sendSimpleMessage(getUser().getEmail(), "CHANGE SUBJECT ACCORDING TO REQUIREMENT",
-				projectProductResponse.getProductDetail().getProductFamilyName()
-						+ projectProductResponse.getProductDetail().getProductCodeName()
-						+ projectProductResponse.getProductDetail().getVersion() + "saved successfully");
 		return projectProductResponse;
 	}
 
@@ -602,6 +598,120 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		return FileStorageService.fetchFile(fileName);
 	}
 
+	private void sendMail(ProjectProductStatus status, ProjectProductStatus projectProductStatus,
+			ProjectProductResponse projectProductResponse) {
+		UserResponse projectManager = userJpaDao
+				.findResponseById(unmask(projectProductResponse.getProject().getProjectManagerId()));
+		try {
+			List<String> submitterEmailIds = userRoleJpaDao.findUserEmailByRoleName("Submitter");
+			List<String> toEmailIds = null, ccEamilIds = null;
+			switch (status) {
+			case SUBMITTED:
+				MailUtil.sendEmail(sendGripApiKey, fromEmailId, projectManager.getEmail(),
+						Arrays.asList(getUser().getEmail()),
+						String.format("Submitted project product(Customer Email : %s)",
+								projectProductResponse.getProject().getCustomerEmail()),
+						new Content("text/html",
+								String.format(
+										"Dear %s<br>One of the product has been submitted for customer %s (%s). Product Details are: <br>"
+												+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+												+ "<li>License type : %s</li>"
+												+ "<li>License count : %s</li><br>Please review it.<br><br>Thank you <br>-Efkon Team",
+										projectManager.getName(), projectProductResponse.getProject().getCustomerName(),
+										projectProductResponse.getProject().getCustomerEmail(),
+										projectProductResponse.getProductDetail().getProductFamilyName(),
+										projectProductResponse.getProductDetail().getProductCodeName(),
+										projectProductResponse.getProductDetail().getVersionName(),
+										projectProductResponse.getLicenseTypeName(),
+										projectProductResponse.getLicenseCount())));
+				break;
+			case REVIEWED:
+				List<String> approverEmailIds = userRoleJpaDao.findUserEmailByRoleName("Approver");
+				toEmailIds = new ArrayList<>();
+				toEmailIds.add(projectManager.getEmail());
+				toEmailIds.addAll(submitterEmailIds);
+				MailUtil.sendEmail(sendGripApiKey, fromEmailId, approverEmailIds, toEmailIds,
+						String.format("Reviewed project product(Customer Email : %s)",
+								projectProductResponse.getProject().getCustomerEmail()),
+						new Content("text/html",
+								String.format(
+										"Dear sir,<br>One of the product has been reviewed for customer %s (%s). Product Details are: <br>"
+												+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+												+ "<li>License type : %s</li>"
+												+ "<li>License count : %s</li><br>Please approve it.<br><br>Thank you <br>-Efkon Team",
+										projectProductResponse.getProject().getCustomerName(),
+										projectProductResponse.getProject().getCustomerEmail(),
+										projectProductResponse.getProductDetail().getProductFamilyName(),
+										projectProductResponse.getProductDetail().getProductCodeName(),
+										projectProductResponse.getProductDetail().getVersionName(),
+										projectProductResponse.getLicenseTypeName(),
+										projectProductResponse.getLicenseCount())));
+				break;
+			case APPROVED:
+				ccEamilIds = new ArrayList<>();
+				ccEamilIds.add(projectManager.getEmail());
+				ccEamilIds.addAll(submitterEmailIds);
+				MailUtil.sendEmail(sendGripApiKey, fromEmailId, projectProductResponse.getProject().getCustomerEmail(),
+						ccEamilIds,
+						String.format("Approved project product(Customer Email : %s)",
+								projectProductResponse.getProject().getCustomerEmail()),
+						new Content("text/html",
+								String.format(
+										"Dear sir,<br>One of the product has been approved for customer %s (%s). Product Details are: <br>"
+												+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+												+ "<li>License type : %s</li>"
+												+ "<li>License count : %s</li><br><br>Thank you <br>-Efkon Team",
+										projectProductResponse.getProject().getCustomerName(),
+										projectProductResponse.getProject().getCustomerEmail(),
+										projectProductResponse.getProductDetail().getProductFamilyName(),
+										projectProductResponse.getProductDetail().getProductCodeName(),
+										projectProductResponse.getProductDetail().getVersionName(),
+										projectProductResponse.getLicenseTypeName(),
+										projectProductResponse.getLicenseCount())));
+				break;
+			case REJECTED:
+				if (projectProductStatus.equals(ProjectProductStatus.SUBMITTED)) {
+					MailUtil.sendEmail(sendGripApiKey, fromEmailId, submitterEmailIds,
+							Arrays.asList(projectManager.getEmail()),
+							String.format("Rejected project product(Customer Email : %s)",
+									projectProductResponse.getProject().getCustomerEmail()),
+							new Content("text/html",
+									String.format(
+											"Dear sir,<br>One of the product has been rejected for customer %s (%s) by project manager. Product Details are: <br>"
+													+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+													+ "<li>License type : %s</li>"
+													+ "<li>License count : %s</li><br><br>Thank you <br>-Efkon Team",
+											projectProductResponse.getProject().getCustomerName(),
+											projectProductResponse.getProject().getCustomerEmail(),
+											projectProductResponse.getProductDetail().getProductFamilyName(),
+											projectProductResponse.getProductDetail().getProductCodeName(),
+											projectProductResponse.getProductDetail().getVersionName(),
+											projectProductResponse.getLicenseTypeName(),
+											projectProductResponse.getLicenseCount())));
+				} else if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
+					MailUtil.sendEmail(sendGripApiKey, fromEmailId, projectManager.getEmail(), submitterEmailIds,
+							String.format("Rejected project product(Customer Email : %s)",
+									projectProductResponse.getProject().getCustomerEmail()),
+							new Content("text/html", String.format(
+									"Dear %s,<br>One of the product has been rejected for customer %s (%s) by Approver. Product Details are: <br>"
+											+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+											+ "<li>License type : %s</li>"
+											+ "<li>License count : %s</li><br><br>Thank you <br>-Efkon Team",
+									projectManager.getName(), projectProductResponse.getProject().getCustomerName(),
+									projectProductResponse.getProject().getCustomerEmail(),
+									projectProductResponse.getProductDetail().getProductFamilyName(),
+									projectProductResponse.getProductDetail().getProductCodeName(),
+									projectProductResponse.getProductDetail().getVersionName(),
+									projectProductResponse.getLicenseTypeName(),
+									projectProductResponse.getLicenseCount())));
+				}
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	@Secured(AuthorityUtils.PROJECT_PRODUCT_FETCH)
 	public ProjectProductResponse findById(Long id) {
@@ -690,13 +800,15 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				rows = projectProductDao.update(unmaskId, ProjectProductStatus.REJECTED, getUserId(), new Date());
 				// change TO,SUBJECT,PARAMETER according to recuirement
 
-				// emailService.sendSimpleMessageUsingTemplate(to, "CHANGE SUBJECT ACCORDING TO
+				// emailService.sendSimpleMessageUsingTemplate(to, "CHANGE
+				// SUBJECT ACCORDING TO
 				// REQUIREMENTS", "REJECTED");
 			} else {
 				rows = projectProductDao.update(unmaskId, status, getUserId(), new Date());
 
-//				emailService.sendSimpleMessageUsingTemplate(to, "CHANGE SUBJECT ACCORDING TO REQUIREMENTS",
-//						status.toString());
+				// emailService.sendSimpleMessageUsingTemplate(to, "CHANGE
+				// SUBJECT ACCORDING TO REQUIREMENTS",
+				// status.toString());
 			}
 			if (comment != null && !comment.isEmpty()) {
 				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(), status.name(), unmaskId));
@@ -712,28 +824,32 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 					logger.info("Project product {} approved successfully", unmaskId);
 					Integer licenseCount = projectProductDao.findLicenseCountById(unmaskId);
 					for (int i = 0; i < licenseCount; i++) {
-						licenseDao.save(new License(
-								String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
-										projectProductResponse.getProject().getCustomerCode(),
-										projectProductResponse.getProductDetail().getProductFamilyCode(),
-										projectProductResponse.getProductDetail().getProductCodeCode(),
-										getUser().getCode(), projectProductResponse.getLicenseTypeCode(), (i + 1),
-										projectProductResponse.getExpirationMonthCount() == null ? 0
-												: projectProductResponse.getExpirationMonthCount(),
-										LocalDate
-												.parse(projectProductResponse.getStartDate(),
-														DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-												.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
-										projectProductResponse.getEndDate() == null ? "NA"
-												: LocalDate
-														.parse(projectProductResponse.getEndDate(),
+						licenseDao.save(
+								new License(
+										String.format("EF-%s-%s-%s-%s-%s-%04d-%04d-%s-%s",
+												projectProductResponse.getProject().getCustomerCode(),
+												projectProductResponse.getProductDetail().getProductFamilyCode(),
+												projectProductResponse.getProductDetail().getProductCodeCode(),
+												getUser().getCode(), projectProductResponse.getLicenseTypeCode(),
+												(i + 1),
+												projectProductResponse.getExpirationMonthCount() == null ? 0
+														: projectProductResponse.getExpirationMonthCount(),
+												LocalDate
+														.parse(projectProductResponse.getStartDate(),
 																DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-														.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
-								LicenseStatus.ACTIVE, unmaskId));
+														.format(DateTimeFormatter.ofPattern("ddMMyyyy")),
+												projectProductResponse.getEndDate() == null ? "NA"
+														: LocalDate
+																.parse(projectProductResponse.getEndDate(),
+																		DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+																.format(DateTimeFormatter.ofPattern("ddMMyyyy"))),
+										LicenseStatus.ACTIVE, unmaskId));
 					}
 				}
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
 			}
+			this.sendMail(status, projectProductStatus, projectProductResponse);
+
 			return projectProductResponse;
 		} else {
 			throw new NotFoundException(String.format("Project product (%s) not found", id));
@@ -781,19 +897,20 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			}
 		}
 		int rows = 0;
-
+		List<String> submitterEmailIds = null;
 		if (projectProductStatus != null) {
 			if (projectProductStatus.equals(ProjectProductStatus.DRAFT)
 					|| projectProductStatus.equals(ProjectProductStatus.APPROVED)
 					|| projectProductStatus.equals(ProjectProductStatus.REJECTED)) {
 				throw new ValidationException(String.format(
-						"It is not possibe to undo the project product whose status is (%s) ", projectProductStatus));
+						"It is not possible to undo the project product whose status is (%s) ", projectProductStatus));
 			}
 			if (projectProductStatus.equals(ProjectProductStatus.SUBMITTED)) {
 				rows = projectProductDao.update(unmaskId, ProjectProductStatus.DRAFT, getUserId(), new Date());
 			}
 			if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
 				rows = projectProductDao.update(unmaskId, ProjectProductStatus.SUBMITTED, getUserId(), new Date());
+
 			}
 			if (comment != null && !comment.isEmpty()) {
 				projectProductCommentDao.save(new ProjectProductComment(comment, getUserId(), "RECALL", unmaskId));
@@ -808,6 +925,30 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 				projectProductResponse
 						.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 				projectProductResponse.setComments(projectProductCommentDao.findByProjectProductId(unmaskId));
+			}
+			if (projectProductStatus.equals(ProjectProductStatus.REVIEWED)) {
+				submitterEmailIds = userRoleJpaDao.findUserEmailByRoleName("Submitter");
+				try {
+					MailUtil.sendEmail(sendGripApiKey, fromEmailId, submitterEmailIds, new ArrayList<>(),
+							String.format("Undo project product(Customer Email : %s)",
+									projectProductResponse.getProject().getCustomerEmail()),
+							new Content("text/html",
+									String.format(
+											"Dear Sir,<br>One of the product has been undo for customer %s (%s). Product Details are: <br>"
+													+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
+													+ "<li>License type : %s</li>"
+													+ "<li>License count : %s</li><br>Thank you <br>-Efkon Team",
+											projectProductResponse.getProject().getCustomerName(),
+											projectProductResponse.getProject().getCustomerEmail(),
+											projectProductResponse.getProductDetail().getProductFamilyName(),
+											projectProductResponse.getProductDetail().getProductCodeName(),
+											projectProductResponse.getProductDetail().getVersionName(),
+											projectProductResponse.getLicenseTypeName(),
+											projectProductResponse.getLicenseCount())));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			return projectProductResponse;
 		} else {
@@ -829,7 +970,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 		}
 		if (request.getExpirationMonthCount() == null || (renewConfiguration != null
 				&& renewConfiguration.getStartDateChange() && request.getStartDate() == null)) {
-			throw new ValidationException("Start date and exipration month count is mandatory for renewal");
+			throw new ValidationException("Start date and exipiration month count is mandatory for renewal");
 		}
 		if (request.getExpirationMonthCount() < 1) {
 			throw new ValidationException("Expiration month can't be less than 1");
@@ -897,7 +1038,7 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 			projectProductResponse
 					.setProject(projectDao.findResponseById(unmask(projectProductResponse.getProjectId())));
 			UserResponse projectManager = userJpaDao
-					.findResponseById(projectProductResponse.getProject().getProjectManagerId());
+					.findResponseById(unmask(projectProductResponse.getProject().getProjectManagerId()));
 			try {
 				MailUtil.sendEmail(sendGripApiKey, fromEmailId, projectManager.getEmail(),
 						Arrays.asList(user.getEmail()),
@@ -908,12 +1049,12 @@ public class ProjectProductServiceImpl extends BaseService implements ProjectPro
 										+ "<li>Product Family : %s, Product Code : %s, Product Version : %s</li>"
 										+ "<li>License type : %s</li>"
 										+ "<li>License count : %s</li><br>Thank you <br>-Efkon Team",
-								projectManager.getName(), projectProduct.getProject().getCustomerName(),
-								projectProduct.getProject().getCustomerEmail(),
-								projectProduct.getProductDetail().getProductFamilyName(),
-								projectProduct.getProductDetail().getProductCodeName(),
-								projectProduct.getProductDetail().getVersionName(), projectProduct.getLicenseTypeName(),
-								projectProduct.getLicenseCount())));
+								projectManager.getName(), projectProductResponse.getProject().getCustomerName(),
+								projectProductResponse.getProject().getCustomerEmail(),
+								projectProductResponse.getProductDetail().getProductFamilyName(),
+								projectProductResponse.getProductDetail().getProductCodeName(),
+								projectProductResponse.getProductDetail().getVersionName(),
+								projectProduct.getLicenseTypeName(), projectProductResponse.getLicenseCount())));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

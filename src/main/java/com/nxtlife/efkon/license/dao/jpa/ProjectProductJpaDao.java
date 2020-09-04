@@ -87,6 +87,11 @@ public interface ProjectProductJpaDao extends JpaRepository<ProjectProduct, Long
 	public List<Tuple> findProjectIdAndProductCountByActiveAndNotEqProjectProductStatus(Boolean active,
 			ProjectProductStatus status);
 
+	@Query(value = "select project.customerName as customerName,project.customerEmail as customerEmail,project.isEmailSend as emailStatus,projectProduct.licenseCount as licenseCount,projectProduct.licenseType as licenseType,projectProduct.endDate as endDate"
+			+ ", productDetail.productFamily.name as familyName,productDetail.productCode.name as codeName,productDetail.version.version as version from ProjectProduct projectProduct inner join Project project on projectProduct.project.id=project.id inner join ProductDetail productDetail on projectProduct.productDetail.id=productDetail.id where projectProduct.active =?1 and projectProduct.endDate<=?3 and projectProduct.status=?2")
+	public List<Tuple> findProjectProductDetailsByActiveAndStatusAndEndDateLessThanOrEqual(Boolean active,
+			ProjectProductStatus status, String date);
+
 	public ProjectProductResponse findByIdAndProjectCustomerEmailAndActive(Long id, String customerEmail,
 			Boolean active);
 
