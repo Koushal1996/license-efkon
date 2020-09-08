@@ -43,7 +43,7 @@ public class ProjectProductRenewalSchedulingServiceImpl implements ProjectProduc
     @Value("${sendgrid.sender.email}")
     private String fromEmailId;
 
-    @Scheduled(cron = "0 57 20 * * *")
+    @Scheduled(cron = "0 0 6 * * *")
     public void sendProjectProductRenewalMail() {
         RenewConfigurationResponse renewConfiguration=null;
         List<RenewConfigurationResponse> renewConfigurationResponses=renewConfigurationJpaDao.findByActiveTrue();
